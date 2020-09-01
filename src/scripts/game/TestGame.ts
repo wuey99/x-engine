@@ -11,28 +11,28 @@ import { XTaskManager} from '../task/XTaskManager';
 import { XTaskSubManager} from '../task/XTaskSubManager';
 import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
-import { GameObject} from '../gameobject/GameObject';
+import { XGameObject} from '../gameobject/XGameObject';
 import { XState } from '../state/XState';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
 	
 	public sprite:PIXI.Sprite;
-	
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
 	}
 	
 //------------------------------------------------------------------------------------------
-	public setup (__world:XWorld, __layer:number, __depth:number):GameObject {
+	public setup (__world:XWorld, __layer:number, __depth:number):XGameObject {
         super.setup (__world, __layer, __depth);
 
 		return this;
 	}
 	
 //------------------------------------------------------------------------------------------
-	public afterSetup (__params:Array<any> = null):GameObject {
+	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
 		console.log (": TestGame: ");

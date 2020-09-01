@@ -12,11 +12,11 @@ import { XTaskSubManager} from '../task/XTaskSubManager';
 import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/XType';
-import { GameObject} from '../gameobject/GameObject';
+import { XGameObject} from '../gameobject/XGameObject';
 import { XGameInstance } from './XGameInstance';
 
 //------------------------------------------------------------------------------------------
-export class XState extends GameObject {
+export class XState extends XGameObject {
     
     public m_gameInstance:XGameInstance;
 
@@ -26,14 +26,14 @@ export class XState extends GameObject {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public setup (__world:XWorld, __layer:number, __depth:number):GameObject {
+	public setup (__world:XWorld, __layer:number, __depth:number):XGameObject {
         super.setup (__world, __layer, __depth);
 
 		return this;
 	}
 	
 //------------------------------------------------------------------------------------------
-	public afterSetup (__params:Array<any> = null):GameObject {
+	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
 		return this;
@@ -50,7 +50,7 @@ export class XState extends GameObject {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public setGameInstance (__gameInstance:XGameInstance):GameObject {
+	public setGameInstance (__gameInstance:XGameInstance):XGameObject {
 		this.m_gameInstance = __gameInstance;
 			
 		return this;

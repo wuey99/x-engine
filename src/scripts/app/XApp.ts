@@ -10,7 +10,7 @@ import { XObjectPoolManager } from '../pool/XObjectPoolManager';
 import { XClassPoolManager } from '../pool/XClassPoolManager';
 import { XDepthSprite } from '../sprite/XDepthSprite';
 import { XGameInstance } from '../state/XGameInstance';
-import { GameObject } from '../gameobject/GameObject';
+import { XGameObject } from '../gameobject/XGameObject';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -64,7 +64,7 @@ export class XApp {
         this.container = params.containerId ? document.getElementById(params.containerId) || document.body : document.body;
         this.container.appendChild(this.renderer.view)
 
-		GameObject.setXApp(this);
+		XGameObject.setXApp(this);
 		XTask.setXApp (this);
 		// TODO XTilemap.setXApp (this);
 		XSprite.setXApp (this);

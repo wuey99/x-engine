@@ -12,7 +12,7 @@ import { XTaskSubManager} from '../task/XTaskSubManager';
 import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/Xtype';
-import { GameObject} from '../gameobject/GameObject';
+import { XGameObject} from '../gameobject/XGameObject';
 import { XState } from './XState';
 
 //------------------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ export class XGameInstance {
 	}
 		
 	//------------------------------------------------------------------------------------------
-	public gotoState (__name:string, __params:Array<any> = null, __layer:number = 0, __depth:number = 0.0):GameObject {
+	public gotoState (__name:string, __params:Array<any> = null, __layer:number = 0, __depth:number = 0.0):XGameObject {
 		if (this.m_states.has (__name)) {
 			var __class:any = this.m_states.get (__name);
 				

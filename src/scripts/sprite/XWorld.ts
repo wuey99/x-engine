@@ -7,7 +7,7 @@ import { XSignal } from '../signals/XSignal';
 import { XSignalManager } from '../signals/XSignalManager';
 import { XTask } from '../task/XTask';
 import { XDepthSprite} from '../sprite/XDepthSprite';
-import { GameObject } from '../gameobject/GameObject';
+import { XGameObject } from '../gameobject/XGameObject';
 import { XType } from '../type/XType';
 
 //------------------------------------------------------------------------------------------
@@ -19,9 +19,9 @@ export class XWorld extends XSprite {
 
     public m_hudLayer:XSpriteLayer;
     public m_XSignalManager:XSignalManager;
-    private m_killQueue:Map<GameObject, number>;
-    private m_gameObjects:Map<GameObject, XDepthSprite>;
-    private m_childObjects:Map<GameObject, XDepthSprite>;	
+    private m_killQueue:Map<XGameObject, number>;
+    private m_gameObjects:Map<XGameObject, XDepthSprite>;
+    private m_childObjects:Map<XGameObject, XDepthSprite>;	
     private m_children:Map<PIXI.Sprite, any>;
 
     public static readonly SPRITE_LAYER:number = 0;
@@ -52,10 +52,10 @@ export class XWorld extends XSprite {
         this.m_hudLayer.world = this;
         this.addChild (this.m_hudLayer);
 
-        this.m_killQueue = new Map<GameObject, number> ();
+        this.m_killQueue = new Map<XGameObject, number> ();
         
-        this.m_gameObjects = new Map<GameObject, XDepthSprite> ();
-        this.m_childObjects = new Map<GameObject, XDepthSprite> ();
+        this.m_gameObjects = new Map<XGameObject, XDepthSprite> ();
+        this.m_childObjects = new Map<XGameObject, XDepthSprite> ();
         this.m_children = new Map<PIXI.Sprite, any> ();
     }
 
@@ -89,7 +89,7 @@ export class XWorld extends XSprite {
         
         this.emptyKillQueue ();
         
-        var __gameObject:GameObject;
+        var __gameObject:XGameObject;
 
         for (__gameObject of this.m_gameObjects.keys ()) {
             __gameObject.setMasterX (__gameObject.x);
@@ -108,8 +108,8 @@ export class XWorld extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
-    public addGameObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):GameObject {
-        var __gameObject:GameObject = XType.createInstance (__class) as GameObject;
+    public addGameObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+        var __gameObject:XGameObject = XType.createInstance (__class) as XGameObject;
         __gameObject.setup (this, __layer, __depth);
         
         var __depthSprite:XDepthSprite;
@@ -122,8 +122,8 @@ export class XWorld extends XSprite {
     }			
 
     //------------------------------------------------------------------------------------------
-    public addChildObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):GameObject {
-        var __gameObject:GameObject = XType.createInstance (__class) as GameObject;
+    public addChildObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+        var __gameObject:XGameObject = XType.createInstance (__class) as XGameObject;
         __gameObject.setup(this, __layer, __depth);
         
         var __depthSprite:XDepthSprite;
@@ -136,7 +136,7 @@ export class XWorld extends XSprite {
     }	
 
     //------------------------------------------------------------------------------------------
-    public removeGameObject (__gameObject:GameObject):void {	
+    public removeGameObject (__gameObject:XGameObject):void {	
         if (this.m_gameObjects.has (__gameObject)) {
             var __depthSprite:XDepthSprite = this.m_gameObjects.get (__gameObject);
             
@@ -175,7 +175,7 @@ export class XWorld extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
-    public killLater (__gameObject:GameObject):void {
+    public killLater (__gameObject:XGameObject):void {
         if (!this.m_killQueue.has (__gameObject)) {
             this.m_killQueue.set (__gameObject, 0);
         }
@@ -183,7 +183,7 @@ export class XWorld extends XSprite {
 
     //------------------------------------------------------------------------------------------
     public emptyKillQueue ():void {	
-        var __gameObject:GameObject;
+        var __gameObject:XGameObject;
 
         for (__gameObject of this.m_killQueue.keys ()) {
             if (!__gameObject.cleanedUp) {

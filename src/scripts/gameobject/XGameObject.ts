@@ -14,10 +14,10 @@ import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/XType';
 
 //------------------------------------------------------------------------------------------
-export class GameObject extends PIXI.Sprite {
-	public m_selfObjects:Map<GameObject, number>;	
-	public m_worldObjects:Map<GameObject, number>;
-	public m_childObjects:Map<GameObject, number>;
+export class XGameObject extends PIXI.Sprite {
+	public m_selfObjects:Map<XGameObject, number>;	
+	public m_worldObjects:Map<XGameObject, number>;
+	public m_childObjects:Map<XGameObject, number>;
 	public m_selfSprites:Map<PIXI.Sprite, number>;
 	public m_childSprites:Map<PIXI.Sprite, number>;
 	public m_worldSprites:Map<PIXI.Sprite, number>;	
@@ -27,7 +27,7 @@ export class GameObject extends PIXI.Sprite {
 	public m_signals:Map<XSignal, number>;
 	public m_XTaskSubManager:XTaskSubManager;
 	public m_killSignal:XSignal;
-	public m_parent:GameObject;
+	public m_parent:XGameObject;
 	public m_XApp:XApp;
 	public world:XWorld;
 	public m_layer:number;
@@ -50,7 +50,7 @@ export class GameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public setup (__world:XWorld, __layer:number, __depth:number):GameObject {
+	public setup (__world:XWorld, __layer:number, __depth:number):XGameObject {
 		this.m_masterScaleX = this.m_masterScaleY = 1.0;
 		this.m_masterFlipX = this.m_masterFlipY = 1.0;
 		this.m_masterX = this.m_masterY = 0;
@@ -73,9 +73,9 @@ export class GameObject extends PIXI.Sprite {
 		this.m_isDead = false;
 		this.m_cleanedUp = false;
 		
-		this.m_worldObjects = new Map<GameObject, number> ();
-		this.m_childObjects = new Map<GameObject, number> ();
-		this.m_selfObjects = new Map<GameObject, number> ();
+		this.m_worldObjects = new Map<XGameObject, number> ();
+		this.m_childObjects = new Map<XGameObject, number> ();
+		this.m_selfObjects = new Map<XGameObject, number> ();
 		// TODO this.m_bitmaps = new Map<String, Bitmap> ();
 		// TODO this.m_XBitmaps = new Map<String, XBitmap> ();
 		// TODO this.m_XTilemaps = new Map<String, XTilemap> ();
@@ -83,16 +83,16 @@ export class GameObject extends PIXI.Sprite {
 		this.m_childSprites = new Map<PIXI.Sprite, number> ();
 		this.m_worldSprites = new Map<PIXI.Sprite, number> ();		
 		this.m_signals = new Map<XSignal, number> ();
-		this.m_XTaskSubManager = new XTaskSubManager (GameObject.getXApp ().getXTaskManager ());
+		this.m_XTaskSubManager = new XTaskSubManager (XGameObject.getXApp ().getXTaskManager ());
 		this.m_parent = null;
-		this.m_XApp = GameObject.g_XApp;
+		this.m_XApp = XGameObject.g_XApp;
 		this.m_killSignal = this.createXSignal ();
 
 		return this;
 	}
 	
 //------------------------------------------------------------------------------------------
-	public afterSetup (__params:Array<any> = null):GameObject {
+	public afterSetup (__params:Array<any> = null):XGameObject {
 		return this;
 	}
 	
@@ -167,12 +167,12 @@ export class GameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public static setXApp (__XApp:XApp):void {
-		GameObject.g_XApp = __XApp;
+		XGameObject.g_XApp = __XApp;
 	}
 
 //------------------------------------------------------------------------------------------
     public static getXApp ():XApp {
-        return GameObject.g_XApp;
+        return XGameObject.g_XApp;
     }
 
 //------------------------------------------------------------------------------------------
@@ -181,7 +181,7 @@ export class GameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public verticalPercent (__displayObject:PIXI.Sprite, __percent:number):GameObject {
+	public verticalPercent (__displayObject:PIXI.Sprite, __percent:number):XGameObject {
 		var __y:number = (this.getActualHeight () - __displayObject.height) * __percent;
 			
 		__displayObject.y = __y;
@@ -190,7 +190,7 @@ export class GameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public verticalPercentCentered (__displayObject:PIXI.Sprite, __percent:number):GameObject {
+	public verticalPercentCentered (__displayObject:PIXI.Sprite, __percent:number):XGameObject {
 		var __y:number = this.getActualHeight () * __percent;
 			
 		__displayObject.y = __y;
@@ -204,7 +204,7 @@ export class GameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public horizontalPercent (__displayObject:PIXI.Sprite, __percent:number):GameObject {
+	public horizontalPercent (__displayObject:PIXI.Sprite, __percent:number):XGameObject {
 		var __x:number = (this.getActualWidth () - __displayObject.width) * __percent;
 			
 		__displayObject.x = __x;
@@ -213,7 +213,7 @@ export class GameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public horizontalPercentCentered (__displayObject:PIXI.Sprite, __percent:number):GameObject {
+	public horizontalPercentCentered (__displayObject:PIXI.Sprite, __percent:number):XGameObject {
 		var __x:number = this.getActualWidth () * __percent;
 			
 		__displayObject.x = __x;
@@ -222,7 +222,7 @@ export class GameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public isWorldGameObject (__gameObject:GameObject):boolean {
+	public isWorldGameObject (__gameObject:XGameObject):boolean {
 		return this.m_worldObjects.has (__gameObject);
 	}
 	
@@ -258,8 +258,8 @@ export class GameObject extends PIXI.Sprite {
 */
 
 //------------------------------------------------------------------------------------------
-	public addGameObjectToSelf (__class:any):GameObject {
-		var __gameObject:GameObject = XType.createInstance (__class) as GameObject;
+	public addGameObjectToSelf (__class:any):XGameObject {
+		var __gameObject:XGameObject = XType.createInstance (__class) as XGameObject;
 		__gameObject.setup (world, this.getLayer(), this.getDepth());
 		
 		__gameObject.setParent (this);
@@ -272,7 +272,7 @@ export class GameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public addGameObjectToWorld (__class:any, __layer:number = 0, __depth:number = 0.0):GameObject {
+	public addGameObjectToWorld (__class:any, __layer:number = 0, __depth:number = 0.0):XGameObject {
 		if (this.world != null) {
 			var __gameObject = this.world.addGameObject (__class, __layer, __depth);
 			
@@ -285,7 +285,7 @@ export class GameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public addGameObjectAsChild (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):GameObject {
+	public addGameObjectAsChild (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
 		if (this.world != null) {
 			var __gameObject = this.world.addChildObject(__class, __layer, __depth, __visible);
 			
@@ -298,12 +298,12 @@ export class GameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public getParentObject ():GameObject {
+	public getParentObject ():XGameObject {
 		return this.m_parent;
 	}
 	
 //------------------------------------------------------------------------------------------
-	public setParentObject (__parent:GameObject):void {
+	public setParentObject (__parent:XGameObject):void {
 		this.m_parent = __parent;
 	}
 	
@@ -314,7 +314,7 @@ export class GameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-	public removeSelfObject (__gameObject:GameObject):void {
+	public removeSelfObject (__gameObject:XGameObject):void {
 		if (this.m_selfObjects.has (__gameObject)) {
 			this.m_selfObjects.delete (__gameObject);
 				
@@ -329,7 +329,7 @@ export class GameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 // remove GameObject from the World but don't kill it
 //------------------------------------------------------------------------------------------	
-	public removeSelfObject0 (__gameObject:GameObject):void {
+	public removeSelfObject0 (__gameObject:XGameObject):void {
 		if (this.m_selfObjects.has (__gameObject)) {
 			this.m_selfObjects.delete (__gameObject);
 		}
@@ -337,7 +337,7 @@ export class GameObject extends PIXI.Sprite {
 		
 //------------------------------------------------------------------------------------------
 	public removeAllSelfObjects ():void {
-        var __gameObject:GameObject;
+        var __gameObject:XGameObject;
 
 		for (__gameObject of this.m_selfObjects.keys ()) {
             this.removeSelfObject (__gameObject);
@@ -351,7 +351,7 @@ export class GameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-	public removeWorldObject (__gameObject:GameObject):void {
+	public removeWorldObject (__gameObject:XGameObject):void {
 		if (this.m_worldObjects.has (__gameObject)) {
 			this.m_worldObjects.delete (__gameObject);
 				
@@ -366,7 +366,7 @@ export class GameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 // remove GameObject from the World but don't kill it
 //------------------------------------------------------------------------------------------	
-	public removeWorldObject0 (__gameObject:GameObject):void {
+	public removeWorldObject0 (__gameObject:XGameObject):void {
 		if (this.m_worldObjects.has (__gameObject)) {
 			this.m_worldObjects.delete (__gameObject);
 				
@@ -376,7 +376,7 @@ export class GameObject extends PIXI.Sprite {
 		
 //------------------------------------------------------------------------------------------
 	public removeAllWorldObjects ():void {
-        var __gameObject:GameObject;
+        var __gameObject:XGameObject;
 
 		for (__gameObject of this.m_worldObjects.keys ()) {
 			this.removeWorldObject (__gameObject);
@@ -390,7 +390,7 @@ export class GameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-	public removeChildObject (__gameObject:GameObject):void {
+	public removeChildObject (__gameObject:XGameObject):void {
 		if (this.m_childObjects.has (__gameObject)) {
 			this.m_childObjects.delete (__gameObject);
 				
@@ -405,7 +405,7 @@ export class GameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 // remove GameObject from the World but don't kill it
 //------------------------------------------------------------------------------------------	
-	public removeChildObject0 (__gameObject:GameObject):void {
+	public removeChildObject0 (__gameObject:XGameObject):void {
 		if (this.m_childObjects.has (__gameObject)) {
 			this.m_childObjects.delete (__gameObject);
 				
@@ -415,7 +415,7 @@ export class GameObject extends PIXI.Sprite {
 		
 //------------------------------------------------------------------------------------------
 	public removeAllChildObjects ():void {
-        var __gameObject:GameObject;
+        var __gameObject:XGameObject;
 
 		for (__gameObject of this.m_childObjects.keys ()) {
 			this.removeChildObject (__gameObject);
@@ -598,7 +598,7 @@ export class GameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public createXSignal ():XSignal {
-		var __signal:XSignal = GameObject.getXApp ().getXSignalManager ().createXSignal ();
+		var __signal:XSignal = XGameObject.getXApp ().getXSignalManager ().createXSignal ();
 		
 		if (!(this.m_signals.has (__signal))) {
 			this.m_signals.set (__signal, 0);
@@ -614,7 +614,7 @@ export class GameObject extends PIXI.Sprite {
 		if (this.m_signals.has (__signal)) {
 			this.m_signals.delete (__signal);
 					
-			GameObject.getXApp ().getXSignalManager ().removeXSignal (__signal);
+			XGameObject.getXApp ().getXSignalManager ().removeXSignal (__signal);
 		}
 	}
 
@@ -629,7 +629,7 @@ export class GameObject extends PIXI.Sprite {
 				
 //------------------------------------------------------------------------------------------
 	public getXTaskManager ():XTaskManager {
-		return GameObject.getXApp ().getXTaskManager ();
+		return XGameObject.getXApp ().getXTaskManager ();
 	}
 
 //------------------------------------------------------------------------------------------
@@ -686,7 +686,7 @@ export class GameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public setDepth (__depth:number):GameObject {
+	public setDepth (__depth:number):XGameObject {
 		this.m_depth = __depth;
 		
 		return this;
@@ -698,14 +698,14 @@ export class GameObject extends PIXI.Sprite {
     }
 
 //------------------------------------------------------------------------------------------
-	public setPropagateDepthFlag (__flag:boolean):GameObject {
+	public setPropagateDepthFlag (__flag:boolean):XGameObject {
 		this.m_propagateDepthFlag = __flag;
 		
 		return this;
 	}	
 		
 //------------------------------------------------------------------------------------------
-	public setLayer (__layer:number):GameObject {
+	public setLayer (__layer:number):XGameObject {
 		this.m_layer = __layer;
 		
 		return this;
@@ -767,9 +767,7 @@ export class GameObject extends PIXI.Sprite {
 			var __depthSprite:XDepthSprite = this.parent as XDepthSprite;
 			__depthSprite.setDepth (this.getDepth ());
 			
-			var __gameObject:GameObject;
-            
-            var __gameObject:GameObject;
+			var __gameObject:XGameObject;
 
 			for (__gameObject of this.m_childObjects.keys ()) {	
 				if (__gameObject != null && !__gameObject.isDead) {	

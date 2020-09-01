@@ -12,7 +12,7 @@ import { XTaskSubManager} from '../task/XTaskSubManager';
 import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/Xtype';
-import { GameObject} from '../gameobject/GameObject';
+import { XGameObject} from '../gameobject/XGameObject';
 import { XGameController } from '../state/XGameController';
 import { TestGame } from './TestGame';
 
@@ -25,14 +25,14 @@ export class TestGameController extends XGameController {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public setup (__world:XWorld, __layer:number, __depth:number):GameObject {
+	public setup (__world:XWorld, __layer:number, __depth:number):XGameObject {
         super.setup (__world, __layer, __depth);
 
 		return this;
 	}
 	
 //------------------------------------------------------------------------------------------
-	public afterSetup (__params:Array<any> = null):GameObject {
+	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
         this.getGameInstance ().registerState ("TestGame", TestGame);
@@ -43,7 +43,7 @@ export class TestGameController extends XGameController {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup():void {
+	public cleanup ():void {
         super.cleanup ();
 	}
 	
