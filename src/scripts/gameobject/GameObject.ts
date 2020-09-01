@@ -276,7 +276,7 @@ export class GameObject extends PIXI.Sprite {
 		if (this.world != null) {
 			var __gameObject = this.world.addGameObject (__class, __layer, __depth);
 			
-			this.m_worldObjects.set(__gameObject, 0);
+			this.m_worldObjects.set (__gameObject, 0);
 			
 			return __gameObject;
 		}
@@ -289,7 +289,7 @@ export class GameObject extends PIXI.Sprite {
 		if (this.world != null) {
 			var __gameObject = this.world.addChildObject(__class, __layer, __depth, __visible);
 			
-			this.m_childObjects.set(__gameObject, 0);
+			this.m_childObjects.set (__gameObject, 0);
 			
 			return __gameObject;
 		}
@@ -478,7 +478,7 @@ export class GameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public addSpriteAsChild (__sprite__:PIXI.Sprite, __dx:number, __dy:number, __layer:number, __depth:number):PIXI.Sprite {
-		var __sprite = new PIXI.Sprite();
+		var __sprite = new PIXI.Sprite ();
 		__sprite.addChild(__sprite__);
 
 		__sprite__.x = __dx;
@@ -530,7 +530,7 @@ export class GameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public addSpriteToWorld (__sprite__:PIXI.Sprite, __dx:number, __dy:number, __layer:number, __depth:number, __visible:boolean = true):PIXI.Sprite {
-		var __sprite = new PIXI.Sprite();
+		var __sprite = new PIXI.Sprite ();
 		__sprite.addChild (__sprite__);
 	
 		__sprite__.x = __dx;
