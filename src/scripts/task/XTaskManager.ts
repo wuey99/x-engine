@@ -82,7 +82,7 @@
 		
 //------------------------------------------------------------------------------------------
 		public addTask (__taskList:Array<any>, __findLabelsFlag:boolean = true):XTask {
-           var __task:XTask = this.m_poolManager.borrowObject () as XTask;
+            var __task:XTask = this.m_poolManager.borrowObject () as XTask;
 			// var __task:XTask = new XTask ();
 			__task.setup (__taskList, __findLabelsFlag);
 			

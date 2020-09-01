@@ -27,8 +27,6 @@ export class XWorld extends XSprite {
     public static readonly SPRITE_LAYER:number = 0;
     public static readonly SPRITE_XDEPTHSPRITE:number = 1;
 
-    public sprite:PIXI.Sprite;
-
     //------------------------------------------------------------------------------------------
     constructor (__parent:any, __XApp:XApp, __layers:number = 8, __timerInterval:number = 32) {
         super ();
@@ -72,44 +70,11 @@ export class XWorld extends XSprite {
 	//------------------------------------------------------------------------------------------
 	public setup ():void {
         super.setup ();
-
-        var callback:any = this.initTestSprite.bind (this);
-
-        callback ();
     }
     
 	//------------------------------------------------------------------------------------------
 	public cleanup ():void {
         super.cleanup ();
-    }
-
-	//------------------------------------------------------------------------------------------
-	public initTestSprite (a:number):void {
-        console.log (": initTestSprite: ", a);
-        
-        /* Sprite */
-        this.sprite = PIXI.Sprite.from ('images/logo.png');
-        this.sprite.anchor.set (0.5);
-        this.sprite.x = this.m_XApp.renderer.width / 2;
-        this.sprite.y = this.m_XApp.renderer.height / 2;
-        this.addChild (this.sprite);
-
-        this.m_XApp.getXTaskManager ().addTask ([
-            XTask.LABEL, "loop",
-                XTask.WAIT, 0x0400,
-
-                () => this.sprite.angle += 0.10,
-
-                XTask.GOTO, "loop",
-            XTask.RETN,
-        ])
-    }
-
-    //------------------------------------------------------------------------------------------
-    public rotateX ():Array<any> {
-        return [
-            XTask.RETN,
-        ];
     }
 
     //------------------------------------------------------------------------------------------

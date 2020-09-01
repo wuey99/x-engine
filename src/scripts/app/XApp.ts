@@ -9,6 +9,8 @@ import { XSprite } from '../sprite/XSprite';
 import { XObjectPoolManager } from '../pool/XObjectPoolManager';
 import { XClassPoolManager } from '../pool/XClassPoolManager';
 import { XDepthSprite } from '../sprite/XDepthSprite';
+import { XGameInstance } from '../state/XGameInstance';
+import { GameObject } from '../gameobject/GameObject';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -62,14 +64,17 @@ export class XApp {
         this.container = params.containerId ? document.getElementById(params.containerId) || document.body : document.body;
         this.container.appendChild(this.renderer.view)
 
-		// TODO GameObject.setXApp(this);
+		GameObject.setXApp(this);
 		XTask.setXApp (this);
 		// TODO XTilemap.setXApp (this);
 		XSprite.setXApp (this);
 		// TODO XTextureManager.setXApp (this);
 		// TODO XTileSubTextureManager.setXApp (this);
         // TODO XSubTextureManager.setXApp (this);
-        
+        XGameInstance.setXApp (this);
+
+        this.__initPoolManagers (this.getDefaultPoolSettings ());
+
 		this.m_XTaskManager = new XTaskManager (this);	
         this.m_XSignalManager = new XSignalManager (this);
         
@@ -231,7 +236,7 @@ export class XApp {
 	public getTime ():number {
 		return this.m_currentTimer;
     }
-    
+
     //------------------------------------------------------------------------------------------
     public getXTaskManager ():XTaskManager {
         return this.m_XTaskManager;
