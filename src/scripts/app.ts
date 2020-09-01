@@ -1,17 +1,17 @@
 //------------------------------------------------------------------------------------------
 // app.ts
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js';
+// import * as PIXI from 'pixi.js';
 import { FpsMeter } from './fps-meter';
 import { XApp } from './app/XApp';
 import { XWorld } from './sprite/XWorld';
+// import { XType } from './type/XType';
 
 //------------------------------------------------------------------------------------------
 export var g_XApp:XApp;
 export var world:XWorld;
 
 let fpsMeter: FpsMeter;
-const sprite = PIXI.Sprite.from('images/logo.png');
 
 //------------------------------------------------------------------------------------------
 window.onload = load;
@@ -30,13 +30,8 @@ function create() {
     });
     
     world = new XWorld (g_XApp.stage, g_XApp, 8);
+    world.setup ();
     g_XApp.stage.addChild (world);
-
-    /* Sprite */
-    sprite.anchor.set(0.5);
-    sprite.x = g_XApp.renderer.width / 2;
-    sprite.y = g_XApp.renderer.height / 2;
-    g_XApp.stage.addChild(sprite);
 
     /* FPS */
     const fpsMeterItem = document.createElement('div');
@@ -55,8 +50,8 @@ function create() {
 function update() {
     fpsMeter.updateTime();
 
-    sprite.rotation += 0.01;
-
+    g_XApp.update ();
+    
     world.update ();
 }
 
