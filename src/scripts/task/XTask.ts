@@ -4,6 +4,7 @@
     import { XType } from '../type/XType';
     import { XTaskManager } from './XTaskManager';
     import { XTaskSubManager } from './XTaskSubManager';
+    import { XObjectPoolManager } from '../pool/XObjectPoolManager';
 
 	//------------------------------------------------------------------------------------------
 	// XTask provides a mechanism to control the execution of functions.
@@ -69,7 +70,7 @@
 		public tag:string;
 		public m_id:number;
 		public self:XTask;
-		// public m_pool:XObjectPoolManager;
+		public m_pool:XObjectPoolManager;
 		
 		public static g_id:number = 0;
 		
@@ -173,16 +174,14 @@
 		}
 
         //------------------------------------------------------------------------------------------
-        /*
 		public setPool (__pool:XObjectPoolManager):void {
 			this.m_pool = __pool;
 		}
 		
 		//------------------------------------------------------------------------------------------
 		public getPool ():XObjectPoolManager {
-			return m_pool;
+			return this.m_pool;
 		}
-        */
         
 		//------------------------------------------------------------------------------------------
 		public getManager ():XTaskManager {

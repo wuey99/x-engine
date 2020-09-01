@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------------------
     import { XTask } from './XTask';
     import { XTaskManager} from './XTaskManager';
+    import { XObjectPoolManager } from '../pool/XObjectPoolManager';
     
 //------------------------------------------------------------------------------------------	
 	export class XTaskSubManager {

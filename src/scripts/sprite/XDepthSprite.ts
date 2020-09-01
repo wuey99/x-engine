@@ -63,25 +63,23 @@ export class XDepthSprite extends XSprite {
         
         this.addChild (__sprite);
         
-        this.visible = true;
+        this.setVisible (true);
     }
 
     //------------------------------------------------------------------------------------------
-    /*
-    public get visible ():boolean {
-        return super.visible;
+    public getVisible ():boolean {
+        return this.visible;
     }
 
     //------------------------------------------------------------------------------------------
-    public set visible (__visible:boolean) {
-        super.visible = __visible;
-        
+    public setVisible (__value:boolean):void {
         if (this.m_sprite != null) {
-            this.m_sprite.visible = __visible;
-        }        
-    }
-    */
+            this.m_sprite.visible = __value;
+        }   
 
+        this.visible = __value;
+    }
+    
     //------------------------------------------------------------------------------------------	
     public setDepth (__depth:number):void {
         this.m_depth = __depth;

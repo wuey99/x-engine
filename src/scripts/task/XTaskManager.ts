@@ -1,13 +1,14 @@
 //------------------------------------------------------------------------------------------
     import { XApp } from '../app/XApp';
     import { XTask } from './XTask';
+    import { XObjectPoolManager } from '../pool/XObjectPoolManager';
 
 //------------------------------------------------------------------------------------------	
 	export class XTaskManager {
 		private m_XTasks:Map<XTask, number>;
 		private m_paused:number;
 		private m_XApp:XApp;
-		// TODO private m_poolManager:XObjectPoolManager;
+		private m_poolManager:XObjectPoolManager;
 		
 //------------------------------------------------------------------------------------------
 		constructor (__XApp:XApp) {
@@ -17,35 +18,33 @@
 			
 			this.m_paused = 0;
 			
-			// TODO m_poolManager = createPoolManager ();
+			this.m_poolManager = this.createPoolManager ();
 		}
 		
 //------------------------------------------------------------------------------------------	
 		public cleanup ():void {
-			// TODO m_poolManager.returnAllObjects ();
+			this.m_poolManager.returnAllObjects ();
 			
-			// TODO m_poolManager = null;
+			this.m_poolManager = null;
 		}
 		
 //------------------------------------------------------------------------------------------	
-        /* TODO
 		public createPoolManager ():XObjectPoolManager {
 			return new XObjectPoolManager (
-				function ():any {
+				():any => {
 					return new XTask ();
 				},
 					
-				function (__src:any, __dst:any):any {
+				(__src:any, __dst:any):any => {
 					return null;
 				},
 					
 				8192, 256,
 					
-				function (x:any):void {
+				(x:any):void => {
 				}
 			);
         }
-        */
 
 //------------------------------------------------------------------------------------------
 		public getXApp ():XApp {
@@ -83,8 +82,8 @@
 		
 //------------------------------------------------------------------------------------------
 		public addTask (__taskList:Array<any>, __findLabelsFlag:boolean = true):XTask {
-//			var __task:XTask = cast m_poolManager.borrowObject (); /* as XTask */
-			var __task:XTask = new XTask ();
+           var __task:XTask = this.m_poolManager.borrowObject () as XTask;
+			// var __task:XTask = new XTask ();
 			__task.setup (__taskList, __findLabelsFlag);
 			
 			__task.setManager (this);
@@ -110,7 +109,7 @@
 			if (this.m_XTasks.has (__task)) {
 				__task.kill ();
 				
-				// TODO m_poolManager.returnObject (__task);
+				this.m_poolManager.returnObject (__task);
 				
 				this.m_XTasks.delete (__task);
 			}
