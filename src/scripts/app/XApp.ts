@@ -252,5 +252,10 @@ export class XApp {
         return this.m_XSignalManager;
     }
 
+    //------------------------------------------------------------------------------------------
+    public getXDepthSpritePoolManager ():XObjectPoolManager {
+        return this.m_XDepthSpritePoolManager;
+    }
+
 //------------------------------------------------------------------------------------------
 }

@@ -9,6 +9,7 @@ import { XTask } from '../task/XTask';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XGameObject } from '../gameobject/XGameObject';
 import { XType } from '../type/XType';
+import { XObjectPoolManager } from '../pool/XObjectPoolManager';
 
 //------------------------------------------------------------------------------------------
 export class XWorld extends XSprite {
@@ -204,6 +205,11 @@ export class XWorld extends XSprite {
     //------------------------------------------------------------------------------------------
     public getXSignalManager ():XSignalManager {
         return this.m_XSignalManager;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getXDepthSpritePoolManager ():XObjectPoolManager {
+        return this.m_XApp.getXDepthSpritePoolManager ();
     }
 
     //------------------------------------------------------------------------------------------

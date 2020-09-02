@@ -2,6 +2,7 @@
 import * as PIXI from 'pixi.js';
 import { XSprite } from './XSprite';
 import { XDepthSprite } from './XDepthSprite';
+import { XType } from '../type/XType';
 
 //------------------------------------------------------------------------------------------
 export class XSpriteLayer extends XSprite {
@@ -40,7 +41,7 @@ export class XSpriteLayer extends XSprite {
         
     //------------------------------------------------------------------------------------------
     public addSprite (__sprite:PIXI.Sprite, __depth:number, __visible:boolean = true):XDepthSprite {
-        var __depthSprite:XDepthSprite = new XDepthSprite (); /* TODO cast world.getXDepthSpritePoolManager ().borrowObject (); as XDepthSprite */
+        var __depthSprite:XDepthSprite = this.world.getXDepthSpritePoolManager ().borrowObject () as XDepthSprite;
         
         __depthSprite.setup ();
         __depthSprite.alpha = 1.0;
@@ -75,9 +76,7 @@ export class XSpriteLayer extends XSprite {
             
             this.removeChild (__depthSprite);
             
-            /* TODO
             this.world.getXDepthSpritePoolManager ().returnObject (__depthSprite);
-            */
 
             this.m_XDepthSpriteMap.delete (__depthSprite);
         }
@@ -94,29 +93,27 @@ export class XSpriteLayer extends XSprite {
         
     //------------------------------------------------------------------------------------------	
     public depthSort ():void {
-        /* TODO
-        var length:Int = 0;
+        var length:number = 0;
         
-        XType.clearArray (list);
-        
-        for (__key__ in m_XDepthSpriteMap.keys ()) {
-            function (sprite:Dynamic):Void {
-                list[length++] = sprite;
-            } (__key__);
+        XType.clearArray (this.list);
+
+        var __XDepthSprite:XDepthSprite;
+
+        for (__XDepthSprite of this.m_XDepthSpriteMap.keys ()) {
+            this.list[length++] = __XDepthSprite;
         }
 
-            list.sort (
-                function (a:XDepthSprite, b:XDepthSprite):Int {
-                    return Std.int (a.depth2 - b.depth2);
-                }
-            );				
+        this.list.sort (
+            (a:XDepthSprite, b:XDepthSprite):number => {
+                return a.depth2 - b.depth2;
+            }
+        );				
         
-        var i:Int;
+        var i:number;
 
-        for (i in 0 ... length) {
-            setChildIndex (list[i], i);
+        for (i = 0; i < length; i++) {
+            this.setChildIndex (this.list[i], i);
         }
-        */
     }
 
 //------------------------------------------------------------------------------------------    
