@@ -11,6 +11,7 @@ import { XClassPoolManager } from '../pool/XClassPoolManager';
 import { XDepthSprite } from '../sprite/XDepthSprite';
 import { XGameInstance } from '../state/XGameInstance';
 import { XGameObject } from '../gameobject/XGameObject';
+import { XProjectManager } from '../resource/XProjectManager';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -43,7 +44,8 @@ export class XApp {
 	private m_XDepthSpritePoolManager:XObjectPoolManager;
 	// private m_XBitmapDataAnimManager:XBitmapDataAnimManager;
     private m_XBitmapPoolManager:XObjectPoolManager;
-    
+    private m_XProjectManager:XProjectManager;
+
     private m_frameRateScale:number;
 	private m_currentTimer:number;
     private m_previousTimer:number;
@@ -77,7 +79,8 @@ export class XApp {
 
 		this.m_XTaskManager = new XTaskManager (this);	
         this.m_XSignalManager = new XSignalManager (this);
-        
+        this.m_XProjectManager = new XProjectManager (this);
+
         this.m_frameRateScale = 1.0;
 		this.m_previousTimer = XType.getNowDate ().getTime ();
         this.m_currentTimer = 0.0;
@@ -257,5 +260,15 @@ export class XApp {
         return this.m_XDepthSpritePoolManager;
     }
 
+    //------------------------------------------------------------------------------------------
+    public getXProjectManager ():XProjectManager {
+        return this.m_XProjectManager;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getResourceByName (__name:string):any {
+        return this.m_XProjectManager.getResourceByName (__name);
+    }
+    
 //------------------------------------------------------------------------------------------
 }

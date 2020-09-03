@@ -1,0 +1,37 @@
+//------------------------------------------------------------------------------------------
+import * as PIXI from 'pixi.js';
+import { XApp } from "../app/XApp";
+import { Resource } from './Resource';
+
+//------------------------------------------------------------------------------------------
+export class SpriteSheetResource extends Resource {
+
+    //------------------------------------------------------------------------------------------		
+    constructor () {
+        super ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public setup (__path:string):void {
+        super.setup (__path);
+
+		PIXI.Loader.shared.add (__path).load (() => {
+            this.m_loadComplete = true;
+        });
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getResource ():any {
+        if (this.getLoadComplete ()) {
+            return PIXI.Loader.shared.resources[this.m_path].spritesheet;
+        } else {
+            return null;
+        }
+    }
+
+    //------------------------------------------------------------------------------------------
+    public cleanup ():void {
+    }
+
+//------------------------------------------------------------------------------------------
+}

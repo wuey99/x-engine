@@ -49,6 +49,14 @@ function create() {
     var __gameController:TestGameController = new TestGameController ();
     __gameController.setup (world, 0, 0.0);
     __gameController.afterSetup ();
+
+    g_XApp.getXProjectManager ().loadResources ([
+        {
+            name: "OctopusBug",
+            type: "SpriteSheet",
+            path: "images/OctopusBug.json"
+        },
+    ])
 } 
 
 //------------------------------------------------------------------------------------------

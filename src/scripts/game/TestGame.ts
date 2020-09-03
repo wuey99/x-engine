@@ -33,17 +33,34 @@ export class TestGame extends XState {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-		console.log (": TestGame: ");
+		console.log (": TestGame: ", XGameObject.getXApp ().getResourceByName ("OctopusBug"));
 		
-		PIXI.Loader.shared.add("images/OctopusBug.json").load(() => {
-			let sheet = PIXI.Loader.shared.resources["images/OctopusBug.json"].spritesheet;
-			var animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite(sheet.animations["root"]);
+		this.addTask ([
+			XTask.LABEL, "loop",
+				XTask.WAIT, 0x0100,
+
+				XTask.FLAGS, (__task:XTask) => {
+					__task.ifTrue (XGameObject.getXApp ().getResourceByName ("OctopusBug"));
+				}, XTask.BNE, "loop",
+
+				() => {
+					this.createObjects ();
+				},
+
+			XTask.RETN,
+		]);
+
+		return this;
+	}
+
+//------------------------------------------------------------------------------------------
+	public createObjects ():void {
+			var sheet:PIXI.Spritesheet = XGameObject.getXApp ().getResourceByName ("OctopusBug");
+			var animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (sheet.animations["root"]);
 			this.addChild (animatedSprite);
 			animatedSprite.x = 256;
 			animatedSprite.y = 256;
 			
-			console.log (": loaded OctopusBug: ", sheet, sheet.animations);
-
 			this.addTask ([
 				XTask.LABEL, "loop",
 					XTask.WAIT, 0x0100,
@@ -72,12 +89,9 @@ export class TestGame extends XState {
 					XTask.GOTO, "loop",
 
 				XTask.RETN,
-			])
-		});
-		
-		return this;
+			]);
 	}
-	
+
 //------------------------------------------------------------------------------------------
 	public cleanup():void {
         super.cleanup ();
