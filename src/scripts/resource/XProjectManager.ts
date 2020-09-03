@@ -30,6 +30,11 @@ export class XProjectManager {
     }
 
     //------------------------------------------------------------------------------------------
+    public registerType (__type:string, __class:any):void {
+        this.m_resourceManager.registerType (__type, __class);
+    }
+
+    //------------------------------------------------------------------------------------------
     public loadResources (__resourceList:Array<ResourceSpec>):void {
         this.m_resourceManager.loadResources (__resourceList);
     }

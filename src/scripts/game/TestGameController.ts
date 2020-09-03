@@ -35,9 +35,20 @@ export class TestGameController extends XGameController {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-        this.getGameInstance ().registerState ("TestGame", TestGame);
+		this.getGameInstance ().registerState ("TestGame", TestGame);
+		
+		this.addTask ([
+			XTask.LABEL, "loop",
+				XTask.WAIT, 0x0100,
 
-        this.getGameInstance ().gotoState ("TestGame");
+				XTask.FLAGS, (__task:XTask) => {
+					__task.ifTrue (this.m_XApp.getXProjectManager ().getResourceManager ().getLoadComplete ());
+				}, XTask.BNE, "loop",
+
+				() => this.getGameInstance ().gotoState ("TestGame"),
+
+			XTask.RETN,
+		]);
 
 		return this;
 	}

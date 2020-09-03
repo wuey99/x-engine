@@ -208,13 +208,33 @@ export class XWorld extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
+    public getXRectPoolManager ():XObjectPoolManager {
+        return this.m_XApp.getXRectPoolManager ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getXPointPoolManager ():XObjectPoolManager {
+        return this.m_XApp.getXPointPoolManager ();
+    }
+
+    //------------------------------------------------------------------------------------------
     public getXDepthSpritePoolManager ():XObjectPoolManager {
         return this.m_XApp.getXDepthSpritePoolManager ();
     }
 
     //------------------------------------------------------------------------------------------
+    public getMaxLayers ():number {
+        return XWorld.MAX_LAYERS;
+    }
+
+    //------------------------------------------------------------------------------------------
     public getLayer (__layer:number):XSpriteLayer {
         return this.m_layers[__layer];
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getResourceByName (__name:string):any {
+        return this.m_XApp.getXProjectManager ().getResourceByName (__name);
     }
 
 //------------------------------------------------------------------------------------------

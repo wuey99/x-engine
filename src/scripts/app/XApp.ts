@@ -12,6 +12,8 @@ import { XDepthSprite } from '../sprite/XDepthSprite';
 import { XGameInstance } from '../state/XGameInstance';
 import { XGameObject } from '../gameobject/XGameObject';
 import { XProjectManager } from '../resource/XProjectManager';
+import { XPoint } from '../geom/XPoint';
+import { XRect } from '../geom/XRect';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -38,7 +40,9 @@ export class XApp {
 	
 	// private m_XTextureManager:XTextureManager;
 	// private m_XSubTextureManager:XSubTextureManager;
-	private m_XSignalPoolManager:XObjectPoolManager;
+    private m_XSignalPoolManager:XObjectPoolManager;
+    private m_XRectPoolManager:XObjectPoolManager;
+    private m_XPointPoolManager:XObjectPoolManager;
 	private m_XTilemapPoolManager:XObjectPoolManager;
 	private m_TilePoolManager:XObjectPoolManager;
 	private m_XDepthSpritePoolManager:XObjectPoolManager;
@@ -102,6 +106,8 @@ export class XApp {
     public getDefaultPoolSettings ():any {
         return {
             XSignal: {init: 2000, overflow: 1000},
+            XRect: {init: 25000, overflow: 1000},				
+            XPoint: {init: 25000, overflow: 1000},
             XTilemap: {init: 4000, overflow: 1000},
             XBitmap: {init: 4000, overflow: 1000},
             Tile: {init: 4000, overflow: 1000},
@@ -127,6 +133,50 @@ export class XApp {
             __poolSettings.XSignal.init, __poolSettings.XSignal.overflow
         );
         
+//------------------------------------------------------------------------------------------
+// XRect
+//------------------------------------------------------------------------------------------
+        this.m_XRectPoolManager = new XObjectPoolManager (
+            ():any => {
+                return new XRect ();
+            },
+            
+            (__src:any, __dst:any):any {
+                var __rect1:XRect = __src as XRect;
+                var __rect2:XRect = __dst as XRect;
+                
+                __rect2.x = __rect1.x;
+                __rect2.y = __rect1.y;
+                __rect2.width = __rect1.width;
+                __rect2.height = __rect1.height;
+                
+                return __rect2;
+            },
+            
+            __poolSettings.XRect.init, __poolSettings.XRect.overflow
+        );
+
+//------------------------------------------------------------------------------------------
+// XPoint
+//------------------------------------------------------------------------------------------
+        this.m_XPointPoolManager = new XObjectPoolManager (
+            ():any => {
+                return new XPoint ();
+            },
+            
+            (__src:any, __dst:any):any  {
+                var __point1:XPoint = __src as XPoint;
+                var __point2:XPoint = __dst as XPoint;
+                
+                __point2.x = __point1.x;
+                __point2.y = __point1.y;
+
+                return __point2;
+            },
+            
+            __poolSettings.XPoint.init, __poolSettings.XPoint.overflow
+        );
+
 //------------------------------------------------------------------------------------------
 // XTilemap
 //------------------------------------------------------------------------------------------
@@ -205,13 +255,11 @@ export class XApp {
 
 //------------------------------------------------------------------------------------------
 	public update ():void {
-        /*
 		if (this.m_inuse_TIMER_FRAME > 0) {
 			console.log (": overflow: TIMER_FRAME: ");
 				
 			return;
 		}
-        */
         
 		this.m_inuse_TIMER_FRAME++;
 		
@@ -256,6 +304,16 @@ export class XApp {
     }
 
     //------------------------------------------------------------------------------------------
+    public getXRectPoolManager ():XObjectPoolManager {
+        return this.m_XRectPoolManager;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getXPointPoolManager ():XObjectPoolManager {
+        return this.m_XPointPoolManager;
+    }
+
+    //------------------------------------------------------------------------------------------
     public getXDepthSpritePoolManager ():XObjectPoolManager {
         return this.m_XDepthSpritePoolManager;
     }
@@ -269,6 +327,6 @@ export class XApp {
     public getResourceByName (__name:string):any {
         return this.m_XProjectManager.getResourceByName (__name);
     }
-    
+
 //------------------------------------------------------------------------------------------
 }

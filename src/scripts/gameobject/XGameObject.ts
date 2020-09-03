@@ -21,9 +21,7 @@ export class XGameObject extends PIXI.Sprite {
 	public m_selfSprites:Map<PIXI.Sprite, number>;
 	public m_childSprites:Map<PIXI.Sprite, number>;
 	public m_worldSprites:Map<PIXI.Sprite, number>;	
-	// TODO public m_bitmaps:Map<String, Bitmap>;
-	// TODO public m_XBitmaps:Map<String, XBitmap>;
-	// TODO public m_XTilemaps:Map<String, XTilemap>;
+	public m_animatedSprites:Map<string, PIXI.AnimatedSprite>;
 	public m_signals:Map<XSignal, number>;
 	public m_XTaskSubManager:XTaskSubManager;
 	public m_killSignal:XSignal;
@@ -76,9 +74,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_worldObjects = new Map<XGameObject, number> ();
 		this.m_childObjects = new Map<XGameObject, number> ();
 		this.m_selfObjects = new Map<XGameObject, number> ();
-		// TODO this.m_bitmaps = new Map<String, Bitmap> ();
-		// TODO this.m_XBitmaps = new Map<String, XBitmap> ();
-		// TODO this.m_XTilemaps = new Map<String, XTilemap> ();
+		this.m_animatedSprites = new Map<string, PIXI.AnimatedSprite> ();
 		this.m_selfSprites = new Map<PIXI.Sprite, number> ();
 		this.m_childSprites = new Map<PIXI.Sprite, number> ();
 		this.m_worldSprites = new Map<PIXI.Sprite, number> ();		
@@ -105,10 +101,11 @@ export class XGameObject extends PIXI.Sprite {
 		this.removeAllSelfSprites ();
 		this.removeAllChildSprites ();
 		this.removeAllWorldSprites ();
-		this.removeAllBitmaps();
-		this.removeAllXBitmaps();
-		this.removeAllXTilemaps();
-		this.removeAllXSignals();
+		this.removeAllBitmaps ();
+		this.removeAllXBitmaps ();
+		this.removeAllXTilemaps ();
+		this.removeAllXSignals ();
+		this.removeAllAnimatedSprites ();
 		
 		if (this.getParentObject () != null) { 
 			this.getParentObject ().removeSelfObject0 (this);
@@ -227,35 +224,28 @@ export class XGameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
-// TODO use className?
-//------------------------------------------------------------------------------------------
-/*
-	public createXBitmap (__name:String, __bitmapNames:Array<String>):XBitmap {	
-		var __bitmap:XBitmap = cast XApp.getXBitmapPoolManager ().borrowObject ();
-		__bitmap.setup ();
-		__bitmap.initWithClassName (null, __name, __bitmapNames);
-		__bitmap.alpha = 1.0;
-		__bitmap.scaleX = __bitmap.scaleY = 1.0;
+	public createAnimatedSprite (__name:string):PIXI.AnimatedSprite {	
+		var sheet:PIXI.Spritesheet = world.getResourceByName (__name);
+
+		var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (sheet.animations["root"]);
+		__animatedSprite.visible = false;
+		this.m_animatedSprites.set (__name, __animatedSprite);
 			
-		m_XBitmaps.set (__name, __bitmap);
-			
-		return __bitmap;
+		return __animatedSprite;
 	}
 
-//------------------------------------------------------------------------------------------
-	public createXTilemap (__name:String, __bitmapNames:Array<String>):XTilemap {
-		var __tilemap:XTilemap = cast XApp.getXTilemapPoolManager ().borrowObject (); 
-		__tilemap.setup ();
-		__tilemap.initWithClassName (null, __name, __bitmapNames);
-		__tilemap.alpha = 1.0;
-		__tilemap.scaleX = __tilemap.scaleY = 1.0;
-		__tilemap.rotation = 0.0;
-			
-		m_XTilemaps.set (__name, __tilemap);
-			
-		return __tilemap;
+	//------------------------------------------------------------------------------------------
+	public removeAllAnimatedSprites ():void {
+		var __name:string;
+
+		for (__name of this.m_animatedSprites.keys ()) {
+			var __animatedSprite:PIXI.AnimatedSprite = this.m_animatedSprites.get (__name);
+
+			__animatedSprite.destroy ();
+		}
+
+		this.m_animatedSprites.clear ();
 	}
-*/
 
 //------------------------------------------------------------------------------------------
 	public addGameObjectToSelf (__class:any):XGameObject {

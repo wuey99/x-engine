@@ -13,6 +13,7 @@ import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XState } from '../state/XState';
+import { OctopusBug } from './OctopusBug';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
@@ -33,63 +34,13 @@ export class TestGame extends XState {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-		console.log (": TestGame: ", XGameObject.getXApp ().getResourceByName ("OctopusBug"));
-		
-		this.addTask ([
-			XTask.LABEL, "loop",
-				XTask.WAIT, 0x0100,
+		var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
+		__octopusBug.afterSetup ();
 
-				XTask.FLAGS, (__task:XTask) => {
-					__task.ifTrue (XGameObject.getXApp ().getResourceByName ("OctopusBug"));
-				}, XTask.BNE, "loop",
-
-				() => {
-					this.createObjects ();
-				},
-
-			XTask.RETN,
-		]);
+		__octopusBug.x = 256;
+		__octopusBug.y = 256;
 
 		return this;
-	}
-
-//------------------------------------------------------------------------------------------
-	public createObjects ():void {
-			var sheet:PIXI.Spritesheet = XGameObject.getXApp ().getResourceByName ("OctopusBug");
-			var animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (sheet.animations["root"]);
-			this.addChild (animatedSprite);
-			animatedSprite.x = 256;
-			animatedSprite.y = 256;
-			
-			this.addTask ([
-				XTask.LABEL, "loop",
-					XTask.WAIT, 0x0100,
-
-					() => { animatedSprite.gotoAndStop (0); }, XTask.WAIT, 0x0200,
-					() => { animatedSprite.gotoAndStop (1); }, XTask.WAIT, 0x0200,
-					() => { animatedSprite.gotoAndStop (2); }, XTask.WAIT, 0x0200,
-					() => { animatedSprite.gotoAndStop (3); }, XTask.WAIT, 0x0200,
-					() => { animatedSprite.gotoAndStop (4); }, XTask.WAIT, 0x0200,
-					() => { animatedSprite.gotoAndStop (5); }, XTask.WAIT, 0x0200,
-					() => { animatedSprite.gotoAndStop (6); }, XTask.WAIT, 0x0200,
-					() => { animatedSprite.gotoAndStop (7); }, XTask.WAIT, 0x0200,
-
-					XTask.GOTO, "loop",
-				XTask.RETN,
-			]);
-
-			this.addTask ([
-				XTask.LABEL, "loop",
-					XTask.WAIT, 0x0100,
-
-					() => {
-						animatedSprite.angle += 8.0;
-					},
-
-					XTask.GOTO, "loop",
-
-				XTask.RETN,
-			]);
 	}
 
 //------------------------------------------------------------------------------------------

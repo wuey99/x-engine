@@ -7,6 +7,7 @@ import { XApp } from './app/XApp';
 import { XWorld } from './sprite/XWorld';
 import { XType } from './type/XType';
 import { TestGameController } from './game/TestGameController';
+import { SpriteSheetResource } from './resource/SpriteSheetResource';
 
 //------------------------------------------------------------------------------------------
 export var g_XApp:XApp;
@@ -49,6 +50,8 @@ function create() {
     var __gameController:TestGameController = new TestGameController ();
     __gameController.setup (world, 0, 0.0);
     __gameController.afterSetup ();
+
+    g_XApp.getXProjectManager ().registerType ("SpriteSheet", SpriteSheetResource);
 
     g_XApp.getXProjectManager ().loadResources ([
         {
