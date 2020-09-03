@@ -16,18 +16,21 @@ import { XGameObject} from '../gameobject/XGameObject';
 import { EnemyX } from '../objects/EnemyX';
 import { G } from '../app/G';
 import { GUID } from '../utils/GUID';
-import { FlockFollower } from './FlockFollower';
+import { XNumber } from '../task/XNumber';
 
 	//------------------------------------------------------------------------------------------
-	export class FlockLeader extends EnemyX {
-		public m_killedCount:number;
-		public m_triggerID:number;
-		public m_buggedOut:boolean;
-		public m_flockID:string;
+	export class FlockFollower extends EnemyX {
+		public m_leaderObject:XGameObject;
+        
+        public m_life:number;
+		public m_flash:number;
 		
-		// params
-		public m_followerCount:number;
-				
+		public m_triggerID:number;
+		
+		public x_life:number;
+		
+		public m_flockID:String;
+		
 		//------------------------------------------------------------------------------------------
 		constructor () {
 			super ();
@@ -37,48 +40,42 @@ import { FlockFollower } from './FlockFollower';
         public setup (__world:XWorld, __layer:number, __depth:number):XGameObject {
             super.setup (__world, __layer, __depth);
 			
-			return this;
+            this.createSprites ();
+            
+            return this;
 		}
 		
         //------------------------------------------------------------------------------------------
         public afterSetup (__params:Array<any> = null):XGameObject {
             super.afterSetup (__params);
             
-            this.createSprites ();
-
-			// setCX ( -20, 20, -20, 20);
-			
-			this.angle = 0.0;
+			this.m_leaderObject = __params[0];
+			this.x_life = __params[1];
+            this.m_flockID = __params[2];
             
-            this.m_followerCount = 256;
-
-			// __setupItemParamsXML ();
+			// setCX ( -20, 20, -20, 20);
 			
 			this.gravity = this.addEmptyTask ();
 			this.script = this.addEmptyTask ();
 			
 			this.gravity.gotoTask (this.getPhysicsTaskX (0.25));
-
-			this.m_flockID = GUID.create ();
 			
-			this.m_buggedOut = false;
+			this.createObjects ();
 			
-            this.createObjects ();
-				
+			this.m_life = this.x_life;
+            this.m_flash = 0;
+            
+			this.steerToTarget ();
+            
+            this.Idle_Script ();
+            
             this.m_triggerID = G.appX.addTriggerXListener (this.onTriggerSignal);
             
-            this.x = this.getScreenX (0.50);
-            this.y = this.getScreenY (0.50);
-
-            this.createFollowers ();
-				
-            this.Idle_Script ();
-
             return this;
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public cleanup():void {
+		public cleanup ():void {
 			 super.cleanup();
 			 
 			 G.appX.removeTriggerXListener (this.m_triggerID);
@@ -86,7 +83,9 @@ import { FlockFollower } from './FlockFollower';
 		
 		//------------------------------------------------------------------------------------------
 		public onTriggerSignal (__trigger:string):void {
-			this.m_buggedOut = true;
+			if (__trigger == this.m_flockID) {
+				this.nukeLater ();
+			}
 		}
 		
 		//------------------------------------------------------------------------------------------
@@ -96,50 +95,19 @@ import { FlockFollower } from './FlockFollower';
             this.m_sprite = this.createAnimatedSprite ("OctopusBug");
             this.addSortableChild (this.m_sprite, 0, 0.0, false);
     
-            this.hide ();    
+            this.show ();
 		}
 
 		//------------------------------------------------------------------------------------------
 		public createObjects ():void {
 		}
-		
-		//------------------------------------------------------------------------------------------
-		public createFollowers ():void {
-			this.m_killedCount = 0;
-            
-            var i:number;
-
-			for (i = 0; i < this.m_followerCount; i++) {
-				var __dx:number = Math.random () * 128 - 64;
-				var __dy:number = Math.random () * 128 - 64;
-				
-				this.createFollower (__dx, __dy);
-			}
-		}
-		
-        //------------------------------------------------------------------------------------------
-		public createFollower (__dx:number, __dy:number):void {
-            var __followerObject:FlockFollower = world.addGameObject (FlockFollower, 0, 0.0, false) as FlockFollower;
-            __followerObject.afterSetup ([this, 3, this.m_flockID]);
-
-            __followerObject.x = this.x + __dx;
-            __followerObject.y = this.y + __dy;
-
-			__followerObject.addKillListener (():void => {
-				this.m_killedCount++;
-				
-				if (this.m_killedCount == this.m_followerCount) {
-					this.nuke ();
-				}
-			});
-		}
 
 		//------------------------------------------------------------------------------------------
-		public followerClass ():any {
-			return null;
+		public getName ():string {
+			return "OctopusBug";
 		}
         
-		//------------------------------------------------------------------------------------------
+    	//------------------------------------------------------------------------------------------
 		public getPhysicsTaskX (DECCEL:number):Array<any> {
 			return [
 				XTask.LABEL, "loop",
@@ -155,56 +123,93 @@ import { FlockFollower } from './FlockFollower';
         
 		//------------------------------------------------------------------------------------------
 		public updatePhysics ():void {			
+			// super.updatePhysics ();
+            
+            /*
+			checkDeathFromMickeyLaser (
+				() => {
+					Hit_Script ();
+				}, 
+				
+				() => {
+					G.appX.createSmokeCloudExplosion (self);
+
+					G.appX.dropCoins (oX, oY, 1);
+				}
+            );
+            */
+		}
+
+		//------------------------------------------------------------------------------------------
+		public steerToTarget ():void {
+			this.m_autoRotation = true;
+			this.m_rotationTicks = 0x0000;
+			
+			var __ticks:XNumber = new XNumber (0);			
+			var __delay:XNumber = new XNumber (0);
+								
+			var __targetSpeed:number = this.m_speed = Math.random () * 8.0 + 4.0;
+			
+			var __setParams = function __setParams ():void {
+				__ticks.value = (Math.floor (Math.random () * 8) + 32) * 256;
+				__delay.value = (Math.floor (Math.random () * 8) + 32) * 256;
+				__targetSpeed = Math.random () * 8.0 + 4.0;
+			}.bind (this);
+			
+            __setParams ();
+            
+			this.addTask ([
+				XTask.LABEL, "loop",
+					XTask.WAIT, 0x0100,
+					
+					() => {
+						if (this.m_speed < __targetSpeed) {
+							this.m_speed = Math.min (__targetSpeed, this.m_speed + 0.15);
+						} else {
+							this.m_speed = Math.max (__targetSpeed, this.m_speed - 0.15);
+						}
+					},
+					
+					XTask.GOTO, "loop",
+				XTask.RETN,
+			]);
+			
+			this.addTask ([
+				XTask.LABEL, "loop",
+					() => {
+                        __setParams ();
+					}, XTask.WAIT, 0x2000,
+					
+					XTask.GOTO, "loop",	
+				XTask.RETN,
+			]);
+            
+			this.addTask ([
+				XTask.LABEL, "loop",
+					() => {				
+						var __targetRotation:number = this.getAngleToTarget (this.m_leaderObject.x, this.m_leaderObject.y);
+						
+						var __delta:number = this.getDelta (this.angle, __targetRotation) / this.ticksToSeconds (__ticks.value);
+						
+						this.m_targetRotation = __targetRotation;
+						this.m_rotationSpeed = __delta;
+						this.m_rotationTicks = __ticks.value;	
+						
+						this.m_autoSpeed = true;
+                        this.m_autoRotation = true;
+					}, XTask.WAIT, __delay,
+					
+					XTask.GOTO, "loop",
+					
+				XTask.RETN,
+			]);
 		}
 		
 		//------------------------------------------------------------------------------------------
 		public Idle_Script ():void {
-			var __targetX:number = this.getScreenX (Math.random ());
-			var __targetY:number = this.getScreenY (Math.random ());
-            
-           this.startSplineMovement (this.x, this.y, __targetX, __targetY, this.getScreenX (Math.random ()), this.getScreenY (Math.random ()), 0x8000);
+			// m_hitResponseTimer = 0;
 			
-           this.script.gotoTask ([
-				
-				//------------------------------------------------------------------------------------------
-				// control
-				//------------------------------------------------------------------------------------------
-				() => {
-					this.script.addTask ([				
-						XTask.WAIT, 0x8000,
-						
-						() => {
-							if (this.m_buggedOut) {
-								this.BuggedOut_Script ();
-							} else {
-								this.Idle_Script ();
-							}
-						},
-						
-						XTask.RETN,
-					]);
-				},
-				
-				//------------------------------------------------------------------------------------------
-				// animation
-				//------------------------------------------------------------------------------------------	
-				XTask.LABEL, "loop",
-					XTask.WAIT, 0x0100,
-					
-					XTask.GOTO, "loop",
-				
-				XTask.RETN,
-				
-				//------------------------------------------------------------------------------------------			
-			]);
-			
-			//------------------------------------------------------------------------------------------
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public BuggedOut_Script ():void {
-			this.x = this.getScreenX (0.50);
-			this.y = this.getScreenY (1.50);
+			this.m_flash = 0;
 			
 			this.script.gotoTask ([
 				
@@ -212,27 +217,25 @@ import { FlockFollower } from './FlockFollower';
 				// control
 				//------------------------------------------------------------------------------------------
 				() => {
-					this.script.addTask ([		
-							XTask.WAIT1000, 4 * 1000,
-							
-							() => {
-								G.appX.fireTriggerXSignal (this.m_flockID);				
-							},
-						
+					this.script.addTask ([
 						XTask.LABEL, "loop",
 							XTask.WAIT, 0x0100,
-							
-							XTask.GOTO, "loop",
+						
+							() => {
+							},
+						
+						XTask.GOTO, "loop",
 						
 						XTask.RETN,
 					]);
+					
 				},
 				
 				//------------------------------------------------------------------------------------------
 				// animation
 				//------------------------------------------------------------------------------------------	
 				XTask.LABEL, "loop",
-					XTask.WAIT, 0x0100,
+					XTask.EXEC, this.idleAnimationX (),
 					
 					XTask.GOTO, "loop",
 				
@@ -243,7 +246,64 @@ import { FlockFollower } from './FlockFollower';
 			
 			//------------------------------------------------------------------------------------------
 		}
-	
+		
+		//------------------------------------------------------------------------------------------
+		public Hit_Script ():void {
+			// m_hitResponseTimer = 8;
+			
+			this.addTask ([
+				
+				//------------------------------------------------------------------------------------------
+				// control
+				//------------------------------------------------------------------------------------------
+				() => {
+					this.addTask ([
+						XTask.LABEL, "loop",
+							XTask.WAIT, 0x0100,
+							
+							() => {
+							},
+							
+							XTask.GOTO, "loop",
+						
+						XTask.RETN,
+					]);
+					
+				},
+				
+				//------------------------------------------------------------------------------------------
+				// animation
+				//------------------------------------------------------------------------------------------	
+				XTask.LABEL, "loop",
+					XTask.LOOP, 10,
+						() => { this.m_flash = 8; }, XTask.WAIT, 0x0200,
+						() => { this.m_flash = 0; }, XTask.WAIT, 0x0200,
+					XTask.NEXT,
+					
+				XTask.RETN,
+				
+			//------------------------------------------------------------------------------------------			
+			]);
+			
+		//------------------------------------------------------------------------------------------
+		}
+		
+		//------------------------------------------------------------------------------------------
+		public idleAnimationX ():Array<any> {
+			return [
+				() => { this.m_sprite.gotoAndStop (0 + this.m_flash); }, XTask.WAIT, 0x0200,
+				() => { this.m_sprite.gotoAndStop (1 + this.m_flash); }, XTask.WAIT, 0x0200,
+				() => { this.m_sprite.gotoAndStop (2 + this.m_flash); }, XTask.WAIT, 0x0200,
+				() => { this.m_sprite.gotoAndStop (3 + this.m_flash); }, XTask.WAIT, 0x0200,
+				() => { this.m_sprite.gotoAndStop (4 + this.m_flash); }, XTask.WAIT, 0x0200,
+				() => { this.m_sprite.gotoAndStop (5 + this.m_flash); }, XTask.WAIT, 0x0200,
+				() => { this.m_sprite.gotoAndStop (6 + this.m_flash); }, XTask.WAIT, 0x0200,
+				() => { this.m_sprite.gotoAndStop (7 + this.m_flash); }, XTask.WAIT, 0x0200,
+				
+				XTask.RETN,
+			];
+		}
+		
 	//------------------------------------------------------------------------------------------
 	}
 	

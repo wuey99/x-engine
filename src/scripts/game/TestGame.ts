@@ -15,6 +15,7 @@ import { XGameObject} from '../gameobject/XGameObject';
 import { XState } from '../state/XState';
 import { OctopusBug } from './OctopusBug';
 import { GUID } from '../utils/GUID';
+import { FlockLeader } from './FlockLeader';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
@@ -37,11 +38,15 @@ export class TestGame extends XState {
 
 		console.log (": guid: ", GUID.create ());
 
+		/*
 		var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
 		__octopusBug.afterSetup ();
-
 		__octopusBug.x = 256;
 		__octopusBug.y = 256;
+		*/
+		
+		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
+		__leader.afterSetup ();
 
 		return this;
 	}
