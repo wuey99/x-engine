@@ -10,7 +10,7 @@ import * as PIXI from 'pixi.js'
 		}
 
 //------------------------------------------------------------------------------------------
-		public setPoint (__x:number, __y:number):Void {
+		public setPoint (__x:number, __y:number):void {
 			this.x = __x;
 			this.y = __y;
 		}

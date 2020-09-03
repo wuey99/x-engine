@@ -14,6 +14,7 @@ import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XState } from '../state/XState';
 import { OctopusBug } from './OctopusBug';
+import { GUID } from '../utils/GUID';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
@@ -33,6 +34,8 @@ export class TestGame extends XState {
 //------------------------------------------------------------------------------------------
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
+
+		console.log (": guid: ", GUID.create ());
 
 		var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
 		__octopusBug.afterSetup ();

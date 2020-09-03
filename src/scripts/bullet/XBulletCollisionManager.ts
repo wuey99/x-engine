@@ -71,7 +71,7 @@ import { XBulletCollisionList } from './XBulletCollisionList';
 //------------------------------------------------------------------------------------------
 		public removeAllCollisionLists ():void {
 			XType.forEach (this.m_collisionLists, 
-				function (x:XBulletCollisionList):void {
+				(x:XBulletCollisionList):void => {
 					var __collisionList:XBulletCollisionList = x;
 					
 					__collisionList.cleanup ();

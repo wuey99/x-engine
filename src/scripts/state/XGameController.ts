@@ -14,10 +14,10 @@ import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XGameInstance } from './XGameInstance';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
 export class XGameController extends XGameObject {
-    
     public m_gameInstance:XGameInstance;
 
 //------------------------------------------------------------------------------------------	
@@ -38,6 +38,8 @@ export class XGameController extends XGameObject {
 
         this.m_gameInstance = new XGameInstance ();
         this.m_gameInstance.setup (world);
+
+		G.appX = this.m_gameInstance;
 
 		return this;
 	}

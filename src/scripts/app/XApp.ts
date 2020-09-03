@@ -141,7 +141,7 @@ export class XApp {
                 return new XRect ();
             },
             
-            (__src:any, __dst:any):any {
+            (__src:any, __dst:any):any => {
                 var __rect1:XRect = __src as XRect;
                 var __rect2:XRect = __dst as XRect;
                 
@@ -164,7 +164,7 @@ export class XApp {
                 return new XPoint ();
             },
             
-            (__src:any, __dst:any):any  {
+            (__src:any, __dst:any):any => {
                 var __point1:XPoint = __src as XPoint;
                 var __point2:XPoint = __dst as XPoint;
                 

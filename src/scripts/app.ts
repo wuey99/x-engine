@@ -8,6 +8,7 @@ import { XWorld } from './sprite/XWorld';
 import { XType } from './type/XType';
 import { TestGameController } from './game/TestGameController';
 import { SpriteSheetResource } from './resource/SpriteSheetResource';
+import { G } from './app/G';
 
 //------------------------------------------------------------------------------------------
 export var g_XApp:XApp;
@@ -26,8 +27,8 @@ function load() {
 function create() {
     g_XApp = new XApp({
         containerId: 'game',
-        canvasW: 700,
-        canvasH: 550,
+        canvasW: G.SCREEN_WIDTH,
+        canvasH: G.SCREEN_HEIGHT,
         fpsMax: 60
     });
     

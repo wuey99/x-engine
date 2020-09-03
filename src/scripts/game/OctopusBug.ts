@@ -13,9 +13,10 @@ import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
+import { EnemyX } from '../objects/EnemyX';
 
 //------------------------------------------------------------------------------------------
-export class OctopusBug extends XGameObject {
+export class OctopusBug extends EnemyX {
     public m_sprite:PIXI.AnimatedSprite;
     public x_sprite:XDepthSprite;
 

@@ -25,6 +25,10 @@ export class XGameInstance {
 
     public static g_XApp:XApp;
 
+	public m_triggerSignal:XSignal;
+	public m_triggerXSignal:XSignal;
+	public m_pingSignal:XSignal;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
         this.m_states = new Map<string, any> ();
@@ -32,11 +36,18 @@ export class XGameInstance {
 	
 //------------------------------------------------------------------------------------------
 	public setup (__world:XWorld):void {
-        this.world = __world;
+		this.world = __world;
+
+		this.m_triggerSignal = new XSignal ();
+		this.m_triggerXSignal = new XSignal ();
+		this.m_pingSignal = new XSignal ();
 	}
 	
 //------------------------------------------------------------------------------------------
 	public cleanup():void {
+		this.m_triggerSignal.removeAllListeners ();
+		this.m_triggerXSignal.removeAllListeners ();
+		this.m_pingSignal.removeAllListeners ();
 	}
     
 	//------------------------------------------------------------------------------------------
@@ -94,6 +105,56 @@ export class XGameInstance {
 			
 		return null;
     }
-        
+		
+		//------------------------------------------------------------------------------------------
+		public fireTriggerSignal (__trigger:number):void {
+			this.m_triggerSignal.fireSignal (__trigger);
+		}
+		
+		//------------------------------------------------------------------------------------------
+		public addTriggerListener (__listener:any):number {
+			return this.m_triggerSignal.addListener (__listener);
+		}
+		
+		//------------------------------------------------------------------------------------------
+		public removeTriggerListener (__id:number):void {
+			this.m_triggerSignal.removeListener (__id);
+		}
+		
+		//------------------------------------------------------------------------------------------
+		public fireTriggerXSignal (__trigger:String):void {
+			this.m_triggerXSignal.fireSignal (__trigger);
+		}
+		
+		//------------------------------------------------------------------------------------------
+		public addTriggerXListener (__listener:any):number {
+			return this.m_triggerXSignal.addListener (__listener);
+		}
+		
+		//------------------------------------------------------------------------------------------
+		public removeTriggerXListener (__id:number):void {
+			this.m_triggerXSignal.removeListener (__id);
+		}
+		
+		//------------------------------------------------------------------------------------------
+		public addPingListener (__listener:any):number {
+			return this.m_pingSignal.addListener (__listener);
+		}
+		
+		//------------------------------------------------------------------------------------------
+		public removePingListener (__id:number):void {
+			this.m_pingSignal.removeListener (__id);
+		}
+
+		//------------------------------------------------------------------------------------------
+		public firePingSignal (
+			__id:number,
+			__type:String,
+			__logicObject:XGameObject,
+			__listener:any
+		):void {
+			this.m_pingSignal.fireSignal (__id, __type, __logicObject, __listener);
+		}
+
 //------------------------------------------------------------------------------------------
 }
