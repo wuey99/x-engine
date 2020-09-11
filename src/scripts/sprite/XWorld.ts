@@ -10,6 +10,10 @@ import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XGameObject } from '../gameobject/XGameObject';
 import { XType } from '../type/XType';
 import { XObjectPoolManager } from '../pool/XObjectPoolManager';
+import * as Matter from 'matter-js';
+import { World, Body, Engine } from 'matter-js';
+import { Class } from '../type/XType';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
 export class XWorld extends XSprite {
@@ -25,6 +29,8 @@ export class XWorld extends XSprite {
     private m_childObjects:Map<XGameObject, XDepthSprite>;	
     private m_children:Map<PIXI.Sprite, any>;
 
+    private m_matterEngine:Engine;
+
     public static readonly SPRITE_LAYER:number = 0;
     public static readonly SPRITE_XDEPTHSPRITE:number = 1;
 
@@ -34,6 +40,13 @@ export class XWorld extends XSprite {
 
         this.m_XApp = __XApp;
 
+        // TODO (i needed a add background to allow events to be captured.  figure uot if there's a better solution)
+        var graphics = new PIXI.Graphics ();
+        graphics.beginFill (0x8080ff, 1.0);
+        graphics.drawRect (0, 0, G.SCREEN_WIDTH, G.SCREEN_HEIGHT);
+        graphics.endFill ();
+        this.addChild (graphics);
+            
         XWorld.MAX_LAYERS = __layers;
 
         this.m_layers = new Array<XSpriteLayer> ();
@@ -58,6 +71,8 @@ export class XWorld extends XSprite {
         this.m_gameObjects = new Map<XGameObject, XDepthSprite> ();
         this.m_childObjects = new Map<XGameObject, XDepthSprite> ();
         this.m_children = new Map<PIXI.Sprite, any> ();
+
+        this.createMatterEngine ();
     }
 
 	//------------------------------------------------------------------------------------------
@@ -90,6 +105,8 @@ export class XWorld extends XSprite {
         
         this.emptyKillQueue ();
         
+        Matter.Engine.update (this.getMatterEngine ());
+
         var __gameObject:XGameObject;
 
         for (__gameObject of this.m_gameObjects.keys ()) {
@@ -195,6 +212,25 @@ export class XWorld extends XSprite {
                 
             this.m_killQueue.delete (__gameObject);
         }
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getStage ():PIXI.Container {
+        return this.m_XApp.getStage ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public createMatterEngine ():void {
+        this.m_matterEngine = Matter.Engine.create ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public cleanupMatterEngine ():void {
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getMatterEngine ():Engine {
+        return this.m_matterEngine;
     }
 
     //------------------------------------------------------------------------------------------

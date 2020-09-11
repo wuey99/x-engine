@@ -15,6 +15,7 @@ import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XGameController } from '../state/XGameController';
 import { TestGame } from './TestGame';
+import { TestMatter } from './TestMatter';
 
 //------------------------------------------------------------------------------------------
 export class TestGameController extends XGameController {
@@ -36,7 +37,8 @@ export class TestGameController extends XGameController {
         super.afterSetup (__params);
 
 		this.getGameInstance ().registerState ("TestGame", TestGame);
-		
+		this.getGameInstance ().registerState ("TestMatter", TestMatter);
+
 		this.addTask ([
 			XTask.LABEL, "loop",
 				XTask.WAIT, 0x0100,
@@ -45,7 +47,7 @@ export class TestGameController extends XGameController {
 					__task.ifTrue (this.m_XApp.getXProjectManager ().getResourceManager ().getLoadComplete ());
 				}, XTask.BNE, "loop",
 
-				() => this.getGameInstance ().gotoState ("TestGame"),
+				() => this.getGameInstance ().gotoState ("TestMatter"),
 
 			XTask.RETN,
 		]);

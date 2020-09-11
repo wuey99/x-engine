@@ -15,6 +15,7 @@ import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XPoint } from '../geom/XPoint';
 import { G } from '../app/G';
+
 //------------------------------------------------------------------------------------------
 export class EnemyX extends XGameObject {
     

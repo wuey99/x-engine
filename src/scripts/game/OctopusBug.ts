@@ -73,7 +73,7 @@ export class OctopusBug extends EnemyX {
 					XTask.LABEL, "loop",
 						XTask.WAIT, 0x0100,
 						
-						() => this.angle += 8.0,
+						// () => this.angle += 8.0,
 						
 					XTask.GOTO, "loop",
 						

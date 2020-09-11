@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------------------
 // app.ts
 //------------------------------------------------------------------------------------------
-// import * as PIXI from 'pixi.js';
+import * as PIXI from 'pixi.js';
 import { FpsMeter } from './fps-meter';
 import { XApp } from './app/XApp';
 import { XWorld } from './sprite/XWorld';
@@ -9,6 +9,7 @@ import { XType } from './type/XType';
 import { TestGameController } from './game/TestGameController';
 import { SpriteSheetResource } from './resource/SpriteSheetResource';
 import { G } from './app/G';
+import { graphicsUtils } from 'pixi.js';
 
 //------------------------------------------------------------------------------------------
 export var g_XApp:XApp;
@@ -25,7 +26,7 @@ function load() {
 
 //------------------------------------------------------------------------------------------
 function create() {
-    g_XApp = new XApp({
+    g_XApp = new XApp ({
         containerId: 'game',
         canvasW: G.SCREEN_WIDTH,
         canvasH: G.SCREEN_HEIGHT,
@@ -38,15 +39,15 @@ function create() {
 
     /* FPS */
     const fpsMeterItem = document.createElement('div');
-    fpsMeterItem.classList.add('fps');
-    g_XApp.container.appendChild(fpsMeterItem);
+    fpsMeterItem.classList.add ('fps');
+    g_XApp.container.appendChild (fpsMeterItem);
 
-    fpsMeter = new FpsMeter(() => {
+    fpsMeter = new FpsMeter (() => {
         fpsMeterItem.innerHTML = 'FPS: ' + fpsMeter.getFrameRate().toFixed(2).toString();
     });
 
-    setInterval(update, 1000.0 / g_XApp.fpsMax);
-    render();
+    setInterval (update, 1000.0 / g_XApp.fpsMax);
+    render ();
 
     var __gameController:TestGameController = new TestGameController ();
     __gameController.setup (world, 0, 0.0);
@@ -64,8 +65,8 @@ function create() {
 } 
 
 //------------------------------------------------------------------------------------------
-function update() {
-    fpsMeter.updateTime();
+function update () {
+    fpsMeter.updateTime ();
 
     g_XApp.update ();
 
@@ -73,10 +74,10 @@ function update() {
 }
 
 //------------------------------------------------------------------------------------------
-function render() {
-    requestAnimationFrame(render);
+function render () {
+    requestAnimationFrame (render);
 
-    g_XApp.renderer.render(g_XApp.stage);
+    g_XApp.renderer.render (g_XApp.stage);
 
-    fpsMeter.tick();
+    fpsMeter.tick ();
 }

@@ -1,8 +1,13 @@
 //------------------------------------------------------------------------------------------
+export interface Class<T> extends Function {
+    new (...args: any[]): T;
+}
+
+//------------------------------------------------------------------------------------------
 export class XType {
   
 	//------------------------------------------------------------------------------------------
-	public static createInstance (__class:any, ...args:any):any {
+	public static createInstance (__class:Class<any>, ...args:any):any {
         switch (args.length) {
             case 0:
                 return new __class ();

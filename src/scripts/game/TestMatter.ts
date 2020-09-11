@@ -16,9 +16,13 @@ import { XState } from '../state/XState';
 import { OctopusBug } from './OctopusBug';
 import { GUID } from '../utils/GUID';
 import { FlockLeader } from './FlockLeader';
+import { G } from '../app/G';
+
+import * as Matter from 'matter-js';
+import { World, Body, Engine } from 'matter-js';
 
 //------------------------------------------------------------------------------------------
-export class TestGame extends XState {
+export class TestMatter extends XState {
 	
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -36,16 +40,37 @@ export class TestGame extends XState {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-		console.log (": guid: ", GUID.create ());
+		var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
+        __octopusBug.afterSetup ().attachMatterBody (Matter.Bodies.circle (G.SCREEN_WIDTH / 2, -50, 10));
+                
+        var __ground = Matter.Bodies.rectangle (G.SCREEN_WIDTH / 2, G.SCREEN_HEIGHT + 60/2, G.SCREEN_WIDTH, 60, { isStatic: true });
+        Matter.World.add (this.world.getMatterEngine ().world, [__ground]);
 
-		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
-		__leader.afterSetup ();
+        this.m_XApp.getStage ().on ("mousedown", (e:PIXI.interaction.InteractionEvent) => {
+            console.log (": mouseDown: ", e.data.global);
+
+            var __x:number = e.data.global.x;
+            var __y:number = e.data.global.y;
+
+            var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
+            __octopusBug.afterSetup ().attachMatterBody (Matter.Bodies.circle (__x, __y, 20, {restitution: 0.80}));
+        });
+
+        this.m_XApp.getStage ().on ("touchstart", (e:PIXI.interaction.InteractionEvent) => {
+            console.log (": mouseDown: ", e.data.global);
+
+            var __x:number = e.data.global.x;
+            var __y:number = e.data.global.y;
+
+            var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
+            __octopusBug.afterSetup ().attachMatterBody (Matter.Bodies.circle (__x, __y, 20, {restitution: 0.80}));    
+        });
 
 		return this;
 	}
 
 //------------------------------------------------------------------------------------------
-	public cleanup():void {
+	public cleanup ():void {
         super.cleanup ();
 	}
 	

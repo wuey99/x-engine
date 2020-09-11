@@ -54,7 +54,7 @@ export class XApp {
 	private m_currentTimer:number;
     private m_previousTimer:number;
     private m_inuse_TIMER_FRAME:number;
-    
+
     //------------------------------------------------------------------------------------------
     constructor (params: XAppParams) {
         this.loader = PIXI.Loader.shared;
@@ -67,8 +67,11 @@ export class XApp {
         this.graphics = new PIXI.Graphics ();
         this.fpsMax = params.fpsMax;
 
+        this.stage.interactive = true;
+        this.stage.interactiveChildren = true;
+
         this.container = params.containerId ? document.getElementById(params.containerId) || document.body : document.body;
-        this.container.appendChild(this.renderer.view)
+        this.container.appendChild (this.renderer.view)
 
 		XGameObject.setXApp(this);
 		XTask.setXApp (this);
@@ -91,7 +94,7 @@ export class XApp {
 		this.m_inuse_TIMER_FRAME = 0;
     }
 
-//------------------------------------------------------------------------------------------
+   //------------------------------------------------------------------------------------------
     public getMaximalPoolSettings ():any {
         return {
             XSignal: {init: 10000, overflow: 1000},
@@ -277,7 +280,12 @@ export class XApp {
 		
 		this.m_inuse_TIMER_FRAME--;
     }
-    
+
+    //------------------------------------------------------------------------------------------
+    public getStage ():PIXI.Container {
+        return this.stage;
+    }
+
     //------------------------------------------------------------------------------------------
     public getFrameRateScale ():number {
         return this.m_frameRateScale;

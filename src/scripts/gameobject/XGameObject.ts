@@ -12,6 +12,8 @@ import { XTaskSubManager} from '../task/XTaskSubManager';
 import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/XType';
+import { World, Body, Engine } from 'matter-js';
+import * as Matter from 'matter-js';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Sprite {
@@ -39,7 +41,8 @@ export class XGameObject extends PIXI.Sprite {
 	public m_flipY:number;
 	public m_masterFlipX:number;
 	public m_masterFlipY:number;
-	
+	public m_attachedMatterBody:Body;
+
 	public static g_XApp:XApp;
 	
 //------------------------------------------------------------------------------------------	
@@ -83,6 +86,8 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_parent = null;
 		this.m_XApp = XGameObject.g_XApp;
 		this.m_killSignal = this.createXSignal ();
+
+		this.m_attachedMatterBody = null;
 
 		return this;
 	}
@@ -745,14 +750,25 @@ export class XGameObject extends PIXI.Sprite {
 			}
 			
 //------------------------------------------------------------------------------------------
-			var __x:number = this.getMasterX ();
-			var __y:number = this.getMasterY ();
+			var __x:number;
+			var __y:number;
+			var __rotation:number;
+
+			if (this.m_attachedMatterBody != null) {
+				__x = this.m_attachedMatterBody.position.x;
+				__y = this.m_attachedMatterBody.position.y;
+				__rotation = this.m_attachedMatterBody.angle;
+			} else {
+				__x = this.getMasterX ();
+				__y = this.getMasterY ();
+				__rotation = this.getMasterRotation ();
+			}
+
 			var __visible:boolean = this.getMasterVisible ();
 			var __scaleX:number = this.getMasterScaleX () * this.m_masterScaleRatio;
 			var __scaleY:number = this.getMasterScaleY () * this.m_masterScaleRatio;
 			var __flipX:number = this.getMasterFlipX ();
 			var __flipY:number = this.getMasterFlipY ();
-			var __rotation:number = this.getMasterRotation ();
 			var __depth:number = this.getMasterDepth ();
 			var __alpha:number = this.getMasterAlpha ();
 
@@ -796,8 +812,6 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------			
 // update self sprites that live in the World
 //------------------------------------------------------------------------------------------
-            var __sprite:PIXI.Sprite;
-            
 			for (__sprite of this.m_selfSprites.keys ()) {
 				if (__sprite != null) {
 					__sprite.scale.x = __flipX;
@@ -826,6 +840,21 @@ export class XGameObject extends PIXI.Sprite {
 			}
 	}
 	
+//------------------------------------------------------------------------------------------
+    public createMatterBody ():void {
+    }
+
+//------------------------------------------------------------------------------------------
+    public attachMatterBody (__body:Body):void {
+		this.m_attachedMatterBody = __body;
+
+		Matter.World.add (this.world.getMatterEngine ().world, __body);
+    }
+
+//------------------------------------------------------------------------------------------
+    public detachMatterBody (__body:Body):void {
+    }
+
 //------------------------------------------------------------------------------------------
 	public show ():void {
 		this.visible = true;
