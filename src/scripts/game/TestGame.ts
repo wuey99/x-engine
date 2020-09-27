@@ -16,10 +16,22 @@ import { XState } from '../state/XState';
 import { OctopusBug } from './OctopusBug';
 import { GUID } from '../utils/GUID';
 import { FlockLeader } from './FlockLeader';
+import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
 	
+	public m_xml:any = {
+		"any_name": {
+			"person": {
+				"phone": [
+					122233344550,
+					122233344551
+				]
+			}
+		}
+	};
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -40,6 +52,11 @@ export class TestGame extends XState {
 
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
 		__leader.afterSetup ();
+
+		var __xml:XSimpleXMLNode = new XSimpleXMLNode ();
+		__xml.setupWithJSON (this.m_xml);
+
+		console.log (": xml: ", __xml);
 
 		return this;
 	}

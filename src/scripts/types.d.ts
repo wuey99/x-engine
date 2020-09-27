@@ -16,5 +16,3 @@ type Vec2i = [int, int];
 type Vec2f = [double, double];
 type Vec3i = [int, int, int];
 type Vec3f = [double, double, double];
-
-type Class = { new(...args: any[]): any; };

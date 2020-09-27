@@ -10,6 +10,7 @@ import { TestGameController } from './game/TestGameController';
 import { SpriteSheetResource } from './resource/SpriteSheetResource';
 import { G } from './app/G';
 import { graphicsUtils } from 'pixi.js';
+import * as Parser from 'fast-xml-parser';
 
 //------------------------------------------------------------------------------------------
 export var g_XApp:XApp;

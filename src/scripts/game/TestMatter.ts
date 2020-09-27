@@ -21,6 +21,8 @@ import { G } from '../app/G';
 import * as Matter from 'matter-js';
 import { World, Body, Engine } from 'matter-js';
 
+import { Class } from '../type/XType';
+
 //------------------------------------------------------------------------------------------
 export class TestMatter extends XState {
 	
@@ -42,7 +44,7 @@ export class TestMatter extends XState {
 
 		var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
         __octopusBug.afterSetup ().attachMatterBody (Matter.Bodies.circle (G.SCREEN_WIDTH / 2, -50, 10));
-                
+        
         var __ground = Matter.Bodies.rectangle (G.SCREEN_WIDTH / 2, G.SCREEN_HEIGHT + 60/2, G.SCREEN_WIDTH, 60, { isStatic: true });
         Matter.World.add (this.world.getMatterEngine ().world, [__ground]);
 

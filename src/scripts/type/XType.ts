@@ -38,6 +38,25 @@ export class XType {
     }
      
 	//------------------------------------------------------------------------------------------
+	public static parseInt (__val:string):number {
+        var __result:number = parseFloat (__val);
+
+        __result = Math.floor (__result);
+
+        return __result;
+	}
+		
+	//------------------------------------------------------------------------------------------
+	public static parseFloat (__val:string):number {
+		return parseFloat (__val);
+    }
+        
+	//------------------------------------------------------------------------------------------
+	public static trim (__string:string):string {
+        return __string.trim ();
+    }
+
+	//------------------------------------------------------------------------------------------
 	public static getNowDate ():Date {
         return new Date ();
     }

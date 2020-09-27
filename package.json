@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@types/matter-js": "^0.14.5",
+    "fast-xml-parser": "^3.17.4",
     "matter-js": "^0.14.2",
     "pixi.js": "^5.2.1"
   }
