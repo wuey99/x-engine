@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------------------
 import { XType } from '../type/XType';
 import * as Parser from 'fast-xml-parser';
+var he = require('he');
 
 //------------------------------------------------------------------------------------------
 export class XSimpleXMLNode {
@@ -37,7 +38,28 @@ export class XSimpleXMLNode {
 
 	//------------------------------------------------------------------------------------------	
 	public setupWithXMLString(__xmlString: string): void {
-		var __jsonXML: any = Parser.parse(__xmlString);
+		var options = {
+			attributeNamePrefix: "", // "@_",
+			attrNodeName: "@", //default is 'false'
+			textNodeName: "#text",
+			ignoreAttributes: false,
+			ignoreNameSpace: false,
+			allowBooleanAttributes: false,
+			parseNodeValue: true,
+			parseAttributeValue: true,
+			trimValues: true,
+			cdataTagName: "__cdata", //default is 'false'
+			cdataPositionChar: "\\c",
+			parseTrueNumberOnly: false,
+			arrayMode: false, //"strict"
+			attrValueProcessor: (val:any /*, attrName */) => he.decode(val, { isAttributeValue: true }),//default is a=>a
+			tagValueProcessor: (val:any /*, tagName */) => he.decode(val), //default is a=>a
+			stopNodes: ["parse-me-as-string"]
+		};
+
+		var __jsonXML: any = Parser.parse(unescape(__xmlString), options);
+
+		console.log (": jsonXML: ", __jsonXML);
 
 		var __elementName: string;
 
@@ -47,7 +69,7 @@ export class XSimpleXMLNode {
 	}
 
 	//------------------------------------------------------------------------------------------
-	public setupWithJSON(__elementName:string, __jsonXML: any): void {
+	public setupWithJSON(__elementName: string, __jsonXML: any): void {
 		this.m_tag = __elementName;
 		this.m_text = "";
 
@@ -94,9 +116,7 @@ export class XSimpleXMLNode {
 			__xmlNode = new XSimpleXMLNode();
 
 			if (this.notObject(__jsonXML)) {
-				var __value: any = {};
-				__value[__elementName] = __jsonXML;
-				__xmlNode.setupWithJSON(__elementName, __value);
+				__xmlNode.setupWithJSON(__elementName, __jsonXML);
 			} else {
 				__xmlNode.setupWithJSON(__elementName, __jsonXML);
 			}
