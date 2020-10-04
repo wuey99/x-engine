@@ -154,52 +154,7 @@ export class XSimpleXMLNode {
 	public notObject(__value: any): boolean {
 		return typeof __value == "string" || typeof __value == "number" || typeof __value == "boolean";
 	}
-
-	//------------------------------------------------------------------------------------------
-	/*        
-	public function setupWithXML (__xml:Xml):Void {
-		m_tag = __xml.nodeName;
-		m_text = "";
 	
-		if (__xml.firstChild () != null) {
-			var __type:Xml.XmlType = __xml.firstChild ().nodeType;
-		
-			if (__type == Xml.Element || __type == Xml.Document) {
-				m_text = "";
-			}
-			else
-			{
-				m_text = __xml.firstChild ().nodeValue;
-			}
-		}
-	
-//------------------------------------------------------------------------------------------
-		m_attribsMap = new Map<String, Dynamic> ();
-
-		for (__key in __xml.attributes ()) {	
-			m_attribsMap.set (__key, __xml.get (__key));
-		}
-	
-//------------------------------------------------------------------------------------------	
-		m_children = __getXMLChildren (__xml);
-	}
- 
-//------------------------------------------------------------------------------------------
-	private function __getXMLChildren (__xml:Xml):Array<XSimpleXMLNode> {
-		var __children:Array<XSimpleXMLNode> = new Array<XSimpleXMLNode> ();
-	    
-		//------------------------------------------------------------------------------------------	
-		for (__element in __xml.elements ()) {
-			var __xmlNode:XSimpleXMLNode = new XSimpleXMLNode ();
-			__xmlNode.setupWithXML (__element);
-			__children.push (__xmlNode);	
-		}
-	    
-		//------------------------------------------------------------------------------------------
-		return __children;
-	}
-	*/
-
 	//------------------------------------------------------------------------------------------
 	public cleanup(): void {
 	}

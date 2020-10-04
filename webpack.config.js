@@ -28,6 +28,7 @@ const config = {
             { from: 'src/index.html' },
             { from: 'src/css/style.css', to: 'css/' },
             { from: 'src/images', to: 'images' },
+            { from: 'src/assets/Cows/Project', to: 'assets' },
         ]),
     ],
     devServer: {

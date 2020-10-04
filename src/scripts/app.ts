@@ -56,13 +56,7 @@ function create() {
 
     g_XApp.getXProjectManager ().registerType ("SpriteSheet", SpriteSheetResource);
 
-    g_XApp.getXProjectManager ().loadResources ([
-        {
-            name: "OctopusBug",
-            type: "SpriteSheet",
-            path: "images/OctopusBug.json"
-        },
-    ])
+    g_XApp.getXProjectManager ().setup ("assets/common.xml");
 } 
 
 //------------------------------------------------------------------------------------------

@@ -44,7 +44,7 @@ export class TestGameController extends XGameController {
 				XTask.WAIT, 0x0100,
 
 				XTask.FLAGS, (__task:XTask) => {
-					__task.ifTrue (this.m_XApp.getXProjectManager ().getResourceManager ().getLoadComplete ());
+					__task.ifTrue (this.m_XApp.getXProjectManager ().getLoadComplete ());
 				}, XTask.BNE, "loop",
 
 				() => this.getGameInstance ().gotoState ("TestGame"),

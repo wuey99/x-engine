@@ -1,22 +1,22 @@
 <manifest>
   <folder name="root">
     <folder name="system">
-      <resource name="XLogicObjectXMap" type=".as" path="Common\\Containers\\XLogicObjectXMap" src="XLogicObjectXMap.as" dst="XLogicObjectXMap.swf">
+      <resource name="XLogicObjectXMap" type=".as" path="common\\Containers\\XLogicObjectXMap" src="XLogicObjectXMap.as" dst="XLogicObjectXMap.swf">
         <classX name="XLogicObjectXMap"/>
       </resource>
-      <resource name="ErrorImages" type=".fla" path="Common\\Images\\Error" src="ErrorImages.fla" dst="ErrorImages.swf">
+      <resource name="ErrorImages" type=".fla" path="common\\Images\\Error" src="ErrorImages.fla" dst="ErrorImages.swf">
         <classX name="undefinedClass"/>
       </resource>
-      <resource name="ManipulatorRings" type=".fla" path="Common\\Tiki\\UI\\ManipulatorRings" src="ManipulatorRings.fla" dst="ManipulatorRings.swf">
+      <resource name="ManipulatorRings" type=".fla" path="common\\Tiki\\UI\\ManipulatorRings" src="ManipulatorRings.fla" dst="ManipulatorRings.swf">
         <classX name="Pickup_Ring"/>
         <classX name="Move_Ring"/>
         <classX name="Resize_Ring"/>
         <classX name="Rotate_Ring"/>
       </resource>
-      <resource name="Cursors" type=".fla" path="Common\\Images\\Cursors" src="cursors.fla" dst="cursors.swf">
+      <resource name="Cursors" type=".fla" path="common\\Images\\Cursors" src="cursors.fla" dst="cursors.swf">
         <classX name="CursorClass"/>
       </resource>
-      <resource name="TikiXMapEditorIcons" type=".fla" path="Common\\Tiki\\UI\\TikiXMapEditorIcons" src="TikiXMapEditorIcons.fla" dst="TikiXMapEditorIcons.swf">
+      <resource name="TikiXMapEditorIcons" type=".fla" path="common\\Tiki\\UI\\TikiXMapEditorIcons" src="TikiXMapEditorIcons.fla" dst="TikiXMapEditorIcons.swf">
         <classX name="Pointer_Button"/>
         <classX name="Hand_Button"/>
         <classX name="Zoom_Button"/>
@@ -25,16 +25,16 @@
         <classX name="Tiles_Button"/>
         <classX name="Test_Button"/>
       </resource>
-      <resource name="ItemGrabber" type=".fla" path="Common\\Tiki\\UI\\ItemGrabber" src="ItemGrabber.fla" dst="ItemGrabber.swf">
+      <resource name="ItemGrabber" type=".fla" path="common\\Tiki\\UI\\ItemGrabber" src="ItemGrabber.fla" dst="ItemGrabber.swf">
         <classX name="ItemGrabber"/>
       </resource>
-      <resource name="RotatingXLogicObject" type=".as" path="Common\\Test\\RotatingXLogicObject" src="RotatingXLogicObject.as" dst="RotatingXLogicObject.swf">
+      <resource name="RotatingXLogicObject" type=".as" path="common\\Test\\RotatingXLogicObject" src="RotatingXLogicObject.as" dst="RotatingXLogicObject.swf">
         <classX name="RotatingXLogicObject"/>
       </resource>
-      <resource name="RotatingXLogicObject2" type=".as" path="Common\\Test\\RotatingXLogicObject2" src="RotatingXLogicObject2.as" dst="RotatingXLogicObject2.swf">
+      <resource name="RotatingXLogicObject2" type=".as" path="common\\Test\\RotatingXLogicObject2" src="RotatingXLogicObject2.as" dst="RotatingXLogicObject2.swf">
         <classX name="RotatingXLogicObject2"/>
       </resource>
-      <resource name="CX" type=".fla" path="Common\\CX" src="CX.fla" dst="CX.swf">
+      <resource name="CX" type=".fla" path="common\\CX" src="CX.fla" dst="CX.swf">
         <classX name="CXClass"/>
         <classX name="CX_SOLID"/>
         <classX name="CX_SOFT"/>
@@ -63,7 +63,9 @@
     <folder name="sprites">
       <folder name="OctopusBug">
         <resource name="@OctopusBug" type=".pmp" embed="false" path="common" src="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.pmp" dst="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.pmp" pmp_width="512" originX="192" originY="184" width="144" totalWidth="2304" height="138" regX="-65" regY="-72"/>
-        <resource name="OctopusBug" type=".fla" embed="false" path="common" src="993C8A68-138B-BC30-0397-8E95FB014CBC-OctopusBug.fla" dst="993C8A68-138B-BC30-0397-8E95FB014CBC-OctopusBug.swf">
+        <resource name="png_OctopusBug" type=".png" embed="false" path="common" src="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.png" dst="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.png"/>
+        <resource name="$OctopusBug" type=".json" embed="false" path="common" src="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.json" dst="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.json"/>
+        <resource name="OctopusBug" type=".fla" embed="false" path="common" src="44C23856-F723-5EB1-5D47-47264D8D3601-OctopusBug.fla" dst="44C23856-F723-5EB1-5D47-47264D8D3601-OctopusBug.swf">
           <classX name="OctopusBug" regX="0" regY="0" width="32" height="32"/>
         </resource>
       </folder>
