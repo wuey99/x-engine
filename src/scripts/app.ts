@@ -56,7 +56,7 @@ function create() {
 
     g_XApp.getXProjectManager ().registerType ("SpriteSheet", SpriteSheetResource);
 
-    g_XApp.getXProjectManager ().setup ("assets/common.xml");
+    g_XApp.getXProjectManager ().setup ("assets/Common.xml");
 } 
 
 //------------------------------------------------------------------------------------------
