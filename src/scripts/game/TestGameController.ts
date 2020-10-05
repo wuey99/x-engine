@@ -47,7 +47,7 @@ export class TestGameController extends XGameController {
 					__task.ifTrue (this.m_XApp.getXProjectManager ().getLoadComplete ());
 				}, XTask.BNE, "loop",
 
-				() => this.getGameInstance ().gotoState ("TestGame"),
+				() => this.getGameInstance ().gotoState ("TestMatter"),
 
 			XTask.RETN,
 		]);

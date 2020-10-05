@@ -24,6 +24,12 @@ import { World, Body, Engine } from 'matter-js';
 import { Class } from '../type/XType';
 
 //------------------------------------------------------------------------------------------
+export interface Vertex {
+    x:number;
+    y:number;
+}
+
+//------------------------------------------------------------------------------------------
 export class TestMatter extends XState {
 	
 //------------------------------------------------------------------------------------------	
@@ -68,6 +74,20 @@ export class TestMatter extends XState {
             __octopusBug.afterSetup ().attachMatterBody (Matter.Bodies.circle (__x, __y, 20, {restitution: 0.80}));    
         });
 
+        var __vertices:Array<Vertex> = [
+            {x: 0, y: G.SCREEN_HEIGHT},
+            {x: G.SCREEN_WIDTH/2, y: G.SCREEN_HEIGHT/2},
+            {x: G.SCREEN_WIDTH, y: G.SCREEN_HEIGHT}
+        ];
+        
+        var graphics = new PIXI.Graphics ();
+        graphics.beginFill (0x0000ff);
+        graphics.drawPolygon (
+            this.convertVerticesToPoints (__vertices)
+        );
+        graphics.endFill ();
+        this.addChild (graphics);
+
 		return this;
 	}
 
@@ -75,6 +95,18 @@ export class TestMatter extends XState {
 	public cleanup ():void {
         super.cleanup ();
 	}
-	
+    
+//------------------------------------------------------------------------------------------
+    public convertVerticesToPoints (__vertices:Array<Vertex>):Array<PIXI.Point> {
+        var __points:Array<PIXI.Point> = new Array<PIXI.Point> ();
+
+        var __vertex:Vertex;
+        for (__vertex of __vertices) {
+            __points.push (new PIXI.Point (__vertex.x, __vertex.y));
+        }
+
+        return __points;
+    }
+    
 //------------------------------------------------------------------------------------------
 }
