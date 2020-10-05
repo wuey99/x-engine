@@ -48,7 +48,7 @@ export class TestMatter extends XState {
         var __ground = Matter.Bodies.rectangle (G.SCREEN_WIDTH / 2, G.SCREEN_HEIGHT + 60/2, G.SCREEN_WIDTH, 60, { isStatic: true });
         Matter.World.add (this.world.getMatterEngine ().world, [__ground]);
 
-        this.m_XApp.getStage ().on ("mousedown", (e:PIXI.interaction.InteractionEvent) => {
+        this.m_XApp.getStage ().on ("mousedown", (e:PIXI.InteractionEvent) => {
             console.log (": mouseDown: ", e.data.global);
 
             var __x:number = e.data.global.x;
@@ -58,7 +58,7 @@ export class TestMatter extends XState {
             __octopusBug.afterSetup ().attachMatterBody (Matter.Bodies.circle (__x, __y, 20, {restitution: 0.80}));
         });
 
-        this.m_XApp.getStage ().on ("touchstart", (e:PIXI.interaction.InteractionEvent) => {
+        this.m_XApp.getStage ().on ("touchstart", (e:PIXI.InteractionEvent) => {
             console.log (": mouseDown: ", e.data.global);
 
             var __x:number = e.data.global.x;
