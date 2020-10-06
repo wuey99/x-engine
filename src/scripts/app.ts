@@ -11,6 +11,7 @@ import { SpriteSheetResource } from './resource/SpriteSheetResource';
 import { G } from './app/G';
 import { graphicsUtils } from 'pixi.js';
 import * as Parser from 'fast-xml-parser';
+(window as any).decomp = require('poly-decomp');
 
 //------------------------------------------------------------------------------------------
 export var g_XApp:XApp;
