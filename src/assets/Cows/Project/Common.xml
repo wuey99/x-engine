@@ -70,11 +70,19 @@
         </resource>
       </folder>
       <folder name="Test">
-        <resource name="@Test45" type=".pmp" embed="false" path="Common" src="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.pmp" dst="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.pmp" pmp_width="512" originX="167" originY="167" width="128" totalWidth="128" height="128" regX="-128" regY="0"/>
+        <resource name="@Test45" type=".pmp" embed="false" path="Common" src="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.pmp" dst="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.pmp" pmp_width="512" originX="167" originY="167" width="128" totalWidth="128" height="128" regX="0" regY="0"/>
         <resource name="png_Test45" type=".png" embed="false" path="Common" src="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.png" dst="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.png"/>
         <resource name="$Test45" type=".json" embed="false" path="Common" src="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.json" dst="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.json"/>
         <resource name="Test45" type=".fla" embed="false" path="Common" src="76F0681C-714D-6200-CF38-256401FFF0C0-Test45.fla" dst="76F0681C-714D-6200-CF38-256401FFF0C0-Test45.swf">
           <classX name="Test45" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+      </folder>
+      <folder name="Terrain">
+        <resource name="@Terrain64x64_01" type=".pmp" embed="false" path="Common" src="E57E481F-B338-3572-171A-6F8019E47BEB-Terrain64x64_01.pmp" dst="E57E481F-B338-3572-171A-6F8019E47BEB-Terrain64x64_01.pmp" pmp_width="512" originX="240" originY="240" width="64" totalWidth="1344" height="64" regX="0" regY="0"/>
+        <resource name="png_Terrain64x64_01" type=".png" embed="false" path="Common" src="E57E481F-B338-3572-171A-6F8019E47BEB-Terrain64x64_01.png" dst="E57E481F-B338-3572-171A-6F8019E47BEB-Terrain64x64_01.png"/>
+        <resource name="$Terrain64x64_01" type=".json" embed="false" path="Common" src="E57E481F-B338-3572-171A-6F8019E47BEB-Terrain64x64_01.json" dst="E57E481F-B338-3572-171A-6F8019E47BEB-Terrain64x64_01.json"/>
+        <resource name="Terrain64x64_01" type=".fla" embed="false" path="Common" src="DA0A8B6C-0E26-D0C6-099A-435F56AF80A7-Terrain64x64_01.fla" dst="DA0A8B6C-0E26-D0C6-099A-435F56AF80A7-Terrain64x64_01.swf">
+          <classX name="Terrain64x64_01" regX="0" regY="0" width="32" height="32"/>
         </resource>
       </folder>
     </folder>

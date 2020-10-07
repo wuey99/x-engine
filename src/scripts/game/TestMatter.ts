@@ -73,36 +73,22 @@ export class TestMatter extends XState {
         });
 
         var __vertices:Array<any> = [
-            /*
-            {x: -250, y: 125},
-            {x: 0, y: -125},
-            {x: 0, y: 125},
-            */
-
            {x: 128, y: 128},
            {x: 128, y: 0},
            {x: 0, y: 128},
-           
-            /*
-            {x: 0, y: 0},
-            {x: -128, y: 128},
-            {x: 0, y: 128}
-            */
         ];
         
         var __terrainBody = Matter.Bodies.fromVertices (G.SCREEN_WIDTH/2, G.SCREEN_HEIGHT * 0.75, __vertices, { isStatic: false, angle: 0 })
-        // var __terrainObject:XGameObject = this.addGameObjectAsChild (XGameObject, 0, 10.0, true);
-        // __terrainObject.afterSetup ().attachMatterBodyVertices (__terrainBody, __vertices);
+        var __terrainObject:XGameObject = this.addGameObjectAsChild (XGameObject, 0, 10.0, true);
+        __terrainObject.afterSetup ().attachMatterBodyVertices (__terrainBody, __vertices);
 
         var __rectangle:XRect = new XRect (0, 0, 256, 256);
         var __rectangleBody = Matter.Bodies.rectangle (512, 256, __rectangle.width, __rectangle.height, { isStatic: false, angle: Math.PI / 4 });
         var __rectangleObject:XGameObject = this.addGameObjectAsChild (XGameObject, 0, 0.0, true);
         __rectangleObject.afterSetup ().attachMatterBodyRectangle (__rectangleBody, __rectangle);
 
-        var __test45:TerrainPiece = this.addGameObjectAsChild (TerrainPiece, 0, 10.0, true) as TerrainPiece;
-        __test45.afterSetup ().attachMatterBodyVertices (__terrainBody, __vertices, true);
-        __test45.x = G.SCREEN_WIDTH/2;
-        __test45.y = 96;
+        var __terrainPiece:TerrainPiece = this.addGameObjectAsChild (TerrainPiece, 0, 10.0, true) as TerrainPiece;
+        __terrainPiece.afterSetup ([G.SCREEN_WIDTH/2, 96, 21]);
 
 		return this;
 	}
