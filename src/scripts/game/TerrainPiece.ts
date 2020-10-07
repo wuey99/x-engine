@@ -13,13 +13,12 @@ import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
-import { XGameController } from '../state/XGameController';
-import { TestGame } from './TestGame';
-import { TestMatter } from './TestMatter';
 
 //------------------------------------------------------------------------------------------
-export class TestGameController extends XGameController {
-	
+export class TerrainPiece extends XGameObject {
+    public m_sprite:PIXI.AnimatedSprite;
+    public x_sprite:XDepthSprite;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -36,33 +35,29 @@ export class TestGameController extends XGameController {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-		this.getGameInstance ().registerState ("TestGame", TestGame);
-		this.getGameInstance ().registerState ("TestMatter", TestMatter);
-
-		this.addTask ([
-			XTask.LABEL, "loop",
-				XTask.WAIT, 0x0100,
-
-				XTask.FLAGS, (__task:XTask) => {
-					__task.ifTrue (this.m_XApp.getXProjectManager ().getLoadComplete ());
-				}, XTask.BNE, "loop",
-
-				() => {
-					console.log (": load complete: ");
-				},
-
-				() => this.getGameInstance ().gotoState ("TestMatter"),
-
-			XTask.RETN,
-		]);
+        this.createSprites ();
 
 		return this;
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup ():void {
+	public cleanup():void {
         super.cleanup ();
 	}
-	
+    
+//------------------------------------------------------------------------------------------
+    public createSprites ():void {
+        this.m_sprite = this.createAnimatedSprite ("Test45");
+        this.addSortableChild (this.m_sprite, 0, 0.0, true);
+
+        this.show ();
+    }
+
+//------------------------------------------------------------------------------------------
+    public setPivot (__dx:number, __dy:number):void {
+        this.m_sprite.pivot.x = __dx;
+        this.m_sprite.pivot.y = __dy;
+    }
+
 //------------------------------------------------------------------------------------------
 }

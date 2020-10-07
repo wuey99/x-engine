@@ -23,6 +23,10 @@ import { World, Body, Engine } from 'matter-js';
 
 import { Class } from '../type/XType';
 
+import { XRect } from '../geom/XRect';
+
+import { TerrainPiece } from './TerrainPiece';
+
 //------------------------------------------------------------------------------------------
 export class TestMatter extends XState {
 	
@@ -43,7 +47,7 @@ export class TestMatter extends XState {
         super.afterSetup (__params);
 
 		var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
-        __octopusBug.afterSetup ().attachMatterBody (Matter.Bodies.circle (G.SCREEN_WIDTH / 2, -50, 10));
+        __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (G.SCREEN_WIDTH / 2, -50, 8), 8);
         
         var __ground = Matter.Bodies.rectangle (G.SCREEN_WIDTH / 2, G.SCREEN_HEIGHT + 60/2, G.SCREEN_WIDTH, 60, { isStatic: true });
         Matter.World.add (this.world.getMatterEngine ().world, [__ground]);
@@ -55,7 +59,7 @@ export class TestMatter extends XState {
             var __y:number = e.data.global.y;
 
             var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
-            __octopusBug.afterSetup ().attachMatterBody (Matter.Bodies.circle (__x, __y, 5, {restitution: 0.80}));
+            __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 8, {restitution: 0.80}), 8);
         });
 
         this.m_XApp.getStage ().on ("touchstart", (e:PIXI.InteractionEvent) => {
@@ -65,25 +69,40 @@ export class TestMatter extends XState {
             var __y:number = e.data.global.y;
 
             var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
-            __octopusBug.afterSetup ().attachMatterBody (Matter.Bodies.circle (__x, __y, 5, {restitution: 0.80}));    
+            __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 8, {restitution: 0.80}), 8);    
         });
 
         var __vertices:Array<any> = [
-            {x: -G.SCREEN_WIDTH/4, y: G.SCREEN_HEIGHT/4},
-            {x: 0, y: -G.SCREEN_HEIGHT/4},
-            {x: G.SCREEN_WIDTH/4, y: G.SCREEN_HEIGHT/4},
+            /*
+            {x: -250, y: 125},
+            {x: 0, y: -125},
+            {x: 0, y: 125},
+            */
+
+           {x: 128, y: 128},
+           {x: 128, y: 0},
+           {x: 0, y: 128},
+           
+            /*
+            {x: 0, y: 0},
+            {x: -128, y: 128},
+            {x: 0, y: 128}
+            */
         ];
         
-        var graphics = new PIXI.Graphics ();
-        graphics.beginFill (0x0000ff);
-        graphics.drawPolygon (
-            this.convertVerticesToPoints (G.SCREEN_WIDTH/2, G.SCREEN_HEIGHT*.75, __vertices)
-        );
-        graphics.endFill ();
-        this.addChild (graphics);
+        var __terrainBody = Matter.Bodies.fromVertices (G.SCREEN_WIDTH/2, G.SCREEN_HEIGHT * 0.75, __vertices, { isStatic: false, angle: 0 })
+        // var __terrainObject:XGameObject = this.addGameObjectAsChild (XGameObject, 0, 10.0, true);
+        // __terrainObject.afterSetup ().attachMatterBodyVertices (__terrainBody, __vertices);
 
-        var __terrain = Matter.Bodies.fromVertices (G.SCREEN_WIDTH/2, G.SCREEN_HEIGHT*.75, __vertices, { isStatic: true })
-        Matter.World.add (this.world.getMatterEngine ().world, __terrain);
+        var __rectangle:XRect = new XRect (0, 0, 256, 256);
+        var __rectangleBody = Matter.Bodies.rectangle (512, 256, __rectangle.width, __rectangle.height, { isStatic: false, angle: Math.PI / 4 });
+        var __rectangleObject:XGameObject = this.addGameObjectAsChild (XGameObject, 0, 0.0, true);
+        __rectangleObject.afterSetup ().attachMatterBodyRectangle (__rectangleBody, __rectangle);
+
+        var __test45:TerrainPiece = this.addGameObjectAsChild (TerrainPiece, 0, 10.0, true) as TerrainPiece;
+        __test45.afterSetup ().attachMatterBodyVertices (__terrainBody, __vertices, true);
+        __test45.x = G.SCREEN_WIDTH/2;
+        __test45.y = 96;
 
 		return this;
 	}
@@ -92,18 +111,6 @@ export class TestMatter extends XState {
 	public cleanup ():void {
         super.cleanup ();
 	}
-    
-//------------------------------------------------------------------------------------------
-    public convertVerticesToPoints (__regX:number, __regY:number, __vertices:Array<any>):Array<PIXI.Point> {
-        var __points:Array<PIXI.Point> = new Array<PIXI.Point> ();
 
-        var __vertex:any;
-        for (__vertex of __vertices) {
-            __points.push (new PIXI.Point (__vertex.x + __regX, __vertex.y + __regY));
-        }
-
-        return __points;
-    }
-    
 //------------------------------------------------------------------------------------------
 }

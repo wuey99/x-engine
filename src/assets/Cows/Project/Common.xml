@@ -69,6 +69,17 @@
           <classX name="OctopusBug" regX="0" regY="0" width="32" height="32"/>
         </resource>
       </folder>
+      <folder name="Test">
+        <resource name="@Test45" type=".pmp" embed="false" path="Common" src="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.pmp" dst="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.pmp" pmp_width="512" originX="167" originY="167" width="128" totalWidth="128" height="128" regX="-128" regY="0"/>
+        <resource name="png_Test45" type=".png" embed="false" path="Common" src="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.png" dst="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.png"/>
+        <resource name="$Test45" type=".json" embed="false" path="Common" src="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.json" dst="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.json"/>
+        <resource name="Test45" type=".fla" embed="false" path="Common" src="76F0681C-714D-6200-CF38-256401FFF0C0-Test45.fla" dst="76F0681C-714D-6200-CF38-256401FFF0C0-Test45.swf">
+          <classX name="Test45" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+      </folder>
+    </folder>
+    <folder name="Sketches">
+      <resource name="#Sketch001" type=".pmp" embed="false" path="Common" src="65B9669A-4F2D-D829-78C6-615EF4C5F524-Sketch001.pmp" dst="65B9669A-4F2D-D829-78C6-615EF4C5F524-Sketch001.pmp"/>
     </folder>
   </folder>
 </manifest>

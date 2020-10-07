@@ -15,7 +15,18 @@ export class SpriteSheetResource extends Resource {
     public setup (__path:string):void {
         super.setup (__path);
 
+        return;
+
 		PIXI.Loader.shared.add (__path).load (() => {
+            this.m_loadComplete = true;
+        });
+    }
+
+    //------------------------------------------------------------------------------------------
+    public load ():void {
+		PIXI.Loader.shared.add (this.m_path).load (() => {
+            console.log (": SpriteSheetResource: loadComplete: ", this);
+
             this.m_loadComplete = true;
         });
     }

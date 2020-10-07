@@ -42,7 +42,7 @@ export class XResourceManager {
             XTask.LABEL, "loop",
                 XTask.WAIT, 0x0100,
                     XTask.FLAGS, (__task:XTask) => {
-                        if (__currentResource == null && this.m_queue.length > 0) {
+                        if (/* __currentResource == null && */ this.m_queue.length > 0) {
                             __currentResource = this.m_queue.pop ();
 
                             __currentResource.load ();
@@ -57,6 +57,8 @@ export class XResourceManager {
                 XTask.WAIT, 0x0100,
 
                 XTask.FLAGS, (__task:XTask) => {
+                    console.log (": queue: ", __currentResource, __currentResource.getLoadComplete ());
+
                     __task.ifTrue (__currentResource.getLoadComplete ());
                 }, XTask.BNE, "wait",
 
@@ -103,7 +105,11 @@ export class XResourceManager {
         for (__name of this.m_resourceMap.keys ()) {
             var __resource:Resource = this.m_resourceMap.get (__name);
 
-            __loadComplete = __resource.getLoadComplete ();
+            if (!__resource.getLoadComplete ()) {
+                __loadComplete = false;
+            }
+
+            // console.log (": ResoruceManager: getLoadComplete: ", __resource, __loadComplete);
         }
 
         return __loadComplete;
