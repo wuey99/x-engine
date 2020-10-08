@@ -79,7 +79,7 @@ export class TerrainPiece extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public createBody ():void {
-        var __shapes:Array<Array<any>> =
+        var __shape2Vertices:Array<Array<any>> =
         [
             // frame 1, UL45
             [
@@ -218,7 +218,7 @@ export class TerrainPiece extends XGameObject {
             ],
         ];
         
-        var __vertices:Array<any> = __shapes[this.m_frame - 1];
+        var __vertices:Array<any> = __shape2Vertices[this.m_frame - 1];
 
         var __vertex:any;
 

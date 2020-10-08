@@ -72,6 +72,7 @@ export class TestMatter extends XState {
             __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 8, {restitution: 0.80}), 8);    
         });
 
+        /*
         var __vertices:Array<any> = [
            {x: 128, y: 128},
            {x: 128, y: 0},
@@ -81,14 +82,15 @@ export class TestMatter extends XState {
         var __terrainBody = Matter.Bodies.fromVertices (G.SCREEN_WIDTH/2, G.SCREEN_HEIGHT * 0.75, __vertices, { isStatic: false, angle: 0 })
         var __terrainObject:XGameObject = this.addGameObjectAsChild (XGameObject, 0, 10.0, true);
         __terrainObject.afterSetup ().attachMatterBodyVertices (__terrainBody, __vertices);
-
+        */
+       
         var __rectangle:XRect = new XRect (0, 0, 256, 256);
         var __rectangleBody = Matter.Bodies.rectangle (512, 256, __rectangle.width, __rectangle.height, { isStatic: false, angle: Math.PI / 4 });
         var __rectangleObject:XGameObject = this.addGameObjectAsChild (XGameObject, 0, 0.0, true);
         __rectangleObject.afterSetup ().attachMatterBodyRectangle (__rectangleBody, __rectangle);
 
         var __terrainPiece:TerrainPiece = this.addGameObjectAsChild (TerrainPiece, 0, 10.0, true) as TerrainPiece;
-        __terrainPiece.afterSetup ([G.SCREEN_WIDTH/2, 96, 21]);
+        __terrainPiece.afterSetup ([G.SCREEN_WIDTH/2, 96, 1]);
 
 		return this;
 	}
