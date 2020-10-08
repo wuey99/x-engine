@@ -16,7 +16,9 @@ import { XGameObject} from '../gameobject/XGameObject';
 
 //------------------------------------------------------------------------------------------
 export class TerrainTileIcon extends XGameObject {
-	
+    public m_sprite:PIXI.AnimatedSprite;
+    public x_sprite:XDepthSprite;
+    
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -40,6 +42,14 @@ export class TerrainTileIcon extends XGameObject {
 	public cleanup():void {
         super.cleanup ();
 	}
-	
+    
+//------------------------------------------------------------------------------------------
+    public createSprites ():void {
+        this.m_sprite = this.createAnimatedSprite ("OctopusBug");
+        this.addSortableChild (this.m_sprite, 0, 0.0, false);
+
+        this.show ();
+    }
+
 //------------------------------------------------------------------------------------------
 }
