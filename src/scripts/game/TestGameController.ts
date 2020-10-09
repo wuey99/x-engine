@@ -53,7 +53,7 @@ export class TestGameController extends XGameController {
 					console.log (": load complete: ");
 				},
 
-				() => this.getGameInstance ().gotoState ("TerrainEditor"),
+				() => this.getGameInstance ().gotoState ("TestMatter"),
 
 			XTask.RETN,
 		]);

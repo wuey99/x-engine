@@ -49,23 +49,28 @@ export class TerrainEditor extends XState {
 		this.createObjects ();
 
         document.addEventListener ('keydown', (key:KeyboardEvent) => {
-            console.log (": keyDown: ", key.code);
+            // console.log (": keyDown: ", key.code);
 
             if (key.code == "Space") {
-                this.m_currentBrush.nukeLater ();
+                if (this.m_currentBrush != null) {
+                    this.m_currentBrush.nukeLater ();
 
-                this.m_currentBrush = null;
+                    this.m_currentBrush = null;
+                }
             }
         });
 
         this.m_XApp.getStage ().on ("mousedown", (e:PIXI.InteractionEvent) => {
             if (this.m_currentBrush == null) {
-                console.log (": mouseDown: ", e.data.global);
-
                 var __x:number = e.data.global.x;
                 var __y:number = e.data.global.y;
 
-                this.m_terrainContainer.pickupTerrainTile (__x, __y);
+                var __terrainTile:TerrainTile = this.m_terrainContainer.pickupTerrainTile (__x, __y);
+                console.log (": terrainTile: ", __terrainTile);
+
+                if (__terrainTile != null) {
+                    this.m_terrainContainer.removeTerrainTile (__terrainTile);
+                }
             }
         });
 

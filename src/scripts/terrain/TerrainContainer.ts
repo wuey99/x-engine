@@ -48,6 +48,8 @@ export class TerrainContainer extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public pickupTerrainTile (__x:number, __y:number):TerrainTile {
+        var __selectedTile:TerrainTile = null;
+
         XType.forEach (this.m_terrainTiles,
             (__key:any) => {
                 var __terrainTile:TerrainTile = __key as TerrainTile;
@@ -56,12 +58,12 @@ export class TerrainContainer extends XGameObject {
                     (__x > __terrainTile.x && __x < __terrainTile.x + __terrainTile.getSize ()) &&
                     (__y > __terrainTile.y && __y < __terrainTile.y + __terrainTile.getSize ())
                 ) {
-                    console.log (": pickupTerrainTile: ", __terrainTile, __x, __y, __terrainTile.x, __terrainTile.y, __terrainTile.x + __terrainTile.getSize (), __terrainTile.y + __terrainTile.getSize ());
+                    __selectedTile = __terrainTile;
                 }
             }
         );
 
-        return null;
+        return __selectedTile;
     }
 
 //------------------------------------------------------------------------------------------
@@ -82,8 +84,10 @@ export class TerrainContainer extends XGameObject {
     }
     
 //------------------------------------------------------------------------------------------
-    public removeTerrainTile ():void {
-            
+    public removeTerrainTile (__terrainTile:TerrainTile):void {
+        this.m_terrainTiles.delete (__terrainTile);
+
+        __terrainTile.nukeLater ();
     }
 
 //------------------------------------------------------------------------------------------
