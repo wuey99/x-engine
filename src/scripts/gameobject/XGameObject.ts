@@ -193,8 +193,18 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
+	public fireMouseDownSignal (e:PIXI.InteractionEvent):void {
+		return this.m_mouseDownSignal.fireSignal (this, e);
+	}
+
+//------------------------------------------------------------------------------------------
 	public addMouseUpListener (__listener:any):number {
 		return this.m_mouseUpSignal.addListener (__listener);
+	}
+
+//------------------------------------------------------------------------------------------
+	public fireMouseUpSignal (e:PIXI.InteractionEvent):void {
+		return this.m_mouseUpSignal.fireSignal (this, e);
 	}
 
 //------------------------------------------------------------------------------------------
@@ -203,8 +213,18 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
+	public fireTouchStartSignal (e:PIXI.InteractionEvent):void {
+		return this.m_touchStartSignal.fireSignal (this, e);
+	}
+
+//------------------------------------------------------------------------------------------
 	public addTouchEndListener (__listener:any):number {
 		return this.m_touchEndSignal.addListener (__listener);
+	}
+
+//------------------------------------------------------------------------------------------
+	public fireTouchEndSignal (e:PIXI.InteractionEvent):void {
+		return this.m_touchEndSignal.fireSignal (this, e);
 	}
 
 //------------------------------------------------------------------------------------------
@@ -925,6 +945,9 @@ export class XGameObject extends PIXI.Sprite {
 
 		var __vector = Matter.Vertices.centre (__vertices);
 
+		__vector.x = 0;
+		__vector.y = 0;
+		
 		this.setPivot (__vector.x, __vector.y);
 
 		var __vertex:any;

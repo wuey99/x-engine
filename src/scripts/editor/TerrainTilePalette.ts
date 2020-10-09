@@ -17,9 +17,10 @@ import { TerrainTileIcon } from './TerrainTileIcon';
 
 //------------------------------------------------------------------------------------------
 export class TerrainTilePalette extends XGameObject {
-
 	public m_size:number;
-	public m_terrain:string;
+    public m_terrain:string;
+    
+    public m_selectedSignal:XSignal;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -40,13 +41,19 @@ export class TerrainTilePalette extends XGameObject {
 		this.m_size = __params[0];
 		this.m_terrain = __params[1];
 
+        this.m_selectedSignal = this.createXSignal ();
+
 		var i:number;
 
 		for (i = 0; i < TerrainTileIcon.MAX_ICONS; i++) {
-			var __terrainTile:TerrainTileIcon = this.addGameObjectAsChild (TerrainTileIcon) as TerrainTileIcon;
-			__terrainTile.afterSetup (["" + this.m_size, this.m_terrain, i]);
-			__terrainTile.x = i * (this.m_size + 8);
-			__terrainTile.y = 0;
+			var __terrainTileIcon:TerrainTileIcon = this.addGameObjectAsChild (TerrainTileIcon) as TerrainTileIcon;
+			__terrainTileIcon.afterSetup ([this.m_size, this.m_terrain, i]);
+			__terrainTileIcon.x = i * (this.m_size + 8);
+            __terrainTileIcon.y = 0;
+            
+            __terrainTileIcon.addMouseDownListener ((__tile:TerrainTileIcon, e:PIXI.InteractionEvent) => {
+                this.m_selectedSignal.fireSignal (__tile);
+            });
 		}
 
 		return this;
@@ -56,6 +63,11 @@ export class TerrainTilePalette extends XGameObject {
 	public cleanup():void {
         super.cleanup ();
 	}
-	
+    
+//------------------------------------------------------------------------------------------
+    public addSelectedListener (__listener:any):number {
+        return this.m_selectedSignal.addListener (__listener);
+    }
+
 //------------------------------------------------------------------------------------------
 }

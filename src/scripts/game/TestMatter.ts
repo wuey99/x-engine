@@ -25,7 +25,7 @@ import { Class } from '../type/XType';
 
 import { XRect } from '../geom/XRect';
 
-import { TerrainTile } from './TerrainTile';
+import { TerrainTile } from '../terrain/TerrainTile';
 import { TerrainTilePalette } from '../editor/TerrainTilePalette';
 
 //------------------------------------------------------------------------------------------
@@ -81,13 +81,14 @@ export class TestMatter extends XState {
         __rectangleObject.afterSetup ().attachMatterBodyRectangle (__rectangleBody, __rectangle);
 
         var __terrainTile:TerrainTile = this.addGameObjectAsChild (TerrainTile, 0, 10.0, true) as TerrainTile;
-        __terrainTile.afterSetup ([G.SCREEN_WIDTH/2, 96, 1]);
-        
-		var __terrainTilePalette64:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 0.0) as TerrainTilePalette;
-		__terrainTilePalette64.afterSetup ([64, "01"]);
-
-		__terrainTilePalette64.x = 16;
-        __terrainTilePalette64.y = 32;
+        __terrainTile.afterSetup (
+            [
+                G.SCREEN_WIDTH/2, 96,
+                16,
+                "01",
+                1
+            ]
+        );
         
 		return this;
 	}

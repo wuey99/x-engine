@@ -22,7 +22,9 @@ export class TerrainTile extends XGameObject {
     public m_sprite:PIXI.AnimatedSprite;
     public x_sprite:XDepthSprite;
 
-    public m_frame:number;
+	public m_size:number;
+	public m_terrain:string;
+	public m_frame:number;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -42,7 +44,9 @@ export class TerrainTile extends XGameObject {
 
         this.x = __params[0];
         this.y = __params[1];
-        this.m_frame = __params[2];
+		this.m_size = __params[2] as number;
+		this.m_terrain = __params[3] as string;
+		this.m_frame = __params[4] as number;
 
         this.createSprites ();
 
@@ -58,17 +62,17 @@ export class TerrainTile extends XGameObject {
     
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-        this.m_sprite = this.createAnimatedSprite ("Terrain64x64_01");
+        this.m_sprite = this.createAnimatedSprite ("Terrain" + this.m_size + "x" + this.m_size +  "_" + this.m_terrain);
         this.addSortableChild (this.m_sprite, 0, 0.0, true);
 
-        this.m_sprite.gotoAndStop (this.m_frame - 1);
+        this.m_sprite.gotoAndStop (this.m_frame);
 
         this.show ();
     }
 
 //------------------------------------------------------------------------------------------
     public getSize ():number {
-        return 64;
+        return this.m_size;
     }
 
 //------------------------------------------------------------------------------------------
@@ -218,7 +222,7 @@ export class TerrainTile extends XGameObject {
             ],
         ];
         
-        var __vertices:Array<any> = __shape2Vertices[this.m_frame - 1];
+        var __vertices:Array<any> = __shape2Vertices[this.m_frame];
 
         var __vertex:any;
 
@@ -228,7 +232,7 @@ export class TerrainTile extends XGameObject {
         }
 
         this.attachMatterBodyVertices (
-            Matter.Bodies.fromVertices (this.x, this.y, __vertices, { isStatic: false, angle: 0 }),
+            Matter.Bodies.fromVertices (this.x, this.y, __vertices, { isStatic: true, angle: 0 }),
             __vertices,
             true
         );

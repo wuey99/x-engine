@@ -55,6 +55,8 @@ export class XApp {
     private m_previousTimer:number;
     private m_inuse_TIMER_FRAME:number;
 
+    private m_mousePoint:XPoint;
+
     //------------------------------------------------------------------------------------------
     constructor (params: XAppParams) {
         this.loader = PIXI.Loader.shared;
@@ -91,7 +93,9 @@ export class XApp {
         this.m_frameRateScale = 1.0;
 		this.m_previousTimer = XType.getNowDate ().getTime ();
         this.m_currentTimer = 0.0;
-		this.m_inuse_TIMER_FRAME = 0;
+        this.m_inuse_TIMER_FRAME = 0;
+        
+        this.m_mousePoint = new XPoint ();
     }
 
    //------------------------------------------------------------------------------------------
@@ -284,6 +288,16 @@ export class XApp {
     //------------------------------------------------------------------------------------------
     public getStage ():PIXI.Container {
         return this.stage;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getMousePos ():XPoint {
+        var __point:PIXI.Point = this.renderer.plugins.interaction.mouse.global;
+
+        this.m_mousePoint.x = __point.x;
+        this.m_mousePoint.y = __point.y;
+        
+        return this.m_mousePoint;
     }
 
     //------------------------------------------------------------------------------------------

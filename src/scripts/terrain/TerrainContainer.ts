@@ -11,20 +11,15 @@ import { XTaskManager} from '../task/XTaskManager';
 import { XTaskSubManager} from '../task/XTaskSubManager';
 import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
-import { XType } from '../type/Xtype';
+import { XType } from '../type/XType';
 import { XGameObject} from '../gameobject/XGameObject';
+import { TerrainTile } from './TerrainTile';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
-export class TerrainTileIcon extends XGameObject {
-    public m_sprite:PIXI.AnimatedSprite;
-    public x_sprite:XDepthSprite;
-	
-	public m_size:number;
-	public m_terrain:string;
-	public m_frame:number;
-
-	public static MAX_ICONS:number = 21;
-
+export class TerrainContainer extends XGameObject {
+    public m_terrainTiles:Map<TerrainTile, number>;
+    
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -41,55 +36,54 @@ export class TerrainTileIcon extends XGameObject {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-		this.m_size = __params[0] as number;
-		this.m_terrain = __params[1] as string;
-		this.m_frame = __params[2] as number;
-
-		this.createSprites ();
+        this.m_terrainTiles = new Map<TerrainTile, number> ();
 
 		return this;
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup():void {
+	public cleanup ():void {
         super.cleanup ();
-	}
-
-//------------------------------------------------------------------------------------------
-    public getSize ():number {
-        return this.m_size;
     }
 
 //------------------------------------------------------------------------------------------
-    public getTerrain ():string {
-        return this.m_terrain;
+    public pickupTerrainTile (__x:number, __y:number):TerrainTile {
+        XType.forEach (this.m_terrainTiles,
+            (__key:any) => {
+                var __terrainTile:TerrainTile = __key as TerrainTile;
+
+                if (
+                    (__x > __terrainTile.x && __x < __terrainTile.x + __terrainTile.getSize ()) &&
+                    (__y > __terrainTile.y && __y < __terrainTile.y + __terrainTile.getSize ())
+                ) {
+                    console.log (": pickupTerrainTile: ", __terrainTile, __x, __y, __terrainTile.x, __terrainTile.y, __terrainTile.x + __terrainTile.getSize (), __terrainTile.y + __terrainTile.getSize ());
+                }
+            }
+        );
+
+        return null;
     }
 
 //------------------------------------------------------------------------------------------
-    public getFrame ():number {
-        return this.m_frame;
+    public addTerrainTile (__x:number, __y:number, __size:number, __terrain:string, __frame:number):TerrainTile {
+        var __terrainTile:TerrainTile = this.addGameObjectAsChild (TerrainTile, 0, 10.0, true) as TerrainTile;
+        __terrainTile.afterSetup (
+            [
+                __x, __y,
+                __size,
+                __terrain,
+                __frame
+            ]
+        );
+
+        this.m_terrainTiles.set (__terrainTile, 0);
+
+        return __terrainTile;
     }
-
+    
 //------------------------------------------------------------------------------------------
-    public createSprites ():void {
-		this.m_sprite = this.createAnimatedSprite ("Terrain" + this.m_size + "x" + this.m_size +  "_" + this.m_terrain);
-		this.addSortableChild (this.m_sprite, 0, 0.0, true);
-		this.m_sprite.gotoAndStop (this.m_frame);
-
-		this.m_sprite.interactive = true;
-		this.m_sprite.interactiveChildren = true;
-
-        this.m_sprite.on ("mousedown", (e:PIXI.InteractionEvent) => {
-            var __interactionData:PIXI.InteractionData = e.data;
-
-            var __point:PIXI.Point = new PIXI.Point ();
-
-            console.log (": mouseDown: ", this.m_frame, __interactionData.getLocalPosition (this, __point, __interactionData.global));
-
-           this.fireMouseDownSignal (e);
-		});
-
-        this.show ();
+    public removeTerrainTile ():void {
+            
     }
 
 //------------------------------------------------------------------------------------------
