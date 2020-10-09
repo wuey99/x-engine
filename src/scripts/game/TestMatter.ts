@@ -25,7 +25,7 @@ import { Class } from '../type/XType';
 
 import { XRect } from '../geom/XRect';
 
-import { TerrainPiece } from './TerrainPiece';
+import { TerrainTile } from './TerrainTile';
 import { TerrainTilePalette } from '../editor/TerrainTilePalette';
 
 //------------------------------------------------------------------------------------------
@@ -80,8 +80,8 @@ export class TestMatter extends XState {
         var __rectangleObject:XGameObject = this.addGameObjectAsChild (XGameObject, 0, 0.0, true);
         __rectangleObject.afterSetup ().attachMatterBodyRectangle (__rectangleBody, __rectangle);
 
-        var __terrainPiece:TerrainPiece = this.addGameObjectAsChild (TerrainPiece, 0, 10.0, true) as TerrainPiece;
-        __terrainPiece.afterSetup ([G.SCREEN_WIDTH/2, 96, 1]);
+        var __terrainTile:TerrainTile = this.addGameObjectAsChild (TerrainTile, 0, 10.0, true) as TerrainTile;
+        __terrainTile.afterSetup ([G.SCREEN_WIDTH/2, 96, 1]);
         
 		var __terrainTilePalette64:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 0.0) as TerrainTilePalette;
 		__terrainTilePalette64.afterSetup ([64, "01"]);

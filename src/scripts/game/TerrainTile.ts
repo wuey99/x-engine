@@ -18,7 +18,7 @@ import { World, Body, Engine } from 'matter-js';
 import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
-export class TerrainPiece extends XGameObject {
+export class TerrainTile extends XGameObject {
     public m_sprite:PIXI.AnimatedSprite;
     public x_sprite:XDepthSprite;
 
