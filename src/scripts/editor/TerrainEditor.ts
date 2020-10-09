@@ -14,6 +14,7 @@ import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XState } from '../state/XState';
+import { TerrainTilePalette } from './TerrainTilePalette';
 
 //------------------------------------------------------------------------------------------
 export class TerrainEditor extends XState {
@@ -34,6 +35,8 @@ export class TerrainEditor extends XState {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
+		this.createObjects ();
+
 		return this;
 	}
 	
@@ -42,5 +45,32 @@ export class TerrainEditor extends XState {
         super.cleanup ();
 	}
 	
+//------------------------------------------------------------------------------------------
+	public createObjects ():void {
+		var __y:number = 16;
+
+		var __terrainTilePalette64:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 0.0) as TerrainTilePalette;
+		__terrainTilePalette64.afterSetup ([64, "01"]);
+
+		__terrainTilePalette64.x = 16;
+		__terrainTilePalette64.y = __y;
+
+		__y += 64 + 8;
+
+		var __terrainTilePalette32:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 0.0) as TerrainTilePalette;
+		__terrainTilePalette32.afterSetup ([32, "01"]);
+
+		__terrainTilePalette32.x = 16;
+		__terrainTilePalette32.y = __y;
+
+		__y += 32 + 8;
+
+		var __terrainTilePalette16:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 0.0) as TerrainTilePalette;
+		__terrainTilePalette16.afterSetup ([16, "01"]);
+
+		__terrainTilePalette16.x = 16;
+		__terrainTilePalette16.y = __y;
+	}
+
 //------------------------------------------------------------------------------------------
 }

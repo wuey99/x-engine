@@ -42,8 +42,14 @@ export class XGameObject extends PIXI.Sprite {
 	public m_flipY:number;
 	public m_masterFlipX:number;
 	public m_masterFlipY:number;
+
 	public m_attachedMatterBody:Body;
 	public m_attachedDebugSprite:PIXI.Sprite;
+
+	public m_mouseUpSignal:XSignal;
+	public m_mouseDownSignal:XSignal;
+	public m_touchStartSignal:XSignal;
+	public m_touchEndSignal:XSignal;
 
 	public static g_XApp:XApp;
 	
@@ -90,6 +96,11 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_killSignal = this.createXSignal ();
 
 		this.m_attachedMatterBody = null;
+
+		this.m_mouseUpSignal = this.createXSignal ();
+		this.m_mouseDownSignal = this.createXSignal ();
+		this.m_touchStartSignal = this.createXSignal ();
+		this.m_touchEndSignal = this.createXSignal ();
 
 		return this;
 	}
@@ -175,7 +186,27 @@ export class XGameObject extends PIXI.Sprite {
 	public fireKillSignal ():void {
 		this.m_killSignal.fireSignal ();
 	}
-	
+
+//------------------------------------------------------------------------------------------
+	public addMouseDownListener ():number {
+		return 0;
+	}
+
+//------------------------------------------------------------------------------------------
+	public addMouseUpListener ():number {
+		return 0;
+	}
+
+//------------------------------------------------------------------------------------------
+	public addTouchStartListener ():number {
+		return 0;
+	}
+
+//------------------------------------------------------------------------------------------
+	public addTouchEndListener ():number {
+		return 0;
+	}
+
 //------------------------------------------------------------------------------------------
 	public static setXApp (__XApp:XApp):void {
 		XGameObject.g_XApp = __XApp;

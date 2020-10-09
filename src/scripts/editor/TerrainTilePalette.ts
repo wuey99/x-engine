@@ -13,10 +13,14 @@ import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
+import { TerrainTileIcon } from './TerrainTileIcon';
 
 //------------------------------------------------------------------------------------------
 export class TerrainTilePalette extends XGameObject {
-	
+
+	public m_size:number;
+	public m_terrain:string;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -32,6 +36,18 @@ export class TerrainTilePalette extends XGameObject {
 //------------------------------------------------------------------------------------------
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
+
+		this.m_size = __params[0];
+		this.m_terrain = __params[1];
+
+		var i:number;
+
+		for (i = 0; i < TerrainTileIcon.MAX_ICONS; i++) {
+			var __terrainTile:TerrainTileIcon = this.addGameObjectAsChild (TerrainTileIcon) as TerrainTileIcon;
+			__terrainTile.afterSetup (["" + this.m_size, this.m_terrain, i]);
+			__terrainTile.x = i * (this.m_size + 8);
+			__terrainTile.y = 0;
+		}
 
 		return this;
 	}

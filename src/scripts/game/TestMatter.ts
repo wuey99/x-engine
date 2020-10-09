@@ -26,6 +26,7 @@ import { Class } from '../type/XType';
 import { XRect } from '../geom/XRect';
 
 import { TerrainPiece } from './TerrainPiece';
+import { TerrainTilePalette } from '../editor/TerrainTilePalette';
 
 //------------------------------------------------------------------------------------------
 export class TestMatter extends XState {
@@ -47,8 +48,10 @@ export class TestMatter extends XState {
         super.afterSetup (__params);
 
 		var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
-        __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (G.SCREEN_WIDTH / 2, -50, 8), 8);
-        
+        __octopusBug.afterSetup (); // .attachMatterBodyCircle (Matter.Bodies.circle (G.SCREEN_WIDTH / 2, -50, 8), 8);
+        __octopusBug.x = 64;
+        __octopusBug.y = 64;
+
         var __ground = Matter.Bodies.rectangle (G.SCREEN_WIDTH / 2, G.SCREEN_HEIGHT + 60/2, G.SCREEN_WIDTH, 60, { isStatic: true });
         Matter.World.add (this.world.getMatterEngine ().world, [__ground]);
 
@@ -79,7 +82,13 @@ export class TestMatter extends XState {
 
         var __terrainPiece:TerrainPiece = this.addGameObjectAsChild (TerrainPiece, 0, 10.0, true) as TerrainPiece;
         __terrainPiece.afterSetup ([G.SCREEN_WIDTH/2, 96, 1]);
+        
+		var __terrainTilePalette64:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 0.0) as TerrainTilePalette;
+		__terrainTilePalette64.afterSetup ([64, "01"]);
 
+		__terrainTilePalette64.x = 16;
+        __terrainTilePalette64.y = 32;
+        
 		return this;
 	}
 

@@ -16,6 +16,7 @@ import { XGameObject} from '../gameobject/XGameObject';
 import { XGameController } from '../state/XGameController';
 import { TestGame } from './TestGame';
 import { TestMatter } from './TestMatter';
+import { TerrainEditor } from '../editor/TerrainEditor';
 
 //------------------------------------------------------------------------------------------
 export class TestGameController extends XGameController {
@@ -38,6 +39,7 @@ export class TestGameController extends XGameController {
 
 		this.getGameInstance ().registerState ("TestGame", TestGame);
 		this.getGameInstance ().registerState ("TestMatter", TestMatter);
+		this.getGameInstance ().registerState ("TerrainEditor", TerrainEditor);
 
 		this.addTask ([
 			XTask.LABEL, "loop",
@@ -51,7 +53,7 @@ export class TestGameController extends XGameController {
 					console.log (": load complete: ");
 				},
 
-				() => this.getGameInstance ().gotoState ("TestMatter"),
+				() => this.getGameInstance ().gotoState ("TerrainEditor"),
 
 			XTask.RETN,
 		]);
