@@ -188,23 +188,23 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public addMouseDownListener ():number {
-		return 0;
+	public addMouseDownListener (__listener:any):number {
+		return this.m_mouseDownSignal.addListener (__listener);
 	}
 
 //------------------------------------------------------------------------------------------
-	public addMouseUpListener ():number {
-		return 0;
+	public addMouseUpListener (__listener:any):number {
+		return this.m_mouseUpSignal.addListener (__listener);
 	}
 
 //------------------------------------------------------------------------------------------
-	public addTouchStartListener ():number {
-		return 0;
+	public addTouchStartListener (__listener:any):number {
+		return this.m_touchStartSignal.addListener (__listener);
 	}
 
 //------------------------------------------------------------------------------------------
-	public addTouchEndListener ():number {
-		return 0;
+	public addTouchEndListener (__listener:any):number {
+		return this.m_touchEndSignal.addListener (__listener);
 	}
 
 //------------------------------------------------------------------------------------------
