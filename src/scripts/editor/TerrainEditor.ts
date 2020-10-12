@@ -70,6 +70,8 @@ export class TerrainEditor extends XState {
 
                 if (__terrainTile != null) {
                     this.m_terrainContainer.removeTerrainTile (__terrainTile);
+
+                    this.createTerrainTileBrush (__terrainTile.getSize (), __terrainTile.getTerrain (), __terrainTile.getFrame ());
                 }
             }
         });
@@ -91,7 +93,7 @@ export class TerrainEditor extends XState {
 		__terrainTilePalette64.x = 16;
 		__terrainTilePalette64.y = __y;
         __terrainTilePalette64.addSelectedListener ((__terrainTileIcon:TerrainTileIcon) => {
-            this.createTerrainTileBrush (__terrainTileIcon);
+            this.createTerrainTileBrush (__terrainTileIcon.getSize (), __terrainTileIcon.getTerrain (), __terrainTileIcon.getFrame ());
         });
         __y += 64 + 8;
 
@@ -100,7 +102,7 @@ export class TerrainEditor extends XState {
 		__terrainTilePalette32.x = 16;
 		__terrainTilePalette32.y = __y;
         __terrainTilePalette32.addSelectedListener ((__terrainTileIcon:TerrainTileIcon) => {
-            this.createTerrainTileBrush (__terrainTileIcon);
+            this.createTerrainTileBrush (__terrainTileIcon.getSize (), __terrainTileIcon.getTerrain (), __terrainTileIcon.getFrame ());
         });
         __y += 32 + 8;
         
@@ -109,7 +111,7 @@ export class TerrainEditor extends XState {
 		__terrainTilePalette16.x = 16;
         __terrainTilePalette16.y = __y;
         __terrainTilePalette16.addSelectedListener ((__terrainTileIcon:TerrainTileIcon) => {
-            this.createTerrainTileBrush (__terrainTileIcon);
+            this.createTerrainTileBrush (__terrainTileIcon.getSize (), __terrainTileIcon.getTerrain (), __terrainTileIcon.getFrame ());
         });
 
         this.m_terrainContainer = this.addGameObjectAsChild (TerrainContainer, 0, 0.0) as TerrainContainer;
@@ -119,10 +121,10 @@ export class TerrainEditor extends XState {
 	}
 
 //------------------------------------------------------------------------------------------
-    public createTerrainTileBrush (__terrainTileIcon:TerrainTileIcon):void {
+    public createTerrainTileBrush (__size:number, __terrain:String, __frame:number):void {
         if (this.m_currentBrush == null) {
             var __brush:TerrainTileBrush = this.m_currentBrush = this.addGameObjectAsChild (TerrainTileBrush, 0, 0.0) as TerrainTileBrush;
-            __brush.afterSetup ([__terrainTileIcon.getSize (), __terrainTileIcon.getTerrain (), __terrainTileIcon.getFrame ()]);
+            __brush.afterSetup ([__size, __terrain, __frame]);
 
             this.m_currentBrush.addDroppedListener (() => {
                 console.log (": dropped: ");

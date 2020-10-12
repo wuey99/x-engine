@@ -26,145 +26,6 @@ export class TerrainTile extends XGameObject {
 	public m_terrain:string;
 	public m_frame:number;
 
-    static m_shape2Vertices:Array<Array<any>> =
-    [
-        // frame 1, UL45
-        [
-            {x: 1, y: 0},
-            {x: 0, y: 1},
-            {x: 1, y: 1},
-        ],
-        // frame 2, UR45
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 1},
-            {x: 0, y: 1},
-        ],
-        // frame 3, UL BOX
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 1, y: 1}, 
-            {x: 0, y: 1}, 
-        ],
-        // frame 4, UL BOX
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 1, y: 1}, 
-            {x: 0, y: 1}, 
-        ],
-        // frame 5, LL45
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 1, y: 1}, 
-        ],
-        // frame 6, LR45
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 0, y: 1}, 
-        ],
-        // frame 7 LL BOX
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 1, y: 1}, 
-            {x: 0, y: 1}, 
-        ],
-        // frame 8 LR BOX
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 1, y: 1}, 
-            {x: 0, y: 1}, 
-        ],
-        // frame 9 LF BOX
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 1, y: 1}, 
-            {x: 0, y: 1}, 
-        ],
-        // frame 10 RT BOX
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 1, y: 1}, 
-            {x: 0, y: 1}, 
-        ],
-        // frame 11 TOP BOX
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 1, y: 1}, 
-            {x: 0, y: 1}, 
-        ],
-        // frame 12 BOT BOX
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 1, y: 1}, 
-            {x: 0, y: 1}, 
-        ],
-        // frame 13 EMPTY BOX
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 1, y: 1}, 
-            {x: 0, y: 1}, 
-        ],
-        // frame 14 UL22.5
-        [
-            {x: 0, y: 1},
-            {x: 1, y: 1},
-            {x: 1, y: 0.5},
-        ],
-        // frame 15 UR22.5
-        [
-            {x: 0, y: 0.5},
-            {x: 1, y: 1},
-            {x: 0, y: 1},
-        ],
-        // frame 16 UL67.5
-        [
-            {x: 1, y: 0},
-            {x: 1, y: 1},
-            {x: 0.5, y: 1},
-        ],
-        // frame 17 UR67.5
-        [
-            {x: 0, y: 0},
-            {x: 0.5, y: 1},
-            {x: 0, y: 1},
-        ],
-        // frame 18 LL22.5
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 1, y: 0.5},
-        ],
-        // frame 19 LE22.5
-        [
-            {x: 0, y: 0},
-            {x: 1, y: 0},
-            {x: 0, y: 0.5},
-        ],
-        // frame 20 LL67.5
-        [
-            {x: 0.5, y: 0},
-            {x: 1, y: 0},
-            {x: 1, y: 1},
-        ],
-        // frame 21 LR67.5
-        [
-            {x: 0, y: 0},
-            {x: 0.5, y: 0},
-            {x: 0, y: 1},
-        ],
-    ];
-
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -215,14 +76,163 @@ export class TerrainTile extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
+    public getTerrain ():string {
+        return this.m_terrain;
+    }
+
+//------------------------------------------------------------------------------------------
+    public getFrame ():number {
+        return this.m_frame;
+    }
+
+//------------------------------------------------------------------------------------------
     public setPivot (__dx:number, __dy:number):void {
         this.m_sprite.pivot.x = __dx;
         this.m_sprite.pivot.y = __dy;
     }
 
 //------------------------------------------------------------------------------------------
-    public createBody ():void {        
-        var __vertices:Array<any> = TerrainTile.m_shape2Vertices[this.m_frame];
+    public createBody ():void {   
+        var __shape2Vertices:Array<Array<any>> =
+        [
+            // frame 1, UL45
+            [
+                {x: 1, y: 0},
+                {x: 0, y: 1},
+                {x: 1, y: 1},
+            ],
+            // frame 2, UR45
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 1},
+                {x: 0, y: 1},
+            ],
+            // frame 3, UL BOX
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 1, y: 1}, 
+                {x: 0, y: 1}, 
+            ],
+            // frame 4, UL BOX
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 1, y: 1}, 
+                {x: 0, y: 1}, 
+            ],
+            // frame 5, LL45
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 1, y: 1}, 
+            ],
+            // frame 6, LR45
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 0, y: 1}, 
+            ],
+            // frame 7 LL BOX
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 1, y: 1}, 
+                {x: 0, y: 1}, 
+            ],
+            // frame 8 LR BOX
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 1, y: 1}, 
+                {x: 0, y: 1}, 
+            ],
+            // frame 9 LF BOX
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 1, y: 1}, 
+                {x: 0, y: 1}, 
+            ],
+            // frame 10 RT BOX
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 1, y: 1}, 
+                {x: 0, y: 1}, 
+            ],
+            // frame 11 TOP BOX
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 1, y: 1}, 
+                {x: 0, y: 1}, 
+            ],
+            // frame 12 BOT BOX
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 1, y: 1}, 
+                {x: 0, y: 1}, 
+            ],
+            // frame 13 EMPTY BOX
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 1, y: 1}, 
+                {x: 0, y: 1}, 
+            ],
+            // frame 14 UL22.5
+            [
+                {x: 0, y: 1},
+                {x: 1, y: 1},
+                {x: 1, y: 0.5},
+            ],
+            // frame 15 UR22.5
+            [
+                {x: 0, y: 0.5},
+                {x: 1, y: 1},
+                {x: 0, y: 1},
+            ],
+            // frame 16 UL67.5
+            [
+                {x: 1, y: 0},
+                {x: 1, y: 1},
+                {x: 0.5, y: 1},
+            ],
+            // frame 17 UR67.5
+            [
+                {x: 0, y: 0},
+                {x: 0.5, y: 1},
+                {x: 0, y: 1},
+            ],
+            // frame 18 LL22.5
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 1, y: 0.5},
+            ],
+            // frame 19 LE22.5
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 0},
+                {x: 0, y: 0.5},
+            ],
+            // frame 20 LL67.5
+            [
+                {x: 0.5, y: 0},
+                {x: 1, y: 0},
+                {x: 1, y: 1},
+            ],
+            // frame 21 LR67.5
+            [
+                {x: 0, y: 0},
+                {x: 0.5, y: 0},
+                {x: 0, y: 1},
+            ],
+        ];
+
+        var __vertices:Array<any> = __shape2Vertices[this.m_frame];
 
         var __vertex:any;
 
