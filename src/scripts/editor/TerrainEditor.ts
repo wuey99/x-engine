@@ -48,13 +48,13 @@ export class TerrainEditor extends XState {
 
 		this.createObjects ();
 
-        this.initKeyboardShortcuts ();
+        this.initInputHandlers ();
 
         return this;
     }
 
 //------------------------------------------------------------------------------------------
-    public initKeyboardShortcuts ():void {
+    public initInputHandlers ():void {
         document.addEventListener ('keydown', (key:KeyboardEvent) => {
             console.log (": keyDown: ", key.code);
 
