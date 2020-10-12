@@ -73,6 +73,13 @@ export class TerrainContainer extends XGameObject {
     public addTerrainTile (__x:number, __y:number, __name:string, __size:number, __terrain:string, __frame:number):TerrainTile {
         var __terrainTile:TerrainTile;
         
+        console.log (": x: ", __x);
+        console.log (": y: ", __y);
+        console.log (": name: ", __name);
+        console.log (": size: ", __size);
+        console.log (": terrain: ", __terrain);
+        console.log (": frame: ", __frame);
+        
         switch (__name) {
             case "Terrain":
                 __terrainTile = this.addGameObjectAsChild (TerrainTile, 0, 10.0, true) as TerrainTile;
@@ -104,6 +111,25 @@ export class TerrainContainer extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public deserialize (__xml:XSimpleXMLNode) {
+        var __tilesXMLList:Array<XSimpleXMLNode> = __xml.child ("tiles");
+        var __tileXMLList:Array<XSimpleXMLNode> = __tilesXMLList[0].child ("tile");
+
+        var i:number;
+
+        for (i = 0; i < __tileXMLList.length; i++) {
+            var __tileXML:XSimpleXMLNode = __tileXMLList[i];
+
+            console.log (": tileXML: ", __tileXML.toXMLString ());
+
+            this.addTerrainTile (
+                __tileXML.getAttributeFloat ("x"),
+                __tileXML.getAttributeFloat ("y"),
+                __tileXML.getAttributeString ("name"),
+                __tileXML.getAttributeInt ("size"),
+                "0" + __tileXML.getAttributeString ("terrain"),
+                __tileXML.getAttributeInt ("frame")
+            );
+        }
     }
 
 //------------------------------------------------------------------------------------------
@@ -138,8 +164,6 @@ export class TerrainContainer extends XGameObject {
             }
         );
 
-        console.log (": xml: ", __root.toXMLString ());
-        
         return __root;
     }
 

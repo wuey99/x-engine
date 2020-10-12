@@ -22,6 +22,8 @@ import { XPoint } from '../geom/XPoint';
 import { XRect } from '../geom/XRect';
 import { TerrainTile } from '../terrain/TerrainTile'
 import { TerrainContainer } from '../terrain/TerrainContainer';
+import { XSimpleXMLDocument } from '../xml/XSimpleXMLDocument';
+import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 
 //------------------------------------------------------------------------------------------
 export class TerrainEditor extends XState {
@@ -48,13 +50,15 @@ export class TerrainEditor extends XState {
 
 		this.createObjects ();
 
-        this.initInputHandlers ();
+        this.createContainer ();
+
+        this.createInputHandlers ();
 
         return this;
     }
 
 //------------------------------------------------------------------------------------------
-    public initInputHandlers ():void {
+    public createInputHandlers ():void {
         document.addEventListener ('keydown', (key:KeyboardEvent) => {
             console.log (": keyDown: ", key.code);
 
@@ -69,8 +73,27 @@ export class TerrainEditor extends XState {
                     break;
                 
                 case "KeyS":
-                    this.m_terrainContainer.serialize ();
+                    var __xml:XSimpleXMLNode = this.m_terrainContainer.serialize ();
 
+                    console.log (": xml: ", __xml.toXMLString ());
+        
+                    var save:any = document.querySelector('.btnSave');
+                    console.log(": ", save.download);
+                    var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(__xml.toXMLString ());
+                    save.href = data;
+                    save.download = "level.dat";
+                    (document.querySelector('.btnSave') as any).click();	
+
+                    break;
+
+                case "KeyL":
+                    (document.querySelector('.inputFile') as any).click();	
+                    var input:any = document.querySelector('.inputFile');
+                    input.onchange = () => {
+                        console.log(": changed: ", this, input.files[0]);
+                        this.readSingleFile(input);
+                    };
+       
                     break;
             }
         });
@@ -101,7 +124,45 @@ export class TerrainEditor extends XState {
 	public cleanup():void {
         super.cleanup ();
 	}
-	
+    
+//------------------------------------------------------------------------------------------
+    public readSingleFile (input:any) {
+        var file = input.files[0];
+        
+        if (!file) {
+            return;
+        }
+        
+        var reader = new FileReader();
+        
+        reader.onload = (e) => {
+            var contents:string = e.target.result as string;
+
+            console.log(": contents: ", contents);
+
+            this.m_terrainContainer.nukeLater ();
+
+            var __xml:XSimpleXMLNode = new XSimpleXMLNode ();
+            __xml.setupWithXMLString (contents);
+        
+            console.log (": xml: ", __xml.toXMLString ());
+
+            this.createContainer ().deserialize (__xml);
+        };
+        
+        reader.readAsText(file);
+    }
+
+//------------------------------------------------------------------------------------------
+    public createContainer ():TerrainContainer {
+        this.m_terrainContainer = this.addGameObjectAsChild (TerrainContainer, 0, 0.0) as TerrainContainer;
+        this.m_terrainContainer.afterSetup ();
+        this.m_terrainContainer.x = 0;
+        this.m_terrainContainer.y = 0;
+
+        return this.m_terrainContainer;
+    }
+
 //------------------------------------------------------------------------------------------
 	public createObjects ():void {
 		var __y:number = 16;
@@ -132,11 +193,6 @@ export class TerrainEditor extends XState {
 		__terrainTileMisc.x = 16;
         __terrainTileMisc.y = __y;
         __terrainTileMisc.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
-
-        this.m_terrainContainer = this.addGameObjectAsChild (TerrainContainer, 0, 0.0) as TerrainContainer;
-        this.m_terrainContainer.afterSetup ();
-        this.m_terrainContainer.x = 0;
-        this.m_terrainContainer.y = 0;
 	}
 
 //------------------------------------------------------------------------------------------
