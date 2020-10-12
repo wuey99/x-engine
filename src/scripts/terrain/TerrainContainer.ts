@@ -14,6 +14,7 @@ import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/XType';
 import { XGameObject} from '../gameobject/XGameObject';
 import { TerrainTile } from './TerrainTile';
+import { TerrainMisc } from './TerrainMisc';
 import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
@@ -67,8 +68,19 @@ export class TerrainContainer extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
-    public addTerrainTile (__x:number, __y:number, __size:number, __terrain:string, __frame:number):TerrainTile {
-        var __terrainTile:TerrainTile = this.addGameObjectAsChild (TerrainTile, 0, 10.0, true) as TerrainTile;
+    public addTerrainTile (__x:number, __y:number, __name:string, __size:number, __terrain:string, __frame:number):TerrainTile {
+        var __terrainTile:TerrainTile;
+        
+        switch (__name) {
+            case "Terrain":
+                __terrainTile = this.addGameObjectAsChild (TerrainTile, 0, 10.0, true) as TerrainTile;
+                break;
+            
+            case "TerrainMisc":
+                __terrainTile = this.addGameObjectAsChild (TerrainMisc, 0, 10.0, true) as TerrainTile;
+                break;
+        }
+
         __terrainTile.afterSetup (
             [
                 __x, __y,

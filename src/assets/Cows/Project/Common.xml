@@ -96,6 +96,12 @@
         <resource name="Terrain16x16_01" type=".fla" embed="false" path="Common" src="A8BD5864-592A-B2B0-3228-89DBD1BDE5A8-Terrain16x16_01.fla" dst="A8BD5864-592A-B2B0-3228-89DBD1BDE5A8-Terrain16x16_01.swf">
           <classX name="Terrain16x16_01" regX="0" regY="0" width="32" height="32"/>
         </resource>
+        <resource name="@TerrainMisc16x16_01" type=".pmp" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-TerrainMisc16x16_01.pmp" dst="44000422-4620-7139-86D0-2B66FF71260B-TerrainMisc16x16_01.pmp" pmp_width="512" originX="240" originY="240" width="16" totalWidth="256" height="16" regX="0" regY="0"/>
+        <resource name="png_TerrainMisc16x16_01" type=".png" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-TerrainMisc16x16_01.png" dst="44000422-4620-7139-86D0-2B66FF71260B-TerrainMisc16x16_01.png"/>
+        <resource name="$TerrainMisc16x16_01" type=".json" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-TerrainMisc16x16_01.json" dst="44000422-4620-7139-86D0-2B66FF71260B-TerrainMisc16x16_01.json"/>
+        <resource name="TerrainMisc16x16_01" type=".fla" embed="false" path="Common" src="4A21202B-5AD0-0AF1-A85E-E003BD94F006-TerrainMisc16x16_01.fla" dst="4A21202B-5AD0-0AF1-A85E-E003BD94F006-TerrainMisc16x16_01.swf">
+          <classX name="TerrainMisc16x16_01" regX="0" regY="0" width="32" height="32"/>
+        </resource>
       </folder>
     </folder>
     <folder name="Sketches">

@@ -19,6 +19,7 @@ export class TerrainTileIcon extends XGameObject {
     public m_sprite:PIXI.AnimatedSprite;
     public x_sprite:XDepthSprite;
 	
+	public m_name:string;
 	public m_size:number;
 	public m_terrain:string;
 	public m_frame:number;
@@ -41,9 +42,10 @@ export class TerrainTileIcon extends XGameObject {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-		this.m_size = __params[0] as number;
-		this.m_terrain = __params[1] as string;
-		this.m_frame = __params[2] as number;
+		this.m_name = __params[0] as string;
+		this.m_size = __params[1] as number;
+		this.m_terrain = __params[2] as string;
+		this.m_frame = __params[3] as number;
 
 		this.createSprites ();
 
@@ -53,6 +55,11 @@ export class TerrainTileIcon extends XGameObject {
 //------------------------------------------------------------------------------------------
 	public cleanup():void {
         super.cleanup ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public getName ():string {
+		return this.m_name;
 	}
 
 //------------------------------------------------------------------------------------------
@@ -72,7 +79,7 @@ export class TerrainTileIcon extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-		this.m_sprite = this.createAnimatedSprite ("Terrain" + this.m_size + "x" + this.m_size +  "_" + this.m_terrain);
+		this.m_sprite = this.createAnimatedSprite (this.m_name + this.m_size + "x" + this.m_size +  "_" + this.m_terrain);
 		this.addSortableChild (this.m_sprite, 0, 0.0, true);
 		this.m_sprite.gotoAndStop (this.m_frame);
 
