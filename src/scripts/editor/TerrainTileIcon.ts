@@ -91,9 +91,7 @@ export class TerrainTileIcon extends XGameObject {
 
             var __point:PIXI.Point = new PIXI.Point ();
 
-            console.log (": mouseDown: ", this.m_frame, __interactionData.getLocalPosition (this, __point, __interactionData.global));
-
-           this.fireMouseDownSignal (e);
+	        this.fireMouseDownSignal (e);
 		});
 
         this.show ();

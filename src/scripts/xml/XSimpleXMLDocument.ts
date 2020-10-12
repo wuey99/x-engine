@@ -4,7 +4,7 @@
     import { XSimpleXMLNode } from './XSimpleXMLNode';
     
 //------------------------------------------------------------------------------------------
-	class XSimpleXMLDocument extends XSimpleXMLNode {
+	export class XSimpleXMLDocument extends XSimpleXMLNode {
 		
 //------------------------------------------------------------------------------------------
 		constructor () {

@@ -16,6 +16,8 @@ import { XGameObject} from '../gameobject/XGameObject';
 import { TerrainTile } from './TerrainTile';
 import { TerrainMisc } from './TerrainMisc';
 import { G } from '../app/G';
+import { XSimpleXMLDocument } from '../xml/XSimpleXMLDocument';
+import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 
 //------------------------------------------------------------------------------------------
 export class TerrainContainer extends XGameObject {
@@ -81,14 +83,12 @@ export class TerrainContainer extends XGameObject {
                 break;
         }
 
-        __terrainTile.afterSetup (
-            [
-                __x, __y,
-                __size,
-                __terrain,
-                __frame
-            ]
-        );
+        __terrainTile.afterSetup ([
+            __x, __y,
+            __size,
+            __terrain,
+            __frame
+        ]);
 
         this.m_terrainTiles.set (__terrainTile, 0);
 
@@ -100,6 +100,47 @@ export class TerrainContainer extends XGameObject {
         this.m_terrainTiles.delete (__terrainTile);
 
         __terrainTile.nukeLater ();
+    }
+
+//------------------------------------------------------------------------------------------
+    public deserialize (__xml:XSimpleXMLNode) {
+    }
+
+//------------------------------------------------------------------------------------------
+    public serialize ():XSimpleXMLNode {
+        var __root:XSimpleXMLDocument = new XSimpleXMLDocument ();
+        __root.setupWithParams ("terrain", "", []);
+
+        var __tilesXML:XSimpleXMLNode = new XSimpleXMLNode ();
+        __tilesXML.setupWithParams ("tiles", "", []);
+
+        __root.addChildWithXMLNode (__tilesXML);
+
+        XType.forEach (this.m_terrainTiles,
+            (x:any) => {
+                var __terrainTile:TerrainTile = x as TerrainTile; 
+
+                var __tileXML:XSimpleXMLNode = new XSimpleXMLNode ();
+                __tileXML.setupWithParams (
+                    "tile",
+                    "",
+                    [
+                        "x", __terrainTile.x,
+                        "y", __terrainTile.y,
+                        "name", __terrainTile.getName (),
+                        "size", __terrainTile.getSize (),
+                        "terrain", __terrainTile.getTerrain (),
+                        "frame", __terrainTile.getFrame ()
+                    ]
+                );
+
+                __tilesXML.addChildWithXMLNode (__tileXML);
+            }
+        );
+
+        console.log (": xml: ", __root.toXMLString ());
+        
+        return __root;
     }
 
 //------------------------------------------------------------------------------------------

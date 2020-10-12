@@ -48,15 +48,30 @@ export class TerrainEditor extends XState {
 
 		this.createObjects ();
 
+        this.initKeyboardShortcuts ();
+
+        return this;
+    }
+
+//------------------------------------------------------------------------------------------
+    public initKeyboardShortcuts ():void {
         document.addEventListener ('keydown', (key:KeyboardEvent) => {
-            // console.log (": keyDown: ", key.code);
+            console.log (": keyDown: ", key.code);
 
-            if (key.code == "Space") {
-                if (this.m_currentBrush != null) {
-                    this.m_currentBrush.nukeLater ();
+            switch (key.code) {
+                case "Space":
+                    if (this.m_currentBrush != null) {
+                        this.m_currentBrush.nukeLater ();
 
-                    this.m_currentBrush = null;
-                }
+                        this.m_currentBrush = null;
+                    }
+
+                    break;
+                
+                case "KeyS":
+                    this.m_terrainContainer.serialize ();
+
+                    break;
             }
         });
 
@@ -79,9 +94,7 @@ export class TerrainEditor extends XState {
                     );
                 }
             }
-        });
-
-        return this;
+        });;
 	}
 	
 //------------------------------------------------------------------------------------------
