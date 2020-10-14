@@ -103,6 +103,20 @@
           <classX name="TerrainMisc16x16_01" regX="0" regY="0" width="32" height="32"/>
         </resource>
       </folder>
+      <folder name="GolfBall">
+        <resource name="@GolfBall" type=".pmp" embed="false" path="Common" src="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.pmp" dst="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.pmp" pmp_width="512" originX="241" originY="241" width="29" totalWidth="29" height="29" regX="-15" regY="-15"/>
+        <resource name="png_GolfBall" type=".png" embed="false" path="Common" src="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.png" dst="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.png"/>
+        <resource name="$GolfBall" type=".json" embed="false" path="Common" src="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.json" dst="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.json"/>
+        <resource name="GolfBall" type=".fla" embed="false" path="Common" src="0027E12D-56D9-E68D-52C6-A78733726AFB-GolfBall.fla" dst="0027E12D-56D9-E68D-52C6-A78733726AFB-GolfBall.swf">
+          <classX name="GolfBall" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+        <resource name="@Reticle" type=".pmp" embed="false" path="Common" src="6089D1F0-D507-364D-40B3-0C2A2F083C15-Reticle.pmp" dst="6089D1F0-D507-364D-40B3-0C2A2F083C15-Reticle.pmp" pmp_width="512" originX="140" originY="140" width="231" totalWidth="231" height="231" regX="-116" regY="-116"/>
+        <resource name="png_Reticle" type=".png" embed="false" path="Common" src="6089D1F0-D507-364D-40B3-0C2A2F083C15-Reticle.png" dst="6089D1F0-D507-364D-40B3-0C2A2F083C15-Reticle.png"/>
+        <resource name="$Reticle" type=".json" embed="false" path="Common" src="6089D1F0-D507-364D-40B3-0C2A2F083C15-Reticle.json" dst="6089D1F0-D507-364D-40B3-0C2A2F083C15-Reticle.json"/>
+        <resource name="Reticle" type=".fla" embed="false" path="Common" src="A821F47D-E9F6-BFF1-4115-BB4AB0730F4D-Reticle.fla" dst="A821F47D-E9F6-BFF1-4115-BB4AB0730F4D-Reticle.swf">
+          <classX name="Reticle" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+      </folder>
     </folder>
     <folder name="Sketches">
       <resource name="#Sketch001" type=".pmp" embed="false" path="Common" src="65B9669A-4F2D-D829-78C6-615EF4C5F524-Sketch001.pmp" dst="65B9669A-4F2D-D829-78C6-615EF4C5F524-Sketch001.pmp"/>

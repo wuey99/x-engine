@@ -24,6 +24,10 @@ import { TerrainTile } from '../terrain/TerrainTile'
 import { TerrainContainer } from '../terrain/TerrainContainer';
 import { XSimpleXMLDocument } from '../xml/XSimpleXMLDocument';
 import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
+import { GolfBall } from '../game/GolfBall';
+import { OctopusBug } from '../game/OctopusBug';
+import * as Matter from 'matter-js';
+import { World, Body, Engine } from 'matter-js';
 
 //------------------------------------------------------------------------------------------
 export class TerrainEditor extends XState {
@@ -81,7 +85,7 @@ export class TerrainEditor extends XState {
                     console.log(": ", save.download);
                     var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(__xml.toXMLString ());
                     save.href = data;
-                    save.download = "level.dat";
+                    save.download = "level.xml";
                     (document.querySelector('.btnSave') as any).click();	
 
                     break;
@@ -94,6 +98,26 @@ export class TerrainEditor extends XState {
                         this.readSingleFile(input);
                     };
        
+                    break;
+
+                case "KeyQ":
+                    var __x:number = this.m_XApp.getMousePos ().x;
+                    var __y:number = this.m_XApp.getMousePos ().y;
+        
+                    var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
+                    __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 8, {restitution: 0.80}), 8);
+
+                    break;
+
+                case "KeyW":
+                    var __x:number = this.m_XApp.getMousePos ().x;
+                    var __y:number = this.m_XApp.getMousePos ().y;
+        
+                    var __golfBall:GolfBall = this.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
+                    __golfBall.afterSetup ([this.m_terrainContainer])
+                        .attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 15, {restitution: 0.80}), 15)
+                        .setMatterRotate (false);
+
                     break;
             }
         });
@@ -117,7 +141,7 @@ export class TerrainEditor extends XState {
                     );
                 }
             }
-        });;
+        });
 	}
 	
 //------------------------------------------------------------------------------------------

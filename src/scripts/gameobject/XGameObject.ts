@@ -45,6 +45,9 @@ export class XGameObject extends PIXI.Sprite {
 
 	public m_attachedMatterBody:Body;
 	public m_attachedDebugSprite:PIXI.Sprite;
+	public m_matterDX:number;
+	public m_matterDY:number;
+	public m_matterRotate:boolean;
 
 	public m_mouseUpSignal:XSignal;
 	public m_mouseDownSignal:XSignal;
@@ -96,6 +99,9 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_killSignal = this.createXSignal ();
 
 		this.m_attachedMatterBody = null;
+		this.m_matterDX = 0;
+		this.m_matterDY = 0;
+		this.m_matterRotate = true;
 
 		this.m_mouseUpSignal = this.createXSignal ();
 		this.m_mouseDownSignal = this.createXSignal ();
@@ -813,15 +819,33 @@ export class XGameObject extends PIXI.Sprite {
 			var __y:number;
 			var __rotation:number;
 
+			/*
 			if (this.m_attachedMatterBody != null) {
 				__x = this.m_attachedMatterBody.position.x;
 				__y = this.m_attachedMatterBody.position.y;
-				__rotation = this.m_attachedMatterBody.angle * 180 / Math.PI
+				if (this.m_matterRotate) {
+					__rotation = this.m_attachedMatterBody.angle * 180 / Math.PI;
+				} else {
+					__rotation = this.getMasterRotation ();					
+				}
 			} else {
 				__x = this.getMasterX ();
 				__y = this.getMasterY ();
 				__rotation = this.getMasterRotation ();
 			}
+			*/
+
+			if (this.m_attachedMatterBody != null) {
+				this.setMasterX (this.x = this.m_attachedMatterBody.position.x);
+				this.setMasterY (this.y = this.m_attachedMatterBody.position.y);
+				if (this.m_matterRotate) {
+					this.setMasterRotation (this.angle = this.m_attachedMatterBody.angle * 180 / Math.PI);
+				}
+			}
+
+			__x = this.getMasterX ();
+			__y = this.getMasterY ();
+			__rotation = this.getMasterRotation ();
 
 			var __visible:boolean = this.getMasterVisible ();
 			var __scaleX:number = this.getMasterScaleX () * this.m_masterScaleRatio;
@@ -904,27 +928,31 @@ export class XGameObject extends PIXI.Sprite {
     }
 
 //------------------------------------------------------------------------------------------
-	public attachMatterBodyCircle (__body:Body, __radius:number, __debug:boolean = true):void {
+	public attachMatterBodyCircle (__body:Body, __radius:number, __debug:boolean = true):XGameObject {
 		var __graphics:PIXI.Graphics = new PIXI.Graphics ();
 		__graphics.beginFill (0xff00ff);
 		__graphics.drawCircle (0, 0, __radius);
 		__graphics.endFill ();
 
 		this.attachMatterBodyDebug (__body, __graphics, __debug);
+
+		return this;
 	}
 
 //------------------------------------------------------------------------------------------
-	public attachMatterBodyRectangle (__body:Body, __rect:XRect, __debug:boolean = true):void {
+	public attachMatterBodyRectangle (__body:Body, __rect:XRect, __debug:boolean = true):XGameObject {
 		var __graphics:PIXI.Graphics = new PIXI.Graphics ();
 		__graphics.beginFill (0xff00ff);
 		__graphics.drawRect (-__rect.width/2, -__rect.height/2, __rect.width, __rect.height);
 		__graphics.endFill ();
 
 		this.attachMatterBodyDebug (__body, __graphics, __debug);
+
+		return this;
 	}
 
 //------------------------------------------------------------------------------------------
-	public attachMatterBodyVertices (__body:Body, __vertices:Array<any>, __debug:boolean = true):void {
+	public attachMatterBodyVertices (__body:Body, __vertices:Array<any>, __debug:boolean = true):XGameObject {
 		var __graphics:PIXI.Graphics = new PIXI.Graphics ();
 		__graphics.beginFill (0xff00ff);
 
@@ -937,6 +965,8 @@ export class XGameObject extends PIXI.Sprite {
 		__graphics.alpha = 0.33;
 
 		 this.attachMatterBodyDebug (__body, __graphics, __debug);
+
+		 return this;
 	}
 
 //------------------------------------------------------------------------------------------
@@ -945,8 +975,8 @@ export class XGameObject extends PIXI.Sprite {
 
 		var __vector = Matter.Vertices.centre (__vertices);
 
-		__vector.x = 0;
-		__vector.y = 0;
+		this.m_matterDX = __vector.x;
+		this.m_matterDY = __vector.y;
 		
 		this.setPivot (__vector.x, __vector.y);
 
@@ -960,21 +990,40 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public attachMatterBodyDebug (__body:Body, __graphics:PIXI.Graphics, __debug:boolean = false):void {
+	public getMatterDX ():number {
+		return this.m_matterDX;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getMatterDY ():number {
+		return this.m_matterDY;
+	}
+
+//------------------------------------------------------------------------------------------
+	public setMatterRotate (__value:boolean):void {
+		this.m_matterRotate = __value;
+	}
+
+//------------------------------------------------------------------------------------------
+	public attachMatterBodyDebug (__body:Body, __graphics:PIXI.Graphics, __debug:boolean = false):XGameObject {
 		this.m_attachedDebugSprite = new PIXI.Sprite ();
-		if (__debug) {
+		__debug = false; if (__debug) {
 			this.m_attachedDebugSprite.addChild (__graphics);
 		}
 		this.addSortableChild (this.m_attachedDebugSprite, this.getLayer (), this.getDepth ());
 
 		this.attachMatterBody (__body);
+
+		return this;
 	}
 
 //------------------------------------------------------------------------------------------
-    public attachMatterBody (__body:Body):void {
+    public attachMatterBody (__body:Body):XGameObject {
 		this.m_attachedMatterBody = __body;
 
 		Matter.World.add (this.world.getMatterEngine ().world, __body);
+
+		return this;
     }
 
 //------------------------------------------------------------------------------------------
@@ -986,6 +1035,11 @@ export class XGameObject extends PIXI.Sprite {
 		}
     }
 
+//------------------------------------------------------------------------------------------
+	public getMatterBody ():Matter.Body {
+		return this.m_attachedMatterBody;
+	}
+	
 //------------------------------------------------------------------------------------------
 	public show ():void {
 		this.visible = true;

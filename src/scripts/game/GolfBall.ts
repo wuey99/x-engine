@@ -14,11 +14,17 @@ import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
 import { EnemyX } from '../objects/EnemyX';
+import { TerrainContainer } from '../terrain/TerrainContainer';
+import * as Matter from 'matter-js';
 
 //------------------------------------------------------------------------------------------
-export class OctopusBug extends EnemyX {
+export class GolfBall extends XGameObject {
     public m_sprite:PIXI.AnimatedSprite;
     public x_sprite:XDepthSprite;
+
+	public m_terrainContainer:TerrainContainer;
+
+	public m_mouseDownFlag:boolean;
 
     public script:XTask;
 
@@ -38,6 +44,10 @@ export class OctopusBug extends EnemyX {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
+		this.m_terrainContainer = __params[0];
+
+		this.m_mouseDownFlag = false;
+
         this.createSprites ();
 
         this.script = this.addEmptyTask ();
@@ -54,11 +64,91 @@ export class OctopusBug extends EnemyX {
     
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-        this.m_sprite = this.createAnimatedSprite ("OctopusBug");
+        this.m_sprite = this.createAnimatedSprite ("GolfBall");
         this.addSortableChild (this.m_sprite, 0, 0.0, false);
 
-        this.show ();
+		this.show ();
+		
+		this.m_sprite.interactive = true;
+		this.m_sprite.interactiveChildren = true;
+
+        this.m_sprite.on ("mousedown", (e:PIXI.InteractionEvent) => {
+			this.m_mouseDownFlag = true;
+
+			this.m_terrainContainer.clearGraphics ();
+
+			console.log (": mousedown: ");
+		});
+
+        this.m_XApp.getStage ().on ("mouseup", (e:PIXI.InteractionEvent) => {
+			if (this.m_mouseDownFlag) {
+				this.m_mouseDownFlag = false;
+				
+				this.ballRelease (e);
+
+				console.log (": mouseup: ");
+			}
+		});
+
+		this.m_XApp.getStage ().on ("mouseleave", (e:PIXI.InteractionEvent) => {
+			if (this.m_mouseDownFlag) {
+				this.m_mouseDownFlag = false;
+				
+				this.ballRelease (e);
+
+				console.log (": mouseleave: ");
+			}
+		});
+
+		this.m_XApp.getStage ().on ("mouseout", (e:PIXI.InteractionEvent) => {
+			if (this.m_mouseDownFlag) {
+				this.m_mouseDownFlag = false;
+				
+				this.ballRelease (e);
+
+				console.log (": mouseout: ");
+			}
+		});
+
+        this.m_sprite.on ("mousemove", (e:PIXI.InteractionEvent) => {
+            var __interactionData:PIXI.InteractionData = e.data;
+
+			if (this.m_mouseDownFlag) {
+				this.m_terrainContainer.drawForceVector (this.x, this.y, __interactionData.global.x, __interactionData.global.y);
+
+				console.log (": ", __interactionData.global.x, __interactionData.global.y);
+			}
+		});
     }
+
+	//------------------------------------------------------------------------------------------
+	public ballRelease (e:PIXI.InteractionEvent):void {
+		this.m_terrainContainer.clearGraphics ();
+
+		console.log (": ball released: ");
+
+		var __interactionData:PIXI.InteractionData = e.data;
+
+		var __x:number = __interactionData.global.x;
+		var __y:number = __interactionData.global.y;
+
+		var __dx:number = (this.x - __x) / 2048;
+		var __dy:number = (this.y - __y) / 2048;
+
+		console.log (": applyForce: ", __dx, __dy);
+
+		Matter.Body.applyForce (
+			this.getMatterBody (),
+			{
+				x: this.getMatterBody ().position.x,
+				y: this.getMatterBody ().position.y
+			},
+			{
+				x: __dx,
+				y: __dy,	
+			}
+		);
+	}
 
 	//------------------------------------------------------------------------------------------
 	public Idle_Script ():void {
@@ -73,7 +163,7 @@ export class OctopusBug extends EnemyX {
 					XTask.LABEL, "loop",
 						XTask.WAIT, 0x0100,
 						
-						XTask.GOTO, "loop",
+					    XTask.GOTO, "loop",
 						
 					XTask.RETN,
 				]);	
@@ -83,14 +173,7 @@ export class OctopusBug extends EnemyX {
 			// animation
 			//------------------------------------------------------------------------------------------	
 			XTask.LABEL, "loop",
-                () => { this.m_sprite.gotoAndStop (0); }, XTask.WAIT, 0x0200,
-                () => { this.m_sprite.gotoAndStop (1); }, XTask.WAIT, 0x0200,
-                () => { this.m_sprite.gotoAndStop (2); }, XTask.WAIT, 0x0200,
-                () => { this.m_sprite.gotoAndStop (3); }, XTask.WAIT, 0x0200,
-                () => { this.m_sprite.gotoAndStop (4); }, XTask.WAIT, 0x0200,
-                () => { this.m_sprite.gotoAndStop (5); }, XTask.WAIT, 0x0200,
-                () => { this.m_sprite.gotoAndStop (6); }, XTask.WAIT, 0x0200,
-                () => { this.m_sprite.gotoAndStop (7); }, XTask.WAIT, 0x0200,
+                XTask.WAIT, 0x0100,
 					
 				XTask.GOTO, "loop",
 				
