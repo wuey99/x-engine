@@ -33,6 +33,12 @@ import { World, Body, Engine } from 'matter-js';
 export class TerrainEditor extends XState {
     public m_currentBrush:TerrainTileBrush;
     public m_terrainContainer:TerrainContainer;
+    public m_ctrlKeyDown:boolean;
+
+    public m_bgProperty:any;
+    public m_fgProperty:any;
+    public m_platformProperty:any;
+    public m_terrainProperty:any;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -58,65 +64,138 @@ export class TerrainEditor extends XState {
 
         this.createInputHandlers ();
 
+        this.createPropertyForms ();
+
         return this;
+    }
+
+
+//------------------------------------------------------------------------------------------
+    public createPropertyForms ():void {
+        this.m_bgProperty = document.createElement ("input");
+        this.m_bgProperty.id = "__bg";
+        this.m_fgProperty = document.createElement ("input");
+        this.m_fgProperty.id = "__fg";
+        this.m_platformProperty = document.createElement ("input");
+        this.m_platformProperty.id = "__platform";
+        this.m_terrainProperty = document.createElement ("input");
+        this.m_terrainProperty.id = "__terrain";
+
+        this.appendLabel ("background: ");
+        this.m_XApp.container.appendChild (this.m_bgProperty);
+        this.appendLabel ("foreground: ");
+        this.m_XApp.container.appendChild (this.m_fgProperty);
+        this.appendLabel ("platform: ");
+        this.m_XApp.container.appendChild (this.m_platformProperty);
+        this.appendLabel ("terrain: ");
+        this.m_XApp.container.appendChild (this.m_terrainProperty);
+    }
+
+//------------------------------------------------------------------------------------------
+    public appendLabel (__text:string):void {
+        var __label = document.createElement ("label");
+        __label.appendChild (document.createTextNode (__text));
+        this.m_XApp.container.appendChild (__label);
+    }
+
+//------------------------------------------------------------------------------------------
+    public formHasFocus ():boolean {
+        if (
+            document.activeElement == document.getElementById ("__bg") ||
+            document.activeElement == document.getElementById ("__fg") ||
+            document.activeElement == document.getElementById ("__platform") ||
+            document.activeElement == document.getElementById ("__terrain")
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 //------------------------------------------------------------------------------------------
     public createInputHandlers ():void {
+        this.m_ctrlKeyDown = false;
+
         document.addEventListener ('keydown', (key:KeyboardEvent) => {
             console.log (": keyDown: ", key.code);
 
             switch (key.code) {
-                case "Space":
-                    if (this.m_currentBrush != null) {
-                        this.m_currentBrush.nukeLater ();
+                case "ControlLeft":
+                    this.m_ctrlKeyDown = true;
 
-                        this.m_currentBrush = null;
+                    break;
+
+                case "Space":
+                    if (!this.formHasFocus ()) {
+                        if (this.m_currentBrush != null) {
+                            this.m_currentBrush.nukeLater ();
+
+                            this.m_currentBrush = null;
+                        }
                     }
 
                     break;
                 
                 case "KeyS":
-                    var __xml:XSimpleXMLNode = this.m_terrainContainer.serialize ();
+                    if (!this.formHasFocus ()) {
+                        var __xml:XSimpleXMLNode = this.m_terrainContainer.serialize ();
 
-                    console.log (": xml: ", __xml.toXMLString ());
-        
-                    var save:any = document.querySelector('.btnSave');
-                    console.log(": ", save.download);
-                    var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(__xml.toXMLString ());
-                    save.href = data;
-                    save.download = "level.xml";
-                    (document.querySelector('.btnSave') as any).click();	
+                        console.log (": xml: ", __xml.toXMLString ());
+            
+                        var save:any = document.querySelector('.btnSave');
+                        console.log(": ", save.download);
+                        var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(__xml.toXMLString ());
+                        save.href = data;
+                        save.download = "level.xml";
+                        (document.querySelector('.btnSave') as any).click();	
+                        }
 
                     break;
 
                 case "KeyL":
-                    (document.querySelector('.inputFile') as any).click();	
-                    var input:any = document.querySelector('.inputFile');
-                    input.onchange = () => {
-                        console.log(": changed: ", this, input.files[0]);
-                        this.readSingleFile(input);
-                    };
-       
+                    if (!this.formHasFocus ()) {
+                        (document.querySelector('.inputFile') as any).click();	
+                        var input:any = document.querySelector('.inputFile');
+                        input.onchange = () => {
+                            console.log(": changed: ", this, input.files[0]);
+                            this.readSingleFile(input);
+                        };
+                    }
+
                     break;
 
                 case "KeyQ":
-                    var __x:number = this.m_XApp.getMousePos ().x;
-                    var __y:number = this.m_XApp.getMousePos ().y;
-        
-                    var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
-                    __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 8, {restitution: 0.80}), 8);
-
+                    if (!this.formHasFocus ()) {
+                        var __x:number = this.m_XApp.getMousePos ().x;
+                        var __y:number = this.m_XApp.getMousePos ().y;
+            
+                        var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
+                        __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 8, {restitution: 0.80}), 8);
+                    }
+                    
                     break;
 
                 case "KeyW":
-                    var __x:number = this.m_XApp.getMousePos ().x;
-                    var __y:number = this.m_XApp.getMousePos ().y;
-        
-                    var __golfBall:GolfBall = this.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
-                    __golfBall.afterSetup ([this.m_terrainContainer])
-                        .attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 15, {restitution: 0.80}), 15)
-                        .setMatterRotate (false);
+                    if (!this.formHasFocus ()) {
+                        var __x:number = this.m_XApp.getMousePos ().x;
+                        var __y:number = this.m_XApp.getMousePos ().y;
+            
+                        var __golfBall:GolfBall = this.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
+                        __golfBall.afterSetup ([this.m_terrainContainer])
+                            .attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 15, {restitution: 0.80}), 15)
+                            .setMatterRotate (false);
+                    }
+
+                    break;
+            }
+        });
+
+        document.addEventListener ('keyup', (key:KeyboardEvent) => {
+            console.log (": keyUp: ", key.code);
+
+            switch (key.code) {
+                case "ControlLeft":
+                    this.m_ctrlKeyDown = true;
 
                     break;
             }
@@ -145,7 +224,7 @@ export class TerrainEditor extends XState {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup():void {
+	public cleanup ():void {
         super.cleanup ();
 	}
     
