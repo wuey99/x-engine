@@ -23,7 +23,7 @@ export class TerrainTileBrush extends XGameObject {
     
     public m_name:string;
 	public m_size:number;
-	public m_terrain:string;
+	public m_world:string;
 	public m_frame:number;
 
     public script:XTask;
@@ -48,7 +48,7 @@ export class TerrainTileBrush extends XGameObject {
 
         this.m_name = __params[0] as string;
 		this.m_size = __params[1] as number;
-		this.m_terrain = __params[2] as string;
+		this.m_world = __params[2] as string;
 		this.m_frame = __params[3] as number;
 
         this.m_droppedSignal = this.createXSignal ();
@@ -90,8 +90,8 @@ export class TerrainTileBrush extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
-    public getTerrain ():string {
-        return this.m_terrain;
+    public getWorld ():string {
+        return this.m_world;
     }
 
 //------------------------------------------------------------------------------------------
@@ -111,11 +111,11 @@ export class TerrainTileBrush extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-		this.m_sprite = this.createAnimatedSprite (this.m_name + this.m_size + "x" + this.m_size +  "_" + this.m_terrain);
+		this.m_sprite = this.createAnimatedSprite (this.m_world + "_" + this.m_name + this.m_size + "x" + this.m_size);
 		this.addSortableChild (this.m_sprite, 0, 0.0, true);
         this.m_sprite.gotoAndStop (this.m_frame);
         
-        console.log (": TerrainTileBrush: ", this.m_size, this.m_terrain, this.m_frame);
+        console.log (": TerrainTileBrush: ", this.m_size, this.m_world, this.m_frame);
 
         this.show ();
     }

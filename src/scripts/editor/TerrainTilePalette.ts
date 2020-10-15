@@ -19,7 +19,7 @@ import { TerrainTileIcon } from './TerrainTileIcon';
 export class TerrainTilePalette extends XGameObject {
 	public m_name:string;
 	public m_size:number;
-    public m_terrain:string;
+    public m_world:string;
     
     public m_selectedSignal:XSignal;
 
@@ -41,7 +41,7 @@ export class TerrainTilePalette extends XGameObject {
 
 		this.m_name = __params[0];
 		this.m_size = __params[1];
-		this.m_terrain = __params[2];
+		this.m_world = __params[2];
 
 		var __numIcons:number = __params[3];
 
@@ -51,7 +51,7 @@ export class TerrainTilePalette extends XGameObject {
 
 		for (i = 0; i < __numIcons; i++) {
 			var __terrainTileIcon:TerrainTileIcon = this.addGameObjectAsChild (TerrainTileIcon) as TerrainTileIcon;
-			__terrainTileIcon.afterSetup ([this.m_name, this.m_size, this.m_terrain, i]);
+			__terrainTileIcon.afterSetup ([this.m_name, this.m_size, this.m_world, i]);
 			__terrainTileIcon.x = i * (this.m_size + 8);
             __terrainTileIcon.y = 0;
             

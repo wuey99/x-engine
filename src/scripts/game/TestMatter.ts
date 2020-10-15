@@ -85,7 +85,7 @@ export class TestMatter extends XState {
             [
                 G.SCREEN_WIDTH/2, 96,
                 16,
-                "01",
+                "Earth",
                 1
             ]
         );

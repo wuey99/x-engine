@@ -151,7 +151,7 @@ export class TerrainContainer extends XGameObject {
                 __tileXML.getAttributeFloat ("y"),
                 __tileXML.getAttributeString ("name"),
                 __tileXML.getAttributeInt ("size"),
-                "0" + __tileXML.getAttributeString ("terrain"),
+                __tileXML.getAttributeString ("world"),
                 __tileXML.getAttributeInt ("frame")
             );
         }
@@ -180,7 +180,7 @@ export class TerrainContainer extends XGameObject {
                         "y", __terrainTile.y - __terrainTile.getMatterDY (),
                         "name", __terrainTile.getName (),
                         "size", __terrainTile.getSize (),
-                        "terrain", __terrainTile.getTerrain (),
+                        "world", __terrainTile.getWorld (),
                         "frame", __terrainTile.getFrame ()
                     ]
                 );

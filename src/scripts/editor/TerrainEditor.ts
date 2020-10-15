@@ -221,7 +221,7 @@ export class TerrainEditor extends XState {
                     this.createTerrainTileBrush (
                         __terrainTile.getName (),
                         __terrainTile.getSize (),
-                        __terrainTile.getTerrain (),
+                        __terrainTile.getWorld (),
                         __terrainTile.getFrame ()
                     );
                 }
@@ -277,28 +277,28 @@ export class TerrainEditor extends XState {
 		var __y:number = 16;
 
 		var __terrainTilePalette64:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 0.0) as TerrainTilePalette;
-		__terrainTilePalette64.afterSetup (["Terrain", 64, "01", TerrainTileIcon.MAX_ICONS]);
+		__terrainTilePalette64.afterSetup (["Terrain", 64, "Earth", TerrainTileIcon.MAX_ICONS]);
 		__terrainTilePalette64.x = 16;
 		__terrainTilePalette64.y = __y;
         __terrainTilePalette64.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
         __y += 64 + 8;
 
 		var __terrainTilePalette32:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 0.0) as TerrainTilePalette;
-		__terrainTilePalette32.afterSetup (["Terrain", 32, "01", TerrainTileIcon.MAX_ICONS]);
+		__terrainTilePalette32.afterSetup (["Terrain", 32, "Earth", TerrainTileIcon.MAX_ICONS]);
 		__terrainTilePalette32.x = 16;
 		__terrainTilePalette32.y = __y;
         __terrainTilePalette32.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
         __y += 32 + 8;
         
 		var __terrainTilePalette16:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 0.0) as TerrainTilePalette;
-		__terrainTilePalette16.afterSetup (["Terrain", 16, "01", TerrainTileIcon.MAX_ICONS]);
+		__terrainTilePalette16.afterSetup (["Terrain", 16, "Earth", TerrainTileIcon.MAX_ICONS]);
 		__terrainTilePalette16.x = 16;
         __terrainTilePalette16.y = __y;
         __terrainTilePalette16.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
         __y += 16 + 8;
 
 		var __terrainTileMisc:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 0.0) as TerrainTilePalette;
-		__terrainTileMisc.afterSetup (["TerrainMisc", 16, "01", 16]);
+		__terrainTileMisc.afterSetup (["TerrainMisc", 16, "Earth", 16]);
 		__terrainTileMisc.x = 16;
         __terrainTileMisc.y = __y;
         __terrainTileMisc.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
@@ -309,7 +309,7 @@ export class TerrainEditor extends XState {
         this.createTerrainTileBrush (
             __terrainTileIcon.getName (),
             __terrainTileIcon.getSize (),
-            __terrainTileIcon.getTerrain (),
+            __terrainTileIcon.getWorld (),
             __terrainTileIcon.getFrame ()
         );
     }
@@ -330,7 +330,7 @@ export class TerrainEditor extends XState {
                     this.m_currentBrush.x + __dx, this.m_currentBrush.y + __dy,
                     this.m_currentBrush.getName (),
                     this.m_currentBrush.getSize (),
-                    this.m_currentBrush.getTerrain (),
+                    this.m_currentBrush.getWorld (),
                     this.m_currentBrush.getFrame ()
                 )
             });

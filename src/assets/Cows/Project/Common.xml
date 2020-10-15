@@ -78,29 +78,32 @@
         </resource>
       </folder>
       <folder name="Terrain">
-        <resource name="@Terrain64x64_01" type=".pmp" embed="false" path="Common" src="E57E481F-B338-3572-171A-6F8019E47BEB-Terrain64x64_01.pmp" dst="E57E481F-B338-3572-171A-6F8019E47BEB-Terrain64x64_01.pmp" pmp_width="512" originX="240" originY="240" width="64" totalWidth="1344" height="64" regX="0" regY="0"/>
-        <resource name="png_Terrain64x64_01" type=".png" embed="false" path="Common" src="E57E481F-B338-3572-171A-6F8019E47BEB-Terrain64x64_01.png" dst="E57E481F-B338-3572-171A-6F8019E47BEB-Terrain64x64_01.png"/>
-        <resource name="$Terrain64x64_01" type=".json" embed="false" path="Common" src="E57E481F-B338-3572-171A-6F8019E47BEB-Terrain64x64_01.json" dst="E57E481F-B338-3572-171A-6F8019E47BEB-Terrain64x64_01.json"/>
-        <resource name="Terrain64x64_01" type=".fla" embed="false" path="Common" src="DA0A8B6C-0E26-D0C6-099A-435F56AF80A7-Terrain64x64_01.fla" dst="DA0A8B6C-0E26-D0C6-099A-435F56AF80A7-Terrain64x64_01.swf">
-          <classX name="Terrain64x64_01" regX="0" regY="0" width="32" height="32"/>
+        <resource name="@Earth_Terrain64x64" type=".pmp" embed="false" path="Common" src="E57E481F-B338-3572-171A-6F8019E47BEB-Earth_Terrain64x64.pmp" dst="E57E481F-B338-3572-171A-6F8019E47BEB-Earth_Terrain64x64.pmp" pmp_width="512" originX="240" originY="240" width="64" totalWidth="1344" height="64" regX="0" regY="0"/>
+        <resource name="png_Earth_Terrain64x64" type=".png" embed="false" path="Common" src="E57E481F-B338-3572-171A-6F8019E47BEB-Earth_Terrain64x64.png" dst="E57E481F-B338-3572-171A-6F8019E47BEB-Earth_Terrain64x64.png"/>
+        <resource name="$Earth_Terrain64x64" type=".json" embed="false" path="Common" src="E57E481F-B338-3572-171A-6F8019E47BEB-Earth_Terrain64x64.json" dst="E57E481F-B338-3572-171A-6F8019E47BEB-Earth_Terrain64x64.json"/>
+        <resource name="Earth_Terrain64x64" type=".fla" embed="false" path="Common" src="DA0A8B6C-0E26-D0C6-099A-435F56AF80A7-Earth_Terrain64x64.fla" dst="DA0A8B6C-0E26-D0C6-099A-435F56AF80A7-Earth_Terrain64x64.swf">
+          <classX name="Earth_Terrain64x64" regX="0" regY="0" width="32" height="32"/>
         </resource>
-        <resource name="@Terrain32x32_01" type=".pmp" embed="false" path="Common" src="F5C76A17-8379-0F12-9921-D8A00DA60A67-Terrain32x32_01.pmp" dst="F5C76A17-8379-0F12-9921-D8A00DA60A67-Terrain32x32_01.pmp" pmp_width="512" originX="240" originY="240" width="32" totalWidth="672" height="32" regX="0" regY="0"/>
-        <resource name="png_Terrain32x32_01" type=".png" embed="false" path="Common" src="F5C76A17-8379-0F12-9921-D8A00DA60A67-Terrain32x32_01.png" dst="F5C76A17-8379-0F12-9921-D8A00DA60A67-Terrain32x32_01.png"/>
-        <resource name="$Terrain32x32_01" type=".json" embed="false" path="Common" src="F5C76A17-8379-0F12-9921-D8A00DA60A67-Terrain32x32_01.json" dst="F5C76A17-8379-0F12-9921-D8A00DA60A67-Terrain32x32_01.json"/>
-        <resource name="Terrain32x32_01" type=".fla" embed="false" path="Common" src="0C0E623E-B51E-B615-9E43-74A00DD667E8-Terrain32x32_01.fla" dst="0C0E623E-B51E-B615-9E43-74A00DD667E8-Terrain32x32_01.swf">
-          <classX name="Terrain32x32_01" regX="0" regY="0" width="32" height="32"/>
+        <resource name="@Earth_Terrain32x32" type=".pmp" embed="false" path="Common" src="F5C76A17-8379-0F12-9921-D8A00DA60A67-Earth_Terrain32x32.pmp" dst="F5C76A17-8379-0F12-9921-D8A00DA60A67-Earth_Terrain32x32.pmp" pmp_width="512" originX="240" originY="240" width="32" totalWidth="672" height="32" regX="0" regY="0"/>
+        <resource name="png_Earth_Terrain32x32" type=".png" embed="false" path="Common" src="F5C76A17-8379-0F12-9921-D8A00DA60A67-Earth_Terrain32x32.png" dst="F5C76A17-8379-0F12-9921-D8A00DA60A67-Earth_Terrain32x32.png"/>
+        <resource name="$Earth_Terrain32x32" type=".json" embed="false" path="Common" src="F5C76A17-8379-0F12-9921-D8A00DA60A67-Earth_Terrain32x32.json" dst="F5C76A17-8379-0F12-9921-D8A00DA60A67-Earth_Terrain32x32.json"/>
+        <resource name="Earth_Terrain32x32" type=".fla" embed="false" path="Common" src="0C0E623E-B51E-B615-9E43-74A00DD667E8-Earth_Terrain32x32.fla" dst="0C0E623E-B51E-B615-9E43-74A00DD667E8-Earth_Terrain32x32.swf">
+          <classX name="Earth_Terrain32x32" regX="0" regY="0" width="32" height="32"/>
         </resource>
-        <resource name="@Terrain16x16_01" type=".pmp" embed="false" path="Common" src="511C3D8D-DD56-6A2E-8E6A-849F61762980-Terrain16x16_01.pmp" dst="511C3D8D-DD56-6A2E-8E6A-849F61762980-Terrain16x16_01.pmp" pmp_width="512" originX="256" originY="240" width="16" totalWidth="608" height="16" regX="0" regY="0"/>
-        <resource name="png_Terrain16x16_01" type=".png" embed="false" path="Common" src="511C3D8D-DD56-6A2E-8E6A-849F61762980-Terrain16x16_01.png" dst="511C3D8D-DD56-6A2E-8E6A-849F61762980-Terrain16x16_01.png"/>
-        <resource name="$Terrain16x16_01" type=".json" embed="false" path="Common" src="511C3D8D-DD56-6A2E-8E6A-849F61762980-Terrain16x16_01.json" dst="511C3D8D-DD56-6A2E-8E6A-849F61762980-Terrain16x16_01.json"/>
-        <resource name="Terrain16x16_01" type=".fla" embed="false" path="Common" src="A8BD5864-592A-B2B0-3228-89DBD1BDE5A8-Terrain16x16_01.fla" dst="A8BD5864-592A-B2B0-3228-89DBD1BDE5A8-Terrain16x16_01.swf">
-          <classX name="Terrain16x16_01" regX="0" regY="0" width="32" height="32"/>
+        <resource name="@Earth_Terrain16x16" type=".pmp" embed="false" path="Common" src="511C3D8D-DD56-6A2E-8E6A-849F61762980-Earth_Terrain16x16.pmp" dst="511C3D8D-DD56-6A2E-8E6A-849F61762980-Earth_Terrain16x16.pmp" pmp_width="512" originX="256" originY="240" width="16" totalWidth="608" height="16" regX="0" regY="0"/>
+        <resource name="png_Earth_Terrain16x16" type=".png" embed="false" path="Common" src="511C3D8D-DD56-6A2E-8E6A-849F61762980-Earth_Terrain16x16.png" dst="511C3D8D-DD56-6A2E-8E6A-849F61762980-Earth_Terrain16x16.png"/>
+        <resource name="$Earth_Terrain16x16" type=".json" embed="false" path="Common" src="511C3D8D-DD56-6A2E-8E6A-849F61762980-Earth_Terrain16x16.json" dst="511C3D8D-DD56-6A2E-8E6A-849F61762980-Earth_Terrain16x16.json"/>
+        <resource name="Earth_Terrain16x16" type=".fla" embed="false" path="Common" src="A8BD5864-592A-B2B0-3228-89DBD1BDE5A8-Earth_Terrain16x16.fla" dst="A8BD5864-592A-B2B0-3228-89DBD1BDE5A8-Earth_Terrain16x16.swf">
+          <classX name="Earth_Terrain16x16" regX="0" regY="0" width="32" height="32"/>
         </resource>
-        <resource name="@TerrainMisc16x16_01" type=".pmp" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-TerrainMisc16x16_01.pmp" dst="44000422-4620-7139-86D0-2B66FF71260B-TerrainMisc16x16_01.pmp" pmp_width="512" originX="240" originY="240" width="16" totalWidth="256" height="16" regX="0" regY="0"/>
-        <resource name="png_TerrainMisc16x16_01" type=".png" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-TerrainMisc16x16_01.png" dst="44000422-4620-7139-86D0-2B66FF71260B-TerrainMisc16x16_01.png"/>
-        <resource name="$TerrainMisc16x16_01" type=".json" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-TerrainMisc16x16_01.json" dst="44000422-4620-7139-86D0-2B66FF71260B-TerrainMisc16x16_01.json"/>
-        <resource name="TerrainMisc16x16_01" type=".fla" embed="false" path="Common" src="4A21202B-5AD0-0AF1-A85E-E003BD94F006-TerrainMisc16x16_01.fla" dst="4A21202B-5AD0-0AF1-A85E-E003BD94F006-TerrainMisc16x16_01.swf">
-          <classX name="TerrainMisc16x16_01" regX="0" regY="0" width="32" height="32"/>
+        <resource name="@Earth_TerrainMisc16x16" type=".pmp" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-Earth_TerrainMisc16x16.pmp" dst="44000422-4620-7139-86D0-2B66FF71260B-Earth_TerrainMisc16x16.pmp" pmp_width="512" originX="240" originY="240" width="16" totalWidth="256" height="16" regX="0" regY="0"/>
+        <resource name="png_Earth_TerrainMisc16x16" type=".png" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-Earth_TerrainMisc16x16.png" dst="44000422-4620-7139-86D0-2B66FF71260B-Earth_TerrainMisc16x16.png"/>
+        <resource name="$Earth_TerrainMisc16x16" type=".json" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-Earth_TerrainMisc16x16.json" dst="44000422-4620-7139-86D0-2B66FF71260B-Earth_TerrainMisc16x16.json"/>
+        <resource name="Earth_TerrainMisc16x16" type=".fla" embed="false" path="Common" src="D3583A46-2189-79D4-08E4-990B896B365A-Earth_TerrainMisc16x16.fla" dst="D3583A46-2189-79D4-08E4-990B896B365A-Earth_TerrainMisc16x16.swf">
+          <classX name="Earth_TerrainMisc16x16" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+        <resource name="Eartth_TerrainMisc16x16" type=".fla" embed="false" path="Common" src="4A21202B-5AD0-0AF1-A85E-E003BD94F006-Earth_TerrainMisc16x16.fla" dst="4A21202B-5AD0-0AF1-A85E-E003BD94F006-Earth_TerrainMisc16x16.swf">
+          <classX name="Earth_TerrainMisc16x16" regX="0" regY="0" width="32" height="32"/>
         </resource>
       </folder>
       <folder name="GolfBall">
