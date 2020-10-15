@@ -117,6 +117,29 @@
           <classX name="Reticle" regX="0" regY="0" width="32" height="32"/>
         </resource>
       </folder>
+      <folder name="Worlds">
+        <folder name="Earth">
+          <folder name="Terrain"/>
+          <folder name="Layers">
+            <resource name="@Earth_Layers_Background" type=".pmp" embed="false" path="Common" src="A76EB61C-0F08-9F5C-B048-3932F4E7B06A-Earth_Layers_Background.pmp" dst="A76EB61C-0F08-9F5C-B048-3932F4E7B06A-Earth_Layers_Background.pmp" pmp_width="2048" originX="379" originY="728" width="1366" totalWidth="1366" height="546" regX="0" regY="0"/>
+            <resource name="png_Earth_Layers_Background" type=".png" embed="false" path="Common" src="A76EB61C-0F08-9F5C-B048-3932F4E7B06A-Earth_Layers_Background.png" dst="A76EB61C-0F08-9F5C-B048-3932F4E7B06A-Earth_Layers_Background.png"/>
+            <resource name="$Earth_Layers_Background" type=".json" embed="false" path="Common" src="A76EB61C-0F08-9F5C-B048-3932F4E7B06A-Earth_Layers_Background.json" dst="A76EB61C-0F08-9F5C-B048-3932F4E7B06A-Earth_Layers_Background.json"/>
+            <resource name="Earth_Layers_Background" type=".fla" embed="false" path="Common" src="35AC25AB-ED1E-37F3-593A-FD48E9D53BB3-Earth_Layers_Background.fla" dst="35AC25AB-ED1E-37F3-593A-FD48E9D53BB3-Earth_Layers_Background.swf">
+              <classX name="Earth_Layers_Background" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+            <resource name="@Earth_Layers_Platform" type=".pmp" embed="false" path="Common" src="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.pmp" dst="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.pmp" pmp_width="2048" originX="459" originY="1062" width="1070" totalWidth="1070" height="207" regX="0" regY="0"/>
+            <resource name="png_Earth_Layers_Platform" type=".png" embed="false" path="Common" src="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.png" dst="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.png"/>
+            <resource name="$Earth_Layers_Platform" type=".json" embed="false" path="Common" src="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.json" dst="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.json"/>
+            <resource name="Earth_Layers_Platform" type=".fla" embed="false" path="Common" src="F21849F8-3B50-804B-AF28-539F9389ECCD-Earth_Layers_Platform.fla" dst="F21849F8-3B50-804B-AF28-539F9389ECCD-Earth_Layers_Platform.swf">
+              <classX name="Earth_Layers_Platform" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+          </folder>
+          <folder name="Sprites"/>
+        </folder>
+        <folder name="Mars"/>
+        <folder name="Moon"/>
+        <folder name="Ice"/>
+      </folder>
     </folder>
     <folder name="Sketches">
       <resource name="#Sketch001" type=".pmp" embed="false" path="Common" src="65B9669A-4F2D-D829-78C6-615EF4C5F524-Sketch001.pmp" dst="65B9669A-4F2D-D829-78C6-615EF4C5F524-Sketch001.pmp"/>

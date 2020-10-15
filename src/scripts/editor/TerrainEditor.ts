@@ -81,14 +81,20 @@ export class TerrainEditor extends XState {
         this.m_terrainProperty = document.createElement ("input");
         this.m_terrainProperty.id = "__terrain";
 
-        this.appendLabel ("background: ");
+        this.appendLineBreak ();
+        this.appendLabel ("bg: ");
         this.m_XApp.container.appendChild (this.m_bgProperty);
-        this.appendLabel ("foreground: ");
+        this.appendLabel ("fg: ");
         this.m_XApp.container.appendChild (this.m_fgProperty);
         this.appendLabel ("platform: ");
         this.m_XApp.container.appendChild (this.m_platformProperty);
         this.appendLabel ("terrain: ");
         this.m_XApp.container.appendChild (this.m_terrainProperty);
+    }
+
+//------------------------------------------------------------------------------------------
+    public appendLineBreak ():void {
+        this.m_XApp.container.appendChild (document.createElement ("br"));
     }
 
 //------------------------------------------------------------------------------------------
