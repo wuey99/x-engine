@@ -50,7 +50,7 @@ export class TerrainTilePalette extends XGameObject {
 		var i:number;
 
 		for (i = 0; i < __numIcons; i++) {
-			var __terrainTileIcon:TerrainTileIcon = this.addGameObjectAsChild (TerrainTileIcon) as TerrainTileIcon;
+			var __terrainTileIcon:TerrainTileIcon = this.addGameObjectAsChild (TerrainTileIcon, this.getLayer (), this.getDepth ()) as TerrainTileIcon;
 			__terrainTileIcon.afterSetup ([this.m_name, this.m_size, this.m_world, i]);
 			__terrainTileIcon.x = i * (this.m_size + 8);
             __terrainTileIcon.y = 0;
