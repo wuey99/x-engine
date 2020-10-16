@@ -148,6 +148,21 @@ export class TerrainEditor extends XState {
     }
 
 //------------------------------------------------------------------------------------------
+    public isEditingBackground ():boolean {
+        return (document.getElementById ("__bg") as any).checked;
+    }
+
+//------------------------------------------------------------------------------------------
+    public isEditingForeground ():boolean {
+        return (document.getElementById ("__fg") as any).checked;
+    }
+
+//------------------------------------------------------------------------------------------
+    public isEditingPlatform ():boolean {
+        return (document.getElementById ("__platform") as any).checked;
+    }
+
+//------------------------------------------------------------------------------------------
     public isEditingTerrain ():boolean {
         return (document.getElementById ("__terrain") as any).checked;
     }
@@ -242,23 +257,20 @@ export class TerrainEditor extends XState {
         });
 
         this.m_XApp.getStage ().on ("mousedown", (e:PIXI.InteractionEvent) => {
-            if (this.isEditingTerrain () && this.m_currentBrush == null) {
-                var __x:number = e.data.global.x;
-                var __y:number = e.data.global.y;
+            if (this.isEditingBackground ()) {
+                this.editBackground (e);
+            }
 
-                var __terrainTile:TerrainTile = this.m_terrainContainer.pickupTerrainTile (__x, __y);
-                console.log (": terrainTile: ", __terrainTile);
+            if (this.isEditingForeground ()) {
+                this.editForeground (e);
+            }
 
-                if (__terrainTile != null) {
-                    this.m_terrainContainer.removeTerrainTile (__terrainTile);
+            if (this.isEditingPlatform ()) {
+                this.editPlatform (e);
+            }
 
-                    this.createTerrainTileBrush (
-                        __terrainTile.getName (),
-                        __terrainTile.getSize (),
-                        __terrainTile.getWorld (),
-                        __terrainTile.getFrame ()
-                    );
-                }
+            if (this.isEditingTerrain ()) {
+                this.editTerrain (e);
             }
         });
 	}
@@ -296,6 +308,40 @@ export class TerrainEditor extends XState {
         reader.readAsText(file);
     }
 
+//------------------------------------------------------------------------------------------
+    public editBackground (e:PIXI.InteractionEvent):void {
+    }
+
+//------------------------------------------------------------------------------------------
+    public editForeground (e:PIXI.InteractionEvent):void {
+    }
+
+//------------------------------------------------------------------------------------------
+    public editPlatform (e:PIXI.InteractionEvent):void {
+    }
+
+//------------------------------------------------------------------------------------------
+    public editTerrain (e:PIXI.InteractionEvent):void {
+        if (this.m_currentBrush == null) {
+            var __x:number = e.data.global.x;
+            var __y:number = e.data.global.y;
+
+            var __terrainTile:TerrainTile = this.m_terrainContainer.pickupTerrainTile (__x, __y);
+            console.log (": terrainTile: ", __terrainTile);
+
+            if (__terrainTile != null) {
+                this.m_terrainContainer.removeTerrainTile (__terrainTile);
+
+                this.createTerrainTileBrush (
+                    __terrainTile.getName (),
+                    __terrainTile.getSize (),
+                    __terrainTile.getWorld (),
+                    __terrainTile.getFrame ()
+                );
+            }
+        }
+    }
+    
 //------------------------------------------------------------------------------------------
     public createLayers ():void {
         this.m_bgLayer = this.addGameObjectAsChild (GameLayer, 0, 0.0) as GameLayer;
