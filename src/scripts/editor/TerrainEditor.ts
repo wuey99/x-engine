@@ -301,17 +301,17 @@ export class TerrainEditor extends XState {
 
             this.m_mouseDownPos = e.data.global.clone ();
 
-            if (this.isEditingBackground ()) {
+            if (this.isEditingBackground () && this.m_terrainContainer.getBGLayer () != null) {
                 this.m_layerPos.x = this.m_terrainContainer.getBGLayer ().x;
                 this.m_layerPos.y = this.m_terrainContainer.getBGLayer ().y;
             }
 
-            if (this.isEditingForeground ()) {
+            if (this.isEditingForeground () && this.m_terrainContainer.getFGLayer () != null) {
                 this.m_layerPos.x = this.m_terrainContainer.getFGLayer ().x;
                 this.m_layerPos.y = this.m_terrainContainer.getFGLayer ().y;
             }
 
-            if (this.isEditingPlatform ()) {
+            if (this.isEditingPlatform () && this.m_terrainContainer.getPlatformLayer () != null) {
                 this.m_layerPos.x = this.m_terrainContainer.getPlatformLayer ().x;
                 this.m_layerPos.y = this.m_terrainContainer.getPlatformLayer ().y;
             }
