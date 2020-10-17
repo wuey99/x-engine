@@ -26,6 +26,7 @@ export class TerrainContainer extends XGameObject {
     public graphics:PIXI.Graphics;
 
     public m_worldName:string;
+    public m_levelName:string;
 
     public m_bgLayer:GameLayer;
     public m_fgLayer:GameLayer;
@@ -52,6 +53,8 @@ export class TerrainContainer extends XGameObject {
         __sprite.addChild (this.graphics);
         this.addSortableChild (__sprite, 0, 999999.0, true);
 
+        this.m_levelName = "";
+
         this.m_terrainTiles = new Map<TerrainTile, number> ();
 
 		return this;
@@ -70,6 +73,16 @@ export class TerrainContainer extends XGameObject {
 //------------------------------------------------------------------------------------------
     public getWorldName ():string {
         return this.m_worldName;
+    }
+
+//------------------------------------------------------------------------------------------
+    public getLevelName ():string {
+        return this.m_levelName;
+    }
+
+//------------------------------------------------------------------------------------------
+    public setLevelName (__value:string):void {
+        this.m_levelName = __value;
     }
 
 //------------------------------------------------------------------------------------------
@@ -178,6 +191,7 @@ export class TerrainContainer extends XGameObject {
 //------------------------------------------------------------------------------------------
     public deserialize (__root:XSimpleXMLNode) {
         this.m_worldName = __root.getAttributeString ("world");
+        this.m_levelName = __root.getAttributeString ("name");
 
         var __backgroundXML:XSimpleXMLNode = __root.child ("background")[0];
         var __foregroundXML:XSimpleXMLNode = __root.child ("foreground")[0];
@@ -226,7 +240,7 @@ export class TerrainContainer extends XGameObject {
 //------------------------------------------------------------------------------------------
     public serialize ():XSimpleXMLNode {
         var __root:XSimpleXMLDocument = new XSimpleXMLDocument ();
-        __root.setupWithParams ("terrain", "", ["world", this.m_worldName]);
+        __root.setupWithParams ("terrain", "", ["world", this.m_worldName, "name", this.m_levelName]);
 
         function getLayerX (__layer:GameLayer):number {
             return __layer != null ? __layer.x : 0;

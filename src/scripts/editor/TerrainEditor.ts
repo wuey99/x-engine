@@ -169,16 +169,18 @@ export class TerrainEditor extends XState {
 
 //------------------------------------------------------------------------------------------
     public appendSaveButton ():void {
-        this.m_loadButton = document.createElement ("button");
-        this.m_loadButton.id = "__save";
-        this.m_loadButton.appendChild (document.createTextNode ("save"));
-        this.m_XApp.container.appendChild (this.m_loadButton);
-        this.m_loadButton.addEventListener ("click", ()=> {
+        this.m_saveButton = document.createElement ("button");
+        this.m_saveButton.id = "__save";
+        this.m_saveButton.appendChild (document.createTextNode ("save"));
+        this.m_XApp.container.appendChild (this.m_saveButton);
+        this.m_saveButton.addEventListener ("click", ()=> {
             console.log (": save: ");
 
             if (this.m_nameForm.value == "") {
                 window.alert ("Please specify a name");
             } else {
+                this.m_terrainContainer.setLevelName (this.m_nameForm.value);
+
                 var __xml:XSimpleXMLNode = this.m_terrainContainer.serialize ();
 
                 console.log (": xml: ", __xml.toXMLString ());
@@ -370,6 +372,8 @@ export class TerrainEditor extends XState {
             console.log (": xml: ", __xml.toXMLString ());
 
             this.createTerrainContainer ().deserialize (__xml);
+
+            this.m_nameForm.value = this.m_terrainContainer.getLevelName ();
         };
         
         reader.readAsText(file);
