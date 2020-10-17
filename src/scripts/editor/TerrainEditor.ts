@@ -434,7 +434,7 @@ export class TerrainEditor extends XState {
 
 //------------------------------------------------------------------------------------------
     public newTerrainContainer ():void {
-        var __xmlString:string = '<terrain world="Earth">'+
+        var __xmlString:string = '<terrain world="Earth" name="">'+
             '<background x="0" y="0"/>' +
             '<foreground x="0" y="0"/>' +
             '<platform x="0" y="0"/>' +
