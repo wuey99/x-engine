@@ -92,14 +92,14 @@ export class TerrainContainer extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
-    public addTerrainTile (__x:number, __y:number, __name:string, __size:number, __terrain:string, __frame:number):TerrainTile {
+    public addTerrainTile (__x:number, __y:number, __name:string, __size:number, __world:string, __frame:number):TerrainTile {
         var __terrainTile:TerrainTile;
         
         console.log (": x: ", __x);
         console.log (": y: ", __y);
         console.log (": name: ", __name);
         console.log (": size: ", __size);
-        console.log (": terrain: ", __terrain);
+        console.log (": world: ", __world);
         console.log (": frame: ", __frame);
 
         switch (__name) {
@@ -118,7 +118,7 @@ export class TerrainContainer extends XGameObject {
         __terrainTile.afterSetup ([
             __x + __dx, __y + __dy,
             __size,
-            __terrain,
+            __world,
             __frame
         ]);
 
