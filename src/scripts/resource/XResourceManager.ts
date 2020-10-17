@@ -93,7 +93,11 @@ export class XResourceManager {
     public getResourceByName (__name:string):any {
         var __resource:Resource = this.m_resourceMap.get (__name);
 
-        return __resource.getResource ();
+        if (__resource != null) {
+            return __resource.getResource ();
+        } else {
+            return null;
+        }
     }
 
     //------------------------------------------------------------------------------------------

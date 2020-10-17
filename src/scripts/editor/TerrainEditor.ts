@@ -39,12 +39,20 @@ export class TerrainEditor extends XState {
     public m_platformLayer:GameLayer;
     public m_ctrlKeyDown:boolean;
 
+    public m_mouseDownFlag:boolean;
+    public m_mouseDownPos:PIXI.Point;
+    public m_layerPos:PIXI.Point;
+
+    // html forms
     public m_worldForm:any;
+    public m_nameForm:any;
     public m_bgLayerButton:any;
     public m_fgLayerButton:any;
     public m_terrainLayerButton:any;
     public m_platformLayerButton:any;
-    public m_reloadButton:any;
+    public m_newButton:any;
+    public m_loadButton:any;
+    public m_saveButton:any;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -64,15 +72,17 @@ export class TerrainEditor extends XState {
 
         this.m_currentBrush = null;
 
+        this.m_layerPos = new PIXI.Point ();
+
         this.createForms ();
 
 		this.createPalettes ();
         
-        this.createLayers ();
-
         this.createTerrainContainer ();
 
         this.createInputHandlers ();
+
+        console.log (": getResourceByName: ", this.m_XApp.getResourceByName ("foo"));
 
         return this;
     }
@@ -82,6 +92,10 @@ export class TerrainEditor extends XState {
         this.m_worldForm = document.createElement ("input");
         this.m_worldForm.id = "__world";
         this.m_worldForm.value = "Earth";
+
+        this.m_nameForm = document.createElement ("input");
+        this.m_nameForm.id = "__world";
+        this.m_nameForm.value = "";
 
         this.m_bgLayerButton = document.createElement ("input");
         this.m_bgLayerButton.id = "__bg";
@@ -109,7 +123,12 @@ export class TerrainEditor extends XState {
         this.appendLabel ("world: ");
         this.m_XApp.container.appendChild (this.m_worldForm);
 
-        this.appendReloadButton ();
+        this.appendLabel ("name: ");
+        this.m_XApp.container.appendChild (this.m_nameForm);
+
+        this.appendNewButton ();
+        this.appendLoadButton ();
+        this.appendSaveButton ();
 
         this.m_XApp.container.appendChild (this.m_bgLayerButton);
         this.appendLabel ("bg");
@@ -125,14 +144,63 @@ export class TerrainEditor extends XState {
     }
 
 //------------------------------------------------------------------------------------------
-    public appendReloadButton ():void {
-        this.m_reloadButton = document.createElement ("button");
-        this.m_reloadButton.id = "__reload";
-        this.m_reloadButton.appendChild (document.createTextNode ("reload"));
-        this.m_XApp.container.appendChild (this.m_reloadButton);
-        this.m_reloadButton.addEventListener ("click", ()=> {
-            console.log (": reload: ");
+    public appendNewButton ():void {
+        this.m_newButton = document.createElement ("button");
+        this.m_newButton.id = "__new";
+        this.m_newButton.appendChild (document.createTextNode ("new"));
+        this.m_XApp.container.appendChild (this.m_newButton);
+        this.m_newButton.addEventListener ("click", ()=> {
+            console.log (": new: ");
         });
+    }
+
+//------------------------------------------------------------------------------------------
+    public appendLoadButton ():void {
+        this.m_loadButton = document.createElement ("button");
+        this.m_loadButton.id = "__load";
+        this.m_loadButton.appendChild (document.createTextNode ("load"));
+        this.m_XApp.container.appendChild (this.m_loadButton);
+        this.m_loadButton.addEventListener ("click", ()=> {
+            console.log (": load: ");	
+
+            (document.querySelector('.inputFile') as any).click();	
+            var input:any = document.querySelector('.inputFile');
+            input.onchange = () => {
+                console.log(": changed: ", this, input.files[0]);
+                this.readSingleFile(input);
+            };
+        });
+    }
+
+//------------------------------------------------------------------------------------------
+    public appendSaveButton ():void {
+        this.m_loadButton = document.createElement ("button");
+        this.m_loadButton.id = "__save";
+        this.m_loadButton.appendChild (document.createTextNode ("save"));
+        this.m_XApp.container.appendChild (this.m_loadButton);
+        this.m_loadButton.addEventListener ("click", ()=> {
+            console.log (": save: ");
+
+            if (this.m_nameForm.value == "") {
+                window.alert ("Please specify a name");
+            } else {
+                var __xml:XSimpleXMLNode = this.m_terrainContainer.serialize ();
+
+                console.log (": xml: ", __xml.toXMLString ());
+
+                var save:any = document.querySelector('.btnSave');
+                console.log(": ", save.download);
+                var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(__xml.toXMLString ());
+                save.href = data;
+                save.download = this.m_nameForm.value + ".xml";
+                (document.querySelector('.btnSave') as any).click();
+            }
+        });
+    }
+
+//------------------------------------------------------------------------------------------
+    public getWorldName ():string {
+        return this.m_worldForm.value;
     }
 
 //------------------------------------------------------------------------------------------
@@ -190,34 +258,6 @@ export class TerrainEditor extends XState {
                     }
 
                     break;
-                
-                case "KeyS":
-                    if (this.isEditingTerrain ()) {
-                        var __xml:XSimpleXMLNode = this.m_terrainContainer.serialize ();
-
-                        console.log (": xml: ", __xml.toXMLString ());
-            
-                        var save:any = document.querySelector('.btnSave');
-                        console.log(": ", save.download);
-                        var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(__xml.toXMLString ());
-                        save.href = data;
-                        save.download = "level.xml";
-                        (document.querySelector('.btnSave') as any).click();	
-                        }
-
-                    break;
-
-                case "KeyL":
-                    if (this.isEditingTerrain ()) {
-                        (document.querySelector('.inputFile') as any).click();	
-                        var input:any = document.querySelector('.inputFile');
-                        input.onchange = () => {
-                            console.log(": changed: ", this, input.files[0]);
-                            this.readSingleFile(input);
-                        };
-                    }
-
-                    break;
 
                 case "KeyQ":
                     if (this.isEditingTerrain ()) {
@@ -257,21 +297,48 @@ export class TerrainEditor extends XState {
         });
 
         this.m_XApp.getStage ().on ("mousedown", (e:PIXI.InteractionEvent) => {
+            this.m_mouseDownFlag = true;
+
+            this.m_mouseDownPos = e.data.global.clone ();
+
             if (this.isEditingBackground ()) {
-                this.editBackground (e);
+                this.m_layerPos.x = this.m_bgLayer.x;
+                this.m_layerPos.y = this.m_bgLayer.y;
             }
 
             if (this.isEditingForeground ()) {
-                this.editForeground (e);
+                this.m_layerPos.x = this.m_fgLayer.x;
+                this.m_layerPos.y = this.m_fgLayer.y;
             }
 
             if (this.isEditingPlatform ()) {
-                this.editPlatform (e);
+                this.m_layerPos.x = this.m_platformLayer.x;
+                this.m_layerPos.y = this.m_platformLayer.y;
             }
 
             if (this.isEditingTerrain ()) {
                 this.editTerrain (e);
             }
+        });
+
+        this.m_XApp.getStage ().on ("mousemove", (e:PIXI.InteractionEvent) => {
+            if (this.m_mouseDownFlag) {
+                if (this.isEditingBackground ()) {
+                    this.moveBackground (e);
+                }
+
+                if (this.isEditingForeground ()) {
+                    this.moveForeground (e);
+                }
+
+                if (this.isEditingPlatform ()) {
+                    this.movePlatform (e);
+                }
+            }
+        });
+
+        this.m_XApp.getStage ().on ("mouseup", (e:PIXI.InteractionEvent) => {
+            this.m_mouseDownFlag = false;
         });
 	}
 	
@@ -309,15 +376,34 @@ export class TerrainEditor extends XState {
     }
 
 //------------------------------------------------------------------------------------------
-    public editBackground (e:PIXI.InteractionEvent):void {
+    public moveBackground (e:PIXI.InteractionEvent):void {
+        var __mousePos:PIXI.Point = e.data.global;
+
+        var __dx:number = (__mousePos.x - this.m_mouseDownPos.x);
+        var __dy:number = (__mousePos.y - this.m_mouseDownPos.y);
+
+        if (this.m_bgLayer != null) {
+            this.m_bgLayer.x = this.m_layerPos.x + __dx;
+            this.m_bgLayer.y = this.m_layerPos.y + __dy;
+        }
     }
 
 //------------------------------------------------------------------------------------------
-    public editForeground (e:PIXI.InteractionEvent):void {
+    public moveForeground (e:PIXI.InteractionEvent):void {
+        var __mousePos:PIXI.Point = e.data.global;
     }
 
 //------------------------------------------------------------------------------------------
-    public editPlatform (e:PIXI.InteractionEvent):void {
+    public movePlatform (e:PIXI.InteractionEvent):void {
+        var __mousePos:PIXI.Point = e.data.global;
+
+        var __dx:number = (__mousePos.x - this.m_mouseDownPos.x);
+        var __dy:number = (__mousePos.y - this.m_mouseDownPos.y);
+
+        if (this.m_bgLayer != null) {
+            this.m_platformLayer.x = this.m_layerPos.x + __dx;
+            this.m_platformLayer.y = this.m_layerPos.y + __dy;
+        }
     }
 
 //------------------------------------------------------------------------------------------
@@ -344,12 +430,16 @@ export class TerrainEditor extends XState {
     
 //------------------------------------------------------------------------------------------
     public createLayers ():void {
-        this.m_bgLayer = this.addGameObjectAsChild (GameLayer, 0, 0.0) as GameLayer;
-        this.m_bgLayer.afterSetup (["Earth_Layers_Background"])
+        if (this.m_XApp.getResourceByName (this.getWorldName () + "_Layers_Background") != null) {
+            this.m_bgLayer = this.m_terrainContainer.addGameObjectAsChild (GameLayer, 0, 0.0) as GameLayer;
+            this.m_bgLayer.afterSetup ([this.getWorldName () + "_Layers_Background"])
+        }
 
-        this.m_platformLayer = this.addGameObjectAsChild (GameLayer, 0, 5.0) as GameLayer;
-        this.m_platformLayer.afterSetup (["Earth_Layers_Platform"])
-        this.m_platformLayer.y = 384;
+        if (this.m_XApp.getResourceByName (this.getWorldName () + "_Layers_Platform") != null) {
+            this.m_platformLayer = this.m_terrainContainer.addGameObjectAsChild (GameLayer, 0, 5.0) as GameLayer;
+            this.m_platformLayer.afterSetup ([this.getWorldName () + "_Layers_Platform"])
+            this.m_platformLayer.y = 384;
+        }
     }
 
 //------------------------------------------------------------------------------------------
@@ -359,6 +449,8 @@ export class TerrainEditor extends XState {
         this.m_terrainContainer.x = 0;
         this.m_terrainContainer.y = 0;
 
+        this.createLayers ();
+
         return this.m_terrainContainer;
     }
 
@@ -367,28 +459,28 @@ export class TerrainEditor extends XState {
 		var __y:number = 16;
 
 		var __terrainTilePalette64:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 1000.0) as TerrainTilePalette;
-		__terrainTilePalette64.afterSetup (["Terrain", 64, "Earth", TerrainTileIcon.MAX_ICONS]);
+		__terrainTilePalette64.afterSetup (["Terrain", 64, this.getWorldName (), TerrainTileIcon.MAX_ICONS]);
 		__terrainTilePalette64.x = 16;
 		__terrainTilePalette64.y = __y;
         __terrainTilePalette64.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
         __y += 64 + 8;
 
 		var __terrainTilePalette32:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 1000.0) as TerrainTilePalette;
-		__terrainTilePalette32.afterSetup (["Terrain", 32, "Earth", TerrainTileIcon.MAX_ICONS]);
+		__terrainTilePalette32.afterSetup (["Terrain", 32, this.getWorldName (), TerrainTileIcon.MAX_ICONS]);
 		__terrainTilePalette32.x = 16;
 		__terrainTilePalette32.y = __y;
         __terrainTilePalette32.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
         __y += 32 + 8;
         
 		var __terrainTilePalette16:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 1000.0) as TerrainTilePalette;
-		__terrainTilePalette16.afterSetup (["Terrain", 16, "Earth", TerrainTileIcon.MAX_ICONS]);
+		__terrainTilePalette16.afterSetup (["Terrain", 16, this.getWorldName (), TerrainTileIcon.MAX_ICONS]);
 		__terrainTilePalette16.x = 16;
         __terrainTilePalette16.y = __y;
         __terrainTilePalette16.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
         __y += 16 + 8;
 
 		var __terrainTileMisc:TerrainTilePalette = this.addGameObjectAsChild (TerrainTilePalette, 0, 1000.0) as TerrainTilePalette;
-		__terrainTileMisc.afterSetup (["TerrainMisc", 16, "Earth", 16]);
+		__terrainTileMisc.afterSetup (["TerrainMisc", 16, this.getWorldName (), 16]);
 		__terrainTileMisc.x = 16;
         __terrainTileMisc.y = __y;
         __terrainTileMisc.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
