@@ -29,6 +29,7 @@
     "@types/matter-js": "^0.14.5",
     "fast-xml-parser": "^3.17.4",
     "he": "^1.2.0",
+    "howler": "^2.2.0",
     "matter-js": "^0.14.2",
     "pixi.js": "^5.3.3",
     "poly-decomp": "^0.3.0"

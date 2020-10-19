@@ -380,6 +380,7 @@ export class TerrainEditor extends XState {
             console.log(": contents: ", contents);
 
             this.m_terrainContainer.nukeLater ();
+            this.removePalettes ();
 
             var __xml:XSimpleXMLNode = new XSimpleXMLNode ();
             __xml.setupWithXMLString (contents);
@@ -388,7 +389,10 @@ export class TerrainEditor extends XState {
 
             this.createTerrainContainer ().deserialize (__xml);
 
+            this.m_worldForm.value = this.m_terrainContainer.getWorldName ();
             this.m_nameForm.value = this.m_terrainContainer.getLevelName ();
+
+            this.createPalettes ();
         };
         
         reader.readAsText(file);

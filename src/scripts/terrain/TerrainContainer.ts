@@ -93,7 +93,7 @@ export class TerrainContainer extends XGameObject {
         }
 
         if (this.m_XApp.getResourceByName (this.getWorldName () + "_Layers_Platform") != null) {
-            this.m_platformLayer = this.addGameObjectAsChild (GameLayer, 0, 5.0) as GameLayer;
+            this.m_platformLayer = this.addGameObjectAsChild (GameLayer, 0, 500.0) as GameLayer;
             this.m_platformLayer.afterSetup ([this.getWorldName () + "_Layers_Platform"])
             this.m_platformLayer.y = 384;
         }
@@ -162,11 +162,11 @@ export class TerrainContainer extends XGameObject {
 
         switch (__name) {
             case "Terrain":
-                __terrainTile = this.addGameObjectAsChild (TerrainTile, 0, 10.0, true) as TerrainTile;
+                __terrainTile = this.addGameObjectAsChild (TerrainTile, 0, 1000.0, true) as TerrainTile;
                 break;
             
             case "TerrainMisc":
-                __terrainTile = this.addGameObjectAsChild (TerrainMisc, 0, 10.0, true) as TerrainTile;
+                __terrainTile = this.addGameObjectAsChild (TerrainMisc, 0, 1000.0, true) as TerrainTile;
                 break;
         }
 
