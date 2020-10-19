@@ -162,7 +162,20 @@
               <classX name="Mars_Terrain32x32" regX="0" regY="0" width="32" height="32"/>
             </resource>
           </folder>
-          <folder name="Layers"/>
+          <folder name="Layers">
+            <resource name="@Mars_Layers_Background" type=".pmp" embed="false" path="Common" src="89394DD5-C8DE-7914-D38F-B10AD258C25F-Mars_Layers_Background.pmp" dst="89394DD5-C8DE-7914-D38F-B10AD258C25F-Mars_Layers_Background.pmp" pmp_width="2048" originX="415" originY="802" width="1366" totalWidth="1366" height="545" regX="0" regY="0"/>
+            <resource name="png_Mars_Layers_Background" type=".png" embed="false" path="Common" src="89394DD5-C8DE-7914-D38F-B10AD258C25F-Mars_Layers_Background.png" dst="89394DD5-C8DE-7914-D38F-B10AD258C25F-Mars_Layers_Background.png"/>
+            <resource name="$Mars_Layers_Background" type=".json" embed="false" path="Common" src="89394DD5-C8DE-7914-D38F-B10AD258C25F-Mars_Layers_Background.json" dst="89394DD5-C8DE-7914-D38F-B10AD258C25F-Mars_Layers_Background.json"/>
+            <resource name="Mars_Layers_Background" type=".fla" embed="false" path="Common" src="9CCFF28E-72E8-17C3-26F7-E2BBC5C19455-Mars_Layers_Background.fla" dst="9CCFF28E-72E8-17C3-26F7-E2BBC5C19455-Mars_Layers_Background.swf">
+              <classX name="Mars_Layers_Background" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+            <resource name="@Mars_Layers_Platform" type=".pmp" embed="false" path="Common" src="953620DF-6AD9-C97C-D78C-16C498BF1A5E-Mars_Layers_Platform.pmp" dst="953620DF-6AD9-C97C-D78C-16C498BF1A5E-Mars_Layers_Platform.pmp" pmp_width="2048" originX="464" originY="1016" width="1196" totalWidth="1196" height="91" regX="0" regY="0"/>
+            <resource name="png_Mars_Layers_Platform" type=".png" embed="false" path="Common" src="953620DF-6AD9-C97C-D78C-16C498BF1A5E-Mars_Layers_Platform.png" dst="953620DF-6AD9-C97C-D78C-16C498BF1A5E-Mars_Layers_Platform.png"/>
+            <resource name="$Mars_Layers_Platform" type=".json" embed="false" path="Common" src="953620DF-6AD9-C97C-D78C-16C498BF1A5E-Mars_Layers_Platform.json" dst="953620DF-6AD9-C97C-D78C-16C498BF1A5E-Mars_Layers_Platform.json"/>
+            <resource name="Mars_Layers_Platform" type=".fla" embed="false" path="Common" src="B0F07E41-C18F-08A6-9AFA-5BC1EFBA3DAC-Mars_Layers_Platform.fla" dst="B0F07E41-C18F-08A6-9AFA-5BC1EFBA3DAC-Mars_Layers_Platform.swf">
+              <classX name="Mars_Layers_Platform" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+          </folder>
           <folder name="Sprites"/>
         </folder>
         <folder name="Moon">
@@ -192,7 +205,20 @@
               <classX name="Moon_Terrain32x32" regX="0" regY="0" width="32" height="32"/>
             </resource>
           </folder>
-          <folder name="Layers"/>
+          <folder name="Layers">
+            <resource name="@Moon_Layers_Background" type=".pmp" embed="false" path="Common" src="C62C8AAE-21F6-9338-211E-6881AA8451D9-Moon_Layers_Background.pmp" dst="C62C8AAE-21F6-9338-211E-6881AA8451D9-Moon_Layers_Background.pmp" pmp_width="2048" originX="369" originY="769" width="1366" totalWidth="1366" height="545" regX="0" regY="0"/>
+            <resource name="png_Moon_Layers_Background" type=".png" embed="false" path="Common" src="C62C8AAE-21F6-9338-211E-6881AA8451D9-Moon_Layers_Background.png" dst="C62C8AAE-21F6-9338-211E-6881AA8451D9-Moon_Layers_Background.png"/>
+            <resource name="$Moon_Layers_Background" type=".json" embed="false" path="Common" src="C62C8AAE-21F6-9338-211E-6881AA8451D9-Moon_Layers_Background.json" dst="C62C8AAE-21F6-9338-211E-6881AA8451D9-Moon_Layers_Background.json"/>
+            <resource name="Moon_Layers_Background" type=".fla" embed="false" path="Common" src="7A552371-AC04-1393-8FF5-317002652FD8-Moon_Layers_Background.fla" dst="7A552371-AC04-1393-8FF5-317002652FD8-Moon_Layers_Background.swf">
+              <classX name="Moon_Layers_Background" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+            <resource name="@Moon_Layers_Platform" type=".pmp" embed="false" path="Common" src="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.pmp" dst="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.pmp" pmp_width="2048" originX="471" originY="1053" width="1185" totalWidth="1185" height="387" regX="0" regY="0"/>
+            <resource name="png_Moon_Layers_Platform" type=".png" embed="false" path="Common" src="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.png" dst="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.png"/>
+            <resource name="$Moon_Layers_Platform" type=".json" embed="false" path="Common" src="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.json" dst="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.json"/>
+            <resource name="Moon_Layers_Platform" type=".fla" embed="false" path="Common" src="973DF8C3-77E7-5F84-0F26-FD0F57FC5FAC-Moon_Layers_Platform.fla" dst="973DF8C3-77E7-5F84-0F26-FD0F57FC5FAC-Moon_Layers_Platform.swf">
+              <classX name="Moon_Layers_Platform" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+          </folder>
           <folder name="Sprites"/>
         </folder>
         <folder name="Ice">
@@ -222,7 +248,15 @@
               <classX name="Ice_Terrain32x32" regX="0" regY="0" width="32" height="32"/>
             </resource>
           </folder>
-          <folder name="Layers"/>
+          <folder name="Layers">
+            <resource name="@Ice_Layers_Background" type=".pmp" embed="false" path="Common" src="41403E5D-D76C-383F-B5ED-F5C7DA269B79-Ice_Layers_Background.pmp" dst="41403E5D-D76C-383F-B5ED-F5C7DA269B79-Ice_Layers_Background.pmp" pmp_width="2048" originX="443" originY="725" width="1366" totalWidth="1366" height="577" regX="0" regY="0"/>
+            <resource name="png_Ice_Layers_Background" type=".png" embed="false" path="Common" src="41403E5D-D76C-383F-B5ED-F5C7DA269B79-Ice_Layers_Background.png" dst="41403E5D-D76C-383F-B5ED-F5C7DA269B79-Ice_Layers_Background.png"/>
+            <resource name="$Ice_Layers_Background" type=".json" embed="false" path="Common" src="41403E5D-D76C-383F-B5ED-F5C7DA269B79-Ice_Layers_Background.json" dst="41403E5D-D76C-383F-B5ED-F5C7DA269B79-Ice_Layers_Background.json"/>
+            <resource name="Ice_Layers_Background" type=".fla" embed="false" path="Common" src="9212F11A-A54F-BDBF-BB8E-6B895BEE0049-Ice_Layers_Background.fla" dst="9212F11A-A54F-BDBF-BB8E-6B895BEE0049-Ice_Layers_Background.swf">
+              <classX name="Ice_Layers_Background" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+            <resource name="@Ice_Layers_Platform" type=".pmp" embed="false" path="Common" src="CF53404E-C9BB-F60C-F2FF-88F9EFB31F85-Ice_Layers_Platform.pmp" dst="CF53404E-C9BB-F60C-F2FF-88F9EFB31F85-Ice_Layers_Platform.pmp" pmp_width="2048" originX="0" originY="0" width="32" totalWidth="32" height="32" regX="0" regY="0"/>
+          </folder>
           <folder name="Sprites"/>
         </folder>
         <folder name="Squid">
@@ -252,7 +286,10 @@
               <classX name="Squid_Terrain32x32" regX="0" regY="0" width="32" height="32"/>
             </resource>
           </folder>
-          <folder name="Layers"/>
+          <folder name="Layers">
+            <resource name="@Squid_Layers_Background" type=".pmp" embed="false" path="Common" src="A1568F58-6327-F187-76FF-E54BD22CA934-Squid_Layers_Background.pmp" dst="A1568F58-6327-F187-76FF-E54BD22CA934-Squid_Layers_Background.pmp" pmp_width="2048" originX="0" originY="0" width="32" totalWidth="32" height="32" regX="0" regY="0"/>
+            <resource name="@Squid_Layers_Platform" type=".pmp" embed="false" path="Common" src="47B7A9CB-C6E4-CCD5-F95A-AF5A52AECFFA-Squid_Layers_Platform.pmp" dst="47B7A9CB-C6E4-CCD5-F95A-AF5A52AECFFA-Squid_Layers_Platform.pmp" pmp_width="2048" originX="0" originY="0" width="32" totalWidth="32" height="32" regX="0" regY="0"/>
+          </folder>
           <folder name="Sprites"/>
         </folder>
       </folder>
