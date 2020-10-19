@@ -336,6 +336,10 @@ export class TerrainEditor extends XState {
                 if (this.isEditingPlatform ()) {
                     this.movePlatform (e);
                 }
+
+                if (this.isEditingTerrain ()) {
+                    // this.moveTerrain (e);
+                }
             }
         });
 
@@ -393,6 +397,19 @@ export class TerrainEditor extends XState {
     }
 
 //------------------------------------------------------------------------------------------
+    public moveTerrain (e:PIXI.InteractionEvent):void {
+        var __mousePos:PIXI.Point = e.data.global;
+
+        var __dx:number = (__mousePos.x - this.m_mouseDownPos.x);
+        var __dy:number = (__mousePos.y - this.m_mouseDownPos.y);
+
+        if (this.m_terrainContainer != null) {
+            this.m_terrainContainer.x = this.m_layerPos.x + __dx;
+            this.m_terrainContainer.y = this.m_layerPos.y + __dy;
+        }
+    }
+
+//------------------------------------------------------------------------------------------
     public moveForeground (e:PIXI.InteractionEvent):void {
         var __mousePos:PIXI.Point = e.data.global;
     }
@@ -428,6 +445,10 @@ export class TerrainEditor extends XState {
                     __terrainTile.getWorld (),
                     __terrainTile.getFrame ()
                 );
+
+                this.m_mouseDownFlag = false;
+            } else {
+                this.m_mouseDownFlag = true;
             }
         }
     }
