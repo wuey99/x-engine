@@ -126,7 +126,7 @@
             <resource name="Earth_Layers_Background" type=".fla" embed="false" path="Common" src="35AC25AB-ED1E-37F3-593A-FD48E9D53BB3-Earth_Layers_Background.fla" dst="35AC25AB-ED1E-37F3-593A-FD48E9D53BB3-Earth_Layers_Background.swf">
               <classX name="Earth_Layers_Background" regX="0" regY="0" width="32" height="32"/>
             </resource>
-            <resource name="@Earth_Layers_Platform" type=".pmp" embed="false" path="Common" src="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.pmp" dst="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.pmp" pmp_width="2048" originX="486" originY="949" width="1162" totalWidth="1162" height="205" regX="0" regY="0"/>
+            <resource name="@Earth_Layers_Platform" type=".pmp" embed="false" path="Common" src="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.pmp" dst="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.pmp" pmp_width="2048" originX="352" originY="935" width="1186" totalWidth="1186" height="117" regX="0" regY="0"/>
             <resource name="png_Earth_Layers_Platform" type=".png" embed="false" path="Common" src="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.png" dst="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.png"/>
             <resource name="$Earth_Layers_Platform" type=".json" embed="false" path="Common" src="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.json" dst="05ED5BD0-4493-6BC0-E840-F882658B5FDA-Earth_Layers_Platform.json"/>
             <resource name="Earth_Layers_Platform" type=".fla" embed="false" path="Common" src="F21849F8-3B50-804B-AF28-539F9389ECCD-Earth_Layers_Platform.fla" dst="F21849F8-3B50-804B-AF28-539F9389ECCD-Earth_Layers_Platform.swf">
