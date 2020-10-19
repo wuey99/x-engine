@@ -135,9 +135,26 @@
           </folder>
           <folder name="Sprites"/>
         </folder>
-        <folder name="Mars"/>
-        <folder name="Moon"/>
-        <folder name="Ice"/>
+        <folder name="Mars">
+          <folder name="Terrain"/>
+          <folder name="Layers"/>
+          <folder name="Sprites"/>
+        </folder>
+        <folder name="Moon">
+          <folder name="Terrain"/>
+          <folder name="Layers"/>
+          <folder name="Sprites"/>
+        </folder>
+        <folder name="Ice">
+          <folder name="Terrain"/>
+          <folder name="Layers"/>
+          <folder name="Sprites"/>
+        </folder>
+        <folder name="Squid">
+          <folder name="Terrain"/>
+          <folder name="Layers"/>
+          <folder name="Sprites"/>
+        </folder>
       </folder>
     </folder>
     <folder name="Sketches">
