@@ -79,6 +79,8 @@ export class TerrainTileIcon extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
+        console.log (": TerrainTile: ", this.m_world, this.m_name, this.m_size);
+
 		this.m_sprite = this.createAnimatedSprite (this.m_world + "_" + this.m_name + this.m_size + "x" + this.m_size);
 		this.addSortableChild (this.m_sprite, this.getLayer (), this.getDepth (), true);
 		this.m_sprite.gotoAndStop (this.m_frame);

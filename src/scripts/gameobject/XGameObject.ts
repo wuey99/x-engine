@@ -15,6 +15,7 @@ import { XType } from '../type/XType';
 import { World, Body, Engine } from 'matter-js';
 import * as Matter from 'matter-js';
 import { XRect } from '../geom/XRect';
+import { XPoint } from '../geom/XPoint';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Sprite {
@@ -53,6 +54,8 @@ export class XGameObject extends PIXI.Sprite {
 	public m_mouseDownSignal:XSignal;
 	public m_touchStartSignal:XSignal;
 	public m_touchEndSignal:XSignal;
+
+	public m_mousePoint:XPoint;
 
 	public static g_XApp:XApp;
 	
@@ -107,6 +110,8 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_mouseDownSignal = this.createXSignal ();
 		this.m_touchStartSignal = this.createXSignal ();
 		this.m_touchEndSignal = this.createXSignal ();
+
+		this.m_mousePoint = new XPoint ();
 
 		return this;
 	}
@@ -243,6 +248,18 @@ export class XGameObject extends PIXI.Sprite {
         return XGameObject.g_XApp;
     }
 
+	//------------------------------------------------------------------------------------------
+    public getMousePos ():XPoint {
+        var __point:PIXI.Point = this.m_XApp.renderer.plugins.interaction.mouse.global;
+
+        this.m_mousePoint.x = __point.x;
+        this.m_mousePoint.y = __point.y;
+		
+		this.globalToLocal (this, this.m_mousePoint);
+
+        return this.m_mousePoint;
+	}
+	
 //------------------------------------------------------------------------------------------
 	public getVerticalPercent (__percent:number):number {
 		return this.getActualHeight () * __percent;
@@ -353,7 +370,8 @@ export class XGameObject extends PIXI.Sprite {
 	public addGameObjectAsChild (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
 		if (this.world != null) {
 			var __gameObject = this.world.addChildObject(__class, __layer, __depth, __visible);
-			
+			__gameObject.setParentObject (this);
+
 			this.m_childObjects.set (__gameObject, 0);
 			
 			return __gameObject;
@@ -372,6 +390,20 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_parent = __parent;
 	}
 	
+//------------------------------------------------------------------------------------------
+	public globalToLocal (__gameObject:XGameObject, __point:XPoint):XPoint {
+		console.log (": XGameObject: globalToLocal: ", this.getParentObject ());
+		
+		__point.x -= __gameObject.x;
+		__point.y -= __gameObject.y;
+
+		if (__gameObject.getParentObject () != null) {
+		 	return __gameObject.globalToLocal (this.getParentObject (), __point);
+		}
+
+		return __point;
+	}
+
 //------------------------------------------------------------------------------------------
 //
 // SELF

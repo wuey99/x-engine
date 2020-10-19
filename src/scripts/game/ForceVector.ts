@@ -13,18 +13,17 @@ import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
-import { EnemyX } from '../objects/EnemyX';
+import { ForceVectorArrow } from './ForceVectorArrow';
 import { TerrainContainer } from '../terrain/TerrainContainer';
-import * as Matter from 'matter-js';
+import { XPoint } from '../geom/XPoint';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
-export class GolfBall extends XGameObject {
-    public m_sprite:PIXI.AnimatedSprite;
-    public x_sprite:XDepthSprite;
+export class ForceVector extends XGameObject {
+    public m_topArrow:ForceVectorArrow;
+    public m_bottomArrow:ForceVectorArrow;
 
-	public m_terrainContainer:TerrainContainer;
-
-	public m_mouseDownFlag:boolean;
+    public m_terrainContainer:TerrainContainer;
 
     public script:XTask;
 
@@ -44,15 +43,19 @@ export class GolfBall extends XGameObject {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-		this.m_terrainContainer = __params[0];
-
-		this.m_mouseDownFlag = false;
-
-        this.createSprites ();
+        this.m_terrainContainer = __params[0];
 
         this.script = this.addEmptyTask ();
 
         this.Idle_Script ();
+
+        this.m_topArrow = this.addGameObjectToWorld (ForceVectorArrow, 0, 0.0) as ForceVectorArrow;
+        this.m_topArrow.afterSetup (["TopArrow"]);
+
+        this.m_bottomArrow = this.addGameObjectToWorld (ForceVectorArrow, 0, 0.0) as ForceVectorArrow;
+        this.m_bottomArrow.afterSetup (["BottomArrow"]);
+
+        this.m_XApp.getStage ().on ("mouseup", this.onMouseUp.bind (this));
 
 		return this;
 	}
@@ -63,92 +66,23 @@ export class GolfBall extends XGameObject {
 	}
     
 //------------------------------------------------------------------------------------------
-    public createSprites ():void {
-        this.m_sprite = this.createAnimatedSprite ("GolfBall");
-        this.addSortableChild (this.m_sprite, 0, 0.0, false);
+    public onMouseUp (e:PIXI.InteractionEvent) {
+        this.m_XApp.getStage ().off ("mouseup", this.onMouseUp);
 
-		this.show ();
-		
-		this.m_sprite.interactive = true;
-		this.m_sprite.interactiveChildren = true;
+        console.log (": ForceVector: mouseUp: ");
 
-        this.m_sprite.on ("mousedown", (e:PIXI.InteractionEvent) => {
-			this.m_mouseDownFlag = true;
+        this.nuke ();
 
-			this.m_terrainContainer.clearGraphics ();
+        this.m_XApp.getXTaskManager ().addTask ([
+            XTask.WAIT, 0x0100,
+            
+            () => {
+                this.m_terrainContainer.clearGraphics ();
+            },
 
-			console.log (": mousedown: ");
-		});
-
-        this.m_XApp.getStage ().on ("mouseup", (e:PIXI.InteractionEvent) => {
-			if (this.m_mouseDownFlag) {
-				this.m_mouseDownFlag = false;
-				
-				this.ballRelease (e);
-
-				console.log (": mouseup: ");
-			}
-		});
-
-		this.m_XApp.getStage ().on ("mouseleave", (e:PIXI.InteractionEvent) => {
-			if (this.m_mouseDownFlag) {
-				this.m_mouseDownFlag = false;
-				
-				this.ballRelease (e);
-
-				console.log (": mouseleave: ");
-			}
-		});
-
-		this.m_XApp.getStage ().on ("mouseout", (e:PIXI.InteractionEvent) => {
-			if (this.m_mouseDownFlag) {
-				this.m_mouseDownFlag = false;
-				
-				this.ballRelease (e);
-
-				console.log (": mouseout: ");
-			}
-		});
-
-        this.m_sprite.on ("mousemove", (e:PIXI.InteractionEvent) => {
-            var __interactionData:PIXI.InteractionData = e.data;
-
-			if (this.m_mouseDownFlag) {
-				this.m_terrainContainer.drawForceVector (0xffff00, this.x, this.y, __interactionData.global.x, __interactionData.global.y);
-
-				console.log (": ", __interactionData.global.x, __interactionData.global.y);
-			}
-		});
+            XTask.RETN,
+        ]);
     }
-
-	//------------------------------------------------------------------------------------------
-	public ballRelease (e:PIXI.InteractionEvent):void {
-		this.m_terrainContainer.clearGraphics ();
-
-		console.log (": ball released: ");
-
-		var __interactionData:PIXI.InteractionData = e.data;
-
-		var __x:number = __interactionData.global.x;
-		var __y:number = __interactionData.global.y;
-
-		var __dx:number = (this.x - __x) / 2048;
-		var __dy:number = (this.y - __y) / 2048;
-
-		console.log (": applyForce: ", __dx, __dy);
-
-		Matter.Body.applyForce (
-			this.getMatterBody (),
-			{
-				x: this.getMatterBody ().position.x,
-				y: this.getMatterBody ().position.y
-			},
-			{
-				x: __dx,
-				y: __dy,	
-			}
-		);
-	}
 
 	//------------------------------------------------------------------------------------------
 	public Idle_Script ():void {
@@ -162,8 +96,27 @@ export class GolfBall extends XGameObject {
 				this.script.addTask ([
 					XTask.LABEL, "loop",
 						XTask.WAIT, 0x0100,
-						
-					    XTask.GOTO, "loop",
+                        
+                        () => {   
+                            var __point:XPoint = this.m_terrainContainer.getMousePos ();
+
+                            var __dx:number = (this.x - __point.x);
+                            var __dy:number = (this.y - __point.y);
+
+                            this.m_topArrow.x = this.x + __dx;
+                            this.m_topArrow.y = this.y + __dy;
+                            this.m_topArrow.angle = Math.atan2 (__dy, __dx) * 180/Math.PI + 90.0;
+
+                            this.m_bottomArrow.x = this.x;
+                            this.m_bottomArrow.y = this.y;
+                            this.m_bottomArrow.angle = Math.atan2 (__dy, __dx) * 180/Math.PI + 90.0;
+
+                            this.m_terrainContainer.clearGraphics ();
+                            this.m_terrainContainer.drawForceVector (0x16AFFF, this.x, this.y, __point.x, __point.y);
+                            this.m_terrainContainer.drawForceVector (0xFC1614, this.x, this.y, this.x + __dx, this.y + __dy);
+                        },
+
+					XTask.GOTO, "loop",
 						
 					XTask.RETN,
 				]);	
@@ -184,6 +137,6 @@ export class GolfBall extends XGameObject {
 			
 	//------------------------------------------------------------------------------------------
     }
-        
+
 //------------------------------------------------------------------------------------------
 }

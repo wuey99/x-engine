@@ -212,7 +212,7 @@
             <resource name="Moon_Layers_Background" type=".fla" embed="false" path="Common" src="7A552371-AC04-1393-8FF5-317002652FD8-Moon_Layers_Background.fla" dst="7A552371-AC04-1393-8FF5-317002652FD8-Moon_Layers_Background.swf">
               <classX name="Moon_Layers_Background" regX="0" regY="0" width="32" height="32"/>
             </resource>
-            <resource name="@Moon_Layers_Platform" type=".pmp" embed="false" path="Common" src="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.pmp" dst="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.pmp" pmp_width="2048" originX="471" originY="1053" width="1185" totalWidth="1185" height="387" regX="0" regY="0"/>
+            <resource name="@Moon_Layers_Platform" type=".pmp" embed="false" path="Common" src="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.pmp" dst="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.pmp" pmp_width="2048" originX="418" originY="1102" width="1185" totalWidth="1185" height="387" regX="0" regY="0"/>
             <resource name="png_Moon_Layers_Platform" type=".png" embed="false" path="Common" src="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.png" dst="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.png"/>
             <resource name="$Moon_Layers_Platform" type=".json" embed="false" path="Common" src="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.json" dst="AB9374E7-4711-CB6E-B7B0-9126163BD7F5-Moon_Layers_Platform.json"/>
             <resource name="Moon_Layers_Platform" type=".fla" embed="false" path="Common" src="973DF8C3-77E7-5F84-0F26-FD0F57FC5FAC-Moon_Layers_Platform.fla" dst="973DF8C3-77E7-5F84-0F26-FD0F57FC5FAC-Moon_Layers_Platform.swf">
@@ -291,6 +291,22 @@
             <resource name="@Squid_Layers_Platform" type=".pmp" embed="false" path="Common" src="47B7A9CB-C6E4-CCD5-F95A-AF5A52AECFFA-Squid_Layers_Platform.pmp" dst="47B7A9CB-C6E4-CCD5-F95A-AF5A52AECFFA-Squid_Layers_Platform.pmp" pmp_width="2048" originX="0" originY="0" width="32" totalWidth="32" height="32" regX="0" regY="0"/>
           </folder>
           <folder name="Sprites"/>
+        </folder>
+      </folder>
+      <folder name="Common">
+        <folder name="Sprites">
+          <resource name="@BottomArrow" type=".pmp" embed="false" path="Common" src="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.pmp" dst="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.pmp" pmp_width="512" originX="241" originY="242" width="22" totalWidth="22" height="22" regX="-11" regY="-11"/>
+          <resource name="png_BottomArrow" type=".png" embed="false" path="Common" src="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.png" dst="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.png"/>
+          <resource name="$BottomArrow" type=".json" embed="false" path="Common" src="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.json" dst="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.json"/>
+          <resource name="BottomArrow" type=".fla" embed="false" path="Common" src="FAE627B6-0355-4036-13F2-6E49FC282199-BottomArrow.fla" dst="FAE627B6-0355-4036-13F2-6E49FC282199-BottomArrow.swf">
+            <classX name="BottomArrow" regX="0" regY="0" width="32" height="32"/>
+          </resource>
+          <resource name="@TopArrow" type=".pmp" embed="false" path="Common" src="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.pmp" dst="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.pmp" pmp_width="512" originX="241" originY="242" width="22" totalWidth="22" height="22" regX="-11" regY="-11"/>
+          <resource name="png_TopArrow" type=".png" embed="false" path="Common" src="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.png" dst="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.png"/>
+          <resource name="$TopArrow" type=".json" embed="false" path="Common" src="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.json" dst="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.json"/>
+          <resource name="TopArrow" type=".fla" embed="false" path="Common" src="3899DF92-D2AD-76B3-3BD0-B704B01A0D03-TopArrow.fla" dst="3899DF92-D2AD-76B3-3BD0-B704B01A0D03-TopArrow.swf">
+            <classX name="TopArrow" regX="0" regY="0" width="32" height="32"/>
+          </resource>
         </folder>
       </folder>
     </folder>

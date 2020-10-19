@@ -29,6 +29,7 @@ import { OctopusBug } from '../game/OctopusBug';
 import * as Matter from 'matter-js';
 import { World, Body, Engine } from 'matter-js';
 import { GameLayer } from '../terrain/GameLayer';
+import { ForceVector } from '../game/ForceVector';
 
 //------------------------------------------------------------------------------------------
 export class TerrainEditor extends XState {
@@ -38,6 +39,7 @@ export class TerrainEditor extends XState {
     public m_terrainTilePalette32:TerrainTilePalette;
     public m_terrainTilePalette16:TerrainTilePalette;
     public m_terrainTilePaletteMisc:TerrainTilePalette;
+    public m_forceVector:ForceVector;
 
     public m_ctrlKeyDown:boolean;
     public m_mouseDownFlag:boolean;
@@ -77,11 +79,11 @@ export class TerrainEditor extends XState {
 
         this.createForms ();
         
-        this.newTerrainContainer ();
+        this.newTerrainContainer ("Earth");
 
         this.createInputHandlers ();
 
-        console.log (": getResourceByName: ", this.m_XApp.getResourceByName ("foo"));
+        console.log (": getParentObject: ", this.m_terrainContainer.getParentObject ());
 
         return this;
     }
@@ -150,6 +152,11 @@ export class TerrainEditor extends XState {
         this.m_XApp.container.appendChild (this.m_newButton);
         this.m_newButton.addEventListener ("click", ()=> {
             console.log (": new: ");
+
+            this.m_terrainContainer.nukeLater ();
+            this.removePalettes ();
+
+            this.newTerrainContainer (this.m_worldForm.value);
         });
     }
 
@@ -453,13 +460,21 @@ export class TerrainEditor extends XState {
                 this.m_mouseDownFlag = false;
             } else {
                 this.m_mouseDownFlag = true;
+
+                var __interactionData:PIXI.InteractionData = e.data;
+
+                this.m_forceVector = this.m_terrainContainer.addGameObjectAsChild (ForceVector, 0, 0.0, true) as ForceVector;
+                this.m_forceVector.afterSetup ([this.m_terrainContainer]);
+
+                this.m_forceVector.x = __interactionData.global.x
+                this.m_forceVector.y = __interactionData.global.y
             }
         }
     }
 
 //------------------------------------------------------------------------------------------
-    public newTerrainContainer ():void {
-        var __xmlString:string = '<terrain world="Earth" name="">'+
+    public newTerrainContainer (__worldName:string):void {
+        var __xmlString:string = '<terrain world="' + __worldName + '" name="">'+
             '<background x="0" y="0"/>' +
             '<foreground x="0" y="0"/>' +
             '<platform x="0" y="0"/>' +
