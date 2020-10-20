@@ -23,7 +23,7 @@ export class XGameObject extends PIXI.Sprite {
 	public m_worldObjects:Map<XGameObject, number>;
 	public m_childObjects:Map<XGameObject, number>;
 	public m_selfSprites:Map<PIXI.Sprite, number>;
-	public m_childSprites:Map<PIXI.Sprite, number>;
+	public m_childSprites:Map<PIXI.DisplayObject, number>;
 	public m_worldSprites:Map<PIXI.Sprite, number>;	
 	public m_animatedSprites:Map<string, PIXI.AnimatedSprite>;
 	public m_signals:Map<XSignal, number>;
@@ -93,7 +93,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_selfObjects = new Map<XGameObject, number> ();
 		this.m_animatedSprites = new Map<string, PIXI.AnimatedSprite> ();
 		this.m_selfSprites = new Map<PIXI.Sprite, number> ();
-		this.m_childSprites = new Map<PIXI.Sprite, number> ();
+		this.m_childSprites = new Map<PIXI.DisplayObject, number> ();
 		this.m_worldSprites = new Map<PIXI.Sprite, number> ();		
 		this.m_signals = new Map<XSignal, number> ();
 		this.m_XTaskSubManager = new XTaskSubManager (XGameObject.getXApp ().getXTaskManager ());
@@ -587,14 +587,14 @@ export class XGameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public addSortableChild (__sprite:PIXI.Sprite, __layer:number = 0, __depth:number = 0.0, __visible:boolean = false):void {
+	public addSortableChild (__sprite:PIXI.DisplayObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = false):void {
 	    this.m_childSprites.set (__sprite, 0);
 		
 		this.world.addSortableChild (__sprite, __layer, __depth, __visible);
 	}
 	
 //------------------------------------------------------------------------------------------
-	public removeChildSprite (__sprite:PIXI.Sprite):void {
+	public removeChildSprite (__sprite:PIXI.DisplayObject):void {
 		if (this.m_childSprites.has (__sprite)) {
 			this.m_childSprites.delete (__sprite);
 			
@@ -604,7 +604,7 @@ export class XGameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public removeAllChildSprites ():void {
-        var __sprite:PIXI.Sprite;
+        var __sprite:PIXI.DisplayObject;
     
 		for (__sprite of this.m_childSprites.keys ()) {
 			this.removeChildSprite (__sprite);
@@ -922,7 +922,7 @@ export class XGameObject extends PIXI.Sprite {
 			}
 		
 //------------------------------------------------------------------------------------------
-			var __sprite:PIXI.Sprite;
+			var __sprite:PIXI.DisplayObject;
 			
 //------------------------------------------------------------------------------------------			
 // update self sprites that live in the World

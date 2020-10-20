@@ -40,7 +40,7 @@ export class XSpriteLayer extends XSprite {
     }
         
     //------------------------------------------------------------------------------------------
-    public addSprite (__sprite:PIXI.Sprite, __depth:number, __visible:boolean = true):XDepthSprite {
+    public addSprite (__sprite:PIXI.DisplayObject, __depth:number, __visible:boolean = true):XDepthSprite {
         var __depthSprite:XDepthSprite = this.world.getXDepthSpritePoolManager ().borrowObject () as XDepthSprite;
         
         __depthSprite.setup ();

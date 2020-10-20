@@ -61,21 +61,21 @@ export class SidePanel extends XGameObject {
 		this.m_scoreBox.x = __x;
 		this.m_scoreBox.y = __y;
 
-		__y += 100;
+		__y += 90;
 
 		this.m_mass = this.addGameObjectAsChild (SidePanel_Mass, this.getLayer (), this.getDepth (), true) as SidePanel_Mass;
 		this.m_mass.afterSetup ([]);
 		this.m_mass.x = __x;
 		this.m_mass.y = __y;
 
-		__y += 110;
+		__y += 130;	
 
 		this.m_planet = this.addGameObjectAsChild (SidePanel_Planet, this.getLayer (), this.getDepth (), true) as SidePanel_Planet;
 		this.m_planet.afterSetup ([]);
 		this.m_planet.x = __x;
 		this.m_planet.y = __y;
 
-		__y += 130;
+		__y += 150;
 
 		this.m_forceGauge = this.addGameObjectAsChild (SidePanel_ForceGauge, this.getLayer (), this.getDepth (), true) as SidePanel_ForceGauge;
 		this.m_forceGauge.afterSetup ([]);

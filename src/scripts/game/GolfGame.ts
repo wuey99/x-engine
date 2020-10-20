@@ -93,20 +93,24 @@ export class GolfGame extends XState {
 		this.m_XApp.getStage ().on ("mousedown", this.onMouseDown.bind (this));
 
 		this.createSidePanel ();
-
-		PIXI.BitmapFont.from("GameFont", {
-			fontFamily: "Arial",
-			fontSize: 30,
-			strokeThickness: 0,
-			fill: "white"
-		});
-	   
-		const title = new PIXI.BitmapText("This is the title", { fontName: "GameFont" });
-		this.addChild (title);
 	}
 
 //------------------------------------------------------------------------------------------
 	public createSidePanel ():void {
+        PIXI.BitmapFont.from("SidePanelLabelFont", {
+			fontFamily: "Arial",
+			fontSize: 20,
+			strokeThickness: 0,
+			fill: "white"
+		});
+	   
+        PIXI.BitmapFont.from("SidePanelSmallLabelFont", {
+			fontFamily: "Arial",
+			fontSize: 14,
+			strokeThickness: 0,
+			fill: "white"
+		});
+
 		this.m_sidePanel = this.addGameObjectAsChild (SidePanel, this.getLayer (), this.getDepth (), true) as SidePanel;
 		this.m_sidePanel.afterSetup ([]);
 

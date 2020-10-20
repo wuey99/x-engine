@@ -56,6 +56,23 @@ export class SidePanel_ForceGauge extends XGameObject {
         this.m_needleSprite = this.createAnimatedSprite ("Earth_Sprites_ForceNeedle");
         this.addSortableChild (this.m_needleSprite, 0, 999999.0 + 1.0, false);
 
+		PIXI.BitmapFont.from("GaugeFont", {
+			fontFamily: "Arial",
+			fontSize: 18,
+			strokeThickness: 0,
+			fill: "green"
+        });
+        
+        var __force:PIXI.BitmapText = new PIXI.BitmapText ("50 N",  { fontName: "GravityFont" });
+        this.addSortableChild (__force, 0, 999999.0 + 1.0, false);
+        __force.x = -__force.width/2;
+        __force.y = 40;
+
+        var __label:PIXI.BitmapText = new PIXI.BitmapText ("Hit Force",  { fontName: "SidePanelSmallLabelFont" });
+        this.addSortableChild (__label, 0, 999999.0 + 1.0, false);
+        __label.x = -__label.width/2;
+        __label.y = 64;
+
         this.show ();
     }
 

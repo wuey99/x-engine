@@ -27,7 +27,7 @@ export class XWorld extends XSprite {
     private m_killQueue:Map<XGameObject, number>;
     private m_gameObjects:Map<XGameObject, XDepthSprite>;
     private m_childObjects:Map<XGameObject, XDepthSprite>;	
-    private m_children:Map<PIXI.Sprite, any>;
+    private m_children:Map<PIXI.DisplayObject, any>;
 
     private m_matterEngine:Engine;
 
@@ -70,7 +70,7 @@ export class XWorld extends XSprite {
         
         this.m_gameObjects = new Map<XGameObject, XDepthSprite> ();
         this.m_childObjects = new Map<XGameObject, XDepthSprite> ();
-        this.m_children = new Map<PIXI.Sprite, any> ();
+        this.m_children = new Map<PIXI.DisplayObject, any> ();
 
         this.createMatterEngine ();
     }
@@ -173,7 +173,7 @@ export class XWorld extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
-    public addSortableChild (__sprite:PIXI.Sprite, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):void {
+    public addSortableChild (__sprite:PIXI.DisplayObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):void {
         var __depthSprite:XDepthSprite;
         
         __depthSprite = this.m_layers[__layer].addSprite (__sprite, __depth, __visible);
@@ -182,7 +182,7 @@ export class XWorld extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
-    public  removeSortableChild (__sprite:PIXI.Sprite):void {
+    public  removeSortableChild (__sprite:PIXI.DisplayObject):void {
         if (this.m_children.has (__sprite)) {
             var x:any  = this.m_children.get (__sprite);
             
