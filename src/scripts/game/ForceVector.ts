@@ -27,6 +27,8 @@ export class ForceVector extends XGameObject {
 
     public script:XTask;
 
+    public m_firedSignal:XSignal;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -57,6 +59,8 @@ export class ForceVector extends XGameObject {
 
         this.m_XApp.getStage ().on ("mouseup", this.onMouseUp.bind (this));
 
+        this.m_firedSignal = this.createXSignal ();
+
 		return this;
 	}
 	
@@ -71,6 +75,8 @@ export class ForceVector extends XGameObject {
 
         console.log (": ForceVector: mouseUp: ");
 
+        this.m_firedSignal.fireSignal ();
+
         this.nuke ();
 
         this.m_XApp.getXTaskManager ().addTask ([
@@ -82,6 +88,11 @@ export class ForceVector extends XGameObject {
 
             XTask.RETN,
         ]);
+    }
+
+//------------------------------------------------------------------------------------------
+    public addFiredListener (__listener:any):number {
+        return this.m_firedSignal.addListener (__listener);
     }
 
 	//------------------------------------------------------------------------------------------

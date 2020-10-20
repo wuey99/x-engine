@@ -45,11 +45,16 @@ export class GolfBall extends XGameObject {
         super.afterSetup (__params);
 
 		this.m_terrainContainer = __params[0];
+		var __selfShooting:boolean = __params[1];
 
 		this.m_mouseDownFlag = false;
 
         this.createSprites ();
 
+		if (__selfShooting) {
+			this.createInputHandlers ();
+		}
+		
         this.script = this.addEmptyTask ();
 
         this.Idle_Script ();
@@ -68,7 +73,10 @@ export class GolfBall extends XGameObject {
         this.addSortableChild (this.m_sprite, 0, 0.0, false);
 
 		this.show ();
-		
+	}
+
+//------------------------------------------------------------------------------------------
+	public createInputHandlers ():void {
 		this.m_sprite.interactive = true;
 		this.m_sprite.interactiveChildren = true;
 
@@ -137,6 +145,11 @@ export class GolfBall extends XGameObject {
 
 		console.log (": applyForce: ", __dx, __dy);
 
+		this.shootBall (__dx, __dy);
+	}
+
+//------------------------------------------------------------------------------------------
+	public shootBall (__dx:number, __dy:number):void {
 		Matter.Body.applyForce (
 			this.getMatterBody (),
 			{

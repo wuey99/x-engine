@@ -277,7 +277,7 @@ export class TerrainEditor extends XState {
                         var __x:number = this.m_XApp.getMousePos ().x;
                         var __y:number = this.m_XApp.getMousePos ().y;
             
-                        var __octopusBug:OctopusBug = this.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
+                        var __octopusBug:OctopusBug = this.m_terrainContainer.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
                         __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 8, {restitution: 0.80}), 8);
                     }
                     
@@ -288,8 +288,8 @@ export class TerrainEditor extends XState {
                         var __x:number = this.m_XApp.getMousePos ().x;
                         var __y:number = this.m_XApp.getMousePos ().y;
             
-                        var __golfBall:GolfBall = this.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
-                        __golfBall.afterSetup ([this.m_terrainContainer])
+                        var __golfBall:GolfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
+                        __golfBall.afterSetup ([this.m_terrainContainer, true])
                             .attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 15, {restitution: 0.80}), 15)
                             .setMatterRotate (false);
                     }

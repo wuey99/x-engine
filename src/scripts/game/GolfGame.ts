@@ -1,0 +1,131 @@
+//------------------------------------------------------------------------------------------
+import * as PIXI from 'pixi.js'
+import { XApp } from '../app/XApp';
+import { XSprite } from '../sprite/XSprite';
+import { XSpriteLayer } from '../sprite/XSpriteLayer';
+import { XSignal } from '../signals/XSignal';
+import { XSignalManager } from '../signals/XSignalManager';
+import { world } from '../app';
+import { XTask } from '../task/XTask';
+import { XTaskManager} from '../task/XTaskManager';
+import { XTaskSubManager} from '../task/XTaskSubManager';
+import { XWorld} from '../sprite/XWorld';
+import { XDepthSprite} from '../sprite/XDepthSprite';
+import { XType } from '../type/Xtype';
+import { XGameObject} from '../gameobject/XGameObject';
+import { TerrainContainer } from '../terrain/TerrainContainer';
+import { XState } from '../state/XState';
+import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
+import { ForceVector } from './ForceVector';
+import { GolfBall } from './GolfBall';
+import * as Matter from 'matter-js';
+
+//------------------------------------------------------------------------------------------
+export class GolfGame extends XState {
+	public m_terrainContainer:TerrainContainer;
+	public m_loadComplete:boolean;
+	public loader:PIXI.Loader;
+	public m_levelXML:XSimpleXMLNode;
+	public m_forceVector:ForceVector;
+	public m_golfBall:GolfBall;
+
+//------------------------------------------------------------------------------------------	
+	constructor () {
+		super ();
+	}
+	
+//------------------------------------------------------------------------------------------
+	public setup (__world:XWorld, __layer:number, __depth:number):XGameObject {
+        super.setup (__world, __layer, __depth);
+
+		return this;
+	}
+	
+//------------------------------------------------------------------------------------------
+	public afterSetup (__params:Array<any> = null):XGameObject {
+        super.afterSetup (__params);
+
+		console.log (": GolfGame: ");
+
+		this.loadLevel ("levels\\TestLevel.xml");
+
+		this.addTask ([
+			XTask.LABEL, "loop",
+				XTask.WAIT, 0x0100,
+
+				XTask.FLAGS, (__task:XTask) => {
+					__task.ifTrue (this.m_loadComplete);
+				}, XTask.BNE, "loop",
+
+				() => {
+					this.startGame ();
+				},
+
+			XTask.RETN,
+		]);
+
+		return this;
+	}
+	
+//------------------------------------------------------------------------------------------
+	public cleanup():void {
+        super.cleanup ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public startGame ():void {
+		this.createTerrainContainer ().deserialize (this.m_levelXML);
+
+		this.m_golfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
+		this.m_golfBall.afterSetup ([this.m_terrainContainer, true])
+			.attachMatterBodyCircle (Matter.Bodies.circle (256, 256, 15, {restitution: 0.80}), 15)
+			.setMatterRotate (false);
+
+		this.m_XApp.getStage ().on ("mousedown", this.onMouseDown.bind (this));
+	}
+
+//------------------------------------------------------------------------------------------
+	public onMouseDown (e:PIXI.InteractionEvent) {
+		var __interactionData:PIXI.InteractionData = e.data;
+
+		this.m_forceVector = this.m_terrainContainer.addGameObjectAsChild (ForceVector, 0, 0.0, true) as ForceVector;
+		this.m_forceVector.afterSetup ([this.m_terrainContainer]);
+
+		this.m_forceVector.x = __interactionData.global.x
+		this.m_forceVector.y = __interactionData.global.y
+	}
+
+//------------------------------------------------------------------------------------------
+	public createTerrainContainer ():TerrainContainer {
+		this.m_terrainContainer = this.addGameObjectAsChild (TerrainContainer, 0, 500.0) as TerrainContainer;
+		this.m_terrainContainer.afterSetup ();
+		this.m_terrainContainer.x = 0;
+		this.m_terrainContainer.y = 0;
+
+		return this.m_terrainContainer;
+	}
+
+    //------------------------------------------------------------------------------------------
+    public loadLevel (__path:string):void {
+        this.loader = new PIXI.Loader ();
+
+        this.m_loadComplete = false;
+
+		console.log (": loadLevel: begin: ");
+
+        this.loader.add(__path).load ((loader, resources) => {
+            this.m_loadComplete = true;
+
+            var __response:string = resources[__path].xhr.response;
+
+			var __levelXMLString = __response;
+
+			this.m_levelXML = new XSimpleXMLNode ();
+			this.m_levelXML.setupWithXMLString (__levelXMLString);
+
+			console.log (": loadLevel: ", __response);
+        });
+	}
+	
+//------------------------------------------------------------------------------------------
+}
