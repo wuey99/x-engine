@@ -13,17 +13,13 @@ import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
-import { SidePanel_ScoreBox } from './SidePanel_ScoreBox';
-import { SidePanel_Mass } from './SidePanel_Mass';
-import { SidePanel_Planet } from './SidePanel_Planet';
-import { SidePanel_ForceGauge } from './SidePanel_ForceGauge';
 
 //------------------------------------------------------------------------------------------
-export class SidePanel extends XGameObject {
-	public m_scoreBox:SidePanel_ScoreBox;
-	public m_mass:SidePanel_Mass;
-	public m_planet:SidePanel_Planet;
-	public m_forceGauge:SidePanel_ForceGauge;
+export class SidePanel_ScoreBox extends XGameObject {
+    public m_sprite:PIXI.AnimatedSprite;
+    public x_sprite:XDepthSprite;
+
+    public m_score:number;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -41,47 +37,35 @@ export class SidePanel extends XGameObject {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-		this.createObjects ();
+        this.m_score = 0;
+
+        this.createSprites ();
 
 		return this;
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup ():void {
+	public cleanup():void {
         super.cleanup ();
 	}
-	
+    
 //------------------------------------------------------------------------------------------
-	public createObjects ():void {
-		var __x:number = 60;
-		var __y:number = -40;
+    public createSprites ():void {
+        this.m_sprite = this.createAnimatedSprite ("Earth_Sprites_ScoreBox");
+        this.addSortableChild (this.m_sprite, 0, 999999.0, false);
 
-		this.m_scoreBox = this.addGameObjectAsChild (SidePanel_ScoreBox, this.getLayer (), this.getDepth (), true) as SidePanel_ScoreBox;
-		this.m_scoreBox.afterSetup ([]);
-		this.m_scoreBox.x = __x;
-		this.m_scoreBox.y = __y;
+		PIXI.BitmapFont.from("ScoreFont", {
+			fontFamily: "Arial",
+			fontSize: 20,
+			strokeThickness: 0,
+			fill: "white"
+		});
+	   
+		const score = new PIXI.BitmapText("Score", { fontName: "ScoreFont" });
+        this.addChild (score);
 
-		__y += 100;
-
-		this.m_mass = this.addGameObjectAsChild (SidePanel_Mass, this.getLayer (), this.getDepth (), true) as SidePanel_Mass;
-		this.m_mass.afterSetup ([]);
-		this.m_mass.x = __x;
-		this.m_mass.y = __y;
-
-		__y += 110;
-
-		this.m_planet = this.addGameObjectAsChild (SidePanel_Planet, this.getLayer (), this.getDepth (), true) as SidePanel_Planet;
-		this.m_planet.afterSetup ([]);
-		this.m_planet.x = __x;
-		this.m_planet.y = __y;
-
-		__y += 130;
-
-		this.m_forceGauge = this.addGameObjectAsChild (SidePanel_ForceGauge, this.getLayer (), this.getDepth (), true) as SidePanel_ForceGauge;
-		this.m_forceGauge.afterSetup ([]);
-		this.m_forceGauge.x = __x;
-		this.m_forceGauge.y = __y;
-	}
+        this.show ();
+    }
 
 //------------------------------------------------------------------------------------------
 }

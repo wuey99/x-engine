@@ -20,6 +20,7 @@ import { ForceVector } from './ForceVector';
 import { GolfBall } from './GolfBall';
 import * as Matter from 'matter-js';
 import {Howl, Howler} from 'howler';
+import { SidePanel } from './SidePanel';
 
 //------------------------------------------------------------------------------------------
 export class GolfGame extends XState {
@@ -29,6 +30,7 @@ export class GolfGame extends XState {
 	public m_levelXML:XSimpleXMLNode;
 	public m_forceVector:ForceVector;
 	public m_golfBall:GolfBall;
+	public m_sidePanel:SidePanel;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -89,6 +91,27 @@ export class GolfGame extends XState {
 			.setMatterRotate (false);
 
 		this.m_XApp.getStage ().on ("mousedown", this.onMouseDown.bind (this));
+
+		this.createSidePanel ();
+
+		PIXI.BitmapFont.from("GameFont", {
+			fontFamily: "Arial",
+			fontSize: 30,
+			strokeThickness: 0,
+			fill: "white"
+		});
+	   
+		const title = new PIXI.BitmapText("This is the title", { fontName: "GameFont" });
+		this.addChild (title);
+	}
+
+//------------------------------------------------------------------------------------------
+	public createSidePanel ():void {
+		this.m_sidePanel = this.addGameObjectAsChild (SidePanel, this.getLayer (), this.getDepth (), true) as SidePanel;
+		this.m_sidePanel.afterSetup ([]);
+
+		this.m_sidePanel.x = 0;
+		this.m_sidePanel.y = 256;
 	}
 
 //------------------------------------------------------------------------------------------
