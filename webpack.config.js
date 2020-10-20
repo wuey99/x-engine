@@ -30,6 +30,7 @@ const config = {
             { from: 'src/images', to: 'images' },
             { from: 'src/assets/Cows/Project', to: 'assets' },
             { from: 'src/assets/levels', to: 'levels' },
+            { from: 'src/assets/sounds', to: 'sounds' },
         ]),
     ],
     devServer: {

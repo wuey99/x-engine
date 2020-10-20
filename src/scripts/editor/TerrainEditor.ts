@@ -40,6 +40,7 @@ export class TerrainEditor extends XState {
     public m_terrainTilePalette16:TerrainTilePalette;
     public m_terrainTilePaletteMisc:TerrainTilePalette;
     public m_forceVector:ForceVector;
+    public m_golfBall:GolfBall;
 
     public m_ctrlKeyDown:boolean;
     public m_mouseDownFlag:boolean;
@@ -288,8 +289,8 @@ export class TerrainEditor extends XState {
                         var __x:number = this.m_XApp.getMousePos ().x;
                         var __y:number = this.m_XApp.getMousePos ().y;
             
-                        var __golfBall:GolfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
-                        __golfBall.afterSetup ([this.m_terrainContainer, true])
+                        var __golfBall:GolfBall = this.m_golfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
+                        __golfBall.afterSetup ([this.m_terrainContainer, false])
                             .attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 15, {restitution: 0.80}), 15)
                             .setMatterRotate (false);
                     }
@@ -472,6 +473,14 @@ export class TerrainEditor extends XState {
 
                 this.m_forceVector.x = __interactionData.global.x
                 this.m_forceVector.y = __interactionData.global.y
+
+                this.m_forceVector.addFiredListener ((__dx:number, __dy:number) => {
+                    console.log (": fired: ", __dx, __dy);
+                    
+                    if (this.m_golfBall != null) {
+                        this.m_golfBall.shootBall (__dx, __dy);
+                    }
+                });
             }
         }
     }

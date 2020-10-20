@@ -19,6 +19,7 @@ import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 import { ForceVector } from './ForceVector';
 import { GolfBall } from './GolfBall';
 import * as Matter from 'matter-js';
+import {Howl, Howler} from 'howler';
 
 //------------------------------------------------------------------------------------------
 export class GolfGame extends XState {
@@ -49,6 +50,12 @@ export class GolfGame extends XState {
 
 		this.loadLevel ("levels\\TestLevel.xml");
 
+		var sound = new Howl ({
+			src: ['sounds\\Sergey_Cheremisinov_-_04_-_Northern_Lullaby.mp3']
+		});
+		  
+		sound.play ();
+
 		this.addTask ([
 			XTask.LABEL, "loop",
 				XTask.WAIT, 0x0100,
@@ -77,7 +84,7 @@ export class GolfGame extends XState {
 		this.createTerrainContainer ().deserialize (this.m_levelXML);
 
 		this.m_golfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
-		this.m_golfBall.afterSetup ([this.m_terrainContainer, true])
+		this.m_golfBall.afterSetup ([this.m_terrainContainer, false])
 			.attachMatterBodyCircle (Matter.Bodies.circle (256, 256, 15, {restitution: 0.80}), 15)
 			.setMatterRotate (false);
 
@@ -93,6 +100,12 @@ export class GolfGame extends XState {
 
 		this.m_forceVector.x = __interactionData.global.x
 		this.m_forceVector.y = __interactionData.global.y
+
+		this.m_forceVector.addFiredListener ((__dx:number, __dy:number) => {
+			console.log (": fired: ", __dx, __dy);
+
+			this.m_golfBall.shootBall (__dx, __dy);
+		});
 	}
 
 //------------------------------------------------------------------------------------------

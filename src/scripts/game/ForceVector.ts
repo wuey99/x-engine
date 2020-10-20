@@ -58,6 +58,7 @@ export class ForceVector extends XGameObject {
         this.m_bottomArrow.afterSetup (["BottomArrow"]);
 
         this.m_XApp.getStage ().on ("mouseup", this.onMouseUp.bind (this));
+        this.m_XApp.getStage ().on ("mouseout", this.onMouseOut.bind (this));
 
         this.m_firedSignal = this.createXSignal ();
 
@@ -72,10 +73,36 @@ export class ForceVector extends XGameObject {
 //------------------------------------------------------------------------------------------
     public onMouseUp (e:PIXI.InteractionEvent) {
         this.m_XApp.getStage ().off ("mouseup", this.onMouseUp);
+        this.m_XApp.getStage ().off ("mouseout", this.onMouseUp);
 
         console.log (": ForceVector: mouseUp: ");
 
-        this.m_firedSignal.fireSignal ();
+        var __point:XPoint = this.m_terrainContainer.getMousePos ();
+
+        var __dx:number = (this.x - __point.x) / 2048;
+        var __dy:number = (this.y - __point.y) / 2048;
+
+        this.m_firedSignal.fireSignal (__dx, __dy);
+
+        this.nuke ();
+
+        this.m_XApp.getXTaskManager ().addTask ([
+            XTask.WAIT, 0x0100,
+            
+            () => {
+                this.m_terrainContainer.clearGraphics ();
+            },
+
+            XTask.RETN,
+        ]);
+    }
+
+//------------------------------------------------------------------------------------------
+    public onMouseOut (e:PIXI.InteractionEvent) {
+        this.m_XApp.getStage ().off ("mouseup", this.onMouseUp);
+        this.m_XApp.getStage ().off ("mouseout", this.onMouseUp);
+
+        console.log (": ForceVector: mouseOut: ");
 
         this.nuke ();
 
