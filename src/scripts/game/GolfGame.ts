@@ -125,8 +125,8 @@ export class GolfGame extends XState {
 		this.m_forceVector = this.m_terrainContainer.addGameObjectAsChild (ForceVector, 0, 0.0, true) as ForceVector;
 		this.m_forceVector.afterSetup ([this.m_terrainContainer]);
 
-		this.m_forceVector.x = __interactionData.global.x
-		this.m_forceVector.y = __interactionData.global.y
+		this.m_forceVector.x = __interactionData.getLocalPosition (this.m_XApp.getStage ()).x;
+		this.m_forceVector.y = __interactionData.getLocalPosition (this.m_XApp.getStage ()).y;
 
 		this.m_forceVector.addFiredListener ((__dx:number, __dy:number) => {
 			console.log (": fired: ", __dx, __dy);

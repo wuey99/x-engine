@@ -14,6 +14,7 @@ import { XGameObject } from '../gameobject/XGameObject';
 import { XProjectManager } from '../resource/XProjectManager';
 import { XPoint } from '../geom/XPoint';
 import { XRect } from '../geom/XRect';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -57,6 +58,17 @@ export class XApp {
 
     private m_mousePoint:XPoint;
 
+    private m_canvasWidth:number;
+    private m_canvasHeight:number;
+    private m_screenWidth:number;
+    private m_screenHeight:number;
+    private m_scaleXRatio:number;
+    private m_scaleYRatio:number;
+
+    private m_scaleRatio:number;
+    private m_xoffset:number;
+    private m_yoffset:number;
+
     //------------------------------------------------------------------------------------------
     constructor (params: XAppParams) {
         this.loader = PIXI.Loader.shared;
@@ -74,6 +86,13 @@ export class XApp {
 
         this.container = params.containerId ? document.getElementById(params.containerId) || document.body : document.body;
         this.container.appendChild (this.renderer.view)
+
+        this.setupSize (params.canvasW, params.canvasH, G.SCREEN_WIDTH, G.SCREEN_HEIGHT);
+        this.fitScreenToCanvas ();
+        this.stage.scale.x = this.getScaleRatio ();
+        this.stage.scale.y = this.getScaleRatio ();
+
+        console.log (": scaleRatio: ", this.getScaleRatio (), this.getXOffset (), this.getYOffset ());
 
 		XGameObject.setXApp(this);
 		XTask.setXApp (this);
@@ -96,6 +115,13 @@ export class XApp {
         this.m_inuse_TIMER_FRAME = 0;
         
         this.m_mousePoint = new XPoint ();
+
+        this.getStage ().on ("mousemove", (e:PIXI.InteractionEvent) => {
+            var __mousePos:PIXI.Point = e.data.getLocalPosition (this.getStage ());
+
+            this.m_mousePoint.x = __mousePos.x;
+            this.m_mousePoint.y = __mousePos.y;
+        })
     }
 
    //------------------------------------------------------------------------------------------
@@ -285,6 +311,66 @@ export class XApp {
 		this.m_inuse_TIMER_FRAME--;
     }
 
+
+    //------------------------------------------------------------------------------------------
+    public setupSize (__canvasWidth:number, __canvasHeight:number, __screenWidth:number, __screenHeight:number):void {
+        this.m_canvasWidth = __canvasWidth;
+        this.m_canvasHeight = __canvasHeight;
+
+        this.m_screenWidth = __screenWidth;
+        this.m_screenHeight = __screenHeight;
+
+        this.m_scaleXRatio = this.m_screenWidth / this.m_canvasWidth;
+        this.m_scaleYRatio = this.m_screenHeight / this.m_canvasHeight;
+    }
+
+        
+    //------------------------------------------------------------------------------------------
+    public getCanvasWidth ():number {
+        return this.m_canvasWidth;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getCanvasHeight ():number {
+        return this.m_canvasHeight;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getScreenWidth ():number {
+        return this.m_screenWidth;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getScreenHeight ():number {
+        return this.m_screenHeight;
+    }
+
+    //------------------------------------------------------------------------------------------
+	public fitScreenToCanvas ():void {
+		var __scaleX:number = this.getCanvasWidth () / this.getScreenWidth ();
+		var __scaleY:number = this.getCanvasHeight () / this.getScreenHeight ();
+			
+		this.m_scaleRatio = Math.min (__scaleX, __scaleY);
+			
+		this.m_xoffset = (this.getCanvasWidth () - this.getScreenWidth () * this.m_scaleRatio) / 2;
+		this.m_yoffset = (this.getCanvasHeight () - this.getScreenHeight () * this.m_scaleRatio) / 2;
+	}
+		
+    //------------------------------------------------------------------------------------------
+	public getXOffset ():number {
+		return this.m_xoffset;
+	}
+		
+    //------------------------------------------------------------------------------------------
+	public getYOffset ():number {
+		return this.m_yoffset;
+	}
+		
+    //------------------------------------------------------------------------------------------
+	public getScaleRatio ():number {
+		return this.m_scaleRatio;
+	}
+        
     //------------------------------------------------------------------------------------------
     public getStage ():PIXI.Container {
         return this.stage;
@@ -292,11 +378,6 @@ export class XApp {
 
     //------------------------------------------------------------------------------------------
     public getMousePos ():XPoint {
-        var __point:PIXI.Point = this.renderer.plugins.interaction.mouse.global;
-
-        this.m_mousePoint.x = __point.x;
-        this.m_mousePoint.y = __point.y;
-        
         return this.m_mousePoint;
     }
 

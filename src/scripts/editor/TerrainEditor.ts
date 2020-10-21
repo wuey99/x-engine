@@ -313,7 +313,7 @@ export class TerrainEditor extends XState {
         this.m_XApp.getStage ().on ("mousedown", (e:PIXI.InteractionEvent) => {
             this.m_mouseDownFlag = true;
 
-            this.m_mouseDownPos = e.data.global.clone ();
+            this.m_mouseDownPos = e.data.getLocalPosition (this.m_XApp.getStage ()).clone ();
 
             if (this.isEditingBackground () && this.m_terrainContainer.getBGLayer () != null) {
                 this.m_layerPos.x = this.m_terrainContainer.getBGLayer ().x;
@@ -401,7 +401,7 @@ export class TerrainEditor extends XState {
 
 //------------------------------------------------------------------------------------------
     public moveBackground (e:PIXI.InteractionEvent):void {
-        var __mousePos:PIXI.Point = e.data.global;
+        var __mousePos:PIXI.Point = e.data.getLocalPosition (this.m_XApp.getStage ());
 
         var __dx:number = (__mousePos.x - this.m_mouseDownPos.x);
         var __dy:number = (__mousePos.y - this.m_mouseDownPos.y);
@@ -414,7 +414,7 @@ export class TerrainEditor extends XState {
 
 //------------------------------------------------------------------------------------------
     public moveTerrain (e:PIXI.InteractionEvent):void {
-        var __mousePos:PIXI.Point = e.data.global;
+        var __mousePos:PIXI.Point = e.data.getLocalPosition (this.m_XApp.getStage ());
 
         var __dx:number = (__mousePos.x - this.m_mouseDownPos.x);
         var __dy:number = (__mousePos.y - this.m_mouseDownPos.y);
@@ -427,12 +427,12 @@ export class TerrainEditor extends XState {
 
 //------------------------------------------------------------------------------------------
     public moveForeground (e:PIXI.InteractionEvent):void {
-        var __mousePos:PIXI.Point = e.data.global;
+        var __mousePos:PIXI.Point = e.data.getLocalPosition (this.m_XApp.getStage ());
     }
 
 //------------------------------------------------------------------------------------------
     public movePlatform (e:PIXI.InteractionEvent):void {
-        var __mousePos:PIXI.Point = e.data.global;
+        var __mousePos:PIXI.Point = e.data.getLocalPosition (this.m_XApp.getStage ());
 
         var __dx:number = (__mousePos.x - this.m_mouseDownPos.x);
         var __dy:number = (__mousePos.y - this.m_mouseDownPos.y);
@@ -446,8 +446,8 @@ export class TerrainEditor extends XState {
 //------------------------------------------------------------------------------------------
     public editTerrain (e:PIXI.InteractionEvent):void {
         if (this.m_currentBrush == null) {
-            var __x:number = e.data.global.x;
-            var __y:number = e.data.global.y;
+            var __x:number = e.data.getLocalPosition (this.m_XApp.getStage ()).x;
+            var __y:number = e.data.getLocalPosition (this.m_XApp.getStage ()).y;
 
             var __terrainTile:TerrainTile = this.m_terrainContainer.pickupTerrainTile (__x, __y);
             console.log (": terrainTile: ", __terrainTile);
@@ -471,8 +471,8 @@ export class TerrainEditor extends XState {
                 this.m_forceVector = this.m_terrainContainer.addGameObjectAsChild (ForceVector, 0, 0.0, true) as ForceVector;
                 this.m_forceVector.afterSetup ([this.m_terrainContainer]);
 
-                this.m_forceVector.x = __interactionData.global.x
-                this.m_forceVector.y = __interactionData.global.y
+                this.m_forceVector.x = __interactionData.getLocalPosition (this.m_XApp.getStage ()).x;
+                this.m_forceVector.y = __interactionData.getLocalPosition (this.m_XApp.getStage ()).y;
 
                 this.m_forceVector.addFiredListener ((__dx:number, __dy:number) => {
                     console.log (": fired: ", __dx, __dy);

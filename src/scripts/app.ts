@@ -30,8 +30,8 @@ function load() {
 function create() {
     g_XApp = new XApp ({
         containerId: 'game',
-        canvasW: G.SCREEN_WIDTH,
-        canvasH: G.SCREEN_HEIGHT,
+        canvasW: G.CANVAS_WIDTH,
+        canvasH: G.CANVAS_HEIGHT,
         fpsMax: 60
     });
     

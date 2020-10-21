@@ -250,7 +250,7 @@ export class XGameObject extends PIXI.Sprite {
 
 	//------------------------------------------------------------------------------------------
     public getMousePos ():XPoint {
-        var __point:PIXI.Point = this.m_XApp.renderer.plugins.interaction.mouse.global;
+		var __point:XPoint = this.m_XApp.getMousePos ();
 
         this.m_mousePoint.x = __point.x;
         this.m_mousePoint.y = __point.y;
