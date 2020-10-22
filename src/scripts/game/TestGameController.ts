@@ -59,7 +59,7 @@ export class TestGameController extends XGameController {
 					console.log (": load complete: ");
 				},
 
-				() => this.getGameInstance ().gotoState ("GolfGame"),
+				() => this.getGameInstance ().gotoState ("TestSVG"),
 
 			XTask.RETN,
 		]);

@@ -49,8 +49,7 @@ export class GameLayer extends XGameObject {
     
 //------------------------------------------------------------------------------------------
 	public createSprites ():void {
-		var __layerName:string = "backgrounds" + "/" + this.m_layerName.toLowerCase () + ".svg";
-		this.m_sprite = this.createSpriteFromSVG (__layerName);
+		this.m_sprite = this.createSprite (this.m_layerName);
 		this.addSortableChild (this.m_sprite, this.getLayer (), this.getDepth (), false);
 
 		this.show ();

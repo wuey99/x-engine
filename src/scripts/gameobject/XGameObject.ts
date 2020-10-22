@@ -26,8 +26,7 @@ export class XGameObject extends PIXI.Sprite {
 	public m_childSprites:Map<PIXI.DisplayObject, number>;
 	public m_worldSprites:Map<PIXI.Sprite, number>;	
 	public m_animatedSprites:Map<string, PIXI.AnimatedSprite>;
-	public m_svgSprites:Map<string, PIXI.Sprite>;
-	public m_svgTextures:Map<string, PIXI.Texture>;
+	public m_sprites:Map<string, PIXI.Sprite>;
 	public m_signals:Map<XSignal, number>;
 	public m_XTaskSubManager:XTaskSubManager;
 	public m_killSignal:XSignal;
@@ -97,8 +96,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_childSprites = new Map<PIXI.DisplayObject, number> ();
 		this.m_worldSprites = new Map<PIXI.Sprite, number> ();
 		this.m_animatedSprites = new Map<string, PIXI.AnimatedSprite> ();
-		this.m_svgSprites = new Map<string, PIXI.Sprite> ();
-		this.m_svgTextures = new Map<string, PIXI.Texture> ();		
+		this.m_sprites = new Map<string, PIXI.Sprite> ();	
 		this.m_signals = new Map<XSignal, number> ();
 		this.m_XTaskSubManager = new XTaskSubManager (XGameObject.getXApp ().getXTaskManager ());
 		this.m_parent = null;
@@ -139,7 +137,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.removeAllXTilemaps ();
 		this.removeAllXSignals ();
 		this.removeAllAnimatedSprites ();
-		this.removeAllSVGSprites ();
+		this.removeAllSprites ();
 		
 		if (this.getParentObject () != null) { 
 			this.getParentObject ().removeSelfObject0 (this);
@@ -345,35 +343,26 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public createSpriteFromSVG (__path:string):PIXI.Sprite {
-		var __texture:PIXI.Texture = PIXI.Texture.from (__path);
-		var __sprite:PIXI.Sprite = PIXI.Sprite.from (__texture)
+	public createSprite (__name:string):PIXI.Sprite {
+		var __texture:PIXI.Texture = world.getResourceByName (__name);
+		var __sprite:PIXI.Sprite = PIXI.Sprite.from (__texture);
 
-		this.m_svgSprites.set (__path, __sprite);
-		this.m_svgTextures.set (__path, __texture);
+		this.m_sprites.set (__name, __sprite);
 
 		return __sprite;
 	}
 
 //------------------------------------------------------------------------------------------
-	public removeAllSVGSprites ():void {
-		var __path:string;
+	public removeAllSprites ():void {
+		var __name:string;
 
-		for (__path of this.m_svgSprites.keys ()) {
-			var __sprite:PIXI.Sprite = this.m_svgSprites.get (__path);
+		for (__name of this.m_sprites.keys ()) {
+			var __sprite:PIXI.Sprite = this.m_sprites.get (__name);
 
 			__sprite.destroy ();
 		}
 
-		this.m_svgSprites.clear ();
-
-		for (__path of this.m_svgTextures.keys ()) {
-			var __texture:PIXI.Texture = this.m_svgTextures.get (__path);
-
-			__texture.destroy ();
-		}
-
-		this.m_svgTextures.clear ();
+		this.m_sprites.clear ();
 	}
 
 //------------------------------------------------------------------------------------------

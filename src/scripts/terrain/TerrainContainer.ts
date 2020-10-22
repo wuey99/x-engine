@@ -89,12 +89,12 @@ export class TerrainContainer extends XGameObject {
     public createLayers ():void {
         // if (this.m_XApp.getResourceByName (this.getWorldName () + "_Layers_Background") != null) {
             this.m_bgLayer = this.addGameObjectAsChild (GameLayer, 0, 0.0) as GameLayer;
-            this.m_bgLayer.afterSetup ([this.getWorldName () + "-Layers-Background"])
+            this.m_bgLayer.afterSetup ([this.getWorldName () + "_Layers_Background"])
         // }
 
         // if (this.m_XApp.getResourceByName (this.getWorldName () + "_Layers_Platform") != null) {
             this.m_platformLayer = this.addGameObjectAsChild (GameLayer, 0, 500.0) as GameLayer;
-            this.m_platformLayer.afterSetup ([this.getWorldName () + "-Layers-Platform"])
+            this.m_platformLayer.afterSetup ([this.getWorldName () + "_Layers_Platform"])
             this.m_platformLayer.y = 384;
         // }
     }

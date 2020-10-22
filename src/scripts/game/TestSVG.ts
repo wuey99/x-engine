@@ -39,26 +39,34 @@ export class TestSVG extends XState {
 
         console.log (": guid: ", GUID.create ());
 		
-        var __loader:PIXI.Loader = new PIXI.Loader ();
+		this.addTask ([
+			() => {
+				this.m_XApp.getXProjectManager ().loadResources ([
+					{
+						name: "earth-layers-background",
+						type: "SVGResource",
+						path: "backgrounds/earth-layers-background.svg"
+					}
+				]);
+			},
 
-		var __path:string = "backgrounds/earth-layers-background.svg";
+			XTask.LABEL, "loop",
+				XTask.WAIT, 0x0100,
 
-        __loader.add(__path).load ((loader, resources) => {
-			console.log (": load svg: ", resources[__path].texture);
+				XTask.FLAGS, (__task:XTask) => {
+					__task.ifTrue (this.m_XApp.getXProjectManager ().getResourceByName ("earth-layers-background") != null);
+				}, XTask.BNE, "loop",
 
-			let sprite = new PIXI.Sprite (resources[__path].texture);
-			this.addSortableChild (sprite, 0, 0.0, true);
-		});
+				() => {
+					var __background:XGameObject = this.addGameObjectAsChild (XGameObject, 0, 0.0, true);
+					__background.addSortableChild (
+						__background.afterSetup ().createSprite ("earth-layers-background"),
+						0, 0.0, true
+					);
+				},
 
-		/*
-		var __background:XGameObject = this.addGameObjectAsChild (XGameObject, 0, 0.0, true);
-		__background.addSortableChild (
-			__background.afterSetup ().createSpriteFromSVG ("backgrounds/earth-layers-background.svg"),
-			0, 0.0, true
-		);
-
-		this.addSortableChild (__background, 0, 0.0, true);
-		*/
+			XTask.RETN,
+		]);
 
 		return this;
 	}
