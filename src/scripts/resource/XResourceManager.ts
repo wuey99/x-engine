@@ -78,14 +78,16 @@ export class XResourceManager {
         var __resourceSpec:ResourceSpec;
 
         for (__resourceSpec of __resourceList) {
-            var __resource:Resource;
+            if (this.m_resourceMap.get (__resourceSpec.name) == null) {
+                var __resource:Resource;
 
-            __resource = XType.createInstance (this.m_typeMap.get (__resourceSpec.type));
-            __resource.setup (__resourceSpec.path)
+                __resource = XType.createInstance (this.m_typeMap.get (__resourceSpec.type));
+                __resource.setup (__resourceSpec.path);
 
-            this.m_queue.push (__resource);
+                this.m_queue.push (__resource);
 
-            this.m_resourceMap.set (__resourceSpec.name, __resource);
+                this.m_resourceMap.set (__resourceSpec.name, __resource);
+            }
         }
     }
 

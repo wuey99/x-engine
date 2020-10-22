@@ -11,19 +11,17 @@ import { XTaskManager} from '../task/XTaskManager';
 import { XTaskSubManager} from '../task/XTaskSubManager';
 import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
-import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
-import { XGameController } from '../state/XGameController';
-import { TestGame } from './TestGame';
-import { TestMatter } from './TestMatter';
-import { TestRenderTexture } from './TestRenderTexture';
-import { TestSVG } from './TestSVG';
-import { TerrainEditor } from '../editor/TerrainEditor';
-import { GolfGame } from './GolfGame';
+import { XState } from '../state/XState';
+import { OctopusBug } from './OctopusBug';
+import { GUID } from '../utils/GUID';
+import { FlockLeader } from './FlockLeader';
+import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
-export class TestGameController extends XGameController {
-	
+export class TestRenderTexture extends XState {
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -40,35 +38,37 @@ export class TestGameController extends XGameController {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-		this.getGameInstance ().registerState ("TestGame", TestGame);
-		this.getGameInstance ().registerState ("TestMatter", TestMatter);
-		this.getGameInstance ().registerState ("TestRenderTexture", TestRenderTexture);
-		this.getGameInstance ().registerState ("TestSVG", TestSVG);
-		this.getGameInstance ().registerState ("TerrainEditor", TerrainEditor);
-		this.getGameInstance ().registerState ("GolfGame", GolfGame);
+        console.log (": guid: ", GUID.create ());
+        
+        var __renderTexture:PIXI.RenderTexture = PIXI.RenderTexture.create ({width: 4096, height: 4096});
+        console.log (": renderTexture: ", __renderTexture);
+        console.log (": baseRenderTexture: ", __renderTexture.baseTexture);
 
-		this.addTask ([
-			XTask.LABEL, "loop",
-				XTask.WAIT, 0x0100,
+        var sheet:PIXI.Spritesheet = this.m_XApp.getResourceByName ("OctopusBug");
+        var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (sheet.animations["root"]);
+        __animatedSprite.gotoAndStop (0);
+        __animatedSprite.x = 0;
+        __animatedSprite.y = 0;
+        
+        this.m_XApp.getRenderer ().render (__animatedSprite, __renderTexture);
 
-				XTask.FLAGS, (__task:XTask) => {
-					__task.ifTrue (this.m_XApp.getXProjectManager ().getLoadComplete ());
-				}, XTask.BNE, "loop",
+        var __renderTextureToo:PIXI.RenderTexture = new PIXI.RenderTexture (
+            __renderTexture.baseTexture as PIXI.BaseRenderTexture,
+            new PIXI.Rectangle (0, 0, 128, 128)
+        );
 
-				() => {
-					console.log (": load complete: ");
-				},
+        var __sprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite ([__renderTextureToo]);
+        this.addSortableChild (__sprite, 0, 0.0, true);
+        __sprite.x = G.SCREEN_WIDTH/2;
+        __sprite.y = G.SCREEN_HEIGHT/2;
 
-				() => this.getGameInstance ().gotoState ("GolfGame"),
-
-			XTask.RETN,
-		]);
-
+        console.log (": renderTextureToo: ", __renderTextureToo);
+        
 		return this;
 	}
-	
+
 //------------------------------------------------------------------------------------------
-	public cleanup ():void {
+	public cleanup():void {
         super.cleanup ();
 	}
 	

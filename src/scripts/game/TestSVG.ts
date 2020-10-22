@@ -11,19 +11,16 @@ import { XTaskManager} from '../task/XTaskManager';
 import { XTaskSubManager} from '../task/XTaskSubManager';
 import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
-import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
-import { XGameController } from '../state/XGameController';
-import { TestGame } from './TestGame';
-import { TestMatter } from './TestMatter';
-import { TestRenderTexture } from './TestRenderTexture';
-import { TestSVG } from './TestSVG';
-import { TerrainEditor } from '../editor/TerrainEditor';
-import { GolfGame } from './GolfGame';
+import { XState } from '../state/XState';
+import { OctopusBug } from './OctopusBug';
+import { GUID } from '../utils/GUID';
+import { FlockLeader } from './FlockLeader';
+import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 
 //------------------------------------------------------------------------------------------
-export class TestGameController extends XGameController {
-	
+export class TestSVG extends XState {
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -40,35 +37,34 @@ export class TestGameController extends XGameController {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-		this.getGameInstance ().registerState ("TestGame", TestGame);
-		this.getGameInstance ().registerState ("TestMatter", TestMatter);
-		this.getGameInstance ().registerState ("TestRenderTexture", TestRenderTexture);
-		this.getGameInstance ().registerState ("TestSVG", TestSVG);
-		this.getGameInstance ().registerState ("TerrainEditor", TerrainEditor);
-		this.getGameInstance ().registerState ("GolfGame", GolfGame);
+        console.log (": guid: ", GUID.create ());
+		
+        var __loader:PIXI.Loader = new PIXI.Loader ();
 
-		this.addTask ([
-			XTask.LABEL, "loop",
-				XTask.WAIT, 0x0100,
+		var __path:string = "backgrounds/earth-layers-background.svg";
 
-				XTask.FLAGS, (__task:XTask) => {
-					__task.ifTrue (this.m_XApp.getXProjectManager ().getLoadComplete ());
-				}, XTask.BNE, "loop",
+        __loader.add(__path).load ((loader, resources) => {
+			console.log (": load svg: ", resources[__path].texture);
 
-				() => {
-					console.log (": load complete: ");
-				},
+			let sprite = new PIXI.Sprite (resources[__path].texture);
+			this.addSortableChild (sprite, 0, 0.0, true);
+		});
 
-				() => this.getGameInstance ().gotoState ("GolfGame"),
+		/*
+		var __background:XGameObject = this.addGameObjectAsChild (XGameObject, 0, 0.0, true);
+		__background.addSortableChild (
+			__background.afterSetup ().createSpriteFromSVG ("backgrounds/earth-layers-background.svg"),
+			0, 0.0, true
+		);
 
-			XTask.RETN,
-		]);
+		this.addSortableChild (__background, 0, 0.0, true);
+		*/
 
 		return this;
 	}
-	
+
 //------------------------------------------------------------------------------------------
-	public cleanup ():void {
+	public cleanup():void {
         super.cleanup ();
 	}
 	

@@ -370,7 +370,12 @@ export class XApp {
 	public getScaleRatio ():number {
 		return this.m_scaleRatio;
 	}
-        
+
+    //------------------------------------------------------------------------------------------
+    public getRenderer ():PIXI.Renderer {
+        return this.renderer;
+    }
+
     //------------------------------------------------------------------------------------------
     public getStage ():PIXI.Container {
         return this.stage;

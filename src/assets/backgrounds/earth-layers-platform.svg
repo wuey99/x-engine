@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1199" height="450" viewBox="0 0 1199 450">
+    <defs>
+        <path id="zam89eh96a" d="M0.045 0.776L32.608 0.776 32.608 24.34 0.045 24.34z"/>
+        <path id="srebaiyk1c" d="M0.522 0.629L33.94 0.629 33.94 24.34 0.522 24.34z"/>
+        <path id="kdpvkovque" d="M0.375 0.529L32.878 0.529 32.878 24.34 0.375 24.34z"/>
+        <path id="ixabl9pfyg" d="M0.116 0.764L32.759 0.764 32.759 24.34 0.116 24.34z"/>
+        <path id="gk19ofqqyi" d="M0.216 0.63L33.439 0.63 33.439 24.34 0.216 24.34z"/>
+        <path id="zl2rlgn8kk" d="M0.237 449.34L1198.248 449.34 1198.248 0.559 0.237 0.559z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <path fill="#8F8F8E" d="M229 313L250.233 331.879 250.233 450 282.767 450 282.767 331.879 304 313zM527.766 330.968L527.766 409 495.233 409 495.233 330.968 474 312 511.499 312 549 312zM765.767 330.955L765.767 442 733.234 442 733.234 330.955 712 312 749.502 312 787 312zM13 313L34.233 331.927 34.233 450 66.767 450 66.767 331.927 88 313zM902 313L923.233 331.607 923.233 450 955.767 450 955.767 331.607 977 313z" transform="translate(-180 -158) translate(180 158)"/>
+                <path fill="#8F8F8E" d="M495 450L527 450 527 388 495 388zM734 450L766 450 766 393 734 393z" transform="translate(-180 -158) translate(180 158)"/>
+                <g transform="translate(-180 -158) translate(180 158)">
+                    <path fill="#768BA0" d="M990.85 305.211v3.09H1.624l.051-1.04c.031-.53.072-1.24.114-2.05H990.85z"/>
+                    <path stroke="#EAC12E" stroke-width="3" d="M990.85 305.211v3.09H1.624l.051-1.04c.031-.53.072-1.24.114-2.05H990.85z"/>
+                    <g transform="translate(33.934 425)">
+                        <mask id="61ao9boi6b" fill="#fff">
+                            <use xlink:href="#zam89eh96a"/>
+                        </mask>
+                        <path fill="#606060" d="M0.045 0.776L32.496 31.35 32.608 85.577 0.221 85.641z" mask="url(#61ao9boi6b)"/>
+                    </g>
+                    <g transform="translate(248.85 425)">
+                        <mask id="8u3vctk4cd" fill="#fff">
+                            <use xlink:href="#srebaiyk1c"/>
+                        </mask>
+                        <path fill="#606060" d="M1.143 0.629L33.94 31.494 33.543 85.72 0.522 85.492z" mask="url(#8u3vctk4cd)"/>
+                    </g>
+                    <g transform="translate(494.613 425)">
+                        <mask id="q68awfppgf" fill="#fff">
+                            <use xlink:href="#kdpvkovque"/>
+                        </mask>
+                        <path fill="#606060" d="M0.375 0.529L32.805 31.238 32.878 85.667 0.489 85.708z" mask="url(#q68awfppgf)"/>
+                    </g>
+                    <g transform="translate(733.18 425)">
+                        <mask id="v1gdl9mzjh" fill="#fff">
+                            <use xlink:href="#ixabl9pfyg"/>
+                        </mask>
+                        <path fill="#606060" d="M0.165 0.764L32.759 31.41 32.728 85.619 0.116 85.601z" mask="url(#v1gdl9mzjh)"/>
+                    </g>
+                    <g transform="translate(922.387 425)">
+                        <mask id="il7rnajtdj" fill="#fff">
+                            <use xlink:href="#gk19ofqqyi"/>
+                        </mask>
+                        <path fill="#606060" d="M0.837 0.63L33.439 31.494 33.042 85.72 0.216 85.493z" mask="url(#il7rnajtdj)"/>
+                    </g>
+                    <path fill="#606060" d="M86.605 313.038L67.149 330.48 33.303 330.48 13.84 313.038zM302.12 313.038L282.657 330.48 249.59 330.48 230.134 313.038zM547.254 313.038L527.799 330.48 494.731 330.48 475.268 313.038zM785.473 313.038L766.011 330.48 732.943 330.48 713.481 313.038zM975.42 313.038L955.635 330.48 922.688 330.48 902.904 313.038z"/>
+                    <mask id="ehw5otyzql" fill="#fff">
+                        <use xlink:href="#zl2rlgn8kk"/>
+                    </mask>
+                    <path fill="#606060" d="M0.544 307.261L991.95 307.261 991.95 305.211 0.544 305.211z" mask="url(#ehw5otyzql)"/>
+                    <path fill="#EAC12E" d="M0.274 313.036L1200.328 313.036 1200.328 303.259 0.274 303.259z" mask="url(#ehw5otyzql)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

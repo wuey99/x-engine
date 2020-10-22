@@ -11,7 +11,6 @@ export class XProjectManager {
     public m_resourceManager:XResourceManager;
     public loader:PIXI.Loader;
     public m_manifest:XSimpleXMLNode;
-    public m_resources:Array<ResourceSpec>;
     public m_loadComplete:boolean;
 
     //------------------------------------------------------------------------------------------		
@@ -39,13 +38,7 @@ export class XProjectManager {
             this.m_manifest = new XSimpleXMLNode ();
             this.m_manifest.setupWithXMLString (__response);
 
-            this.m_resources = new Array<ResourceSpec> ();
-
             this.parseResources (0, this.m_manifest);  
-            
-            console.log (": resources: ", this.m_resources);
-
-            this.loadResources (this.m_resources);
         });
     }
     
@@ -60,6 +53,8 @@ export class XProjectManager {
         var __children:Array<XSimpleXMLNode> = __xml.child ("*");
 
         var i:number;
+
+        var __resources:Array<ResourceSpec> =  new Array<ResourceSpec> ();
 
         for (i = 0; i < __children.length; i++) {
             var __xml:XSimpleXMLNode = __children[i];
@@ -76,7 +71,7 @@ export class XProjectManager {
                 console.log (": ", __xml.attribute ("name").startsWith ("$"));
 
                 if (__xml.attribute ("name").startsWith ("$")) {
-                    this.m_resources.push ({
+                    __resources.push ({
                         name: __xml.attribute ("name").substr (1),
                         type: "SpriteSheet",
                         path: "assets/" + __xml.attribute ("path") + "/" + __xml.attribute ("dst")
@@ -84,16 +79,13 @@ export class XProjectManager {
                 }
             }
         }
+
+        this.loadResources (__resources);
     }
 
     //------------------------------------------------------------------------------------------
     public getLoadComplete ():boolean {
         return this.m_loadComplete && this.m_resourceManager.getLoadComplete ();
-    }
-
-    //------------------------------------------------------------------------------------------
-    public getResources ():Array<ResourceSpec> {
-        return this.m_resources;
     }
 
     //------------------------------------------------------------------------------------------

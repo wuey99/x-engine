@@ -31,6 +31,7 @@ const config = {
             { from: 'src/assets/Cows/Project', to: 'assets' },
             { from: 'src/assets/levels', to: 'levels' },
             { from: 'src/assets/sounds', to: 'sounds' },
+            { from: 'src/assets/backgrounds', to: 'backgrounds' },
         ]),
     ],
     devServer: {

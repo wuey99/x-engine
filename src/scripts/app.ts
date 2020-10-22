@@ -8,6 +8,7 @@ import { XWorld } from './sprite/XWorld';
 import { XType } from './type/XType';
 import { TestGameController } from './game/TestGameController';
 import { SpriteSheetResource } from './resource/SpriteSheetResource';
+import { SVGResource } from './resource/SVGResource';
 import { G } from './app/G';
 import { graphicsUtils } from 'pixi.js';
 import * as Parser from 'fast-xml-parser';
@@ -56,6 +57,7 @@ function create() {
     __gameController.afterSetup ();
 
     g_XApp.getXProjectManager ().registerType ("SpriteSheet", SpriteSheetResource);
+    g_XApp.getXProjectManager ().registerType ("SVGResource", SVGResource);
 
     g_XApp.getXProjectManager ().setup ("assets/Common.xml");
 } 

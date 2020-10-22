@@ -119,7 +119,20 @@
               <classX name="Earth_Terrain32x32" regX="0" regY="0" width="32" height="32"/>
             </resource>
           </folder>
-          <folder name="Layers"/>
+          <folder name="Layers">
+            <resource name="@Earth_Layers_Background" type=".pmp" embed="false" path="Common" src="4843B6F7-E476-2FF9-03AA-F2F33E04B77E-Earth_Layers_Background.pmp" dst="4843B6F7-E476-2FF9-03AA-F2F33E04B77E-Earth_Layers_Background.pmp" pmp_width="8192" originX="2173" originY="3583" width="4071" totalWidth="4071" height="1677" regX="0" regY="0"/>
+            <resource name="png_Earth_Layers_Background" type=".png" embed="false" path="Common" src="4843B6F7-E476-2FF9-03AA-F2F33E04B77E-Earth_Layers_Background.png" dst="4843B6F7-E476-2FF9-03AA-F2F33E04B77E-Earth_Layers_Background.png"/>
+            <resource name="$Earth_Layers_Background" type=".json" embed="false" path="Common" src="4843B6F7-E476-2FF9-03AA-F2F33E04B77E-Earth_Layers_Background.json" dst="4843B6F7-E476-2FF9-03AA-F2F33E04B77E-Earth_Layers_Background.json"/>
+            <resource name="Earth_Layers_Background" type=".fla" embed="false" path="Common" src="A043A198-2BA1-801C-6803-A21225EB65DE-Earth_Layers_Background.fla" dst="A043A198-2BA1-801C-6803-A21225EB65DE-Earth_Layers_Background.swf">
+              <classX name="Earth_Layers_Background" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+            <resource name="@Earth_Layers_Platform" type=".pmp" embed="false" path="Common" src="6EE28934-C5F8-202B-C0B0-0A3BE9E6999C-Earth_Layers_Platform.pmp" dst="6EE28934-C5F8-202B-C0B0-0A3BE9E6999C-Earth_Layers_Platform.pmp" pmp_width="8192" originX="2501" originY="3378" width="3597" totalWidth="3597" height="1350" regX="0" regY="0"/>
+            <resource name="png_Earth_Layers_Platform" type=".png" embed="false" path="Common" src="6EE28934-C5F8-202B-C0B0-0A3BE9E6999C-Earth_Layers_Platform.png" dst="6EE28934-C5F8-202B-C0B0-0A3BE9E6999C-Earth_Layers_Platform.png"/>
+            <resource name="$Earth_Layers_Platform" type=".json" embed="false" path="Common" src="6EE28934-C5F8-202B-C0B0-0A3BE9E6999C-Earth_Layers_Platform.json" dst="6EE28934-C5F8-202B-C0B0-0A3BE9E6999C-Earth_Layers_Platform.json"/>
+            <resource name="Earth_Layers_Platform" type=".fla" embed="false" path="Common" src="4D605C9D-5DF0-C83B-D79D-02FC30E82A9C-Earth_Layers_Platform.fla" dst="4D605C9D-5DF0-C83B-D79D-02FC30E82A9C-Earth_Layers_Platform.swf">
+              <classX name="Earth_Layers_Platform" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+          </folder>
           <folder name="Sprites">
             <resource name="@Earth_Sprites_ScoreBox" type=".pmp" embed="false" path="Common" src="9E1A90FC-CEF9-A0BD-F1F1-88A7F1D97DB8-Earth_Sprites_ScoreBox.pmp" dst="9E1A90FC-CEF9-A0BD-F1F1-88A7F1D97DB8-Earth_Sprites_ScoreBox.pmp" pmp_width="512" originX="204" originY="209" width="102" totalWidth="102" height="88" regX="-51" regY="-44"/>
             <resource name="png_Earth_Sprites_ScoreBox" type=".png" embed="false" path="Common" src="9E1A90FC-CEF9-A0BD-F1F1-88A7F1D97DB8-Earth_Sprites_ScoreBox.png" dst="9E1A90FC-CEF9-A0BD-F1F1-88A7F1D97DB8-Earth_Sprites_ScoreBox.png"/>

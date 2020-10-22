@@ -9,12 +9,12 @@
 		<tile x="240" y="544" name="Terrain" size="32" world="Earth" frame="10"/>
 		<tile x="272" y="544" name="Terrain" size="32" world="Earth" frame="10"/>
 		<tile x="304" y="544" name="Terrain" size="32" world="Earth" frame="10"/>
-		<tile x="336" y="479.99999999999994" name="Terrain" size="64" world="Earth" frame="0"/>
+		<tile x="336" y="480" name="Terrain" size="64" world="Earth" frame="0"/>
 		<tile x="400" y="416" name="Terrain" size="64" world="Earth" frame="0"/>
 		<tile x="464" y="352" name="Terrain" size="64" world="Earth" frame="0"/>
 		<tile x="528" y="352" name="Terrain" size="64" world="Earth" frame="16"/>
 		<tile x="560" y="416" name="Terrain" size="64" world="Earth" frame="16"/>
-		<tile x="592" y="479.99999999999994" name="Terrain" size="64" world="Earth" frame="16"/>
+		<tile x="592" y="480" name="Terrain" size="64" world="Earth" frame="16"/>
 		<tile x="464" y="416" name="Terrain" size="64" world="Earth" frame="12"/>
 		<tile x="400" y="480" name="Terrain" size="64" world="Earth" frame="12"/>
 		<tile x="464" y="480" name="Terrain" size="64" world="Earth" frame="12"/>
@@ -34,10 +34,10 @@
 		<tile x="656" y="544" name="Terrain" size="32" world="Earth" frame="10"/>
 		<tile x="688" y="544" name="Terrain" size="32" world="Earth" frame="10"/>
 		<tile x="720" y="544" name="Terrain" size="32" world="Earth" frame="10"/>
-		<tile x="752" y="479.99999999999994" name="Terrain" size="64" world="Earth" frame="15"/>
+		<tile x="752" y="480" name="Terrain" size="64" world="Earth" frame="15"/>
 		<tile x="784" y="416" name="Terrain" size="64" world="Earth" frame="15"/>
 		<tile x="880" y="416" name="Terrain" size="64" world="Earth" frame="16"/>
-		<tile x="912" y="479.99999999999994" name="Terrain" size="64" world="Earth" frame="16"/>
+		<tile x="912" y="480" name="Terrain" size="64" world="Earth" frame="16"/>
 		<tile x="848" y="544" name="Terrain" size="32" world="Earth" frame="10"/>
 		<tile x="816" y="480" name="Terrain" size="32" world="Earth" frame="12"/>
 		<tile x="816" y="512" name="Terrain" size="32" world="Earth" frame="12"/>
@@ -54,7 +54,7 @@
 		<tile x="1040" y="544" name="Terrain" size="32" world="Earth" frame="10"/>
 		<tile x="1072" y="544" name="Terrain" size="32" world="Earth" frame="10"/>
 		<tile x="1104" y="544" name="Terrain" size="32" world="Earth" frame="10"/>
-		<tile x="1136" y="479.99999999999994" name="Terrain" size="64" world="Earth" frame="0"/>
+		<tile x="1136" y="480" name="Terrain" size="64" world="Earth" frame="0"/>
 		<tile x="1184" y="432" name="Terrain" size="64" world="Earth" frame="0"/>
 		<tile x="1136" y="544" name="Terrain" size="32" world="Earth" frame="12"/>
 		<tile x="1168" y="544" name="Terrain" size="32" world="Earth" frame="12"/>

@@ -4,7 +4,7 @@ import { XApp } from "../app/XApp";
 import { Resource } from './Resource';
 
 //------------------------------------------------------------------------------------------
-export class SpriteSheetResource extends Resource {
+export class SVGResource extends Resource {
 
     //------------------------------------------------------------------------------------------		
     constructor () {
@@ -19,7 +19,7 @@ export class SpriteSheetResource extends Resource {
     //------------------------------------------------------------------------------------------
     public load ():void {
 		PIXI.Loader.shared.add (this.m_path).load (() => {
-            console.log (": SpriteSheetResource: loadComplete: ", this);
+            console.log (": SVGResource: loadComplete: ", this);
 
             this.m_loadComplete = true;
         });
@@ -28,7 +28,7 @@ export class SpriteSheetResource extends Resource {
     //------------------------------------------------------------------------------------------
     public getResource ():any {
         if (this.getLoadComplete ()) {
-            return PIXI.Loader.shared.resources[this.m_path].spritesheet;
+            return PIXI.Loader.shared.resources[this.m_path].texture;
         } else {
             return null;
         }
