@@ -16,10 +16,10 @@ import { XGameObject} from '../gameobject/XGameObject';
 
 //------------------------------------------------------------------------------------------
 export class SidePanel_ForceGauge extends XGameObject {
-    public m_sprite:PIXI.AnimatedSprite;
+    public m_sprite:PIXI.Sprite;
     public x_sprite:XDepthSprite;
 
-    public m_needleSprite:PIXI.AnimatedSprite;
+    public m_needleSprite:PIXI.Sprite;
     public x_needleSprite:XDepthSprite;
 
 //------------------------------------------------------------------------------------------	
@@ -50,11 +50,11 @@ export class SidePanel_ForceGauge extends XGameObject {
     
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-        this.m_sprite = this.createAnimatedSprite ("Earth_Sprites_ForceGauge");
-        this.addSortableChild (this.m_sprite, 0, 999999.0, false);
+        this.m_sprite = this.createSprite ("Earth_Sprites_ForceGauge");
+        this.addSpriteAsChild (this.m_sprite, -70/2, -65/2, 0, 999999.0, false);
 
-        this.m_needleSprite = this.createAnimatedSprite ("Earth_Sprites_ForceNeedle");
-        this.addSortableChild (this.m_needleSprite, 0, 999999.0 + 1.0, false);
+        this.m_needleSprite = this.createSprite ("Earth_Sprites_ForceNeedle");
+        this.addSpriteAsChild (this.m_needleSprite, -18, -48, 0, 999999.0 + 1.0, false).y = 8;
 
 		PIXI.BitmapFont.from("GaugeFont", {
 			fontFamily: "Arial",

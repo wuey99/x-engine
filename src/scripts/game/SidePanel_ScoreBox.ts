@@ -16,7 +16,7 @@ import { XGameObject} from '../gameobject/XGameObject';
 
 //------------------------------------------------------------------------------------------
 export class SidePanel_ScoreBox extends XGameObject {
-    public m_sprite:PIXI.AnimatedSprite;
+    public m_sprite:PIXI.Sprite;
     public x_sprite:XDepthSprite;
 
     public m_score:number;
@@ -51,8 +51,8 @@ export class SidePanel_ScoreBox extends XGameObject {
     
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-        this.m_sprite = this.createAnimatedSprite ("Earth_Sprites_ScoreBox");
-        this.addSortableChild (this.m_sprite, 0, 999999.0, false);
+        this.m_sprite = this.createSprite ("Earth_Sprites_ScoreBox");
+        this.addSpriteAsChild (this.m_sprite, -102/2, -88/2, 0, 999999.0, true);
 
 		PIXI.BitmapFont.from("ScoreFont", {
 			fontFamily: "Arial",

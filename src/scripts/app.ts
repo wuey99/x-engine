@@ -87,7 +87,7 @@ function create() {
             path: "sprites/Earth/earth-sprites-mass.svg"
         },
         {
-            name: "Earth_Sprites_Plannet",
+            name: "Earth_Sprites_Planet",
             type: "SVGResource",
             path: "sprites/Earth/earth-sprites-planet.svg"
         },
@@ -126,7 +126,7 @@ function create() {
             path: "sprites/Mars/mars-sprites-mass.svg"
         },
         {
-            name: "Mars_Sprites_Plannet",
+            name: "Mars_Sprites_Planet",
             type: "SVGResource",
             path: "sprites/Mars/mars-sprites-planet.svg"
         },
@@ -160,7 +160,7 @@ function create() {
             path: "sprites/Ice/ice-sprites-mass.svg"
         },
         {
-            name: "Ice_Sprites_Plannet",
+            name: "Ice_Sprites_Planet",
             type: "SVGResource",
             path: "sprites/Ice/ice-sprites-planet.svg"
         },
@@ -199,7 +199,7 @@ function create() {
             path: "sprites/Moon/moon-sprites-mass.svg"
         },
         {
-            name: "Moon_Sprites_Plannet",
+            name: "Moon_Sprites_Planet",
             type: "SVGResource",
             path: "sprites/Moon/moon-sprites-planet.svg"
         },
@@ -233,7 +233,7 @@ function create() {
             path: "sprites/Squid/squid-sprites-mass.svg"
         },
         {
-            name: "Squid_Sprites_Plannet",
+            name: "Squid_Sprites_Planet",
             type: "SVGResource",
             path: "sprites/Squid/squid-sprites-planet.svg"
         },

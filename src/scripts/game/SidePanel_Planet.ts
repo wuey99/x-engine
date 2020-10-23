@@ -16,7 +16,7 @@ import { XGameObject} from '../gameobject/XGameObject';
 
 //------------------------------------------------------------------------------------------
 export class SidePanel_Planet extends XGameObject {
-    public m_sprite:PIXI.AnimatedSprite;
+    public m_sprite:PIXI.Sprite;
     public x_sprite:XDepthSprite;
 
 //------------------------------------------------------------------------------------------	
@@ -47,8 +47,8 @@ export class SidePanel_Planet extends XGameObject {
     
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-        this.m_sprite = this.createAnimatedSprite ("Earth_Sprites_Planet");
-        this.addSortableChild (this.m_sprite, 0, 999999.0, false);
+        this.m_sprite = this.createSprite ("Earth_Sprites_Planet");
+        this.addSpriteAsChild (this.m_sprite, -54/2, -55/2, 0, 999999.0, false);
 
 		PIXI.BitmapFont.from("GravityFont", {
 			fontFamily: "Arial",

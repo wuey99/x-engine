@@ -600,14 +600,14 @@ export class XGameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public addSpriteAsChild (__sprite__:PIXI.Sprite, __dx:number, __dy:number, __layer:number, __depth:number):PIXI.Sprite {
+	public addSpriteAsChild (__sprite__:PIXI.Sprite, __dx:number, __dy:number, __layer:number, __depth:number, __visible:boolean = false):PIXI.Sprite {
 		var __sprite = new PIXI.Sprite ();
 		__sprite.addChild(__sprite__);
 
 		__sprite__.x = __dx;
 		__sprite__.y = __dy;
 		
-		this.addSortableChild (__sprite, __layer, __depth);	
+		this.addSortableChild (__sprite, __layer, __depth, __visible);	
 		
 		return __sprite;
 	}

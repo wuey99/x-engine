@@ -120,38 +120,7 @@
             </resource>
           </folder>
           <folder name="Layers"/>
-          <folder name="Sprites">
-            <resource name="@Earth_Sprites_ScoreBox" type=".pmp" embed="false" path="Common" src="9E1A90FC-CEF9-A0BD-F1F1-88A7F1D97DB8-Earth_Sprites_ScoreBox.pmp" dst="9E1A90FC-CEF9-A0BD-F1F1-88A7F1D97DB8-Earth_Sprites_ScoreBox.pmp" pmp_width="512" originX="204" originY="209" width="102" totalWidth="102" height="88" regX="-51" regY="-44"/>
-            <resource name="png_Earth_Sprites_ScoreBox" type=".png" embed="false" path="Common" src="9E1A90FC-CEF9-A0BD-F1F1-88A7F1D97DB8-Earth_Sprites_ScoreBox.png" dst="9E1A90FC-CEF9-A0BD-F1F1-88A7F1D97DB8-Earth_Sprites_ScoreBox.png"/>
-            <resource name="$Earth_Sprites_ScoreBox" type=".json" embed="false" path="Common" src="9E1A90FC-CEF9-A0BD-F1F1-88A7F1D97DB8-Earth_Sprites_ScoreBox.json" dst="9E1A90FC-CEF9-A0BD-F1F1-88A7F1D97DB8-Earth_Sprites_ScoreBox.json"/>
-            <resource name="Earth_Sprites_ScoreBox" type=".fla" embed="false" path="Common" src="503D8D53-6A20-64F1-5EE8-80308512A58B-Earth_Sprites_ScoreBox.fla" dst="503D8D53-6A20-64F1-5EE8-80308512A58B-Earth_Sprites_ScoreBox.swf">
-              <classX name="Earth_Sprites_ScoreBox" regX="0" regY="0" width="32" height="32"/>
-            </resource>
-            <resource name="@Earth_Sprites_Mass" type=".pmp" embed="false" path="Common" src="60B227A6-CD94-7722-81C1-1D6BC50C57E5-Earth_Sprites_Mass.pmp" dst="60B227A6-CD94-7722-81C1-1D6BC50C57E5-Earth_Sprites_Mass.pmp" pmp_width="512" originX="240" originY="235" width="34" totalWidth="34" height="34" regX="-17" regY="-17"/>
-            <resource name="png_Earth_Sprites_Mass" type=".png" embed="false" path="Common" src="60B227A6-CD94-7722-81C1-1D6BC50C57E5-Earth_Sprites_Mass.png" dst="60B227A6-CD94-7722-81C1-1D6BC50C57E5-Earth_Sprites_Mass.png"/>
-            <resource name="$Earth_Sprites_Mass" type=".json" embed="false" path="Common" src="60B227A6-CD94-7722-81C1-1D6BC50C57E5-Earth_Sprites_Mass.json" dst="60B227A6-CD94-7722-81C1-1D6BC50C57E5-Earth_Sprites_Mass.json"/>
-            <resource name="Earth_Sprites_Mass" type=".fla" embed="false" path="Common" src="353538BC-D947-F102-DBEC-1B3F2426278C-Earth_Sprites_Mass.fla" dst="353538BC-D947-F102-DBEC-1B3F2426278C-Earth_Sprites_Mass.swf">
-              <classX name="Earth_Sprites_Mass" regX="0" regY="0" width="32" height="32"/>
-            </resource>
-            <resource name="@Earth_Sprites_Planet" type=".pmp" embed="false" path="Common" src="DB0B09C4-659E-CA66-AB7F-CD1959BA6CDF-Earth_Sprites_Planet.pmp" dst="DB0B09C4-659E-CA66-AB7F-CD1959BA6CDF-Earth_Sprites_Planet.pmp" pmp_width="512" originX="232" originY="227" width="56" totalWidth="56" height="56" regX="-28" regY="-28"/>
-            <resource name="png_Earth_Sprites_Planet" type=".png" embed="false" path="Common" src="DB0B09C4-659E-CA66-AB7F-CD1959BA6CDF-Earth_Sprites_Planet.png" dst="DB0B09C4-659E-CA66-AB7F-CD1959BA6CDF-Earth_Sprites_Planet.png"/>
-            <resource name="$Earth_Sprites_Planet" type=".json" embed="false" path="Common" src="DB0B09C4-659E-CA66-AB7F-CD1959BA6CDF-Earth_Sprites_Planet.json" dst="DB0B09C4-659E-CA66-AB7F-CD1959BA6CDF-Earth_Sprites_Planet.json"/>
-            <resource name="Earth_Sprites_Planet" type=".fla" embed="false" path="Common" src="8F67A48C-7796-1FC9-526A-ACC0CE920A84-Earth_Sprites_Planet.fla" dst="8F67A48C-7796-1FC9-526A-ACC0CE920A84-Earth_Sprites_Planet.swf">
-              <classX name="Earth_Sprites_Planet" regX="0" regY="0" width="32" height="32"/>
-            </resource>
-            <resource name="@Earth_Sprites_ForceGauge" type=".pmp" embed="false" path="Common" src="2608D47C-E6D5-767A-4D78-A68291CB3C45-Earth_Sprites_ForceGauge.pmp" dst="2608D47C-E6D5-767A-4D78-A68291CB3C45-Earth_Sprites_ForceGauge.pmp" pmp_width="512" originX="226" originY="214" width="69" totalWidth="69" height="65" regX="-35" regY="-33"/>
-            <resource name="png_Earth_Sprites_ForceGauge" type=".png" embed="false" path="Common" src="2608D47C-E6D5-767A-4D78-A68291CB3C45-Earth_Sprites_ForceGauge.png" dst="2608D47C-E6D5-767A-4D78-A68291CB3C45-Earth_Sprites_ForceGauge.png"/>
-            <resource name="$Earth_Sprites_ForceGauge" type=".json" embed="false" path="Common" src="2608D47C-E6D5-767A-4D78-A68291CB3C45-Earth_Sprites_ForceGauge.json" dst="2608D47C-E6D5-767A-4D78-A68291CB3C45-Earth_Sprites_ForceGauge.json"/>
-            <resource name="Earth_Sprites_ForceGauge" type=".fla" embed="false" path="Common" src="BD3FA401-0BC5-BC70-FB86-21A3D689E2E8-Earth_Sprites_ForceGauge.fla" dst="BD3FA401-0BC5-BC70-FB86-21A3D689E2E8-Earth_Sprites_ForceGauge.swf">
-              <classX name="Earth_Sprites_ForceGauge" regX="0" regY="0" width="32" height="32"/>
-            </resource>
-            <resource name="@Earth_Sprites_ForceNeedle" type=".pmp" embed="false" path="Common" src="3F41DC79-0F5E-05A0-0BFC-05EB963BBB12-Earth_Sprites_ForceNeedle.pmp" dst="3F41DC79-0F5E-05A0-0BFC-05EB963BBB12-Earth_Sprites_ForceNeedle.pmp" pmp_width="512" originX="252" originY="214" width="11" totalWidth="11" height="49" regX="-6" regY="-44"/>
-            <resource name="png_Earth_Sprites_ForceNeedle" type=".png" embed="false" path="Common" src="3F41DC79-0F5E-05A0-0BFC-05EB963BBB12-Earth_Sprites_ForceNeedle.png" dst="3F41DC79-0F5E-05A0-0BFC-05EB963BBB12-Earth_Sprites_ForceNeedle.png"/>
-            <resource name="$Earth_Sprites_ForceNeedle" type=".json" embed="false" path="Common" src="3F41DC79-0F5E-05A0-0BFC-05EB963BBB12-Earth_Sprites_ForceNeedle.json" dst="3F41DC79-0F5E-05A0-0BFC-05EB963BBB12-Earth_Sprites_ForceNeedle.json"/>
-            <resource name="Earth_Sprites_ForceNeedle" type=".fla" embed="false" path="Common" src="CA09C25F-F450-013D-95C3-246ABF9F4D9D-Earth_Sprites_ForceNeedle.fla" dst="CA09C25F-F450-013D-95C3-246ABF9F4D9D-Earth_Sprites_ForceNeedle.swf">
-              <classX name="Earth_Sprites_ForceNeedle" regX="0" regY="0" width="32" height="32"/>
-            </resource>
-          </folder>
+          <folder name="Sprites"/>
         </folder>
         <folder name="Mars">
           <folder name="Terrain">
