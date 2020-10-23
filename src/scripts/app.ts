@@ -61,7 +61,11 @@ function create() {
 
     g_XApp.getXProjectManager ().setup ("assets/Common.xml");
 
+    //------------------------------------------------------------------------------------------
     g_XApp.getXProjectManager ().loadResources ([
+        //------------------------------------------------------------------------------------------
+        // earth
+        //------------------------------------------------------------------------------------------
         {
             name: "Earth_Layers_BackgroundX",
             type: "SVGResource",
@@ -73,6 +77,35 @@ function create() {
             path: "backgrounds/Earth/earth-layers-platform.svg"
         },
         {
+            name: "Earth_Sprites_ScoreBox",
+            type: "SVGResource",
+            path: "sprites/Earth/earth-sprites-score-box.svg"
+        },
+        {
+            name: "Earth_Sprites_Mass",
+            type: "SVGResource",
+            path: "sprites/Earth/earth-sprites-mass.svg"
+        },
+        {
+            name: "Earth_Sprites_Plannet",
+            type: "SVGResource",
+            path: "sprites/Earth/earth-sprites-planet.svg"
+        },
+        {
+            name: "Earth_Sprites_ForceGauge",
+            type: "SVGResource",
+            path: "sprites/Earth/earth-sprites-force-gauge.svg"
+        },
+        {
+            name: "Earth_Sprites_ForceNeedle",
+            type: "SVGResource",
+            path: "sprites/Earth/earth-sprites-force-needle.svg"
+        },
+
+        //------------------------------------------------------------------------------------------
+        // mars
+        //------------------------------------------------------------------------------------------
+        {
             name: "Mars_Layers_BackgroundX",
             type: "SVGResource",
             path: "backgrounds/Mars/mars-layers-background.svg"
@@ -83,10 +116,68 @@ function create() {
             path: "backgrounds/Mars/mars-layers-platform.svg"
         },
         {
+            name: "Mars_Sprites_ScoreBox",
+            type: "SVGResource",
+            path: "sprites/Mars/mars-sprites-score-box.svg"
+        },
+        {
+            name: "Mars_Sprites_Mass",
+            type: "SVGResource",
+            path: "sprites/Mars/mars-sprites-mass.svg"
+        },
+        {
+            name: "Mars_Sprites_Plannet",
+            type: "SVGResource",
+            path: "sprites/Mars/mars-sprites-planet.svg"
+        },
+        {
+            name: "Mars_Sprites_ForceGauge",
+            type: "SVGResource",
+            path: "sprites/Mars/mars-sprites-force-gauge.svg"
+        },
+        {
+            name: "Mars_Sprites_ForceNeedle",
+            type: "SVGResource",
+            path: "sprites/Mars/mars-sprites-force-needle.svg"
+        },
+
+        //------------------------------------------------------------------------------------------
+        // ice
+        //------------------------------------------------------------------------------------------
+        {
             name: "Ice_Layers_BackgroundX",
             type: "SVGResource",
             path: "background/Ice/ice-layers-background.svg"
         },
+        {
+            name: "Ice_Sprites_ScoreBox",
+            type: "SVGResource",
+            path: "sprites/Ice/Ice-sprites-score-box.svg"
+        },
+        {
+            name: "Ice_Sprites_Mass",
+            type: "SVGResource",
+            path: "sprites/Ice/ice-sprites-mass.svg"
+        },
+        {
+            name: "Ice_Sprites_Plannet",
+            type: "SVGResource",
+            path: "sprites/Ice/ice-sprites-planet.svg"
+        },
+        {
+            name: "Ice_Sprites_ForceGauge",
+            type: "SVGResource",
+            path: "sprites/Ice/ice-sprites-force-gauge.svg"
+        },
+        {
+            name: "Ice_Sprites_ForceNeedle",
+            type: "SVGResource",
+            path: "sprites/Ice/ice-sprites-force-needle.svg"
+        },
+
+        //------------------------------------------------------------------------------------------
+        // moon
+        //------------------------------------------------------------------------------------------
         {
             name: "Moon_Layers_BackgroundX",
             type: "SVGResource",
@@ -98,10 +189,65 @@ function create() {
             path: "backgrounds/Moon/moon-layers-platform.svg"
         },
         {
+            name: "Moon_Sprites_ScoreBox",
+            type: "SVGResource",
+            path: "sprites/Moon/moon-sprites-score-box.svg"
+        },
+        {
+            name: "Moon_Sprites_Mass",
+            type: "SVGResource",
+            path: "sprites/Moon/moon-sprites-mass.svg"
+        },
+        {
+            name: "Moon_Sprites_Plannet",
+            type: "SVGResource",
+            path: "sprites/Moon/moon-sprites-planet.svg"
+        },
+        {
+            name: "Moon_Sprites_ForceGauge",
+            type: "SVGResource",
+            path: "sprites/Moon/moon-sprites-force-gauge.svg"
+        },
+        {
+            name: "Moon_Sprites_ForceNeedle",
+            type: "SVGResource",
+            path: "sprites/Moon/moon-sprites-force-needle.svg"
+        },
+
+        //------------------------------------------------------------------------------------------
+        // squid
+        //------------------------------------------------------------------------------------------
+        {
             name: "Squid_Layers_BackgroundX",
             type: "SVGResource",
             path: "background/Squid/squid-layers-background.svg"
         },
+        {
+            name: "Squid_Sprites_ScoreBox",
+            type: "SVGResource",
+            path: "sprites/Squid/squid-sprites-score-box.svg"
+        },
+        {
+            name: "Squid_Sprites_Mass",
+            type: "SVGResource",
+            path: "sprites/Squid/squid-sprites-mass.svg"
+        },
+        {
+            name: "Squid_Sprites_Plannet",
+            type: "SVGResource",
+            path: "sprites/Squid/squid-sprites-planet.svg"
+        },
+        {
+            name: "Squid_Sprites_ForceGauge",
+            type: "SVGResource",
+            path: "sprites/Squid/Squid-sprites-force-gauge.svg"
+        },
+        {
+            name: "Squid_Sprites_ForceNeedle",
+            type: "SVGResource",
+            path: "sprites/Squid/squid-sprites-force-needle.svg"
+        },
+
     ]);
 } 
 
