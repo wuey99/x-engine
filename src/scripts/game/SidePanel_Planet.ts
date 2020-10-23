@@ -48,11 +48,11 @@ export class SidePanel_Planet extends XGameObject {
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
         this.m_sprite = this.createSprite ("Earth_Sprites_Planet");
-        this.addSpriteAsChild (this.m_sprite, -54/2, -55/2, 0, 999999.0, false);
+        this.addSpriteAsChild (this.m_sprite, -108/2, -110/2, 0, 999999.0, false);
 
 		PIXI.BitmapFont.from("GravityFont", {
 			fontFamily: "Arial",
-			fontSize: 18,
+			fontSize: 36,
 			strokeThickness: 0,
 			fill: "green"
         });
@@ -60,12 +60,12 @@ export class SidePanel_Planet extends XGameObject {
         var __gravity:PIXI.BitmapText = new PIXI.BitmapText ("9_8 m_s",  { fontName: "GravityFont" });
         this.addSortableChild (__gravity, 0, 999999.0 + 1.0, false);
         __gravity.x = -__gravity.width/2;
-        __gravity.y = 40;
+        __gravity.y = 80;
 
         var __label:PIXI.BitmapText = new PIXI.BitmapText ("Earth's Gravity ",  { fontName: "SidePanelSmallLabelFont" });
         this.addSortableChild (__label, 0, 999999.0 + 1.0, false);
         __label.x = -__label.width/2;
-        __label.y = 64;
+        __label.y = 128;
 
         this.show ();
     }

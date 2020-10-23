@@ -102,14 +102,14 @@ export class GolfGame extends XState {
 	public createSidePanel ():void {
         PIXI.BitmapFont.from("SidePanelLabelFont", {
 			fontFamily: "Arial",
-			fontSize: 20,
+			fontSize: 40,
 			strokeThickness: 0,
 			fill: "white"
 		});
 	   
         PIXI.BitmapFont.from("SidePanelSmallLabelFont", {
 			fontFamily: "Arial",
-			fontSize: 14,
+			fontSize: 28,
 			strokeThickness: 0,
 			fill: "white"
 		});

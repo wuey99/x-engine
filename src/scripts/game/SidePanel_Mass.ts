@@ -52,11 +52,11 @@ export class SidePanel_Mass extends XGameObject {
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
         this.m_sprite = this.createSprite ("Earth_Sprites_Mass");
-        this.addSpriteAsChild (this.m_sprite, -34/2, -34/2, 0, 999999.0, false);
+        this.addSpriteAsChild (this.m_sprite, -68/2, -68/2, 0, 999999.0, false);
 
 		PIXI.BitmapFont.from("MassFont", {
 			fontFamily: "Arial",
-			fontSize: 18,
+			fontSize: 36,
 			strokeThickness: 0,
 			fill: "green"
         });
@@ -64,12 +64,12 @@ export class SidePanel_Mass extends XGameObject {
         var __mass:PIXI.BitmapText = new PIXI.BitmapText (this.m_massValue + "kg",  { fontName: "MassFont" });
         this.addSortableChild (__mass, 0, 999999.0 + 1.0, false);
         __mass.x = -__mass.width/2;
-        __mass.y = 24;
+        __mass.y = 48;
 
         var __label:PIXI.BitmapText = new PIXI.BitmapText ("Mass",  { fontName: "SidePanelLabelFont" });
         this.addSortableChild (__label, 0, 999999.0 + 1.0, false);
         __label.x = -__label.width/2;
-        __label.y = 48;
+        __label.y = 96;
 
         this.show ();
     }

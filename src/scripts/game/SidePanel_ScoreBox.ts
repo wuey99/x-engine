@@ -52,11 +52,11 @@ export class SidePanel_ScoreBox extends XGameObject {
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
         this.m_sprite = this.createSprite ("Earth_Sprites_ScoreBox");
-        this.addSpriteAsChild (this.m_sprite, -102/2, -88/2, 0, 999999.0, true);
+        this.addSpriteAsChild (this.m_sprite, -204/2, -176/2, 0, 999999.0, true);
 
 		PIXI.BitmapFont.from("ScoreFont", {
 			fontFamily: "Arial",
-			fontSize: 30,
+			fontSize: 60,
 			strokeThickness: 0,
 			fill: "green"
         });
@@ -64,12 +64,12 @@ export class SidePanel_ScoreBox extends XGameObject {
         var __score:PIXI.BitmapText = new PIXI.BitmapText ("" + this.m_score,  { fontName: "ScoreFont" });
         this.addSortableChild (__score, 0, 999999.0 + 1.0, false);
         __score.x = -__score.width/2;
-        __score.y = -32;
+        __score.y = -64;
 
 		var __label:PIXI.BitmapText = new PIXI.BitmapText ("Score", { fontName: "SidePanelLabelFont" });
         this.addSortableChild (__label, 0, 999999.0 + 1.0, false);
         __label.x = -__label.width/2;
-        __label.y = 8;
+        __label.y = 16;
 
         this.show ();
     }
