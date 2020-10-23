@@ -43,9 +43,9 @@ export class TestSVG extends XState {
 			() => {
 				this.m_XApp.getXProjectManager ().loadResources ([
 					{
-						name: "earth-layers-background",
+						name: "Earth_Layers_BackgroundX",
 						type: "SVGResource",
-						path: "backgrounds/earth-layers-background.svg"
+						path: "backgrounds/Earth/earth-layers-background.svg"
 					}
 				]);
 			},
@@ -54,13 +54,13 @@ export class TestSVG extends XState {
 				XTask.WAIT, 0x0100,
 
 				XTask.FLAGS, (__task:XTask) => {
-					__task.ifTrue (this.m_XApp.getXProjectManager ().getResourceByName ("earth-layers-background") != null);
+					__task.ifTrue (this.m_XApp.getXProjectManager ().getResourceManager ().getLoadComplete ());
 				}, XTask.BNE, "loop",
 
 				() => {
 					var __background:XGameObject = this.addGameObjectAsChild (XGameObject, 0, 0.0, true);
 					__background.addSortableChild (
-						__background.afterSetup ().createSprite ("earth-layers-background"),
+						__background.afterSetup ().createSprite ("Earth_Layers_BackgroundX"),
 						0, 0.0, true
 					);
 				},

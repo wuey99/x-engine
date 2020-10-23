@@ -58,12 +58,58 @@ export class GolfGame extends XState {
 		  
 		sound.play ();
 
+		this.m_XApp.getXProjectManager ().loadResources ([
+			{
+				name: "Earth_Layers_BackgroundX",
+				type: "SVGResource",
+				path: "backgrounds/Earth/earth-layers-background.svg"
+			},
+			{
+				name: "Earth_Layers_PlatformX",
+				type: "SVGResource",
+				path: "backgrounds/Earth/earth-layers-platform.svg"
+			},
+			{
+				name: "Mars_Layers_BackgroundX",
+				type: "SVGResource",
+				path: "backgrounds/Mars/mars-layers-background.svg"
+			},
+			{
+				name: "Mars_Layers_PlatformX",
+				type: "SVGResource",
+				path: "backgrounds/Mars/mars-layers-platform.svg"
+			},
+			{
+				name: "Ice_Layers_BackgroundX",
+				type: "SVGResource",
+				path: "background/Ice/ice-layers-background.svg"
+			},
+			{
+				name: "Moon_Layers_BackgroundX",
+				type: "SVGResource",
+				path: "backgrounds/Moon/moon-layers-background.svg"
+			},
+			{
+				name: "Moon_Layers_PlatformX",
+				type: "SVGResource",
+				path: "backgrounds/Moon/moon-layers-platform.svg"
+			},
+			{
+				name: "Squid_Layers_BackgroundX",
+				type: "SVGResource",
+				path: "background/Squid/squid-layers-background.svg"
+			},
+		]);
+
 		this.addTask ([
 			XTask.LABEL, "loop",
 				XTask.WAIT, 0x0100,
 
 				XTask.FLAGS, (__task:XTask) => {
-					__task.ifTrue (this.m_loadComplete);
+					__task.ifTrue (
+						this.m_loadComplete &&
+						this.m_XApp.getXProjectManager ().getResourceManager ().getLoadComplete ()
+					);
 				}, XTask.BNE, "loop",
 
 				() => {
