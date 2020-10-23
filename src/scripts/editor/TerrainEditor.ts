@@ -523,21 +523,21 @@ export class TerrainEditor extends XState {
 		__terrainTilePalette64.x = 16;
 		__terrainTilePalette64.y = __y;
         __terrainTilePalette64.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
-        __y += 64 + 8;
+        __y += 128 + 16;
 
 		var __terrainTilePalette32:TerrainTilePalette = this.m_terrainTilePalette32 = this.addGameObjectAsChild (TerrainTilePalette, 0, 1000.0) as TerrainTilePalette;
 		__terrainTilePalette32.afterSetup (["Terrain", 32, this.getWorldName (), TerrainTileIcon.MAX_ICONS]);
 		__terrainTilePalette32.x = 16;
 		__terrainTilePalette32.y = __y;
         __terrainTilePalette32.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
-        __y += 32 + 8;
+        __y += 64 + 16;
         
 		var __terrainTilePalette16:TerrainTilePalette = this.m_terrainTilePalette16 = this.addGameObjectAsChild (TerrainTilePalette, 0, 1000.0) as TerrainTilePalette;
 		__terrainTilePalette16.afterSetup (["Terrain", 16, this.getWorldName (), TerrainTileIcon.MAX_ICONS]);
 		__terrainTilePalette16.x = 16;
         __terrainTilePalette16.y = __y;
         __terrainTilePalette16.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
-        __y += 16 + 8;
+        __y += 32 + 16;
 
 		var __terrainTileMisc:TerrainTilePalette = this.m_terrainTilePaletteMisc = this.addGameObjectAsChild (TerrainTilePalette, 0, 1000.0) as TerrainTilePalette;
 		__terrainTileMisc.afterSetup (["TerrainMisc", 16, this.getWorldName (), 16]);
