@@ -60,6 +60,49 @@ function create() {
     g_XApp.getXProjectManager ().registerType ("SVGResource", SVGResource);
 
     g_XApp.getXProjectManager ().setup ("assets/Common.xml");
+
+    g_XApp.getXProjectManager ().loadResources ([
+        {
+            name: "Earth_Layers_BackgroundX",
+            type: "SVGResource",
+            path: "backgrounds/Earth/earth-layers-background.svg"
+        },
+        {
+            name: "Earth_Layers_PlatformX",
+            type: "SVGResource",
+            path: "backgrounds/Earth/earth-layers-platform.svg"
+        },
+        {
+            name: "Mars_Layers_BackgroundX",
+            type: "SVGResource",
+            path: "backgrounds/Mars/mars-layers-background.svg"
+        },
+        {
+            name: "Mars_Layers_PlatformX",
+            type: "SVGResource",
+            path: "backgrounds/Mars/mars-layers-platform.svg"
+        },
+        {
+            name: "Ice_Layers_BackgroundX",
+            type: "SVGResource",
+            path: "background/Ice/ice-layers-background.svg"
+        },
+        {
+            name: "Moon_Layers_BackgroundX",
+            type: "SVGResource",
+            path: "backgrounds/Moon/moon-layers-background.svg"
+        },
+        {
+            name: "Moon_Layers_PlatformX",
+            type: "SVGResource",
+            path: "backgrounds/Moon/moon-layers-platform.svg"
+        },
+        {
+            name: "Squid_Layers_BackgroundX",
+            type: "SVGResource",
+            path: "background/Squid/squid-layers-background.svg"
+        },
+    ]);
 } 
 
 //------------------------------------------------------------------------------------------
