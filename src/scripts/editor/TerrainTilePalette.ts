@@ -42,8 +42,9 @@ export class TerrainTilePalette extends XGameObject {
 		this.m_name = __params[0];
 		this.m_size = __params[1];
 		this.m_world = __params[2];
-
 		var __numIcons:number = __params[3];
+		var __xoffset:number = __params[4];
+		var __scaleFactor:number = __params[5];
 
         this.m_selectedSignal = this.createXSignal ();
 
@@ -52,8 +53,9 @@ export class TerrainTilePalette extends XGameObject {
 		for (i = 0; i < __numIcons; i++) {
 			var __terrainTileIcon:TerrainTileIcon = this.addGameObjectAsChild (TerrainTileIcon, this.getLayer (), this.getDepth ()) as TerrainTileIcon;
 			__terrainTileIcon.afterSetup ([this.m_name, this.m_size, this.m_world, i]);
-			__terrainTileIcon.x = i * (this.m_size * 2 + 16);
-            __terrainTileIcon.y = 0;
+			__terrainTileIcon.x = i * (this.m_size + __xoffset);
+			__terrainTileIcon.y = 0;
+			__terrainTileIcon.scale.x = __terrainTileIcon.scale.y = __scaleFactor;
             
             __terrainTileIcon.addMouseDownListener ((__tile:TerrainTileIcon, e:PIXI.InteractionEvent) => {
                 this.m_selectedSignal.fireSignal (__tile);

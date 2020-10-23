@@ -236,6 +236,42 @@ export class TerrainTile extends XGameObject {
                 {x: 0.5, y: 0},
                 {x: 0, y: 1},
             ],
+            // frame 22, UL45
+            [
+                {x: 1, y: 0},
+                {x: 0, y: 1},
+                {x: 1, y: 1},
+            ],
+            // frame 23, UR45
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 1},
+                {x: 0, y: 1},
+            ],
+            // frame 24 UL67.5
+            [
+                {x: 1, y: 0},
+                {x: 1, y: 1},
+                {x: 0.5, y: 1},
+            ],
+            // frame 25 UR67.5
+            [
+                {x: 0, y: 0},
+                {x: 0.5, y: 1},
+                {x: 0, y: 1},
+            ],
+            // frame 26 UL22.5
+            [
+                {x: 0, y: 1},
+                {x: 1, y: 1},
+                {x: 1, y: 0.5},
+            ],
+            // frame 27 UR22.5
+            [
+                {x: 0, y: 0.5},
+                {x: 1, y: 1},
+                {x: 0, y: 1},
+            ],
         ];
 
         var __vertices:Array<any> = __shape2Vertices[__frame];
@@ -389,6 +425,42 @@ export class TerrainTile extends XGameObject {
             [
                 {x: 0, y: 0},
                 {x: 0.5, y: 0},
+                {x: 0, y: 1},
+            ],
+            // frame 22, UL45
+            [
+                {x: 1, y: 0},
+                {x: 0, y: 1},
+                {x: 1, y: 1},
+            ],
+            // frame 23, UR45
+            [
+                {x: 0, y: 0},
+                {x: 1, y: 1},
+                {x: 0, y: 1},
+            ],
+            // frame 24 UL67.5
+            [
+                {x: 1, y: 0},
+                {x: 1, y: 1},
+                {x: 0.5, y: 1},
+            ],
+            // frame 25 UR67.5
+            [
+                {x: 0, y: 0},
+                {x: 0.5, y: 1},
+                {x: 0, y: 1},
+            ],
+            // frame 26 UL22.5
+            [
+                {x: 0, y: 1},
+                {x: 1, y: 1},
+                {x: 1, y: 0.5},
+            ],
+            // frame 27 UR22.5
+            [
+                {x: 0, y: 0.5},
+                {x: 1, y: 1},
                 {x: 0, y: 1},
             ],
         ];
