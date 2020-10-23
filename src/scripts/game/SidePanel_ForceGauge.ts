@@ -22,6 +22,8 @@ export class SidePanel_ForceGauge extends XGameObject {
     public m_needleSprite:PIXI.Sprite;
     public x_needleSprite:XDepthSprite;
 
+    public m_worldName:string;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -38,6 +40,8 @@ export class SidePanel_ForceGauge extends XGameObject {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
+        this.m_worldName = __params[0];
+        
         this.createSprites ();
         
 		return this;
@@ -50,10 +54,10 @@ export class SidePanel_ForceGauge extends XGameObject {
     
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-        this.m_sprite = this.createSprite ("Earth_Sprites_ForceGauge");
+        this.m_sprite = this.createSprite (this.m_worldName + "_Sprites_ForceGauge");
         this.addSpriteAsChild (this.m_sprite, -140/2, -130/2, 0, 999999.0, false);
 
-        this.m_needleSprite = this.createSprite ("Earth_Sprites_ForceNeedle");
+        this.m_needleSprite = this.createSprite (this.m_worldName + "_Sprites_ForceNeedle");
         this.addSpriteAsChild (this.m_needleSprite, -29, -96, 0, 999999.0 + 1.0, false).y = 8;
 
 		PIXI.BitmapFont.from("GaugeFont", {

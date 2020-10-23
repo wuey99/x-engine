@@ -21,6 +21,8 @@ export class SidePanel_Mass extends XGameObject {
 
     public m_massValue:number;
 
+    public m_worldName:string;
+    
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -37,6 +39,8 @@ export class SidePanel_Mass extends XGameObject {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
+        this.m_worldName = __params[0];
+
         this.m_massValue = 1;
 
         this.createSprites ();
@@ -51,7 +55,7 @@ export class SidePanel_Mass extends XGameObject {
     
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-        this.m_sprite = this.createSprite ("Earth_Sprites_Mass");
+        this.m_sprite = this.createSprite (this.m_worldName + "_Sprites_Mass");
         this.addSpriteAsChild (this.m_sprite, -68/2, -68/2, 0, 999999.0, false);
 
 		PIXI.BitmapFont.from("MassFont", {

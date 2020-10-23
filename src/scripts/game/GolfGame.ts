@@ -90,7 +90,7 @@ export class GolfGame extends XState {
 
 		this.m_golfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
 		this.m_golfBall.afterSetup ([this.m_terrainContainer, false])
-			.attachMatterBodyCircle (Matter.Bodies.circle (256, 256, 15, {restitution: 0.80}), 15)
+			.attachMatterBodyCircle (Matter.Bodies.circle (512, 256, 15, {restitution: 0.80}), 15)
 			.setMatterRotate (false);
 
 		this.m_XApp.getStage ().on ("mousedown", this.onMouseDown.bind (this));
@@ -115,7 +115,7 @@ export class GolfGame extends XState {
 		});
 
 		this.m_sidePanel = this.addGameObjectAsChild (SidePanel, this.getLayer (), this.getDepth (), true) as SidePanel;
-		this.m_sidePanel.afterSetup ([]);
+		this.m_sidePanel.afterSetup (["Earth"]);
 
 		this.m_sidePanel.x = 0;
 		this.m_sidePanel.y = 256;

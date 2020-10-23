@@ -25,6 +25,8 @@ export class SidePanel extends XGameObject {
 	public m_planet:SidePanel_Planet;
 	public m_forceGauge:SidePanel_ForceGauge;
 
+	public m_worldName:string;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -40,6 +42,8 @@ export class SidePanel extends XGameObject {
 //------------------------------------------------------------------------------------------
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
+
+		this.m_worldName = __params[0];
 
 		this.createObjects ();
 
@@ -57,28 +61,28 @@ export class SidePanel extends XGameObject {
 		var __y:number = -100;
 
 		this.m_scoreBox = this.addGameObjectAsChild (SidePanel_ScoreBox, this.getLayer (), this.getDepth (), true) as SidePanel_ScoreBox;
-		this.m_scoreBox.afterSetup ([]);
+		this.m_scoreBox.afterSetup ([this.m_worldName]);
 		this.m_scoreBox.x = __x;
 		this.m_scoreBox.y = __y;
 
 		__y += 180;
 
 		this.m_mass = this.addGameObjectAsChild (SidePanel_Mass, this.getLayer (), this.getDepth (), true) as SidePanel_Mass;
-		this.m_mass.afterSetup ([]);
+		this.m_mass.afterSetup ([this.m_worldName]);
 		this.m_mass.x = __x;
 		this.m_mass.y = __y;
 
 		__y += 260;	
 
 		this.m_planet = this.addGameObjectAsChild (SidePanel_Planet, this.getLayer (), this.getDepth (), true) as SidePanel_Planet;
-		this.m_planet.afterSetup ([]);
+		this.m_planet.afterSetup ([this.m_worldName]);
 		this.m_planet.x = __x;
 		this.m_planet.y = __y;
 
 		__y += 300;
 
 		this.m_forceGauge = this.addGameObjectAsChild (SidePanel_ForceGauge, this.getLayer (), this.getDepth (), true) as SidePanel_ForceGauge;
-		this.m_forceGauge.afterSetup ([]);
+		this.m_forceGauge.afterSetup ([this.m_worldName]);
 		this.m_forceGauge.x = __x;
 		this.m_forceGauge.y = __y;
 	}

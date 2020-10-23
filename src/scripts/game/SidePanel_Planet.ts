@@ -19,6 +19,8 @@ export class SidePanel_Planet extends XGameObject {
     public m_sprite:PIXI.Sprite;
     public x_sprite:XDepthSprite;
 
+    public m_worldName:string;
+    
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -35,6 +37,8 @@ export class SidePanel_Planet extends XGameObject {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
+        this.m_worldName = __params[0];
+
         this.createSprites ();
         
 		return this;
@@ -47,7 +51,7 @@ export class SidePanel_Planet extends XGameObject {
     
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-        this.m_sprite = this.createSprite ("Earth_Sprites_Planet");
+        this.m_sprite = this.createSprite (this.m_worldName + "_Sprites_Planet");
         this.addSpriteAsChild (this.m_sprite, -108/2, -110/2, 0, 999999.0, false);
 
 		PIXI.BitmapFont.from("GravityFont", {
