@@ -197,11 +197,6 @@
               <classX name="Ice_Terrain32x32" regX="0" regY="0" width="32" height="32"/>
             </resource>
             <resource name="@Ice_TerrainMisc32x32" type=".pmp" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-Ice_TerrainMisc32x32.pmp" dst="44000422-4620-7139-86D0-2B66FF71260B-Ice_TerrainMisc32x32.pmp" pmp_width="512" originX="240" originY="240" width="32" totalWidth="512" height="32" regX="0" regY="0"/>
-            <resource name="png_Ice_TerrainMisc32x32" type=".png" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-Ice_TerrainMisc32x32.png" dst="44000422-4620-7139-86D0-2B66FF71260B-Ice_TerrainMisc32x32.png"/>
-            <resource name="$Ice_TerrainMisc32x32" type=".json" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-Ice_TerrainMisc32x32.json" dst="44000422-4620-7139-86D0-2B66FF71260B-Ice_TerrainMisc32x32.json"/>
-            <resource name="Ice_TerrainMisc32x32" type=".fla" embed="false" path="Common" src="D3583A46-2189-79D4-08E4-990B896B365A-Ice_TerrainMisc32x32.fla" dst="D3583A46-2189-79D4-08E4-990B896B365A-Ice_TerrainMisc32x32.swf">
-              <classX name="Ice_TerrainMisc32x32" regX="0" regY="0" width="32" height="32"/>
-            </resource>
             <resource name="@Ice_Terrain64x64" type=".pmp" embed="false" path="Common" src="F5C76A17-8379-0F12-9921-D8A00DA60A67-Ice_Terrain64x64.pmp" dst="F5C76A17-8379-0F12-9921-D8A00DA60A67-Ice_Terrain64x64.pmp" pmp_width="512" originX="240" originY="240" width="64" totalWidth="1728" height="64" regX="0" regY="0"/>
             <resource name="png_Ice_Terrain64x64" type=".png" embed="false" path="Common" src="F5C76A17-8379-0F12-9921-D8A00DA60A67-Ice_Terrain64x64.png" dst="F5C76A17-8379-0F12-9921-D8A00DA60A67-Ice_Terrain64x64.png"/>
             <resource name="$Ice_Terrain64x64" type=".json" embed="false" path="Common" src="F5C76A17-8379-0F12-9921-D8A00DA60A67-Ice_Terrain64x64.json" dst="F5C76A17-8379-0F12-9921-D8A00DA60A67-Ice_Terrain64x64.json"/>
@@ -227,6 +222,11 @@
               <classX name="Squid_Terrain32x32" regX="0" regY="0" width="32" height="32"/>
             </resource>
             <resource name="@Squid_TerrainMisc32x32" type=".pmp" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-Squid_TerrainMisc32x32.pmp" dst="44000422-4620-7139-86D0-2B66FF71260B-Squid_TerrainMisc32x32.pmp" pmp_width="512" originX="240" originY="240" width="32" totalWidth="512" height="32" regX="0" regY="0"/>
+            <resource name="png_Ice_TerrainMisc32x32" type=".png" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-Ice_TerrainMisc32x32.png" dst="44000422-4620-7139-86D0-2B66FF71260B-Ice_TerrainMisc32x32.png"/>
+            <resource name="$Ice_TerrainMisc32x32" type=".json" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-Ice_TerrainMisc32x32.json" dst="44000422-4620-7139-86D0-2B66FF71260B-Ice_TerrainMisc32x32.json"/>
+            <resource name="Ice_TerrainMisc32x32" type=".fla" embed="false" path="Common" src="D3583A46-2189-79D4-08E4-990B896B365A-Ice_TerrainMisc32x32.fla" dst="D3583A46-2189-79D4-08E4-990B896B365A-Ice_TerrainMisc32x32.swf">
+              <classX name="Ice_TerrainMisc32x32" regX="0" regY="0" width="32" height="32"/>
+            </resource>
             <resource name="png_Squid_TerrainMisc32x32" type=".png" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-Squid_TerrainMisc32x32.png" dst="44000422-4620-7139-86D0-2B66FF71260B-Squid_TerrainMisc32x32.png"/>
             <resource name="$Squid_TerrainMisc32x32" type=".json" embed="false" path="Common" src="44000422-4620-7139-86D0-2B66FF71260B-Squid_TerrainMisc32x32.json" dst="44000422-4620-7139-86D0-2B66FF71260B-Squid_TerrainMisc32x32.json"/>
             <resource name="Squid_TerrainMisc32x32" type=".fla" embed="false" path="Common" src="D3583A46-2189-79D4-08E4-990B896B365A-Squid_TerrainMisc32x32.fla" dst="D3583A46-2189-79D4-08E4-990B896B365A-Squid_TerrainMisc32x32.swf">
