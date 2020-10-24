@@ -42,7 +42,7 @@ export class XResourceManager {
             XTask.LABEL, "loop",
                 XTask.WAIT, 0x0100,
                     XTask.FLAGS, (__task:XTask) => {
-                        if (/* __currentResource == null && */ this.m_queue.length > 0) {
+                        if (this.m_queue.length > 0) {
                             __currentResource = this.m_queue.pop ();
 
                             __currentResource.load ();

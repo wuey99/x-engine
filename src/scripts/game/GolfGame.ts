@@ -31,6 +31,7 @@ export class GolfGame extends XState {
 	public m_forceVector:ForceVector;
 	public m_golfBall:GolfBall;
 	public m_sidePanel:SidePanel;
+	public m_worldName:string;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -70,7 +71,7 @@ export class GolfGame extends XState {
 				}, XTask.BNE, "loop",
 
 				() => {
-					this.startGame ();
+					this.startGame ("Earth");
 				},
 
 			XTask.RETN,
@@ -85,12 +86,14 @@ export class GolfGame extends XState {
 	}
 
 //------------------------------------------------------------------------------------------
-	public startGame ():void {
+	public startGame (__worldName:string):void {
+		this.m_worldName = __worldName;
+
 		this.createTerrainContainer ().deserialize (this.m_levelXML);
 
 		this.m_golfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
-		this.m_golfBall.afterSetup ([this.m_terrainContainer, false])
-			.attachMatterBodyCircle (Matter.Bodies.circle (512, 256, 15, {restitution: 0.80}), 15)
+		this.m_golfBall.afterSetup ([this.m_terrainContainer, this.m_worldName, false])
+			.attachMatterBodyCircle (Matter.Bodies.circle (512, 256, 22, {restitution: 0.80}), 22)
 			.setMatterRotate (false);
 
 		this.m_XApp.getStage ().on ("mousedown", this.onMouseDown.bind (this));
@@ -114,11 +117,11 @@ export class GolfGame extends XState {
 			fill: "white"
 		});
 
-		this.m_sidePanel = this.addGameObjectAsChild (SidePanel, this.getLayer (), this.getDepth (), true) as SidePanel;
-		this.m_sidePanel.afterSetup (["Earth"]);
+		this.m_sidePanel = this.addGameObjectAsChild (SidePanel, this.getLayer (), this.getDepth () + 1000.0, true) as SidePanel;
+		this.m_sidePanel.afterSetup ([this.m_worldName]);
 
 		this.m_sidePanel.x = 0;
-		this.m_sidePanel.y = 256;
+		this.m_sidePanel.y = 0;
 	}
 
 //------------------------------------------------------------------------------------------

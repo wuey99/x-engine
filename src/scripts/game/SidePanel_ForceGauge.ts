@@ -64,15 +64,15 @@ export class SidePanel_ForceGauge extends XGameObject {
 			fontFamily: "Arial",
 			fontSize: 36,
 			strokeThickness: 0,
-			fill: "green"
+			fill: "0x58bf8f"
         });
         
-        var __force:PIXI.BitmapText = new PIXI.BitmapText ("50 N",  { fontName: "GravityFont" });
+        var __force:PIXI.BitmapText = new PIXI.BitmapText ("50 N", { fontName: "GravityFont" });
         this.addSortableChild (__force, 0, 999999.0 + 1.0, false);
         __force.x = -__force.width/2;
         __force.y = 80;
 
-        var __label:PIXI.BitmapText = new PIXI.BitmapText ("Hit Force",  { fontName: "SidePanelSmallLabelFont" });
+        var __label:PIXI.BitmapText = new PIXI.BitmapText ("Hit Force", { fontName: "SidePanelSmallLabelFont" });
         this.addSortableChild (__label, 0, 999999.0 + 1.0, false);
         __label.x = -__label.width/2;
         __label.y = 128;

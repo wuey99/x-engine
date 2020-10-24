@@ -101,6 +101,16 @@ function create() {
             type: "SVGResource",
             path: "sprites/Earth/earth-sprites-force-needle.svg"
         },
+        {
+            name: "Earth_Sprites_Ball",
+            type: "SVGResource",
+            path: "sprites/Earth/earth-sprites-ball.svg"
+        },
+        {
+            name: "Earth_Sprites_Gauge",
+            type: "SVGResource",
+            path: "sprites/Earth/earth-sprites-gauge.svg"
+        },
 
         //------------------------------------------------------------------------------------------
         // mars
@@ -140,6 +150,16 @@ function create() {
             type: "SVGResource",
             path: "sprites/Mars/mars-sprites-force-needle.svg"
         },
+        {
+            name: "Mars_Sprites_Ball",
+            type: "SVGResource",
+            path: "sprites/Mars/mars-sprites-ball.svg"
+        },
+        {
+            name: "Mars_Sprites_Gauge",
+            type: "SVGResource",
+            path: "sprites/Mars/mars-sprites-gauge.svg"
+        },
 
         //------------------------------------------------------------------------------------------
         // ice
@@ -173,6 +193,16 @@ function create() {
             name: "Ice_Sprites_ForceNeedle",
             type: "SVGResource",
             path: "sprites/Ice/ice-sprites-force-needle.svg"
+        },
+        {
+            name: "Ice_Sprites_Ball",
+            type: "SVGResource",
+            path: "sprites/Ice/ice-sprites-ball.svg"
+        },
+        {
+            name: "Ice_Sprites_Gauge",
+            type: "SVGResource",
+            path: "sprites/Ice/ice-sprites-gauge.svg"
         },
 
         //------------------------------------------------------------------------------------------
@@ -213,6 +243,16 @@ function create() {
             type: "SVGResource",
             path: "sprites/Moon/moon-sprites-force-needle.svg"
         },
+        {
+            name: "Moon_Sprites_Ball",
+            type: "SVGResource",
+            path: "sprites/Moon/moon-sprites-ball.svg"
+        },
+        {
+            name: "Moon_Sprites_Gauge",
+            type: "SVGResource",
+            path: "sprites/Moon/moon-sprites-gauge.svg"
+        },
 
         //------------------------------------------------------------------------------------------
         // squid
@@ -247,7 +287,16 @@ function create() {
             type: "SVGResource",
             path: "sprites/Squid/squid-sprites-force-needle.svg"
         },
-
+        {
+            name: "Squid_Sprites_Ball",
+            type: "SVGResource",
+            path: "sprites/Squid/squid-sprites-ball.svg"
+        },
+        {
+            name: "Squid_Sprites_Gauge",
+            type: "SVGResource",
+            path: "sprites/Squid/squid-sprites-gauge.svg"
+        },
     ]);
 } 
 

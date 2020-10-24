@@ -62,7 +62,7 @@ export class SidePanel_ScoreBox extends XGameObject {
 			fontFamily: "Arial",
 			fontSize: 60,
 			strokeThickness: 0,
-			fill: "green"
+			fill: "0x58bf8f"
         });
         
         var __score:PIXI.BitmapText = new PIXI.BitmapText ("" + this.m_score,  { fontName: "ScoreFont" });

@@ -58,7 +58,7 @@ export class SidePanel_Planet extends XGameObject {
 			fontFamily: "Arial",
 			fontSize: 36,
 			strokeThickness: 0,
-			fill: "green"
+			fill: "0x58bf8f"
         });
         
         var __gravity:PIXI.BitmapText = new PIXI.BitmapText ("9_8 m_s",  { fontName: "GravityFont" });

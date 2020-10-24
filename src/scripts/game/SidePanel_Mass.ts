@@ -62,15 +62,15 @@ export class SidePanel_Mass extends XGameObject {
 			fontFamily: "Arial",
 			fontSize: 36,
 			strokeThickness: 0,
-			fill: "green"
+			fill: "0x58bf8f"
         });
         
-        var __mass:PIXI.BitmapText = new PIXI.BitmapText (this.m_massValue + "kg",  { fontName: "MassFont" });
+        var __mass:PIXI.BitmapText = new PIXI.BitmapText (this.m_massValue + "kg", { fontName: "MassFont" });
         this.addSortableChild (__mass, 0, 999999.0 + 1.0, false);
         __mass.x = -__mass.width/2;
         __mass.y = 48;
 
-        var __label:PIXI.BitmapText = new PIXI.BitmapText ("Mass",  { fontName: "SidePanelLabelFont" });
+        var __label:PIXI.BitmapText = new PIXI.BitmapText ("Mass", { fontName: "SidePanelLabelFont" });
         this.addSortableChild (__label, 0, 999999.0 + 1.0, false);
         __label.x = -__label.width/2;
         __label.y = 96;

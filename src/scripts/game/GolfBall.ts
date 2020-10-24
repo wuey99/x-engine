@@ -19,11 +19,13 @@ import * as Matter from 'matter-js';
 
 //------------------------------------------------------------------------------------------
 export class GolfBall extends XGameObject {
-    public m_sprite:PIXI.AnimatedSprite;
+    public m_sprite:PIXI.Sprite;
     public x_sprite:XDepthSprite;
 
 	public m_terrainContainer:TerrainContainer;
 
+	public m_worldName:string;
+	
 	public m_mouseDownFlag:boolean;
 
     public script:XTask;
@@ -45,7 +47,8 @@ export class GolfBall extends XGameObject {
         super.afterSetup (__params);
 
 		this.m_terrainContainer = __params[0];
-		var __selfShooting:boolean = __params[1];
+		this.m_worldName = __params[1];
+		var __selfShooting:boolean = __params[2];
 
 		this.m_mouseDownFlag = false;
 
@@ -69,8 +72,8 @@ export class GolfBall extends XGameObject {
     
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-        this.m_sprite = this.createAnimatedSprite ("GolfBall");
-        this.addSortableChild (this.m_sprite, 0, 0.0, false);
+        this.m_sprite = this.createSprite (this.m_worldName + "_Sprites_Ball");
+        this.addSpriteAsChild (this.m_sprite, -44/2, -44/2, 0, 999999.0, false);
 
 		this.show ();
 	}
