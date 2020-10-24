@@ -51,14 +51,21 @@ export class TerrainEditor extends XState {
 
     // html forms
     public m_worldForm:any;
-    public m_nameForm:any;
+
+    public m_terrainNameForm:any;
+    public m_newTerrainButton:any;
+    public m_loadTerrainButton:any;
+    public m_saveTerrainButton:any;
+
+    public m_layersNameForm:any;
+    public m_newLayersButton:any;
+    public m_loadLayersButton:any;
+    public m_saveLayersButton:any;
+
     public m_bgLayerButton:any;
     public m_fgLayerButton:any;
     public m_terrainLayerButton:any;
     public m_platformLayerButton:any;
-    public m_newButton:any;
-    public m_loadButton:any;
-    public m_saveButton:any;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -98,9 +105,13 @@ export class TerrainEditor extends XState {
         this.m_worldForm.id = "__world";
         this.m_worldForm.value = "Earth";
 
-        this.m_nameForm = document.createElement ("input");
-        this.m_nameForm.id = "__world";
-        this.m_nameForm.value = "";
+        this.m_terrainNameForm = document.createElement ("input");
+        this.m_terrainNameForm.id = "__terain";
+        this.m_terrainNameForm.value = "";
+
+        this.m_layersNameForm = document.createElement ("input");
+        this.m_layersNameForm.id = "__layers";
+        this.m_layersNameForm.value = "";
 
         this.m_bgLayerButton = document.createElement ("input");
         this.m_bgLayerButton.id = "__bg";
@@ -128,12 +139,7 @@ export class TerrainEditor extends XState {
         this.appendLabel ("world: ");
         this.m_XApp.container.appendChild (this.m_worldForm);
 
-        this.appendLabel ("name: ");
-        this.m_XApp.container.appendChild (this.m_nameForm);
-
-        this.appendNewButton ();
-        this.appendLoadButton ();
-        this.appendSaveButton ();
+        this.appendLineBreak ();
 
         this.m_XApp.container.appendChild (this.m_bgLayerButton);
         this.appendLabel ("bg");
@@ -146,15 +152,33 @@ export class TerrainEditor extends XState {
 
         this.m_XApp.container.appendChild (this.m_platformLayerButton);
         this.appendLabel ("platform");
+
+        this.appendLineBreak ();
+
+        this.appendLabel ("terrain name: ");
+        this.m_XApp.container.appendChild (this.m_terrainNameForm);
+
+        this.appendNewTerrainButton ();
+        this.appendLoadTerrainButton ();
+        this.appendSaveTerrainButton ();
+
+        this.appendLineBreak ();
+
+        this.appendLabel ("layers name: ");
+        this.m_XApp.container.appendChild (this.m_layersNameForm);
+
+        this.appendNewLayersButton ();
+        this.appendLoadLayersButton ();
+        this.appendSaveLayersButton ();
     }
 
 //------------------------------------------------------------------------------------------
-    public appendNewButton ():void {
-        this.m_newButton = document.createElement ("button");
-        this.m_newButton.id = "__new";
-        this.m_newButton.appendChild (document.createTextNode ("new"));
-        this.m_XApp.container.appendChild (this.m_newButton);
-        this.m_newButton.addEventListener ("click", ()=> {
+    public appendNewTerrainButton ():void {
+        this.m_newTerrainButton = document.createElement ("button");
+        this.m_newTerrainButton.id = "__new";
+        this.m_newTerrainButton.appendChild (document.createTextNode ("new terrain"));
+        this.m_XApp.container.appendChild (this.m_newTerrainButton);
+        this.m_newTerrainButton.addEventListener ("click", ()=> {
             console.log (": new: ");
 
             this.m_terrainContainer.nukeLater ();
@@ -165,36 +189,36 @@ export class TerrainEditor extends XState {
     }
 
 //------------------------------------------------------------------------------------------
-    public appendLoadButton ():void {
-        this.m_loadButton = document.createElement ("button");
-        this.m_loadButton.id = "__load";
-        this.m_loadButton.appendChild (document.createTextNode ("load"));
-        this.m_XApp.container.appendChild (this.m_loadButton);
-        this.m_loadButton.addEventListener ("click", ()=> {
+    public appendLoadTerrainButton ():void {
+        this.m_loadTerrainButton = document.createElement ("button");
+        this.m_loadTerrainButton.id = "__load";
+        this.m_loadTerrainButton.appendChild (document.createTextNode ("load terrain"));
+        this.m_XApp.container.appendChild (this.m_loadTerrainButton);
+        this.m_loadTerrainButton.addEventListener ("click", ()=> {
             console.log (": load: ");	
 
             (document.querySelector('.inputFile') as any).click();	
             var input:any = document.querySelector('.inputFile');
             input.onchange = () => {
                 console.log(": changed: ", this, input.files[0]);
-                this.readSingleFile(input);
+                this.readTerrainFile(input);
             };
         });
     }
 
 //------------------------------------------------------------------------------------------
-    public appendSaveButton ():void {
-        this.m_saveButton = document.createElement ("button");
-        this.m_saveButton.id = "__save";
-        this.m_saveButton.appendChild (document.createTextNode ("save"));
-        this.m_XApp.container.appendChild (this.m_saveButton);
-        this.m_saveButton.addEventListener ("click", ()=> {
+    public appendSaveTerrainButton ():void {
+        this.m_saveTerrainButton = document.createElement ("button");
+        this.m_saveTerrainButton.id = "__save";
+        this.m_saveTerrainButton.appendChild (document.createTextNode ("save terain"));
+        this.m_XApp.container.appendChild (this.m_saveTerrainButton);
+        this.m_saveTerrainButton.addEventListener ("click", ()=> {
             console.log (": save: ");
 
-            if (this.m_nameForm.value == "") {
+            if (this.m_terrainNameForm.value == "") {
                 window.alert ("Please specify a name");
             } else {
-                this.m_terrainContainer.setLevelName (this.m_nameForm.value);
+                this.m_terrainContainer.setLevelName (this.m_terrainNameForm.value);
 
                 var __xml:XSimpleXMLNode = this.m_terrainContainer.serialize ();
 
@@ -204,9 +228,42 @@ export class TerrainEditor extends XState {
                 console.log(": ", save.download);
                 var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(__xml.toXMLString ());
                 save.href = data;
-                save.download = this.m_nameForm.value + ".xml";
+                save.download = this.m_terrainNameForm.value + ".xml";
                 (document.querySelector('.btnSave') as any).click();
             }
+        });
+    }
+
+//------------------------------------------------------------------------------------------
+    public appendNewLayersButton ():void {
+        this.m_newTerrainButton = document.createElement ("button");
+        this.m_newTerrainButton.id = "__new";
+        this.m_newTerrainButton.appendChild (document.createTextNode ("new layers"));
+        this.m_XApp.container.appendChild (this.m_newTerrainButton);
+        this.m_newTerrainButton.addEventListener ("click", ()=> {
+            console.log (": new: ");
+        });
+    }
+
+//------------------------------------------------------------------------------------------
+    public appendLoadLayersButton ():void {
+        this.m_loadTerrainButton = document.createElement ("button");
+        this.m_loadTerrainButton.id = "__load";
+        this.m_loadTerrainButton.appendChild (document.createTextNode ("load layers"));
+        this.m_XApp.container.appendChild (this.m_loadTerrainButton);
+        this.m_loadTerrainButton.addEventListener ("click", ()=> {
+            console.log (": load: ");	
+        });
+    }
+
+//------------------------------------------------------------------------------------------
+    public appendSaveLayersButton ():void {
+        this.m_saveTerrainButton = document.createElement ("button");
+        this.m_saveTerrainButton.id = "__save";
+        this.m_saveTerrainButton.appendChild (document.createTextNode ("save layers"));
+        this.m_XApp.container.appendChild (this.m_saveTerrainButton);
+        this.m_saveTerrainButton.addEventListener ("click", ()=> {
+            console.log (": save: ");
         });
     }
 
@@ -369,7 +426,7 @@ export class TerrainEditor extends XState {
 	}
     
 //------------------------------------------------------------------------------------------
-    public readSingleFile (input:any) {
+    public readTerrainFile (input:any) {
         var file = input.files[0];
         
         if (!file) {
@@ -394,7 +451,7 @@ export class TerrainEditor extends XState {
             this.createTerrainContainer ().deserialize (__xml);
 
             this.m_worldForm.value = this.m_terrainContainer.getWorldName ();
-            this.m_nameForm.value = this.m_terrainContainer.getLevelName ();
+            this.m_terrainNameForm.value = this.m_terrainContainer.getLevelName ();
 
             this.createPalettes ();
         };

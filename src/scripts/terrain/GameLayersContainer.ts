@@ -20,7 +20,8 @@ import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 //------------------------------------------------------------------------------------------
 export class GameLayersContainer extends XGameObject {
     public m_worldName:string;;
-	
+    public m_levelName:string;	
+
     public m_bgLayer:GameLayer;
     public m_fgLayer:GameLayer;
     public m_platformLayer:GameLayer;
@@ -47,13 +48,23 @@ export class GameLayersContainer extends XGameObject {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup():void {
+	public cleanup ():void {
         super.cleanup ();
 	}
 
 //------------------------------------------------------------------------------------------
 	public getWorldName ():string {
 		return this.m_worldName;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getLevelName ():string {
+		return this.m_levelName;
+	}
+
+//------------------------------------------------------------------------------------------
+	public setLevelName (__value:string):void {
+		this.m_levelName = __value;
 	}
 
 //------------------------------------------------------------------------------------------
@@ -88,7 +99,8 @@ export class GameLayersContainer extends XGameObject {
 //------------------------------------------------------------------------------------------
 	public deserialize (__root:XSimpleXMLNode) {
 		this.m_worldName = __root.getAttributeString ("world");
-
+		this.m_levelName = __root.getAttributeString ("name");
+		
 		var __backgroundXML:XSimpleXMLNode = __root.child ("background")[0];
 		var __foregroundXML:XSimpleXMLNode = __root.child ("foreground")[0];
 		var __platformXML:XSimpleXMLNode = __root.child ("platform")[0];
@@ -116,7 +128,7 @@ export class GameLayersContainer extends XGameObject {
 //------------------------------------------------------------------------------------------
 	public serialize ():XSimpleXMLNode {
 		var __root:XSimpleXMLDocument = new XSimpleXMLDocument ();
-		__root.setupWithParams ("layers", "", ["world", this.m_worldName]);
+        __root.setupWithParams ("layers", "", ["world", this.m_worldName, "name", this.m_levelName]);
 
 		function getLayerX (__layer:GameLayer):number {
 			return __layer != null ? __layer.x : 0;
