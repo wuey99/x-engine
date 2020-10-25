@@ -19,6 +19,9 @@ import { G } from '../app/G';
 import { XSimpleXMLDocument } from '../xml/XSimpleXMLDocument';
 import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 import { GameLayer } from './GameLayer';
+import { GolfBall } from '../game/GolfBall';
+import { HoleArrow } from '../game/HoleArrow';
+import * as Matter from 'matter-js';
 
 //------------------------------------------------------------------------------------------
 export class TerrainContainer extends XGameObject {
@@ -27,6 +30,9 @@ export class TerrainContainer extends XGameObject {
 
     public m_worldName:string;
     public m_levelName:string;
+
+    public m_golfBall:GolfBall;
+    public m_holeArrow:HoleArrow;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -55,6 +61,9 @@ export class TerrainContainer extends XGameObject {
 
         this.m_terrainTiles = new Map<TerrainTile, number> ();
 
+        this.m_golfBall = null;
+        this.m_holeArrow = null;
+        
 		return this;
 	}
     
@@ -93,6 +102,32 @@ export class TerrainContainer extends XGameObject {
         this.graphics.lineStyle (3.0, __color);
         this.graphics.moveTo (__x1, __y1);
         this.graphics.lineTo (__x2, __y2);
+    }
+
+//------------------------------------------------------------------------------------------
+    public createGolfBall (__x:number, __y:number, __selfShooting:boolean = false):void {
+        if (this.m_golfBall != null) {
+            this.m_golfBall.nukeLater ();
+        }
+
+        this.m_golfBall = this.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
+        this.m_golfBall.afterSetup ([this, this.getWorldName (), __selfShooting])
+            .attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 15, {restitution: 0.80}), 15)
+            .setMatterRotate (false);
+    }
+
+//------------------------------------------------------------------------------------------
+    public createHoleArrow (__x:number, __y:number, __selfShooting:boolean = false):void {
+        if (this.m_holeArrow != null) {
+            this.m_holeArrow.nukeLater ();
+        }
+
+        this.m_holeArrow = this.addGameObjectAsChild (HoleArrow, 0, 0.0, false) as HoleArrow;
+        this.m_holeArrow.afterSetup ([this, this.getWorldName ()]);
+    }
+
+//------------------------------------------------------------------------------------------
+    public createHoleHighlight (__x:number, __y:number):void {
     }
 
 //------------------------------------------------------------------------------------------

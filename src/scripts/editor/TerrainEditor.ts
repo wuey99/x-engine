@@ -31,18 +31,23 @@ import { World, Body, Engine } from 'matter-js';
 import { GameLayer } from '../terrain/GameLayer';
 import { ForceVector } from '../game/ForceVector';
 import { GameLayersContainer } from '../terrain/GameLayersContainer';
+import { HoleArrow } from '../game/HoleArrow';
+import { HoleHighlight } from '../game/HoleHighlight';
 
 //------------------------------------------------------------------------------------------
 export class TerrainEditor extends XState {
     public m_currentBrush:TerrainTileBrush;
     public m_terrainContainer:TerrainContainer;
+    public m_gameLayersContainer:GameLayersContainer;
     public m_terrainTilePalette64:TerrainTilePalette;
     public m_terrainTilePalette32:TerrainTilePalette;
     public m_terrainTilePalette16:TerrainTilePalette;
     public m_terrainTilePaletteMisc:TerrainTilePalette;
     public m_forceVector:ForceVector;
+
     public m_golfBall:GolfBall;
-    public m_gameLayersContainer:GameLayersContainer;
+    public m_holeArrow:HoleArrow;
+    public m_holeHighlight:HoleHighlight;
 
     public m_ctrlKeyDown:boolean;
     public m_mouseDownFlag:boolean;
@@ -387,6 +392,36 @@ export class TerrainEditor extends XState {
 
                     break;
 
+                case "KeyA":
+                    var __x:number = this.m_XApp.getMousePos ().x;
+                    var __y:number = this.m_XApp.getMousePos ().y;
+
+                    if (this.m_holeArrow != null) {
+                        this.m_holeArrow.nukeLater ();
+                    }
+
+                    this.m_holeArrow = this.m_terrainContainer.addGameObjectAsChild (HoleArrow, 0, 0.0, false) as HoleArrow;
+                    this.m_holeArrow.afterSetup ([this.m_terrainContainer, this.getWorldName (), false]);
+                    this.m_holeArrow.x = __x;
+                    this.m_holeArrow.y = __y;
+
+                    break;
+
+                case "KeyH":
+                    var __x:number = this.m_XApp.getMousePos ().x;
+                    var __y:number = this.m_XApp.getMousePos ().y;
+    
+                    if (this.m_holeHighlight != null) {
+                        this.m_holeHighlight.nukeLater ();
+                    }
+    
+                    this.m_holeHighlight = this.m_terrainContainer.addGameObjectAsChild (HoleHighlight, 0, 0.0, false) as HoleHighlight;
+                    this.m_holeHighlight.afterSetup ([this.m_terrainContainer, this.getWorldName ()]);
+                    this.m_holeHighlight.x = __x;
+                    this.m_holeHighlight.y = __y;
+    
+                    break;
+
                 case "KeyQ":
                     if (this.isEditingTerrain ()) {
                         var __x:number = this.m_XApp.getMousePos ().x;
@@ -402,9 +437,13 @@ export class TerrainEditor extends XState {
                     if (this.isEditingTerrain ()) {
                         var __x:number = this.m_XApp.getMousePos ().x;
                         var __y:number = this.m_XApp.getMousePos ().y;
-            
-                        var __golfBall:GolfBall = this.m_golfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
-                        __golfBall.afterSetup ([this.m_terrainContainer, this.getWorldName (), false])
+                        
+                        if (this.m_golfBall != null) {
+                            this.m_golfBall.nukeLater ();
+                        }
+
+                        this.m_golfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
+                        this.m_golfBall.afterSetup ([this.m_terrainContainer, this.getWorldName (), false])
                             .attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 15, {restitution: 0.80}), 15)
                             .setMatterRotate (false);
                     }
@@ -504,7 +543,6 @@ export class TerrainEditor extends XState {
 
             this.createTerrainContainer ().deserialize (__xml);
 
-            // this.m_worldForm.value = this.m_terrainContainer.getWorldName ();
             this.m_terrainNameForm.value = this.m_terrainContainer.getLevelName ();
 
             this.createPalettes ();

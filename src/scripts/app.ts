@@ -297,6 +297,15 @@ function create() {
             type: "SVGResource",
             path: "sprites/Squid/squid-sprites-gauge.svg"
         },
+
+        //------------------------------------------------------------------------------------------
+        // common
+        //------------------------------------------------------------------------------------------
+        {
+            name: "Common_Sprites_HoleArrow",
+            type: "SVGResource",
+            path: "sprites/Common/common-sprites-hole-arrow.svg"
+        },
     ]);
 } 
 
