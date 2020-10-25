@@ -90,8 +90,9 @@ export class TerrainEditor extends XState {
 
         this.createForms ();
         
-        this.newTerrainContainer ("Earth");
-        this.newGameLayersContainer ("Earth");
+        this.newTerrainContainer (this.m_worldForm.value);
+        this.newGameLayersContainer (this.m_worldForm.value);
+        this.createPalettes ();
 
         this.createInputHandlers ();
 
@@ -255,6 +256,14 @@ export class TerrainEditor extends XState {
         this.m_XApp.container.appendChild (this.m_newLayersButton);
         this.m_newLayersButton.addEventListener ("click", ()=> {
             console.log (": new: ");
+
+            // TODO reload terrain container with new world (while keeping contents)
+            this.m_gameLayersContainer.nukeLater ();
+            this.removePalettes ();
+
+            this.newGameLayersContainer (this.m_worldForm.value);
+
+            this.createPalettes ();
         });
     }
 
@@ -266,6 +275,14 @@ export class TerrainEditor extends XState {
         this.m_XApp.container.appendChild (this.m_loadLayersButton);
         this.m_loadLayersButton.addEventListener ("click", ()=> {
             console.log (": load: ");	
+
+             // TODO reload terrain container with new world (while keeping contents)
+            (document.querySelector('.inputFile') as any).click();	
+            var input:any = document.querySelector('.inputFile');
+            input.onchange = () => {
+                console.log(": changed: ", this, input.files[0]);
+                this.readLayersFile(input);
+            };
         });
     }
 
@@ -480,8 +497,42 @@ export class TerrainEditor extends XState {
 
             this.createTerrainContainer ().deserialize (__xml);
 
-            this.m_worldForm.value = this.m_terrainContainer.getWorldName ();
+            // this.m_worldForm.value = this.m_terrainContainer.getWorldName ();
             this.m_terrainNameForm.value = this.m_terrainContainer.getLevelName ();
+
+            this.createPalettes ();
+        };
+        
+        reader.readAsText(file);
+    }
+
+//------------------------------------------------------------------------------------------
+    public readLayersFile (input:any) {
+        var file = input.files[0];
+        
+        if (!file) {
+            return;
+        }
+        
+        var reader = new FileReader();
+        
+        reader.onload = (e) => {
+            var contents:string = e.target.result as string;
+
+            console.log(": contents: ", contents);
+
+            this.m_gameLayersContainer.nukeLater ();
+            this.removePalettes ();
+
+            var __xml:XSimpleXMLNode = new XSimpleXMLNode ();
+            __xml.setupWithXMLString (contents);
+        
+            console.log (": xml: ", __xml.toXMLString ());
+
+            this.createGameLayersContainer ().deserialize (__xml);
+
+            this.m_worldForm.value = this.m_gameLayersContainer.getWorldName ();
+            this.m_layersNameForm.value = this.m_gameLayersContainer.getLevelName ();
 
             this.createPalettes ();
         };
@@ -586,9 +637,7 @@ export class TerrainEditor extends XState {
         
         this.createTerrainContainer ().deserialize (__xml);
 
-        this.setWorldName (this.m_terrainContainer.getWorldName ());
-        
-		this.createPalettes ();
+        // TODO (prorobably9this.setWorldName (this.m_terrainContainer.getWorldName ());
     }
 
 //------------------------------------------------------------------------------------------

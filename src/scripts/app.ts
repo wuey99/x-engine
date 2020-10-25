@@ -167,7 +167,7 @@ function create() {
         {
             name: "Ice_Layers_BackgroundX",
             type: "SVGResource",
-            path: "background/Ice/ice-layers-background.svg"
+            path: "backgrounds/Ice/ice-layers-background.svg"
         },
         {
             name: "Ice_Sprites_ScoreBox",
@@ -260,7 +260,7 @@ function create() {
         {
             name: "Squid_Layers_BackgroundX",
             type: "SVGResource",
-            path: "background/Squid/squid-layers-background.svg"
+            path: "backgrounds/Squid/squid-layers-background.svg"
         },
         {
             name: "Squid_Sprites_ScoreBox",

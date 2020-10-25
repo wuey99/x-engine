@@ -105,6 +105,10 @@ export class GameLayersContainer extends XGameObject {
 		var __foregroundXML:XSimpleXMLNode = __root.child ("foreground")[0];
 		var __platformXML:XSimpleXMLNode = __root.child ("platform")[0];
 
+		this.m_bgLayer = null;
+		this.m_fgLayer = null;
+		this.m_platformLayer = null;
+
 		this.createLayers ();
 
 		console.log (": deserialize: ", __backgroundXML, __foregroundXML, __platformXML);

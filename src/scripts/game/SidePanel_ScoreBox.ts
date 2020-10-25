@@ -58,7 +58,7 @@ export class SidePanel_ScoreBox extends XGameObject {
         this.m_sprite = this.createSprite (this.m_worldName + "_Sprites_ScoreBox");
         this.addSpriteAsChild (this.m_sprite, -204/2, -176/2, 0, 999999.0, true);
 
-		PIXI.BitmapFont.from("ScoreFont", {
+		PIXI.BitmapFont.from ("ScoreFont", {
 			fontFamily: "Arial",
 			fontSize: 60,
 			strokeThickness: 0,

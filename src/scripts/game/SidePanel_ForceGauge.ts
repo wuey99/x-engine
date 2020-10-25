@@ -60,7 +60,7 @@ export class SidePanel_ForceGauge extends XGameObject {
         this.m_needleSprite = this.createSprite (this.m_worldName + "_Sprites_ForceNeedle");
         this.addSpriteAsChild (this.m_needleSprite, -29, -96, 0, 999999.0 + 1.0, false).y = 8;
 
-		PIXI.BitmapFont.from("GaugeFont", {
+		PIXI.BitmapFont.from ("GaugeFont", {
 			fontFamily: "Arial",
 			fontSize: 36,
 			strokeThickness: 0,
