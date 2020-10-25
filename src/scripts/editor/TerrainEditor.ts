@@ -400,7 +400,7 @@ export class TerrainEditor extends XState {
                         this.m_holeArrow.nukeLater ();
                     }
 
-                    this.m_holeArrow = this.m_terrainContainer.addGameObjectAsChild (HoleArrow, 0, 0.0, false) as HoleArrow;
+                    this.m_holeArrow = this.m_terrainContainer.addGameObjectAsChild (HoleArrow, 0, 250.0, false) as HoleArrow;
                     this.m_holeArrow.afterSetup ([this.m_terrainContainer, this.getWorldName (), false]);
                     this.m_holeArrow.x = __x;
                     this.m_holeArrow.y = __y;
@@ -415,7 +415,7 @@ export class TerrainEditor extends XState {
                         this.m_holeHighlight.nukeLater ();
                     }
     
-                    this.m_holeHighlight = this.m_terrainContainer.addGameObjectAsChild (HoleHighlight, 0, 0.0, false) as HoleHighlight;
+                    this.m_holeHighlight = this.m_terrainContainer.addGameObjectAsChild (HoleHighlight, 0, 250.0, false) as HoleHighlight;
                     this.m_holeHighlight.afterSetup ([this.m_terrainContainer, this.getWorldName ()]);
                     this.m_holeHighlight.x = __x;
                     this.m_holeHighlight.y = __y;
@@ -442,7 +442,7 @@ export class TerrainEditor extends XState {
                             this.m_golfBall.nukeLater ();
                         }
 
-                        this.m_golfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
+                        this.m_golfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 250.0, false) as GolfBall;
                         this.m_golfBall.afterSetup ([this.m_terrainContainer, this.getWorldName (), false])
                             .attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 15, {restitution: 0.80}), 15)
                             .setMatterRotate (false);

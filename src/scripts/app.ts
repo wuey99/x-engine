@@ -109,7 +109,7 @@ function create() {
         {
             name: "Earth_Sprites_Gauge",
             type: "SVGResource",
-            path: "sprites/Earth/earth-sprites-gauge.svg"
+            path: "sprites/Earth/earth-sprites-gauge.png"
         },
 
         //------------------------------------------------------------------------------------------

@@ -45,7 +45,10 @@ export class HoleHighlight extends XGameObject {
         
         this.script = this.addEmptyTask ();
 
-        this.createSprites ();
+		this.createSprites ();
+
+		this.scale.x = 2.0;
+		this.scale.y = 2.0;
 
         this.Idle_Script ();
 
@@ -60,7 +63,7 @@ export class HoleHighlight extends XGameObject {
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
         this.m_sprite = this.createSprite ("Earth_Sprites_Gauge");
-        this.addSpriteAsChild (this.m_sprite, -74/2, -400, 0, 999999.0, false);
+        this.addSpriteAsChild (this.m_sprite, -36/2, -200, 0, 999999.0, false);
 
         this.show ();
     }
