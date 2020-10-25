@@ -183,6 +183,11 @@ export class TerrainEditor extends XState {
         this.m_XApp.container.appendChild (this.m_reloadWorldButton);
         this.m_reloadWorldButton.addEventListener ("click", ()=> {
             console.log (": reload: ");
+
+            this.removePalettes ();
+            this.m_gameLayersContainer.changeWorldName (this.m_worldForm.value);
+            this.m_terrainContainer.changeWorldName (this.m_worldForm.value);
+            this.createPalettes ();
         });
     }
 
@@ -199,6 +204,8 @@ export class TerrainEditor extends XState {
             this.removePalettes ();
 
             this.newTerrainContainer (this.m_worldForm.value);
+
+            this.createPalettes ();
         });
     }
 
@@ -257,11 +264,11 @@ export class TerrainEditor extends XState {
         this.m_newLayersButton.addEventListener ("click", ()=> {
             console.log (": new: ");
 
-            // TODO reload terrain container with new world (while keeping contents)
             this.m_gameLayersContainer.nukeLater ();
             this.removePalettes ();
 
             this.newGameLayersContainer (this.m_worldForm.value);
+            this.m_terrainContainer.changeWorldName (this.m_worldForm.value);
 
             this.createPalettes ();
         });
@@ -533,7 +540,8 @@ export class TerrainEditor extends XState {
 
             this.m_worldForm.value = this.m_gameLayersContainer.getWorldName ();
             this.m_layersNameForm.value = this.m_gameLayersContainer.getLevelName ();
-
+            this.m_terrainContainer.changeWorldName (this.m_worldForm.value);
+            
             this.createPalettes ();
         };
         
@@ -637,7 +645,7 @@ export class TerrainEditor extends XState {
         
         this.createTerrainContainer ().deserialize (__xml);
 
-        // TODO (prorobably9this.setWorldName (this.m_terrainContainer.getWorldName ());
+        // TODO (probably this.setWorldName (this.m_terrainContainer.getWorldName ());
     }
 
 //------------------------------------------------------------------------------------------

@@ -97,6 +97,27 @@ export class GameLayersContainer extends XGameObject {
 	}
 
 //------------------------------------------------------------------------------------------
+	public changeWorldName (__worldName:string):void {
+		this.m_worldName = __worldName;
+
+		var __xml:XSimpleXMLNode = this.serialize ();
+
+		if (this.m_bgLayer != null) {
+			this.m_bgLayer.nukeLater ();
+
+			this.m_bgLayer = null;
+		}
+
+		if (this.m_platformLayer != null) {
+			this.m_platformLayer.nukeLater ();
+
+			this.m_platformLayer = null;
+		}
+
+		this.deserialize (__xml);
+	}
+
+//------------------------------------------------------------------------------------------
 	public deserialize (__root:XSimpleXMLNode) {
 		this.m_worldName = __root.getAttributeString ("world");
 		this.m_levelName = __root.getAttributeString ("name");

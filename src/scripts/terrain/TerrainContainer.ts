@@ -162,6 +162,24 @@ export class TerrainContainer extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
+    public changeWorldName (__worldName:string):void {
+        var __xml:XSimpleXMLNode = this.serialize ();
+
+        XType.forEach (this.m_terrainTiles,
+            (x:any) => {
+                var __terrainTile:TerrainTile = x as TerrainTile;
+                __terrainTile.nukeLater ();
+            }
+        );
+
+        this.m_terrainTiles.clear ();
+
+        this.m_worldName = __worldName;
+
+        this.deserialize (__xml);
+    }
+
+//------------------------------------------------------------------------------------------
     public deserialize (__root:XSimpleXMLNode) {
         this.m_levelName = __root.getAttributeString ("name");
 
