@@ -51,6 +51,7 @@ export class TerrainEditor extends XState {
 
     // html forms
     public m_worldForm:any;
+    public m_reloadWorldButton:any;
 
     public m_terrainNameForm:any;
     public m_newTerrainButton:any;
@@ -104,7 +105,6 @@ export class TerrainEditor extends XState {
         this.m_worldForm = document.createElement ("input");
         this.m_worldForm.id = "__world";
         this.m_worldForm.value = "Earth";
-
         this.m_terrainNameForm = document.createElement ("input");
         this.m_terrainNameForm.id = "__terain";
         this.m_terrainNameForm.value = "";
@@ -139,6 +139,8 @@ export class TerrainEditor extends XState {
         this.appendLabel ("world: ");
         this.m_XApp.container.appendChild (this.m_worldForm);
 
+        this.appendReloadWorldButton ();
+
         this.appendLineBreak ();
 
         this.m_XApp.container.appendChild (this.m_bgLayerButton);
@@ -170,6 +172,17 @@ export class TerrainEditor extends XState {
         this.appendNewLayersButton ();
         this.appendLoadLayersButton ();
         this.appendSaveLayersButton ();
+    }
+
+//------------------------------------------------------------------------------------------
+    public appendReloadWorldButton ():void {
+        this.m_reloadWorldButton = document.createElement ("button");
+        this.m_reloadWorldButton.id = "__reload";
+        this.m_reloadWorldButton.appendChild (document.createTextNode ("reload"));
+        this.m_XApp.container.appendChild (this.m_reloadWorldButton);
+        this.m_reloadWorldButton.addEventListener ("click", ()=> {
+            console.log (": reload: ");
+        });
     }
 
 //------------------------------------------------------------------------------------------
