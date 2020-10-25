@@ -21,9 +21,11 @@ import { GolfBall } from './GolfBall';
 import * as Matter from 'matter-js';
 import {Howl, Howler} from 'howler';
 import { SidePanel } from './SidePanel';
+import { GameLayersContainer } from '../terrain/GameLayersContainer';
 
 //------------------------------------------------------------------------------------------
 export class GolfGame extends XState {
+	public m_gameLayersContainer:GameLayersContainer;
 	public m_terrainContainer:TerrainContainer;
 	public m_loadComplete:boolean;
 	public loader:PIXI.Loader;
@@ -103,14 +105,14 @@ export class GolfGame extends XState {
 
 //------------------------------------------------------------------------------------------
 	public createSidePanel ():void {
-        PIXI.BitmapFont.from("SidePanelLabelFont", {
+        PIXI.BitmapFont.from ("SidePanelLabelFont", {
 			fontFamily: "Arial",
 			fontSize: 40,
 			strokeThickness: 0,
 			fill: "white"
 		});
 	   
-        PIXI.BitmapFont.from("SidePanelSmallLabelFont", {
+        PIXI.BitmapFont.from ("SidePanelSmallLabelFont", {
 			fontFamily: "Arial",
 			fontSize: 28,
 			strokeThickness: 0,
@@ -142,9 +144,19 @@ export class GolfGame extends XState {
 	}
 
 //------------------------------------------------------------------------------------------
+	public createGameLayersContainer ():GameLayersContainer {
+		this.m_gameLayersContainer = this.addGameObjectAsChild (GameLayersContainer, 0, 500.0) as GameLayersContainer;
+		this.m_gameLayersContainer.afterSetup ();
+		this.m_gameLayersContainer.x = 0;
+		this.m_gameLayersContainer.y = 0;
+
+		return this.m_gameLayersContainer;
+	}
+
+//------------------------------------------------------------------------------------------
 	public createTerrainContainer ():TerrainContainer {
 		this.m_terrainContainer = this.addGameObjectAsChild (TerrainContainer, 0, 500.0) as TerrainContainer;
-		this.m_terrainContainer.afterSetup ();
+		this.m_terrainContainer.afterSetup (["Earth"]); // TODO
 		this.m_terrainContainer.x = 0;
 		this.m_terrainContainer.y = 0;
 

@@ -136,13 +136,6 @@ export class TerrainEditor extends XState {
 
         this.appendLineBreak ();
 
-        this.appendLabel ("world: ");
-        this.m_XApp.container.appendChild (this.m_worldForm);
-
-        this.appendReloadWorldButton ();
-
-        this.appendLineBreak ();
-
         this.m_XApp.container.appendChild (this.m_bgLayerButton);
         this.appendLabel ("bg");
 
@@ -157,6 +150,13 @@ export class TerrainEditor extends XState {
 
         this.appendLineBreak ();
 
+        this.appendLabel ("world: ");
+        this.m_XApp.container.appendChild (this.m_worldForm);
+
+        this.appendReloadWorldButton ();
+
+        this.appendLineBreak ();
+        
         this.appendLabel ("terrain name: ");
         this.m_XApp.container.appendChild (this.m_terrainNameForm);
 
@@ -229,7 +229,7 @@ export class TerrainEditor extends XState {
             console.log (": save: ");
 
             if (this.m_terrainNameForm.value == "") {
-                window.alert ("Please specify a name");
+                window.alert ("Please specify a name for the terrain");
             } else {
                 this.m_terrainContainer.setLevelName (this.m_terrainNameForm.value);
 
@@ -241,7 +241,7 @@ export class TerrainEditor extends XState {
                 console.log(": ", save.download);
                 var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(__xml.toXMLString ());
                 save.href = data;
-                save.download = this.m_terrainNameForm.value + ".xml";
+                save.download = "terrain_" + this.m_terrainNameForm.value + ".xml";
                 (document.querySelector('.btnSave') as any).click();
             }
         });
@@ -249,34 +249,51 @@ export class TerrainEditor extends XState {
 
 //------------------------------------------------------------------------------------------
     public appendNewLayersButton ():void {
-        this.m_newTerrainButton = document.createElement ("button");
-        this.m_newTerrainButton.id = "__new";
-        this.m_newTerrainButton.appendChild (document.createTextNode ("new layers"));
-        this.m_XApp.container.appendChild (this.m_newTerrainButton);
-        this.m_newTerrainButton.addEventListener ("click", ()=> {
+        this.m_newLayersButton = document.createElement ("button");
+        this.m_newLayersButton.id = "__new";
+        this.m_newLayersButton.appendChild (document.createTextNode ("new layers"));
+        this.m_XApp.container.appendChild (this.m_newLayersButton);
+        this.m_newLayersButton.addEventListener ("click", ()=> {
             console.log (": new: ");
         });
     }
 
 //------------------------------------------------------------------------------------------
     public appendLoadLayersButton ():void {
-        this.m_loadTerrainButton = document.createElement ("button");
-        this.m_loadTerrainButton.id = "__load";
-        this.m_loadTerrainButton.appendChild (document.createTextNode ("load layers"));
-        this.m_XApp.container.appendChild (this.m_loadTerrainButton);
-        this.m_loadTerrainButton.addEventListener ("click", ()=> {
+        this.m_loadLayersButton = document.createElement ("button");
+        this.m_loadLayersButton.id = "__load";
+        this.m_loadLayersButton.appendChild (document.createTextNode ("load layers"));
+        this.m_XApp.container.appendChild (this.m_loadLayersButton);
+        this.m_loadLayersButton.addEventListener ("click", ()=> {
             console.log (": load: ");	
         });
     }
 
 //------------------------------------------------------------------------------------------
     public appendSaveLayersButton ():void {
-        this.m_saveTerrainButton = document.createElement ("button");
-        this.m_saveTerrainButton.id = "__save";
-        this.m_saveTerrainButton.appendChild (document.createTextNode ("save layers"));
-        this.m_XApp.container.appendChild (this.m_saveTerrainButton);
-        this.m_saveTerrainButton.addEventListener ("click", ()=> {
+        this.m_saveLayersButton = document.createElement ("button");
+        this.m_saveLayersButton.id = "__save";
+        this.m_saveLayersButton.appendChild (document.createTextNode ("save layers"));
+        this.m_XApp.container.appendChild (this.m_saveLayersButton);
+        this.m_saveLayersButton.addEventListener ("click", ()=> {
             console.log (": save: ");
+
+            if (this.m_layersNameForm.value == "") {
+                window.alert ("Please specify a name for the layers");
+            } else {
+                this.m_gameLayersContainer.setLevelName (this.m_layersNameForm.value);
+
+                var __xml:XSimpleXMLNode = this.m_gameLayersContainer.serialize ();
+
+                console.log (": xml: ", __xml.toXMLString ());
+
+                var save:any = document.querySelector('.btnSave');
+                console.log(": ", save.download);
+                var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(__xml.toXMLString ());
+                save.href = data;
+                save.download = "layers_" + this.m_layersNameForm.value + ".xml";
+                (document.querySelector('.btnSave') as any).click();
+            }
         });
     }
 
@@ -560,7 +577,7 @@ export class TerrainEditor extends XState {
 
 //------------------------------------------------------------------------------------------
     public newTerrainContainer (__worldName:string):void {
-        var __xmlString:string = '<terrain world="' + __worldName + '" name="">'+
+        var __xmlString:string = '<terrain name="">'+
             '<tiles/>'+
         '</terrain>';
 
@@ -591,7 +608,7 @@ export class TerrainEditor extends XState {
 //------------------------------------------------------------------------------------------
     public createTerrainContainer ():TerrainContainer {
         this.m_terrainContainer = this.addGameObjectAsChild (TerrainContainer, 0, 500.0) as TerrainContainer;
-        this.m_terrainContainer.afterSetup ();
+        this.m_terrainContainer.afterSetup ([this.m_worldForm.value]);
         this.m_terrainContainer.x = 0;
         this.m_terrainContainer.y = 0;
 

@@ -44,6 +44,8 @@ export class TerrainContainer extends XGameObject {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
+        this.m_worldName = __params[0];
+
         var __sprite:PIXI.Sprite = new PIXI.Sprite ();
         this.graphics = new PIXI.Graphics ();
         __sprite.addChild (this.graphics);
@@ -161,7 +163,6 @@ export class TerrainContainer extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public deserialize (__root:XSimpleXMLNode) {
-        this.m_worldName = __root.getAttributeString ("world");
         this.m_levelName = __root.getAttributeString ("name");
 
         var __tilesXMLList:Array<XSimpleXMLNode> = __root.child ("tiles");
@@ -179,7 +180,7 @@ export class TerrainContainer extends XGameObject {
                 __tileXML.getAttributeFloat ("y"),
                 __tileXML.getAttributeString ("name"),
                 __tileXML.getAttributeInt ("size"),
-                __tileXML.getAttributeString ("world"),
+                this.m_worldName,
                 __tileXML.getAttributeInt ("frame")
             );
         }
@@ -188,7 +189,7 @@ export class TerrainContainer extends XGameObject {
 //------------------------------------------------------------------------------------------
     public serialize ():XSimpleXMLNode {
         var __root:XSimpleXMLDocument = new XSimpleXMLDocument ();
-        __root.setupWithParams ("terrain", "", ["world", this.m_worldName, "name", this.m_levelName]);
+        __root.setupWithParams ("terrain", "", ["name", this.m_levelName]);
        
         var __tilesXML:XSimpleXMLNode = new XSimpleXMLNode ();
         __tilesXML.setupWithParams ("tiles", "", []);
@@ -208,7 +209,6 @@ export class TerrainContainer extends XGameObject {
                         "y", __terrainTile.y - __terrainTile.getMatterDY (),
                         "name", __terrainTile.getName (),
                         "size", __terrainTile.getSize (),
-                        "world", __terrainTile.getWorld (),
                         "frame", __terrainTile.getFrame ()
                     ]
                 );
