@@ -92,8 +92,8 @@ export class GolfGame extends XState {
 	public startGame (__worldName:string):void {
 		this.m_worldName = __worldName;
 
-		this.createGameLayersContainer ().deserialize (this.m_layersXML);
 		this.createTerrainContainer ().deserialize (this.m_terrainXML);
+		this.createGameLayersContainer ().deserialize (this.m_layersXML, this.m_terrainContainer);
 
 		this.m_XApp.getStage ().on ("mousedown", this.onMouseDown.bind (this));
 

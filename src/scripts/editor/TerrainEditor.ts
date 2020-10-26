@@ -186,7 +186,7 @@ export class TerrainEditor extends XState {
             console.log (": reload: ");
 
             this.removePalettes ();
-            this.m_gameLayersContainer.changeWorldName (this.m_worldForm.value);
+            this.m_gameLayersContainer.changeWorldName (this.m_worldForm.value, this.m_terrainContainer);
             this.m_terrainContainer.changeWorldName (this.m_worldForm.value);
             this.createPalettes ();
         });
@@ -308,7 +308,7 @@ export class TerrainEditor extends XState {
             } else {
                 this.m_gameLayersContainer.setLevelName (this.m_layersNameForm.value);
 
-                var __xml:XSimpleXMLNode = this.m_gameLayersContainer.serialize ();
+                var __xml:XSimpleXMLNode = this.m_gameLayersContainer.serialize (this.m_terrainContainer);
 
                 console.log (": xml: ", __xml.toXMLString ());
 
@@ -580,7 +580,7 @@ export class TerrainEditor extends XState {
         
             console.log (": xml: ", __xml.toXMLString ());
 
-            this.createGameLayersContainer (this.m_terrainContainer).deserialize (__xml);
+            this.createGameLayersContainer ().deserialize (__xml, this.m_terrainContainer);
 
             this.m_worldForm.value = this.m_gameLayersContainer.getWorldName ();
             this.m_layersNameForm.value = this.m_gameLayersContainer.getLevelName ();
@@ -709,12 +709,13 @@ export class TerrainEditor extends XState {
             '<background x="0" y="0"/>' +
             '<foreground x="0" y="0"/>' +
             '<platform x="0" y="0"/>' +
+            '<terrain x="0" y="0"/>' +
         '</layers>';
 
         var __xml:XSimpleXMLNode = new XSimpleXMLNode ();
         __xml.setupWithXMLString (__xmlString);
             
-        this.createGameLayersContainer (this.m_terrainContainer).deserialize (__xml);
+        this.createGameLayersContainer ().deserialize (__xml, this.m_terrainContainer);
     }
 
 //------------------------------------------------------------------------------------------
@@ -728,7 +729,7 @@ export class TerrainEditor extends XState {
     }
 
 //------------------------------------------------------------------------------------------
-    public createGameLayersContainer (__terrainContainer:TerrainContainer):GameLayersContainer {
+    public createGameLayersContainer ():GameLayersContainer {
         this.m_gameLayersContainer = this.addGameObjectAsChild (GameLayersContainer, 0, 500.0) as GameLayersContainer;
         this.m_gameLayersContainer.afterSetup ();
         this.m_gameLayersContainer.x = 0;

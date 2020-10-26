@@ -16,6 +16,8 @@ import { XGameObject} from '../gameobject/XGameObject';
 import { GameLayer } from './GameLayer';
 import { XSimpleXMLDocument } from '../xml/XSimpleXMLDocument';
 import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
+import { XPoint } from '../geom/XPoint';
+import { TerrainContainer } from './TerrainContainer';
 
 //------------------------------------------------------------------------------------------
 export class GameLayersContainer extends XGameObject {
@@ -97,10 +99,10 @@ export class GameLayersContainer extends XGameObject {
 	}
 
 //------------------------------------------------------------------------------------------
-	public changeWorldName (__worldName:string):void {
+	public changeWorldName (__worldName:string, __terrainContainer:TerrainContainer):void {
 		this.m_worldName = __worldName;
 
-		var __xml:XSimpleXMLNode = this.serialize ();
+		var __xml:XSimpleXMLNode = this.serialize (__terrainContainer);
 
 		if (this.m_bgLayer != null) {
 			this.m_bgLayer.nukeLater ();
@@ -114,17 +116,18 @@ export class GameLayersContainer extends XGameObject {
 			this.m_platformLayer = null;
 		}
 
-		this.deserialize (__xml);
+		this.deserialize (__xml, __terrainContainer);
 	}
 
 //------------------------------------------------------------------------------------------
-	public deserialize (__root:XSimpleXMLNode) {
+	public deserialize (__root:XSimpleXMLNode, __terrainContainer:TerrainContainer):void {
 		this.m_worldName = __root.getAttributeString ("world");
 		this.m_levelName = __root.getAttributeString ("name");
 		
 		var __backgroundXML:XSimpleXMLNode = __root.child ("background")[0];
 		var __foregroundXML:XSimpleXMLNode = __root.child ("foreground")[0];
 		var __platformXML:XSimpleXMLNode = __root.child ("platform")[0];
+		var __terrainXML:XSimpleXMLNode = __root.child ("terrain")[0];
 
 		this.m_bgLayer = null;
 		this.m_fgLayer = null;
@@ -148,10 +151,13 @@ export class GameLayersContainer extends XGameObject {
 			this.m_platformLayer.x = __platformXML.getAttributeFloat ("x");
 			this.m_platformLayer.y = __platformXML.getAttributeFloat ("y");
 		}
+
+		__terrainContainer.x = __terrainXML.getAttributeFloat ("x");
+		__terrainContainer.y = __terrainXML.getAttributeFloat ("y");
 	}
 
 //------------------------------------------------------------------------------------------
-	public serialize ():XSimpleXMLNode {
+	public serialize (__terrainContainer:TerrainContainer):XSimpleXMLNode {
 		var __root:XSimpleXMLDocument = new XSimpleXMLDocument ();
         __root.setupWithParams ("layers", "", ["world", this.m_worldName, "name", this.m_levelName]);
 
@@ -186,6 +192,14 @@ export class GameLayersContainer extends XGameObject {
 			["x", getLayerX (this.m_platformLayer), "y", getLayerY (this.m_platformLayer)]
 		);
 		__root.addChildWithXMLNode (__platformLayerXML);
+
+		var __terrainContainerXML:XSimpleXMLNode = new XSimpleXMLNode ();
+		__terrainContainerXML.setupWithParams (
+			"terrain",
+			"",
+			["x", __terrainContainer.x, "y", __terrainContainer.y]
+		);
+		__root.addChildWithXMLNode (__terrainContainerXML);
 
 		return __root;
 	}
