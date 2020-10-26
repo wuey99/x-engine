@@ -103,7 +103,7 @@ export class TerrainContainer extends XGameObject {
     
 //------------------------------------------------------------------------------------------
     public drawForceVector (__color:number, __x1:number, __y1:number, __x2:number, __y2:number):void {
-        this.graphics.lineStyle (3.0, __color);
+        this.graphics.lineStyle (6.0, __color);
         this.graphics.moveTo (__x1, __y1);
         this.graphics.lineTo (__x2, __y2);
     }

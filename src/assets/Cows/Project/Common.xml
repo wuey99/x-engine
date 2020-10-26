@@ -237,13 +237,13 @@
       </folder>
       <folder name="Common">
         <folder name="Sprites">
-          <resource name="@BottomArrow" type=".pmp" embed="false" path="Common" src="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.pmp" dst="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.pmp" pmp_width="512" originX="241" originY="242" width="22" totalWidth="22" height="22" regX="-11" regY="-11"/>
+          <resource name="@BottomArrow" type=".pmp" embed="false" path="Common" src="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.pmp" dst="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.pmp" pmp_width="512" originX="230" originY="242" width="43" totalWidth="43" height="44" regX="-22" regY="-22"/>
           <resource name="png_BottomArrow" type=".png" embed="false" path="Common" src="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.png" dst="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.png"/>
           <resource name="$BottomArrow" type=".json" embed="false" path="Common" src="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.json" dst="612D888A-564D-0A95-6AFF-595170B5BBCB-BottomArrow.json"/>
           <resource name="BottomArrow" type=".fla" embed="false" path="Common" src="FAE627B6-0355-4036-13F2-6E49FC282199-BottomArrow.fla" dst="FAE627B6-0355-4036-13F2-6E49FC282199-BottomArrow.swf">
             <classX name="BottomArrow" regX="0" regY="0" width="32" height="32"/>
           </resource>
-          <resource name="@TopArrow" type=".pmp" embed="false" path="Common" src="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.pmp" dst="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.pmp" pmp_width="512" originX="241" originY="242" width="22" totalWidth="22" height="22" regX="-11" regY="-11"/>
+          <resource name="@TopArrow" type=".pmp" embed="false" path="Common" src="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.pmp" dst="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.pmp" pmp_width="512" originX="230" originY="242" width="43" totalWidth="43" height="44" regX="-22" regY="-22"/>
           <resource name="png_TopArrow" type=".png" embed="false" path="Common" src="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.png" dst="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.png"/>
           <resource name="$TopArrow" type=".json" embed="false" path="Common" src="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.json" dst="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.json"/>
           <resource name="TopArrow" type=".fla" embed="false" path="Common" src="3899DF92-D2AD-76B3-3BD0-B704B01A0D03-TopArrow.fla" dst="3899DF92-D2AD-76B3-3BD0-B704B01A0D03-TopArrow.swf">
