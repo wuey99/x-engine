@@ -160,6 +160,11 @@ function create() {
             type: "SVGResource",
             path: "sprites/Mars/mars-sprites-gauge.svg"
         },
+        {
+            name: "Mars_Sprites_Gauge",
+            type: "SVGResource",
+            path: "sprites/Mars/mars-sprites-gauge.png"
+        },
 
         //------------------------------------------------------------------------------------------
         // ice
@@ -203,6 +208,11 @@ function create() {
             name: "Ice_Sprites_Gauge",
             type: "SVGResource",
             path: "sprites/Ice/ice-sprites-gauge.svg"
+        },
+        {
+            name: "Ice_Sprites_Gauge",
+            type: "SVGResource",
+            path: "sprites/Ice/ice-sprites-gauge.png"
         },
 
         //------------------------------------------------------------------------------------------
@@ -253,6 +263,11 @@ function create() {
             type: "SVGResource",
             path: "sprites/Moon/moon-sprites-gauge.svg"
         },
+        {
+            name: "Moon_Sprites_Gauge",
+            type: "SVGResource",
+            path: "sprites/Moon/moon-sprites-gauge.png"
+        },
 
         //------------------------------------------------------------------------------------------
         // squid
@@ -296,6 +311,11 @@ function create() {
             name: "Squid_Sprites_Gauge",
             type: "SVGResource",
             path: "sprites/Squid/squid-sprites-gauge.svg"
+        },
+        {
+            name: "Squid_Sprites_Gauge",
+            type: "SVGResource",
+            path: "sprites/Squid/squid-sprites-gauge.png"
         },
 
         //------------------------------------------------------------------------------------------

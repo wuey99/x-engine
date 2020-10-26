@@ -47,9 +47,6 @@ export class HoleHighlight extends XGameObject {
 
 		this.createSprites ();
 
-		this.scale.x = 2.0;
-		this.scale.y = 2.0;
-
         this.Idle_Script ();
 
 		return this;
