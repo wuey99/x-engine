@@ -1,0 +1,5 @@
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.json"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.pmp"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.png"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\76F0681C-714D-6200-CF38-256401FFF0C0-Test45.fla"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\76F0681C-714D-6200-CF38-256401FFF0C0-Test45.swf"

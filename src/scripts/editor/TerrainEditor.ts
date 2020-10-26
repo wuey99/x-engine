@@ -404,6 +404,14 @@ export class TerrainEditor extends XState {
     
                     break;
 
+                case "KeyX":
+                    var __x:number = this.m_XApp.getMousePos ().x;
+                    var __y:number = this.m_XApp.getMousePos ().y;
+    
+                    this.m_terrainContainer.createHoleMarker (__x, __y);
+    
+                    break;
+
                 case "KeyQ":
                     if (this.isEditingTerrain ()) {
                         var __x:number = this.m_XApp.getMousePos ().x;
@@ -650,6 +658,10 @@ export class TerrainEditor extends XState {
 //------------------------------------------------------------------------------------------
     public newTerrainContainer (__worldName:string):void {
         var __xmlString:string = '<terrain name="">'+
+            '<ball x="128" y="512"/>'+
+            '<arrow x="256" y="512"/>'+
+            '<marker x="320" y="512"/>'+
+            '<highlight x="400" y="640"/>'+
             '<tiles/>'+
         '</terrain>';
 

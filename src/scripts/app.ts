@@ -177,7 +177,7 @@ function create() {
         {
             name: "Ice_Sprites_ScoreBox",
             type: "SVGResource",
-            path: "sprites/Ice/Ice-sprites-score-box.svg"
+            path: "sprites/Ice/ice-sprites-score-box.svg"
         },
         {
             name: "Ice_Sprites_Mass",
@@ -295,7 +295,7 @@ function create() {
         {
             name: "Squid_Sprites_ForceGauge",
             type: "SVGResource",
-            path: "sprites/Squid/Squid-sprites-force-gauge.svg"
+            path: "sprites/Squid/squid-sprites-force-gauge.svg"
         },
         {
             name: "Squid_Sprites_ForceNeedle",

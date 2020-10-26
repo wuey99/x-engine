@@ -23,6 +23,7 @@ import { GolfBall } from '../game/GolfBall';
 import { HoleArrow } from '../game/HoleArrow';
 import * as Matter from 'matter-js';
 import { HoleHighlight } from '../game/HoleHighlight';
+import { HoleMarker } from '../game/HoleMarker';
 
 //------------------------------------------------------------------------------------------
 export class TerrainContainer extends XGameObject {
@@ -35,6 +36,7 @@ export class TerrainContainer extends XGameObject {
     public m_golfBall:GolfBall;
     public m_holeArrow:HoleArrow;
     public m_holeHighlight:HoleHighlight;
+    public m_holeMarker:HoleMarker;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -122,14 +124,14 @@ export class TerrainContainer extends XGameObject {
     public getGolfBall ():GolfBall {
         return this.m_golfBall;
     }
-    
+
 //------------------------------------------------------------------------------------------
     public createHoleArrow (__x:number, __y:number,):void {
         if (this.m_holeArrow != null) {
             this.m_holeArrow.nukeLater ();
         }
 
-        this.m_holeArrow = this.addGameObjectAsChild (HoleArrow, 0, 0.0, false) as HoleArrow;
+        this.m_holeArrow = this.addGameObjectAsChild (HoleArrow, 0, 0.0, true) as HoleArrow;
         this.m_holeArrow.afterSetup ([this, this.getWorldName ()]);
         this.m_holeArrow.x = __x;
         this.m_holeArrow.y = __y;
@@ -141,10 +143,22 @@ export class TerrainContainer extends XGameObject {
             this.m_holeHighlight.nukeLater ();
         }
 
-        this.m_holeHighlight = this.addGameObjectAsChild (HoleHighlight, 0, 250.0, false) as HoleHighlight;
+        this.m_holeHighlight = this.addGameObjectAsChild (HoleHighlight, 0, 250.0, true) as HoleHighlight;
         this.m_holeHighlight.afterSetup ([this, this.getWorldName ()]);
         this.m_holeHighlight.x = __x;
         this.m_holeHighlight.y = __y;
+    }
+
+//------------------------------------------------------------------------------------------
+    public createHoleMarker (__x:number, __y:number):void {
+        if (this.m_holeMarker != null) {
+            this.m_holeMarker.nukeLater ();
+        }
+
+        this.m_holeMarker = this.addGameObjectAsChild (HoleMarker, 0, 333.0, true) as HoleMarker;
+        this.m_holeMarker.afterSetup ([this, this.getWorldName ()]);
+        this.m_holeMarker.x = __x;
+        this.m_holeMarker.y = __y;
     }
 
 //------------------------------------------------------------------------------------------
@@ -235,6 +249,16 @@ export class TerrainContainer extends XGameObject {
     public deserialize (__root:XSimpleXMLNode) {
         this.m_levelName = __root.getAttributeString ("name");
 
+        var __ballXML:XSimpleXMLNode = __root.child ("ball")[0];
+        var __arrowXML:XSimpleXMLNode = __root.child ("arrow")[0];
+        var __markerXML:XSimpleXMLNode = __root.child ("marker")[0];
+        var __highlightXML:XSimpleXMLNode = __root.child ("highlight")[0];
+
+        this.createGolfBall (__ballXML.getAttributeFloat ("x"), __ballXML.getAttributeFloat ("y"));
+        this.createHoleArrow (__arrowXML.getAttributeFloat ("x"), __arrowXML.getAttributeFloat ("y"));
+        this.createHoleMarker (__markerXML.getAttributeFloat ("x"), __markerXML.getAttributeFloat ("y"));
+        this.createHoleHighlight (__highlightXML.getAttributeFloat ("x"), __highlightXML.getAttributeFloat ("y"));
+
         var __tilesXMLList:Array<XSimpleXMLNode> = __root.child ("tiles");
         var __tileXMLList:Array<XSimpleXMLNode> = __tilesXMLList[0].child ("tile");
 
@@ -261,6 +285,23 @@ export class TerrainContainer extends XGameObject {
         var __root:XSimpleXMLDocument = new XSimpleXMLDocument ();
         __root.setupWithParams ("terrain", "", ["name", this.m_levelName]);
        
+        var __ballXML:XSimpleXMLNode = new XSimpleXMLNode ();
+        __ballXML.setupWithParams ("ball", "", ["x", this.m_golfBall.x, "y", this.m_golfBall.y]);
+
+        var __arrowXML:XSimpleXMLNode = new XSimpleXMLNode ();
+        __arrowXML.setupWithParams ("arrow", "", ["x", this.m_holeArrow.x, "y", this.m_holeArrow.y]);
+
+        var __markerXML:XSimpleXMLNode = new XSimpleXMLNode ();
+        __markerXML.setupWithParams ("marker", "", ["x", this.m_holeMarker.x, "y", this.m_holeMarker.y]);
+
+        var __highlightXML:XSimpleXMLNode = new XSimpleXMLNode ();
+        __highlightXML.setupWithParams ("highlight", "", ["x", this.m_holeHighlight.x, "y", this.m_holeHighlight.y]);
+
+        __root.addChildWithXMLNode (__ballXML);
+        __root.addChildWithXMLNode (__arrowXML);
+        __root.addChildWithXMLNode (__markerXML);
+        __root.addChildWithXMLNode (__highlightXML);
+
         var __tilesXML:XSimpleXMLNode = new XSimpleXMLNode ();
         __tilesXML.setupWithParams ("tiles", "", []);
 

@@ -69,14 +69,6 @@
           <classX name="OctopusBug" regX="0" regY="0" width="32" height="32"/>
         </resource>
       </folder>
-      <folder name="Test">
-        <resource name="@Test45" type=".pmp" embed="false" path="Common" src="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.pmp" dst="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.pmp" pmp_width="512" originX="167" originY="167" width="128" totalWidth="128" height="128" regX="0" regY="0"/>
-        <resource name="png_Test45" type=".png" embed="false" path="Common" src="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.png" dst="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.png"/>
-        <resource name="$Test45" type=".json" embed="false" path="Common" src="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.json" dst="687DD38D-D17F-5C83-6C06-F5335CE70BF8-Test45.json"/>
-        <resource name="Test45" type=".fla" embed="false" path="Common" src="76F0681C-714D-6200-CF38-256401FFF0C0-Test45.fla" dst="76F0681C-714D-6200-CF38-256401FFF0C0-Test45.swf">
-          <classX name="Test45" regX="0" regY="0" width="32" height="32"/>
-        </resource>
-      </folder>
       <folder name="GolfBall">
         <resource name="@GolfBall" type=".pmp" embed="false" path="Common" src="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.pmp" dst="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.pmp" pmp_width="512" originX="241" originY="241" width="29" totalWidth="29" height="29" regX="-15" regY="-15"/>
         <resource name="png_GolfBall" type=".png" embed="false" path="Common" src="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.png" dst="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.png"/>
@@ -256,6 +248,12 @@
           <resource name="$TopArrow" type=".json" embed="false" path="Common" src="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.json" dst="83321A55-647A-F54F-2D55-B1756C55D667-TopArrow.json"/>
           <resource name="TopArrow" type=".fla" embed="false" path="Common" src="3899DF92-D2AD-76B3-3BD0-B704B01A0D03-TopArrow.fla" dst="3899DF92-D2AD-76B3-3BD0-B704B01A0D03-TopArrow.swf">
             <classX name="TopArrow" regX="0" regY="0" width="32" height="32"/>
+          </resource>
+          <resource name="@HoleMarker" type=".pmp" embed="false" path="Common" src="D9AAB2D7-C140-55F5-4F12-30967B5EED3B-HoleMarker.pmp" dst="D9AAB2D7-C140-55F5-4F12-30967B5EED3B-HoleMarker.pmp" pmp_width="512" originX="230" originY="230" width="51" totalWidth="51" height="51" regX="-26" regY="-26"/>
+          <resource name="png_HoleMarker" type=".png" embed="false" path="Common" src="D9AAB2D7-C140-55F5-4F12-30967B5EED3B-HoleMarker.png" dst="D9AAB2D7-C140-55F5-4F12-30967B5EED3B-HoleMarker.png"/>
+          <resource name="$HoleMarker" type=".json" embed="false" path="Common" src="D9AAB2D7-C140-55F5-4F12-30967B5EED3B-HoleMarker.json" dst="D9AAB2D7-C140-55F5-4F12-30967B5EED3B-HoleMarker.json"/>
+          <resource name="HoleMarker" type=".fla" embed="false" path="Common" src="2D25B2DE-8E0A-A6FC-39E2-6ACFEF117237-HoleMarker.fla" dst="2D25B2DE-8E0A-A6FC-39E2-6ACFEF117237-HoleMarker.swf">
+            <classX name="HoleMarker" regX="0" regY="0" width="32" height="32"/>
           </resource>
         </folder>
       </folder>
