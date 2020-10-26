@@ -77,25 +77,21 @@ export class HoleMarker extends XGameObject {
 			() => {
 				this.script.addTask ([
 					XTask.LABEL, "loop",
-                        XTask.LOOP, 12,
+                        XTask.LOOP, 16,
                             () => {
-                                __scale += 0.05;
+                                __scale += 0.033;
 
                                 this.m_sprite.scale.x = this.m_sprite.scale.y = __scale;
-
-                                this.m_sprite.angle += 8.0;
                             }, 
                             
                             XTask.WAIT, 0x0100,
                         XTask.NEXT,
 
-                        XTask.LOOP, 12,
+                        XTask.LOOP, 16,
                             () => {
-                                __scale -= 0.05;
+                                __scale -= 0.033;
 
                                 this.m_sprite.scale.x = this.m_sprite.scale.y = __scale;
-
-                                this.m_sprite.angle += 8.0;
                             }, 
                             
                             XTask.WAIT, 0x0100,

@@ -418,7 +418,7 @@ export class XGameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public globalToLocal (__gameObject:XGameObject, __point:XPoint):XPoint {
-		console.log (": XGameObject: globalToLocal: ", this.getParentObject ());
+		// console.log (": XGameObject: globalToLocal: ", this.getParentObject ());
 		
 		__point.x -= __gameObject.x;
 		__point.y -= __gameObject.y;
@@ -927,7 +927,7 @@ export class XGameObject extends PIXI.Sprite {
 					__gameObject.parent.y = __y;
 					__gameObject.parent.angle = __rotation;
 					__gameObject.parent.visible = __visible;
-					__gameObject.parent.scale.x= __scaleX * __flipX;
+					__gameObject.parent.scale.x = __scaleX * __flipX;
 					__gameObject.parent.scale.y = __scaleY * __flipY;
 					__gameObject.parent.alpha = __alpha;
 						

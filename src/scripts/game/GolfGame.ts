@@ -29,9 +29,9 @@ export class GolfGame extends XState {
 	public m_terrainContainer:TerrainContainer;
 	public m_loadComplete:boolean;
 	public loader:PIXI.Loader;
-	public m_levelXML:XSimpleXMLNode;
+	public m_terrainXML:XSimpleXMLNode;
+	public m_layersXML:XSimpleXMLNode;
 	public m_forceVector:ForceVector;
-	public m_golfBall:GolfBall;
 	public m_sidePanel:SidePanel;
 	public m_worldName:string;
 
@@ -53,7 +53,8 @@ export class GolfGame extends XState {
 
 		console.log (": GolfGame: ");
 
-		this.loadLevel ("levels\\TestLevel.xml");
+		this.loadLayers ("levels\\TestLayers.xml");
+		this.loadTerrain ("levels\\TestTerrain.xml");
 
 		var sound = new Howl ({
 			src: ['sounds\\Sergey_Cheremisinov_-_04_-_Northern_Lullaby.mp3']
@@ -91,12 +92,8 @@ export class GolfGame extends XState {
 	public startGame (__worldName:string):void {
 		this.m_worldName = __worldName;
 
-		this.createTerrainContainer ().deserialize (this.m_levelXML);
-
-		this.m_golfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
-		this.m_golfBall.afterSetup ([this.m_terrainContainer, this.m_worldName, false])
-			.attachMatterBodyCircle (Matter.Bodies.circle (512, 256, 22, {restitution: 0.80}), 22)
-			.setMatterRotate (false);
+		this.createGameLayersContainer ().deserialize (this.m_layersXML);
+		this.createTerrainContainer ().deserialize (this.m_terrainXML);
 
 		this.m_XApp.getStage ().on ("mousedown", this.onMouseDown.bind (this));
 
@@ -133,13 +130,13 @@ export class GolfGame extends XState {
 		this.m_forceVector = this.m_terrainContainer.addGameObjectAsChild (ForceVector, 0, 0.0, true) as ForceVector;
 		this.m_forceVector.afterSetup ([this.m_terrainContainer]);
 
-		this.m_forceVector.x = __interactionData.getLocalPosition (this.m_XApp.getStage ()).x;
-		this.m_forceVector.y = __interactionData.getLocalPosition (this.m_XApp.getStage ()).y;
+		this.m_forceVector.x = __interactionData.getLocalPosition (this.m_terrainContainer).x;
+		this.m_forceVector.y = __interactionData.getLocalPosition (this.m_terrainContainer).y;
 
 		this.m_forceVector.addFiredListener ((__dx:number, __dy:number) => {
 			console.log (": fired: ", __dx, __dy);
 
-			this.m_golfBall.shootBall (__dx, __dy);
+			this.m_terrainContainer.getGolfBall ().shootBall (__dx, __dy);
 		});
 	}
 
@@ -155,7 +152,7 @@ export class GolfGame extends XState {
 
 //------------------------------------------------------------------------------------------
 	public createTerrainContainer ():TerrainContainer {
-		this.m_terrainContainer = this.addGameObjectAsChild (TerrainContainer, 0, 500.0) as TerrainContainer;
+		this.m_terrainContainer = this.addGameObjectAsChild (TerrainContainer, 0, 1000.0) as TerrainContainer;
 		this.m_terrainContainer.afterSetup (["Earth"]); // TODO
 		this.m_terrainContainer.x = 0;
 		this.m_terrainContainer.y = 0;
@@ -164,26 +161,48 @@ export class GolfGame extends XState {
 	}
 
     //------------------------------------------------------------------------------------------
-    public loadLevel (__path:string):void {
+    public loadTerrain (__path:string):void {
         this.loader = new PIXI.Loader ();
 
         this.m_loadComplete = false;
 
-		console.log (": loadLevel: begin: ");
+		console.log (": loadTerrain: begin: ");
 
         this.loader.add(__path).load ((loader, resources) => {
             this.m_loadComplete = true;
 
             var __response:string = resources[__path].xhr.response;
 
-			var __levelXMLString = __response;
+			var __terrainXMLString = __response;
 
-			this.m_levelXML = new XSimpleXMLNode ();
-			this.m_levelXML.setupWithXMLString (__levelXMLString);
+			this.m_terrainXML = new XSimpleXMLNode ();
+			this.m_terrainXML.setupWithXMLString (__terrainXMLString);
 
-			console.log (": loadLevel: ", __response);
+			console.log (": loadTerrain: ", __response);
         });
 	}
 	
+    //------------------------------------------------------------------------------------------
+    public loadLayers (__path:string):void {
+        this.loader = new PIXI.Loader ();
+
+        this.m_loadComplete = false;
+
+		console.log (": loadLayers: begin: ");
+
+        this.loader.add(__path).load ((loader, resources) => {
+            this.m_loadComplete = true;
+
+            var __response:string = resources[__path].xhr.response;
+
+			var __layersXML = __response;
+
+			this.m_layersXML = new XSimpleXMLNode ();
+			this.m_layersXML.setupWithXMLString (__layersXML);
+
+			console.log (": loadLayers: ", __response);
+        });
+	}
+
 //------------------------------------------------------------------------------------------
 }

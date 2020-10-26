@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<layers world="Earth" name="test">
+	<background x="0" y="0"/>
+	<foreground x="0" y="0"/>
+	<platform x="320" y="192"/>
+</layers>

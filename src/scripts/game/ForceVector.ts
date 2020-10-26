@@ -51,10 +51,10 @@ export class ForceVector extends XGameObject {
 
         this.Idle_Script ();
 
-        this.m_topArrow = this.addGameObjectToWorld (ForceVectorArrow, 0, 0.0) as ForceVectorArrow;
+        this.m_topArrow = this.addGameObjectAsChild (ForceVectorArrow, 0, 0.0) as ForceVectorArrow;
         this.m_topArrow.afterSetup (["TopArrow"]);
 
-        this.m_bottomArrow = this.addGameObjectToWorld (ForceVectorArrow, 0, 0.0) as ForceVectorArrow;
+        this.m_bottomArrow = this.addGameObjectAsChild (ForceVectorArrow, 0, 0.0) as ForceVectorArrow;
         this.m_bottomArrow.afterSetup (["BottomArrow"]);
 
         this.m_XApp.getStage ().on ("mouseup", this.onMouseUp.bind (this));
@@ -135,23 +135,23 @@ export class ForceVector extends XGameObject {
 					XTask.LABEL, "loop",
 						XTask.WAIT, 0x0100,
                         
-                        () => {   
-                            var __point:XPoint = this.m_terrainContainer.getMousePos ();
+                        () => {
+                           var __point:XPoint = this.m_terrainContainer.getMousePos ();
 
-                            var __dx:number = (this.x - __point.x);
-                            var __dy:number = (this.y - __point.y);
+                           var __dx:number = (this.x - __point.x);
+                           var __dy:number = (this.y - __point.y);
 
-                            this.m_topArrow.x = this.x + __dx;
-                            this.m_topArrow.y = this.y + __dy;
-                            this.m_topArrow.angle = Math.atan2 (__dy, __dx) * 180/Math.PI + 90.0;
+                           this.m_topArrow.x = __dx;
+                           this.m_topArrow.y = __dy;
+                           this.m_topArrow.angle = Math.atan2 (__dy, __dx) * 180/Math.PI + 90.0;
 
-                            this.m_bottomArrow.x = this.x;
-                            this.m_bottomArrow.y = this.y;
-                            this.m_bottomArrow.angle = Math.atan2 (__dy, __dx) * 180/Math.PI + 90.0;
+                           this.m_bottomArrow.x = 0;
+                           this.m_bottomArrow.y = 0;
+                           this.m_bottomArrow.angle = Math.atan2 (__dy, __dx) * 180/Math.PI + 90.0;
 
-                            this.m_terrainContainer.clearGraphics ();
-                            this.m_terrainContainer.drawForceVector (0x16AFFF, this.x, this.y, __point.x, __point.y);
-                            this.m_terrainContainer.drawForceVector (0xFC1614, this.x, this.y, this.x + __dx, this.y + __dy);
+                           this.m_terrainContainer.clearGraphics ();
+                           this.m_terrainContainer.drawForceVector (0x16AFFF, this.x, this.y, __point.x, __point.y);
+                           this.m_terrainContainer.drawForceVector (0xFC1614, this.x, this.y, this.x + __dx, this.y + __dy);
                         },
 
 					XTask.GOTO, "loop",

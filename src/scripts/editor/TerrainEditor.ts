@@ -369,7 +369,7 @@ export class TerrainEditor extends XState {
         this.m_ctrlKeyDown = false;
 
         document.addEventListener ('keydown', (key:KeyboardEvent) => {
-            console.log (": keyDown: ", key.code);
+            // console.log (": keyDown: ", key.code);
 
             switch (key.code) {
                 case "ControlLeft":
@@ -389,26 +389,26 @@ export class TerrainEditor extends XState {
                     break;
 
                 case "KeyA":
-                    var __x:number = this.m_XApp.getMousePos ().x;
-                    var __y:number = this.m_XApp.getMousePos ().y;
+                    var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
+                    this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
 
-                    this.m_terrainContainer.createHoleArrow (__x, __y);
+                    this.m_terrainContainer.createHoleArrow (__point.x, __point.y);
 
                     break;
 
                 case "KeyH":
-                    var __x:number = this.m_XApp.getMousePos ().x;
-                    var __y:number = this.m_XApp.getMousePos ().y;
+                    var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
+                    this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
     
-                    this.m_terrainContainer.createHoleHighlight (__x, __y);
+                    this.m_terrainContainer.createHoleHighlight (__point.x, __point.y);
     
                     break;
 
                 case "KeyX":
-                    var __x:number = this.m_XApp.getMousePos ().x;
-                    var __y:number = this.m_XApp.getMousePos ().y;
+                    var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
+                    this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
     
-                    this.m_terrainContainer.createHoleMarker (__x, __y);
+                    this.m_terrainContainer.createHoleMarker (__point.x, __point.y);
     
                     break;
 
@@ -427,7 +427,15 @@ export class TerrainEditor extends XState {
                     if (this.isEditingTerrain ()) {
                         var __x:number = this.m_XApp.getMousePos ().x;
                         var __y:number = this.m_XApp.getMousePos ().y;
-                        
+    
+                        /*
+                        var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
+                        this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
+
+                        var __x:number = __point.x;
+                        var __y:number = __point.y;
+                        */
+
                         this.m_terrainContainer.createGolfBall (__x, __y);
                     }
 
@@ -436,11 +444,11 @@ export class TerrainEditor extends XState {
         });
 
         document.addEventListener ('keyup', (key:KeyboardEvent) => {
-            console.log (": keyUp: ", key.code);
+            // console.log (": keyUp: ", key.code);
 
             switch (key.code) {
                 case "ControlLeft":
-                    this.m_ctrlKeyDown = true;
+                    this.m_ctrlKeyDown = false;
 
                     break;
             }
@@ -451,24 +459,31 @@ export class TerrainEditor extends XState {
 
             this.m_mouseDownPos = e.data.getLocalPosition (this.m_XApp.getStage ()).clone ();
 
-            if (this.isEditingBackground () && this.m_gameLayersContainer.getBGLayer () != null) {
-                this.m_layerPos.x = this.m_gameLayersContainer.getBGLayer ().x;
-                this.m_layerPos.y = this.m_gameLayersContainer.getBGLayer ().y;
-            }
+                if (this.isEditingBackground () && this.m_gameLayersContainer.getBGLayer () != null) {
+                    this.m_layerPos.x = this.m_gameLayersContainer.getBGLayer ().x;
+                    this.m_layerPos.y = this.m_gameLayersContainer.getBGLayer ().y;
+                }
 
-            if (this.isEditingForeground () && this.m_gameLayersContainer.getFGLayer () != null) {
-                this.m_layerPos.x = this.m_gameLayersContainer.getFGLayer ().x;
-                this.m_layerPos.y = this.m_gameLayersContainer.getFGLayer ().y;
-            }
+                if (this.isEditingForeground () && this.m_gameLayersContainer.getFGLayer () != null) {
+                    this.m_layerPos.x = this.m_gameLayersContainer.getFGLayer ().x;
+                    this.m_layerPos.y = this.m_gameLayersContainer.getFGLayer ().y;
+                }
 
-            if (this.isEditingPlatform () && this.m_gameLayersContainer.getPlatformLayer () != null) {
-                this.m_layerPos.x = this.m_gameLayersContainer.getPlatformLayer ().x;
-                this.m_layerPos.y = this.m_gameLayersContainer.getPlatformLayer ().y;
-            }
+                if (this.isEditingPlatform () && this.m_gameLayersContainer.getPlatformLayer () != null) {
+                    this.m_layerPos.x = this.m_gameLayersContainer.getPlatformLayer ().x;
+                    this.m_layerPos.y = this.m_gameLayersContainer.getPlatformLayer ().y;
+                }
 
-            if (this.isEditingTerrain ()) {
-                this.editTerrain (e);
-            }
+                if (this.isEditingTerrain ()) {
+                    console.log (": mousedown: ", this.m_terrainContainer.x, this.m_terrainContainer.y);
+
+                    if (this.m_ctrlKeyDown) {
+                        this.m_layerPos.x = this.m_terrainContainer.x;
+                        this.m_layerPos.y = this.m_terrainContainer.y;  
+                    } else {
+                        this.editTerrain (e);
+                    }
+                }
         });
 
         this.m_XApp.getStage ().on ("mousemove", (e:PIXI.InteractionEvent) => {
@@ -486,13 +501,17 @@ export class TerrainEditor extends XState {
                 }
 
                 if (this.isEditingTerrain ()) {
-                    // this.moveTerrain (e);
+                    if (this.m_ctrlKeyDown) {
+                        this.moveTerrain (e);
+                    }
                 }
             }
         });
 
         this.m_XApp.getStage ().on ("mouseup", (e:PIXI.InteractionEvent) => {
             this.m_mouseDownFlag = false;
+
+            console.log (": mouseup: ", this.m_terrainContainer.x, this.m_terrainContainer.y);
         });
 	}
 	
@@ -589,6 +608,8 @@ export class TerrainEditor extends XState {
         var __dx:number = (__mousePos.x - this.m_mouseDownPos.x);
         var __dy:number = (__mousePos.y - this.m_mouseDownPos.y);
 
+        // console.log (": moveTerrain: ", this.m_layerPos.x, this.m_layerPos.y);
+
         if (this.m_terrainContainer != null) {
             this.m_terrainContainer.x = this.m_layerPos.x + __dx;
             this.m_terrainContainer.y = this.m_layerPos.y + __dy;
@@ -638,11 +659,15 @@ export class TerrainEditor extends XState {
 
                 var __interactionData:PIXI.InteractionData = e.data;
 
+                
                 this.m_forceVector = this.m_terrainContainer.addGameObjectAsChild (ForceVector, 0, 0.0, true) as ForceVector;
                 this.m_forceVector.afterSetup ([this.m_terrainContainer]);
 
-                this.m_forceVector.x = __interactionData.getLocalPosition (this.m_XApp.getStage ()).x;
-                this.m_forceVector.y = __interactionData.getLocalPosition (this.m_XApp.getStage ()).y;
+                // this.m_forceVector.x = __interactionData.getLocalPosition (this.m_XApp.getStage ()).x;
+                // this.m_forceVector.y = __interactionData.getLocalPosition (this.m_XApp.getStage ()).y;
+
+                this.m_forceVector.x = __interactionData.getLocalPosition (this.m_terrainContainer).x;
+                this.m_forceVector.y = __interactionData.getLocalPosition (this.m_terrainContainer).y;
 
                 this.m_forceVector.addFiredListener ((__dx:number, __dy:number) => {
                     console.log (": fired: ", __dx, __dy);
