@@ -894,13 +894,18 @@ export class XGameObject extends PIXI.Sprite {
 			*/
 
 			if (this.m_attachedMatterBody != null) {
+				/*
 				this.setMasterX (this.x = this.m_attachedMatterBody.position.x);
 				this.setMasterY (this.y = this.m_attachedMatterBody.position.y);
+				*/
+
+				this.x = this.m_attachedMatterBody.position.x;
+				this.y = this.m_attachedMatterBody.position.y;
 				if (this.m_matterRotate) {
 					this.setMasterRotation (this.angle = this.m_attachedMatterBody.angle * 180 / Math.PI);
 				}
 			}
-
+			
 			__x = this.getMasterX ();
 			__y = this.getMasterY ();
 			__rotation = this.getMasterRotation ();

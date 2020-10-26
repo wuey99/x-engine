@@ -15,6 +15,7 @@ import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XPoint } from '../geom/XPoint';
 import { XRect } from '../geom/XRect';
+import { TerrainContainer } from '../terrain/TerrainContainer';
 
 //------------------------------------------------------------------------------------------
 export class TerrainTileBrush extends XGameObject {
@@ -30,6 +31,8 @@ export class TerrainTileBrush extends XGameObject {
 
     public m_droppedSignal:XSignal;
 
+    public m_terrainContainer:TerrainContainer;
+    
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -46,10 +49,11 @@ export class TerrainTileBrush extends XGameObject {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-        this.m_name = __params[0] as string;
-		this.m_size = __params[1] as number;
-		this.m_world = __params[2] as string;
-		this.m_frame = __params[3] as number;
+        this.m_terrainContainer = __params[0];
+        this.m_name = __params[1] as string;
+		this.m_size = __params[2] as number;
+		this.m_world = __params[3] as string;
+		this.m_frame = __params[4] as number;
 
         this.m_droppedSignal = this.createXSignal ();
 
@@ -134,7 +138,7 @@ export class TerrainTileBrush extends XGameObject {
 						XTask.WAIT, 0x0100,
                         
                         () => {   
-                            var __point:XPoint = this.m_XApp.getMousePos ();
+                            var __point:XPoint = this.m_terrainContainer.getMousePos ();
 
                             this.x = __point.x & 0xfffffff0;
                             this.y = __point.y & 0xfffffff0;

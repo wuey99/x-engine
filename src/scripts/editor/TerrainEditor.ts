@@ -414,9 +414,15 @@ export class TerrainEditor extends XState {
 
                 case "KeyQ":
                     if (this.isEditingTerrain ()) {
-                        var __x:number = this.m_XApp.getMousePos ().x;
-                        var __y:number = this.m_XApp.getMousePos ().y;
+                        // var __x:number = this.m_XApp.getMousePos ().x;
+                        // var __y:number = this.m_XApp.getMousePos ().y;
             
+                        var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
+                        this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
+
+                        var __x:number = __point.x;
+                        var __y:number = __point.y;
+
                         var __octopusBug:OctopusBug = this.m_terrainContainer.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
                         __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 8, {restitution: 0.80}), 8);
                     }
@@ -425,16 +431,14 @@ export class TerrainEditor extends XState {
 
                 case "KeyW":
                     if (this.isEditingTerrain ()) {
-                        var __x:number = this.m_XApp.getMousePos ().x;
-                        var __y:number = this.m_XApp.getMousePos ().y;
+                        // var __x:number = this.m_XApp.getMousePos ().x;
+                        // var __y:number = this.m_XApp.getMousePos ().y;
     
-                        /*
                         var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
                         this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
 
                         var __x:number = __point.x;
                         var __y:number = __point.y;
-                        */
 
                         this.m_terrainContainer.createGolfBall (__x, __y);
                     }
@@ -576,7 +580,7 @@ export class TerrainEditor extends XState {
         
             console.log (": xml: ", __xml.toXMLString ());
 
-            this.createGameLayersContainer ().deserialize (__xml);
+            this.createGameLayersContainer (this.m_terrainContainer).deserialize (__xml);
 
             this.m_worldForm.value = this.m_gameLayersContainer.getWorldName ();
             this.m_layersNameForm.value = this.m_gameLayersContainer.getLevelName ();
@@ -637,8 +641,11 @@ export class TerrainEditor extends XState {
 //------------------------------------------------------------------------------------------
     public editTerrain (e:PIXI.InteractionEvent):void {
         if (this.m_currentBrush == null) {
-            var __x:number = e.data.getLocalPosition (this.m_XApp.getStage ()).x;
-            var __y:number = e.data.getLocalPosition (this.m_XApp.getStage ()).y;
+            // var __x:number = e.data.getLocalPosition (this.m_XApp.getStage ()).x;
+            // var __y:number = e.data.getLocalPosition (this.m_XApp.getStage ()).y;
+
+            var __x:number = e.data.getLocalPosition (this.m_terrainContainer).x;
+            var __y:number = e.data.getLocalPosition (this.m_terrainContainer).y;
 
             var __terrainTile:TerrainTile = this.m_terrainContainer.pickupTerrainTile (__x, __y);
             console.log (": terrainTile: ", __terrainTile);
@@ -707,7 +714,7 @@ export class TerrainEditor extends XState {
         var __xml:XSimpleXMLNode = new XSimpleXMLNode ();
         __xml.setupWithXMLString (__xmlString);
             
-        this.createGameLayersContainer ().deserialize (__xml);
+        this.createGameLayersContainer (this.m_terrainContainer).deserialize (__xml);
     }
 
 //------------------------------------------------------------------------------------------
@@ -721,7 +728,7 @@ export class TerrainEditor extends XState {
     }
 
 //------------------------------------------------------------------------------------------
-    public createGameLayersContainer ():GameLayersContainer {
+    public createGameLayersContainer (__terrainContainer:TerrainContainer):GameLayersContainer {
         this.m_gameLayersContainer = this.addGameObjectAsChild (GameLayersContainer, 0, 500.0) as GameLayersContainer;
         this.m_gameLayersContainer.afterSetup ();
         this.m_gameLayersContainer.x = 0;
@@ -787,8 +794,8 @@ export class TerrainEditor extends XState {
 //------------------------------------------------------------------------------------------
     public createTerrainTileBrush (__name:string, __size:number, __terrain:String, __frame:number):void {
         if (this.m_currentBrush == null) {
-            var __brush:TerrainTileBrush = this.m_currentBrush = this.addGameObjectAsChild (TerrainTileBrush, 0, 0.0) as TerrainTileBrush;
-            __brush.afterSetup ([__name, __size, __terrain, __frame]);
+            var __brush:TerrainTileBrush = this.m_currentBrush = this.m_terrainContainer.addGameObjectAsChild (TerrainTileBrush, 0, 0.0) as TerrainTileBrush;
+            __brush.afterSetup ([this.m_terrainContainer, __name, __size, __terrain, __frame]);
 
             this.m_currentBrush.addDroppedListener (() => {
                 if (!this.isEditingTerrain ()) {
