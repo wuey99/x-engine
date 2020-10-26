@@ -22,6 +22,7 @@ import { GameLayer } from './GameLayer';
 import { GolfBall } from '../game/GolfBall';
 import { HoleArrow } from '../game/HoleArrow';
 import * as Matter from 'matter-js';
+import { HoleHighlight } from '../game/HoleHighlight';
 
 //------------------------------------------------------------------------------------------
 export class TerrainContainer extends XGameObject {
@@ -33,6 +34,7 @@ export class TerrainContainer extends XGameObject {
 
     public m_golfBall:GolfBall;
     public m_holeArrow:HoleArrow;
+    public m_holeHighlight:HoleHighlight;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -117,17 +119,32 @@ export class TerrainContainer extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
-    public createHoleArrow (__x:number, __y:number, __selfShooting:boolean = false):void {
+    public getGolfBall ():GolfBall {
+        return this.m_golfBall;
+    }
+    
+//------------------------------------------------------------------------------------------
+    public createHoleArrow (__x:number, __y:number,):void {
         if (this.m_holeArrow != null) {
             this.m_holeArrow.nukeLater ();
         }
 
         this.m_holeArrow = this.addGameObjectAsChild (HoleArrow, 0, 0.0, false) as HoleArrow;
         this.m_holeArrow.afterSetup ([this, this.getWorldName ()]);
+        this.m_holeArrow.x = __x;
+        this.m_holeArrow.y = __y;
     }
 
 //------------------------------------------------------------------------------------------
     public createHoleHighlight (__x:number, __y:number):void {
+        if (this.m_holeHighlight != null) {
+            this.m_holeHighlight.nukeLater ();
+        }
+
+        this.m_holeHighlight = this.addGameObjectAsChild (HoleHighlight, 0, 250.0, false) as HoleHighlight;
+        this.m_holeHighlight.afterSetup ([this, this.getWorldName ()]);
+        this.m_holeHighlight.x = __x;
+        this.m_holeHighlight.y = __y;
     }
 
 //------------------------------------------------------------------------------------------

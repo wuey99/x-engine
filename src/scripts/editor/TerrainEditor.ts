@@ -45,10 +45,6 @@ export class TerrainEditor extends XState {
     public m_terrainTilePaletteMisc:TerrainTilePalette;
     public m_forceVector:ForceVector;
 
-    public m_golfBall:GolfBall;
-    public m_holeArrow:HoleArrow;
-    public m_holeHighlight:HoleHighlight;
-
     public m_ctrlKeyDown:boolean;
     public m_mouseDownFlag:boolean;
     public m_mouseDownPos:PIXI.Point;
@@ -396,14 +392,7 @@ export class TerrainEditor extends XState {
                     var __x:number = this.m_XApp.getMousePos ().x;
                     var __y:number = this.m_XApp.getMousePos ().y;
 
-                    if (this.m_holeArrow != null) {
-                        this.m_holeArrow.nukeLater ();
-                    }
-
-                    this.m_holeArrow = this.m_terrainContainer.addGameObjectAsChild (HoleArrow, 0, 250.0, false) as HoleArrow;
-                    this.m_holeArrow.afterSetup ([this.m_terrainContainer, this.getWorldName (), false]);
-                    this.m_holeArrow.x = __x;
-                    this.m_holeArrow.y = __y;
+                    this.m_terrainContainer.createHoleArrow (__x, __y);
 
                     break;
 
@@ -411,14 +400,7 @@ export class TerrainEditor extends XState {
                     var __x:number = this.m_XApp.getMousePos ().x;
                     var __y:number = this.m_XApp.getMousePos ().y;
     
-                    if (this.m_holeHighlight != null) {
-                        this.m_holeHighlight.nukeLater ();
-                    }
-    
-                    this.m_holeHighlight = this.m_terrainContainer.addGameObjectAsChild (HoleHighlight, 0, 250.0, false) as HoleHighlight;
-                    this.m_holeHighlight.afterSetup ([this.m_terrainContainer, this.getWorldName ()]);
-                    this.m_holeHighlight.x = __x;
-                    this.m_holeHighlight.y = __y;
+                    this.m_terrainContainer.createHoleHighlight (__x, __y);
     
                     break;
 
@@ -438,14 +420,7 @@ export class TerrainEditor extends XState {
                         var __x:number = this.m_XApp.getMousePos ().x;
                         var __y:number = this.m_XApp.getMousePos ().y;
                         
-                        if (this.m_golfBall != null) {
-                            this.m_golfBall.nukeLater ();
-                        }
-
-                        this.m_golfBall = this.m_terrainContainer.addGameObjectAsChild (GolfBall, 0, 250.0, false) as GolfBall;
-                        this.m_golfBall.afterSetup ([this.m_terrainContainer, this.getWorldName (), false])
-                            .attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 15, {restitution: 0.80}), 15)
-                            .setMatterRotate (false);
+                        this.m_terrainContainer.createGolfBall (__x, __y);
                     }
 
                     break;
@@ -664,8 +639,8 @@ export class TerrainEditor extends XState {
                 this.m_forceVector.addFiredListener ((__dx:number, __dy:number) => {
                     console.log (": fired: ", __dx, __dy);
                     
-                    if (this.m_golfBall != null) {
-                        this.m_golfBall.shootBall (__dx, __dy);
+                    if (this.m_terrainContainer.getGolfBall () != null) {
+                        this.m_terrainContainer.getGolfBall ().shootBall (__dx, __dy);
                     }
                 });
             }
@@ -682,8 +657,6 @@ export class TerrainEditor extends XState {
         __xml.setupWithXMLString (__xmlString);
         
         this.createTerrainContainer ().deserialize (__xml);
-
-        // TODO (probably this.setWorldName (this.m_terrainContainer.getWorldName ());
     }
 
 //------------------------------------------------------------------------------------------
