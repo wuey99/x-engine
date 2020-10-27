@@ -20,7 +20,7 @@ import { ForceVector } from './ForceVector';
 import { GolfBall } from './GolfBall';
 import * as Matter from 'matter-js';
 import {Howl, Howler} from 'howler';
-import { SidePanel } from './SidePanel';
+import { SidePanel } from '../sidepanel/SidePanel';
 import { GameLayersContainer } from '../terrain/GameLayersContainer';
 
 //------------------------------------------------------------------------------------------

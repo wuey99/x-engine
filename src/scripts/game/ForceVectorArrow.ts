@@ -45,7 +45,7 @@ export class ForceVectorArrow extends XGameObject {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup():void {
+	public cleanup ():void {
         super.cleanup ();
 	}
     
