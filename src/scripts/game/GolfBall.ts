@@ -68,7 +68,7 @@ export class GolfBall extends XGameObject {
 	public cleanup():void {
         super.cleanup ();
 	}
-    
+	
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
         this.m_sprite = this.createSprite (this.m_worldName + "_Sprites_Ball");

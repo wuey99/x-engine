@@ -13,18 +13,21 @@ import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/Xtype';
 import { XGameObject} from '../gameobject/XGameObject';
-import { XGameController } from '../state/XGameController';
-import { TestGame } from './TestGame';
-import { TestMatter } from './TestMatter';
-import { TestRenderTexture } from './TestRenderTexture';
-import { TestSVG } from './TestSVG';
-import { TerrainEditor } from '../editor/TerrainEditor';
+import { TerrainContainer } from '../terrain/TerrainContainer';
+import { XState } from '../state/XState';
+import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
+import { ForceVector } from './ForceVector';
+import { GolfBall } from './GolfBall';
+import * as Matter from 'matter-js';
+import {Howl, Howler} from 'howler';
+import { SidePanel } from '../sidepanel/SidePanel';
+import { GameLayersContainer } from '../terrain/GameLayersContainer';
 import { GolfGame } from './GolfGame';
-import { EarthLevel } from './EarthLevel';
+import { WorldLevel } from './WorldLevel';
 
 //------------------------------------------------------------------------------------------
-export class TestGameController extends XGameController {
-	
+export class EarthLevel extends WorldLevel {
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -41,38 +44,13 @@ export class TestGameController extends XGameController {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-		this.getGameInstance ().registerState ("TestGame", TestGame);
-		this.getGameInstance ().registerState ("TestMatter", TestMatter);
-		this.getGameInstance ().registerState ("TestRenderTexture", TestRenderTexture);
-		this.getGameInstance ().registerState ("TestSVG", TestSVG);
-		this.getGameInstance ().registerState ("TerrainEditor", TerrainEditor);
-		this.getGameInstance ().registerState ("GolfGame", GolfGame);
-		this.getGameInstance ().registerState ("EarthLevel", EarthLevel);
-
-		this.addTask ([
-			XTask.LABEL, "loop",
-				XTask.WAIT, 0x0100,
-
-				XTask.FLAGS, (__task:XTask) => {
-					__task.ifTrue (this.m_XApp.getXProjectManager ().getLoadComplete ());
-				}, XTask.BNE, "loop",
-
-				() => {
-					console.log (": load complete: ");
-				},
-
-				() => this.getGameInstance ().gotoState ("EarthLevel", ["Earth", "01"]),
-
-			XTask.RETN,
-		]);
-
 		return this;
 	}
 	
 //------------------------------------------------------------------------------------------
 	public cleanup ():void {
         super.cleanup ();
-	}
-	
+    }
+    
 //------------------------------------------------------------------------------------------
 }

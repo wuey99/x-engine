@@ -369,7 +369,7 @@ export class TerrainEditor extends XState {
         this.m_ctrlKeyDown = false;
 
         document.addEventListener ('keydown', (key:KeyboardEvent) => {
-            // console.log (": keyDown: ", key.code);
+            console.log (": keyDown: ", key.code);
 
             switch (key.code) {
                 case "ControlLeft":
@@ -442,6 +442,14 @@ export class TerrainEditor extends XState {
 
                         this.m_terrainContainer.createGolfBall (__x, __y);
                     }
+
+                    break;
+
+                case "Backquote":
+                    this.getGameInstance ().gotoState (
+                        "EarthLevel",
+                        [ "Earth", "01" ]
+                    );
 
                     break;
             }

@@ -29,11 +29,12 @@ export class GolfGame extends XState {
 	public m_terrainContainer:TerrainContainer;
 	public m_loadComplete:boolean;
 	public loader:PIXI.Loader;
-	public m_terrainXML:XSimpleXMLNode;
-	public m_layersXML:XSimpleXMLNode;
 	public m_forceVector:ForceVector;
 	public m_sidePanel:SidePanel;
 	public m_worldName:string;
+	public m_terrain:string;
+	public m_terrainXML:XSimpleXMLNode;
+	public m_layersXML:XSimpleXMLNode;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -53,8 +54,7 @@ export class GolfGame extends XState {
 
 		console.log (": GolfGame: ");
 
-		this.loadLayers ("levels\\TestLayers.xml");
-		this.loadTerrain ("levels\\TestTerrain.xml");
+		this.loadLevel (__params);
 
 		var sound = new Howl ({
 			src: ['sounds\\Sergey_Cheremisinov_-_04_-_Northern_Lullaby.mp3']
@@ -74,7 +74,7 @@ export class GolfGame extends XState {
 				}, XTask.BNE, "loop",
 
 				() => {
-					this.startGame ("Earth");
+					this.startGame ();
 				},
 
 			XTask.RETN,
@@ -89,15 +89,23 @@ export class GolfGame extends XState {
 	}
 
 //------------------------------------------------------------------------------------------
-	public startGame (__worldName:string):void {
-		this.m_worldName = __worldName;
-
+	public startGame ():void {
 		this.createTerrainContainer ().deserialize (this.m_terrainXML);
 		this.createGameLayersContainer ().deserialize (this.m_layersXML, this.m_terrainContainer);
 
+		this.m_worldName = this.m_gameLayersContainer.getWorldName ();
+		
 		this.m_XApp.getStage ().on ("mousedown", this.onMouseDown.bind (this));
 
 		this.createSidePanel ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public loadLevel (__params:Array<any>):void {
+		this.m_layersXML = __params[0];
+		this.m_terrainXML = __params[1];
+
+		this.m_loadComplete = true;
 	}
 
 //------------------------------------------------------------------------------------------
@@ -153,7 +161,7 @@ export class GolfGame extends XState {
 //------------------------------------------------------------------------------------------
 	public createTerrainContainer ():TerrainContainer {
 		this.m_terrainContainer = this.addGameObjectAsChild (TerrainContainer, 0, 1000.0) as TerrainContainer;
-		this.m_terrainContainer.afterSetup (["Earth"]); // TODO
+		this.m_terrainContainer.afterSetup ([this.m_worldName]);
 		this.m_terrainContainer.x = 0;
 		this.m_terrainContainer.y = 0;
 
