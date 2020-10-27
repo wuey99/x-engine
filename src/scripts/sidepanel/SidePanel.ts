@@ -54,7 +54,12 @@ export class SidePanel extends XGameObject {
 	public cleanup ():void {
         super.cleanup ();
 	}
-	
+
+//------------------------------------------------------------------------------------------
+	public setForce (__value:number):void {
+		this.m_forceGauge.setForce (__value);
+	}
+
 //------------------------------------------------------------------------------------------
 	public createObjects ():void {
 		var __graphics:PIXI.Graphics = new PIXI.Graphics ();
@@ -91,6 +96,7 @@ export class SidePanel extends XGameObject {
 		this.m_forceGauge.afterSetup ([this.m_worldName]);
 		this.m_forceGauge.x = __x;
 		this.m_forceGauge.y = __y;
+		this.m_forceGauge.setForce (0.0);
 	}
 
 //------------------------------------------------------------------------------------------

@@ -94,7 +94,7 @@ export class GolfGame extends XState {
 		this.createGameLayersContainer ().deserialize (this.m_layersXML, this.m_terrainContainer);
 
 		this.m_worldName = this.m_gameLayersContainer.getWorldName ();
-		
+
 		this.m_XApp.getStage ().on ("mousedown", this.onMouseDown.bind (this));
 
 		this.createSidePanel ();
@@ -140,6 +140,12 @@ export class GolfGame extends XState {
 
 		this.m_forceVector.x = __interactionData.getLocalPosition (this.m_terrainContainer).x;
 		this.m_forceVector.y = __interactionData.getLocalPosition (this.m_terrainContainer).y;
+
+		this.m_forceVector.addUpdateListener ((__dist:number) => {
+			console.log (": update: ", __dist);
+
+			this.m_sidePanel.setForce (__dist);
+		});
 
 		this.m_forceVector.addFiredListener ((__dx:number, __dy:number) => {
 			console.log (": fired: ", __dx, __dy);

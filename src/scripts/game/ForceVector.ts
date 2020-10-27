@@ -27,6 +27,7 @@ export class ForceVector extends XGameObject {
 
     public script:XTask;
 
+    public m_updateSignal:XSignal;
     public m_firedSignal:XSignal;
 
 //------------------------------------------------------------------------------------------	
@@ -57,9 +58,11 @@ export class ForceVector extends XGameObject {
         this.m_bottomArrow = this.addGameObjectAsChild (ForceVectorArrow, 0, 0.0) as ForceVectorArrow;
         this.m_bottomArrow.afterSetup (["BottomArrow"]);
 
+        this.m_XApp.getStage ().on ("mousemove", this.onMouseMove.bind (this));
         this.m_XApp.getStage ().on ("mouseup", this.onMouseUp.bind (this));
         this.m_XApp.getStage ().on ("mouseout", this.onMouseOut.bind (this));
 
+        this.m_updateSignal = this.createXSignal ();
         this.m_firedSignal = this.createXSignal ();
 
 		return this;
@@ -69,9 +72,20 @@ export class ForceVector extends XGameObject {
 	public cleanup():void {
         super.cleanup ();
 	}
-    
+  
+//------------------------------------------------------------------------------------------
+    public onMouseMove (e:PIXI.InteractionEvent) {
+        var __point:XPoint = this.m_terrainContainer.getMousePos ();
+
+        var __dx:number = (this.x - __point.x) / 2;
+        var __dy:number = (this.y - __point.y) / 2;
+
+        this.m_updateSignal.fireSignal (Math.sqrt (__dx * __dx + __dy * __dy));
+    }
+
 //------------------------------------------------------------------------------------------
     public onMouseUp (e:PIXI.InteractionEvent) {
+        this.m_XApp.getStage ().off ("mousemove", this.onMouseUp);
         this.m_XApp.getStage ().off ("mouseup", this.onMouseUp);
         this.m_XApp.getStage ().off ("mouseout", this.onMouseUp);
 
@@ -115,6 +129,11 @@ export class ForceVector extends XGameObject {
 
             XTask.RETN,
         ]);
+    }
+
+//------------------------------------------------------------------------------------------
+    public addUpdateListener (__listener:any):number {
+        return this.m_updateSignal.addListener (__listener);
     }
 
 //------------------------------------------------------------------------------------------

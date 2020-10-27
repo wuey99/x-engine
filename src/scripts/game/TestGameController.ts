@@ -61,7 +61,7 @@ export class TestGameController extends XGameController {
 					console.log (": load complete: ");
 				},
 
-				() => this.getGameInstance ().gotoState ("EarthLevel", ["Earth", "01"]),
+				() => this.getGameInstance ().gotoState ("TerrainEditor", ["Earth", "01"]),
 
 			XTask.RETN,
 		]);
