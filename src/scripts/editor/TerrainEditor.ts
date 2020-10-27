@@ -69,6 +69,12 @@ export class TerrainEditor extends XState {
     public m_terrainLayerButton:any;
     public m_platformLayerButton:any;
 
+    public m_keyDownHandler:any;
+    public m_keyUpHandler:any;
+    public m_mouseDownHandler:any;
+    public m_mouseMoveHandler:any;
+    public m_mouseUpHandler:any;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -368,170 +374,191 @@ export class TerrainEditor extends XState {
     public createInputHandlers ():void {
         this.m_ctrlKeyDown = false;
 
-        document.addEventListener ('keydown', (key:KeyboardEvent) => {
-            console.log (": keyDown: ", key.code);
-
-            switch (key.code) {
-                case "ControlLeft":
-                    this.m_ctrlKeyDown = true;
-
-                    break;
-
-                case "Space":
-                    if (this.isEditingTerrain ()) {
-                        if (this.m_currentBrush != null) {
-                            this.m_currentBrush.nukeLater ();
-
-                            this.m_currentBrush = null;
-                        }
-                    }
-
-                    break;
-
-                case "KeyA":
-                    var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
-                    this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
-
-                    this.m_terrainContainer.createHoleArrow (__point.x, __point.y);
-
-                    break;
-
-                case "KeyH":
-                    var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
-                    this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
-    
-                    this.m_terrainContainer.createHoleHighlight (__point.x, __point.y);
-    
-                    break;
-
-                case "KeyX":
-                    var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
-                    this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
-    
-                    this.m_terrainContainer.createHoleMarker (__point.x, __point.y);
-    
-                    break;
-
-                case "KeyQ":
-                    if (this.isEditingTerrain ()) {
-                        // var __x:number = this.m_XApp.getMousePos ().x;
-                        // var __y:number = this.m_XApp.getMousePos ().y;
-            
-                        var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
-                        this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
-
-                        var __x:number = __point.x;
-                        var __y:number = __point.y;
-
-                        var __octopusBug:OctopusBug = this.m_terrainContainer.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
-                        __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 8, {restitution: 0.80}), 8);
-                    }
-                    
-                    break;
-
-                case "KeyW":
-                    if (this.isEditingTerrain ()) {
-                        // var __x:number = this.m_XApp.getMousePos ().x;
-                        // var __y:number = this.m_XApp.getMousePos ().y;
-    
-                        var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
-                        this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
-
-                        var __x:number = __point.x;
-                        var __y:number = __point.y;
-
-                        this.m_terrainContainer.createGolfBall (__x, __y);
-                    }
-
-                    break;
-
-                case "Backquote":
-                    this.getGameInstance ().gotoState (
-                        "EarthLevel",
-                        [ "Earth", "01" ]
-                    );
-
-                    break;
-            }
-        });
-
-        document.addEventListener ('keyup', (key:KeyboardEvent) => {
-            // console.log (": keyUp: ", key.code);
-
-            switch (key.code) {
-                case "ControlLeft":
-                    this.m_ctrlKeyDown = false;
-
-                    break;
-            }
-        });
-
-        this.m_XApp.getStage ().on ("mousedown", (e:PIXI.InteractionEvent) => {
-            this.m_mouseDownFlag = true;
-
-            this.m_mouseDownPos = e.data.getLocalPosition (this.m_XApp.getStage ()).clone ();
-
-                if (this.isEditingBackground () && this.m_gameLayersContainer.getBGLayer () != null) {
-                    this.m_layerPos.x = this.m_gameLayersContainer.getBGLayer ().x;
-                    this.m_layerPos.y = this.m_gameLayersContainer.getBGLayer ().y;
-                }
-
-                if (this.isEditingForeground () && this.m_gameLayersContainer.getFGLayer () != null) {
-                    this.m_layerPos.x = this.m_gameLayersContainer.getFGLayer ().x;
-                    this.m_layerPos.y = this.m_gameLayersContainer.getFGLayer ().y;
-                }
-
-                if (this.isEditingPlatform () && this.m_gameLayersContainer.getPlatformLayer () != null) {
-                    this.m_layerPos.x = this.m_gameLayersContainer.getPlatformLayer ().x;
-                    this.m_layerPos.y = this.m_gameLayersContainer.getPlatformLayer ().y;
-                }
-
-                if (this.isEditingTerrain ()) {
-                    console.log (": mousedown: ", this.m_terrainContainer.x, this.m_terrainContainer.y);
-
-                    if (this.m_ctrlKeyDown) {
-                        this.m_layerPos.x = this.m_terrainContainer.x;
-                        this.m_layerPos.y = this.m_terrainContainer.y;  
-                    } else {
-                        this.editTerrain (e);
-                    }
-                }
-        });
-
-        this.m_XApp.getStage ().on ("mousemove", (e:PIXI.InteractionEvent) => {
-            if (this.m_mouseDownFlag) {
-                if (this.isEditingBackground ()) {
-                    this.moveBackground (e);
-                }
-
-                if (this.isEditingForeground ()) {
-                    this.moveForeground (e);
-                }
-
-                if (this.isEditingPlatform ()) {
-                    this.movePlatform (e);
-                }
-
-                if (this.isEditingTerrain ()) {
-                    if (this.m_ctrlKeyDown) {
-                        this.moveTerrain (e);
-                    }
-                }
-            }
-        });
-
-        this.m_XApp.getStage ().on ("mouseup", (e:PIXI.InteractionEvent) => {
-            this.m_mouseDownFlag = false;
-
-            console.log (": mouseup: ", this.m_terrainContainer.x, this.m_terrainContainer.y);
-        });
+        document.addEventListener ('keydown', this.m_keyDownHandler = this.keyDownHandler.bind (this));
+        document.addEventListener ('keyup', this.m_keyUpHandler = this.keyUpHandler.bind (this));
+        this.m_XApp.getStage ().on ("mousedown", this.m_mouseDownHandler = this.mouseDownHandler.bind (this));
+        this.m_XApp.getStage ().on ("mousemove", this.m_mouseMoveHandler = this.mouseMoveHandler.bind (this));
+        this.m_XApp.getStage ().on ("mouseup", this.m_mouseUpHandler = this.mouseUpHandler.bind (this));
 	}
 	
 //------------------------------------------------------------------------------------------
 	public cleanup ():void {
         super.cleanup ();
+
+        document.removeEventListener ('keydown', this.m_keyDownHandler);
+        document.removeEventListener ('keyup', this.m_keyUpHandler);
+        this.m_XApp.getStage ().off ("mousedown", this.m_mouseDownHandler);
+        this.m_XApp.getStage ().off ("mousemove", this.m_mouseMoveHandler);
+        this.m_XApp.getStage ().off ("mouseup", this.m_mouseUpHandler);
 	}
+
+//------------------------------------------------------------------------------------------
+    public keyDownHandler (key:KeyboardEvent):void {
+        console.log (": keyDown: ", key.code);
+
+        switch (key.code) {
+            case "ControlLeft":
+                this.m_ctrlKeyDown = true;
+
+                break;
+
+            case "Space":
+                if (this.isEditingTerrain ()) {
+                    if (this.m_currentBrush != null) {
+                        this.m_currentBrush.nukeLater ();
+
+                        this.m_currentBrush = null;
+                    }
+                }
+
+                break;
+
+            case "KeyA":
+                var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
+                this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
+
+                this.m_terrainContainer.createHoleArrow (__point.x, __point.y);
+
+                break;
+
+            case "KeyH":
+                var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
+                this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
+
+                this.m_terrainContainer.createHoleHighlight (__point.x, __point.y);
+
+                break;
+
+            case "KeyX":
+                var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
+                this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
+
+                this.m_terrainContainer.createHoleMarker (__point.x, __point.y);
+
+                break;
+
+            case "KeyQ":
+                if (this.isEditingTerrain ()) {
+                    // var __x:number = this.m_XApp.getMousePos ().x;
+                    // var __y:number = this.m_XApp.getMousePos ().y;
+        
+                    var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
+                    this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
+
+                    var __x:number = __point.x;
+                    var __y:number = __point.y;
+
+                    var __octopusBug:OctopusBug = this.m_terrainContainer.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
+                    __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 8, {restitution: 0.80}), 8);
+                }
+                
+                break;
+
+            case "KeyW":
+                if (this.isEditingTerrain ()) {
+                    // var __x:number = this.m_XApp.getMousePos ().x;
+                    // var __y:number = this.m_XApp.getMousePos ().y;
+
+                    var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
+                    this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
+
+                    var __x:number = __point.x;
+                    var __y:number = __point.y;
+
+                    this.m_terrainContainer.createGolfBall (__x, __y);
+                }
+
+                break;
+
+            case "Backquote":
+                this.getGameInstance ().gotoState (
+                    "GolfGame",
+                    [
+                        this.m_worldForm.value,
+                        this.m_gameLayersContainer.serialize (this.m_terrainContainer),
+                        this.m_terrainContainer.serialize ()
+                    ]
+                );
+
+                break;
+        }
+    }
     
+//------------------------------------------------------------------------------------------
+    public keyUpHandler (key:KeyboardEvent):void {
+        // console.log (": keyUp: ", key.code);
+
+        switch (key.code) {
+            case "ControlLeft":
+                this.m_ctrlKeyDown = false;
+
+                break;
+        }
+    }
+
+//------------------------------------------------------------------------------------------
+    public mouseDownHandler (e:PIXI.InteractionEvent):void {
+        this.m_mouseDownFlag = true;
+
+        this.m_mouseDownPos = e.data.getLocalPosition (this.m_XApp.getStage ()).clone ();
+
+            if (this.isEditingBackground () && this.m_gameLayersContainer.getBGLayer () != null) {
+                this.m_layerPos.x = this.m_gameLayersContainer.getBGLayer ().x;
+                this.m_layerPos.y = this.m_gameLayersContainer.getBGLayer ().y;
+            }
+
+            if (this.isEditingForeground () && this.m_gameLayersContainer.getFGLayer () != null) {
+                this.m_layerPos.x = this.m_gameLayersContainer.getFGLayer ().x;
+                this.m_layerPos.y = this.m_gameLayersContainer.getFGLayer ().y;
+            }
+
+            if (this.isEditingPlatform () && this.m_gameLayersContainer.getPlatformLayer () != null) {
+                this.m_layerPos.x = this.m_gameLayersContainer.getPlatformLayer ().x;
+                this.m_layerPos.y = this.m_gameLayersContainer.getPlatformLayer ().y;
+            }
+
+            if (this.isEditingTerrain ()) {
+                console.log (": mousedown: ", this.m_terrainContainer.x, this.m_terrainContainer.y);
+
+                if (this.m_ctrlKeyDown) {
+                    this.m_layerPos.x = this.m_terrainContainer.x;
+                    this.m_layerPos.y = this.m_terrainContainer.y;  
+                } else {
+                    this.editTerrain (e);
+                }
+            }
+    }
+
+//------------------------------------------------------------------------------------------
+    public mouseMoveHandler (e:PIXI.InteractionEvent):void {
+        if (this.m_mouseDownFlag) {
+            if (this.isEditingBackground ()) {
+                this.moveBackground (e);
+            }
+
+            if (this.isEditingForeground ()) {
+                this.moveForeground (e);
+            }
+
+            if (this.isEditingPlatform ()) {
+                this.movePlatform (e);
+            }
+
+            if (this.isEditingTerrain ()) {
+                if (this.m_ctrlKeyDown) {
+                    this.moveTerrain (e);
+                }
+            }
+        }
+    }
+
+//------------------------------------------------------------------------------------------
+    public mouseUpHandler (e:PIXI.InteractionEvent):void {
+        this.m_mouseDownFlag = false;
+
+        console.log (": mouseup: ", this.m_terrainContainer.x, this.m_terrainContainer.y);
+    }
+
 //------------------------------------------------------------------------------------------
     public readTerrainFile (input:any) {
         var file = input.files[0];
