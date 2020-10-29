@@ -12,6 +12,7 @@ export class XProjectManager {
     public loader:PIXI.Loader;
     public m_manifest:XSimpleXMLNode;
     public m_loadComplete:boolean;
+    public m_aliases:any;
 
     //------------------------------------------------------------------------------------------		
     constructor (__XApp:XApp) {
@@ -19,11 +20,13 @@ export class XProjectManager {
 
         this.m_loadComplete = false;
 
-        this.m_resourceManager = new XResourceManager (__XApp);
+        this.m_resourceManager = new XResourceManager (__XApp, this);
     }
 
     //------------------------------------------------------------------------------------------
-    public setup (__manifestPath:string):void {
+    public setup (__manifestPath:string, __aliases:any):void {
+        this.m_aliases = __aliases;
+
         this.loader = new PIXI.Loader ();
 
         this.m_loadComplete = false;
@@ -44,6 +47,11 @@ export class XProjectManager {
     
     //------------------------------------------------------------------------------------------
     public cleanup ():void {
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getAliases ():any {
+        return this.m_aliases;
     }
 
     //------------------------------------------------------------------------------------------

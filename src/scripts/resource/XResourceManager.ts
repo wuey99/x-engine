@@ -4,6 +4,7 @@ import { Resource} from './Resource';
 import { SpriteSheetResource } from './SpriteSheetResource';
 import { XTask } from '../task/XTask';
 import { XType } from '../type/XType';
+import { XProjectManager } from './XProjectManager';
 
 //------------------------------------------------------------------------------------------
 export interface ResourceSpec {
@@ -15,13 +16,15 @@ export interface ResourceSpec {
 //------------------------------------------------------------------------------------------
 export class XResourceManager {
     public m_XApp:XApp;
+    public m_projectManager:XProjectManager;
     public m_resourceMap:Map<string, Resource>;
     public m_queue:Array<Resource>;
     public m_typeMap:Map<string, any>;
 
     //------------------------------------------------------------------------------------------		
-    constructor (__XApp:XApp) {
+    constructor (__XApp:XApp, __projectManager:XProjectManager) {
         this.m_XApp = __XApp;
+        this.m_projectManager = __projectManager;
 
         this.m_resourceMap = new Map<string, Resource> ();
         this.m_queue = new Array<Resource> ();
@@ -82,13 +85,29 @@ export class XResourceManager {
                 var __resource:Resource;
 
                 __resource = XType.createInstance (this.m_typeMap.get (__resourceSpec.type));
-                __resource.setup (__resourceSpec.path);
+                __resource.setup (this.translateAliases (__resourceSpec.path));
 
                 this.m_queue.push (__resource);
 
                 this.m_resourceMap.set (__resourceSpec.name, __resource);
             }
         }
+    }
+
+    //------------------------------------------------------------------------------------------
+    public translateAliases (__path:string):string {
+        var __alias:string;
+        var __aliases:any = this.m_projectManager.getAliases ();
+
+        for (__alias in __aliases) {
+            if (__path.startsWith (__alias + "/")) {
+                __path = __path.replace (__alias + "/", __aliases[__alias] + "/");
+
+                return __path;
+            }
+        }
+
+        return __path;
     }
 
     //------------------------------------------------------------------------------------------

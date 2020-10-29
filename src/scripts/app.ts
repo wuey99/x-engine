@@ -59,10 +59,23 @@ function create() {
     g_XApp.getXProjectManager ().registerType ("SpriteSheet", SpriteSheetResource);
     g_XApp.getXProjectManager ().registerType ("SVGResource", SVGResource);
 
-    g_XApp.getXProjectManager ().setup ("assets/Common.xml");
+    g_XApp.getXProjectManager ().setup (
+        "assets/Common.xml",
+        {
+            /*
+            "images": "src/images",
+            "assets": "src/assets/Cows/Project",
+            "levels": "src/assets/levels",
+            "sounds": "src/assets/sounds",
+            "backgrounds": "src/assets/backgrounds",
+            "sprites": "src/assets/sprites"
+            */
+        }
+    );
 
     //------------------------------------------------------------------------------------------
     g_XApp.getXProjectManager ().loadResources ([
+        
         //------------------------------------------------------------------------------------------
         // earth
         //------------------------------------------------------------------------------------------
