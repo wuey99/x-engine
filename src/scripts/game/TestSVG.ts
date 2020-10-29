@@ -44,7 +44,7 @@ export class TestSVG extends XState {
 				this.m_XApp.getXProjectManager ().loadResources ([
 					{
 						name: "Earth_Layers_BackgroundX",
-						type: "SVGResource",
+						type: "ImageResource",
 						path: "backgrounds/Earth/earth-layers-background.svg"
 					}
 				]);

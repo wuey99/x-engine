@@ -4,7 +4,7 @@ import { XApp } from "../app/XApp";
 import { Resource } from './Resource';
 
 //------------------------------------------------------------------------------------------
-export class SVGResource extends Resource {
+export class ImageResource extends Resource {
 
     //------------------------------------------------------------------------------------------		
     constructor () {
@@ -19,7 +19,7 @@ export class SVGResource extends Resource {
     //------------------------------------------------------------------------------------------
     public load ():void {
 		PIXI.Loader.shared.add (this.m_path).load (() => {
-            console.log (": SVGResource: loadComplete: ", this);
+            console.log (": ImageResource: loadComplete: ", this);
 
             this.m_loadComplete = true;
         });
