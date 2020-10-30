@@ -70,7 +70,7 @@ export class XApp {
     private m_yoffset:number;
 
     //------------------------------------------------------------------------------------------
-    constructor (params: XAppParams) {
+    constructor (params: XAppParams, __container:HTMLElement = null) {
         this.loader = PIXI.Loader.shared;
         this.renderer = PIXI.autoDetectRenderer ({
             width: params.canvasW,
@@ -84,7 +84,11 @@ export class XApp {
         this.stage.interactive = true;
         this.stage.interactiveChildren = true;
 
-        this.container = params.containerId ? document.getElementById(params.containerId) || document.body : document.body;
+        if (__container != null) {
+            this.container = __container;
+        } else {
+            this.container = params.containerId ? document.getElementById(params.containerId) || document.body : document.body;
+        }
         this.container.appendChild (this.renderer.view)
 
         this.setupSize (params.canvasW, params.canvasH, G.SCREEN_WIDTH, G.SCREEN_HEIGHT);
