@@ -63,12 +63,12 @@ function create() {
         "assets/Common.xml",
         {
             /*
-            "images": "src/images",
-            "assets": "src/assets/Cows/Project",
-            "levels": "src/assets/levels",
-            "sounds": "src/assets/sounds",
-            "backgrounds": "src/assets/backgrounds",
-            "sprites": "src/assets/sprites"
+            "images": "images",
+            "assets": "assets/Cows/Project",
+            "levels": "assets/levels",
+            "sounds": "assets/sounds",
+            "backgrounds": "assets/backgrounds",
+            "sprites": "assets/sprites"
             */
         }
     );

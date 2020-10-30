@@ -13,7 +13,7 @@ import { XTask } from '../task/XTask';
 import { XTaskManager} from '../task/XTaskManager';
 import { XTaskSubManager} from '../task/XTaskSubManager';
 import { XDepthSprite} from '../sprite/XDepthSprite';
-import { XType } from '../type/Xtype';
+import { XType } from '../type/XType';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XSubObjectPoolManager } from '../pool/XSubObjectPoolManager';
 
