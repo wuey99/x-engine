@@ -56,7 +56,7 @@
 	export class XTask {
 		private m_taskList:Array<any>;
 		private m_taskIndex:number;
-		private m_labels:Map<string, int>;
+		private m_labels:Map<string, number>;
 		private m_ticks:number;
 		private m_stack:Array<number>;
 		private m_loop:Array<number>; 
