@@ -3,15 +3,16 @@
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js';
 import { FpsMeter } from './fps-meter';
-import { XApp } from './app/XApp';
-import { XWorld } from './sprite/XWorld';
-import { XType } from './type/XType';
+import { XApp } from '../engine/app/XApp';
+import { XWorld } from '../engine/sprite/XWorld';
+import { XType } from '../engine/type/XType';
 import { TestGameController } from './game/TestGameController';
-import { SpriteSheetResource } from './resource/SpriteSheetResource';
-import { ImageResource } from './resource/ImageResource';
-import { G } from './app/G';
+import { SpriteSheetResource } from '../engine/resource/SpriteSheetResource';
+import { ImageResource } from '../engine/resource/ImageResource';
+import { G } from '../engine/app/G';
 import { graphicsUtils } from 'pixi.js';
 import * as Parser from 'fast-xml-parser';
+import { XTask } from '../engine/task/XTask';
 (window as any).decomp = require('poly-decomp');
 
 //------------------------------------------------------------------------------------------
@@ -45,6 +46,10 @@ export class Main {
 
             __container
         );
+
+        console.log (": starting: ");
+
+        // return;
         
         world = new XWorld (g_XApp.stage, g_XApp, 8);
         world.setup ();
@@ -63,6 +68,46 @@ export class Main {
         this.render ();
 
         this.startApp ();
+
+        return;
+
+        /*
+        g_XApp.getXProjectManager ().registerType ("SpriteSheet", SpriteSheetResource);
+        g_XApp.getXProjectManager ().registerType ("ImageResource", ImageResource);
+
+        g_XApp.getXProjectManager ().setup0 (
+                "assets/Common.xml",
+                {
+                    "images": "images",
+                    "assets": "assets/Cows/Project",
+                    "levels": "assets/levels",
+                    "sounds": "assets/sounds",
+                    "backgrounds": "assets/backgrounds",
+                    "sprites": "assets/sprites"
+                }
+        );
+
+        g_XApp.getXProjectManager ().loadResources ([
+                {
+                    name: "OctopusBug",
+                    type: "SpriteSheet",
+                    path: "assets/Common/8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.json"
+                }
+        ]);
+        */
+       
+        g_XApp.getXTaskManager ().addTask ([
+            XTask.LABEL, "loop",
+                XTask.WAIT, 0x1000,
+
+                () => {
+                    console.log (g_XApp.getXProjectManager ().getResourceByName ("OctopusBug"));
+                },
+
+                XTask.GOTO, "loop",
+
+            XTask.RETN,
+        ]);
     }
 
 //------------------------------------------------------------------------------------------

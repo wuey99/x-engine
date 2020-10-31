@@ -402,7 +402,7 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 	public addGameObjectToSelf (__class:any):XGameObject {
 		var __gameObject:XGameObject = XType.createInstance (__class) as XGameObject;
-		__gameObject.setup (world, this.getLayer(), this.getDepth());
+		__gameObject.setup (this.world, this.getLayer(), this.getDepth());
 		
 		__gameObject.setParent (this);
 		

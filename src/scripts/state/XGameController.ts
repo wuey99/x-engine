@@ -37,7 +37,7 @@ export class XGameController extends XGameObject {
         super.afterSetup (__params);
 
         this.m_gameInstance = new XGameInstance ();
-        this.m_gameInstance.setup (world);
+        this.m_gameInstance.setup (this.world);
 
 		G.appX = this.m_gameInstance;
 

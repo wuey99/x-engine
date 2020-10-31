@@ -1,29 +1,29 @@
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js'
-import { XApp } from '../app/XApp';
-import { XSprite } from '../sprite/XSprite';
-import { XSpriteLayer } from '../sprite/XSpriteLayer';
-import { XSignal } from '../signals/XSignal';
-import { XSignalManager } from '../signals/XSignalManager';
+import { XApp } from '../../engine/app/XApp';
+import { XSprite } from '../../engine/sprite/XSprite';
+import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
+import { XSignal } from '../../engine/signals/XSignal';
+import { XSignalManager } from '../../engine/signals/XSignalManager';
 import { world } from '../app';
-import { XTask } from '../task/XTask';
-import { XTaskManager} from '../task/XTaskManager';
-import { XTaskSubManager} from '../task/XTaskSubManager';
-import { XWorld} from '../sprite/XWorld';
-import { XDepthSprite} from '../sprite/XDepthSprite';
-import { XType } from '../type/XType';
-import { XGameObject} from '../gameobject/XGameObject';
-import { XState } from '../state/XState';
+import { XTask } from '../../engine/task/XTask';
+import { XTaskManager} from '../../engine/task/XTaskManager';
+import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
+import { XWorld} from '../../engine/sprite/XWorld';
+import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
+import { XType } from '../../engine/type/XType';
+import { XGameObject} from '../../engine/gameobject/XGameObject';
+import { XState } from '../../engine/state/XState';
 import { TerrainTilePalette } from './TerrainTilePalette';
 import { TerrainTileIcon } from './TerrainTileIcon';
 import { TerrainTileBrush } from './TerrainTileBrush';
-import { G } from '../app/G';
-import { XPoint } from '../geom/XPoint';
-import { XRect } from '../geom/XRect';
+import { G } from '../../engine/app/G';
+import { XPoint } from '../../engine/geom/XPoint';
+import { XRect } from '../../engine/geom/XRect';
 import { TerrainTile } from '../terrain/TerrainTile'
 import { TerrainContainer } from '../terrain/TerrainContainer';
-import { XSimpleXMLDocument } from '../xml/XSimpleXMLDocument';
-import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
+import { XSimpleXMLDocument } from '../../engine/xml/XSimpleXMLDocument';
+import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
 import { GolfBall } from '../game/GolfBall';
 import { OctopusBug } from '../game/OctopusBug';
 import * as Matter from 'matter-js';

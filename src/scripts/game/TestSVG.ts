@@ -1,22 +1,22 @@
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js'
-import { XApp } from '../app/XApp';
-import { XSprite } from '../sprite/XSprite';
-import { XSpriteLayer } from '../sprite/XSpriteLayer';
-import { XSignal } from '../signals/XSignal';
-import { XSignalManager } from '../signals/XSignalManager';
+import { XApp } from '../../engine/app/XApp';
+import { XSprite } from '../../engine/sprite/XSprite';
+import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
+import { XSignal } from '../../engine/signals/XSignal';
+import { XSignalManager } from '../../engine/signals/XSignalManager';
 import { world } from '../app';
-import { XTask } from '../task/XTask';
-import { XTaskManager} from '../task/XTaskManager';
-import { XTaskSubManager} from '../task/XTaskSubManager';
-import { XWorld} from '../sprite/XWorld';
-import { XDepthSprite} from '../sprite/XDepthSprite';
-import { XGameObject} from '../gameobject/XGameObject';
-import { XState } from '../state/XState';
+import { XTask } from '../../engine/task/XTask';
+import { XTaskManager} from '../../engine/task/XTaskManager';
+import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
+import { XWorld} from '../../engine/sprite/XWorld';
+import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
+import { XGameObject} from '../../engine/gameobject/XGameObject';
+import { XState } from '../../engine/state/XState';
 import { OctopusBug } from './OctopusBug';
-import { GUID } from '../utils/GUID';
+import { GUID } from '../../engine/utils/GUID';
 import { FlockLeader } from './FlockLeader';
-import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
+import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
 
 //------------------------------------------------------------------------------------------
 export class TestSVG extends XState {
