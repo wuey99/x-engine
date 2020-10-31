@@ -369,7 +369,7 @@ export class XSimpleXMLNode {
 			__string += ">";
 
 			if (this.m_text != "") {
-				__string + this.m_text;
+				__string += this.m_text;
 			}
 
 			if (this.m_children.length != 0) {

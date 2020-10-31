@@ -9,8 +9,8 @@ import { world } from '../app';
 import { XTask } from '../task/XTask';
 import { XTaskManager} from '../task/XTaskManager';
 import { XTaskSubManager} from '../task/XTaskSubManager';
-import { XWorld} from '../sprite/XWorld';
-import { XDepthSprite} from '../sprite/XDepthSprite';
+import { XWorld } from '../sprite/XWorld';
+import { XDepthSprite } from '../sprite/XDepthSprite';
 import { XType } from '../type/XType';
 import { XGameObject} from '../gameobject/XGameObject';
 

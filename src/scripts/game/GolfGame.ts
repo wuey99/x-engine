@@ -27,7 +27,8 @@ import { GameLayersContainer } from '../terrain/GameLayersContainer';
 export class GolfGame extends XState {
 	public m_gameLayersContainer:GameLayersContainer;
 	public m_terrainContainer:TerrainContainer;
-	public m_loadComplete:boolean;
+	public m_loadTerrainComplete:boolean;
+	public m_loadLayersComplete:boolean;
 	public loader:PIXI.Loader;
 	public m_forceVector:ForceVector;
 	public m_sidePanel:SidePanel;
@@ -68,7 +69,8 @@ export class GolfGame extends XState {
 
 				XTask.FLAGS, (__task:XTask) => {
 					__task.ifTrue (
-						this.m_loadComplete &&
+						this.m_loadTerrainComplete &&
+						this.m_loadLayersComplete &&
 						this.m_XApp.getXProjectManager ().getResourceManager ().getLoadComplete ()
 					);
 				}, XTask.BNE, "loop",
@@ -104,7 +106,8 @@ export class GolfGame extends XState {
 		this.m_layersXML = __params[1];
 		this.m_terrainXML = __params[2];
 
-		this.m_loadComplete = true;
+		this.m_loadTerrainComplete = true;
+		this.m_loadLayersComplete = true;
 	}
 
 //------------------------------------------------------------------------------------------
@@ -177,12 +180,14 @@ export class GolfGame extends XState {
     public loadTerrain (__path:string):void {
         this.loader = new PIXI.Loader ();
 
-        this.m_loadComplete = false;
+        this.m_loadTerrainComplete = false;
 
 		console.log (": loadTerrain: begin: ");
 
-        this.loader.add(__path).load ((loader, resources) => {
-            this.m_loadComplete = true;
+		__path = this.translateAlias (__path);
+
+        this.loader.add (__path).load ((loader, resources) => {
+            this.m_loadTerrainComplete = true;
 
             var __response:string = resources[__path].xhr.response;
 
@@ -199,12 +204,14 @@ export class GolfGame extends XState {
     public loadLayers (__path:string):void {
         this.loader = new PIXI.Loader ();
 
-        this.m_loadComplete = false;
+        this.m_loadLayersComplete = false;
 
 		console.log (": loadLayers: begin: ");
 
-        this.loader.add(__path).load ((loader, resources) => {
-            this.m_loadComplete = true;
+		__path = this.translateAlias (__path);
+
+        this.loader.add (__path).load ((loader, resources) => {
+            this.m_loadLayersComplete = true;
 
             var __response:string = resources[__path].xhr.response;
 

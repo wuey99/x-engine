@@ -30,6 +30,10 @@ export class ForceVector extends XGameObject {
     public m_updateSignal:XSignal;
     public m_firedSignal:XSignal;
 
+    public m_mouseMoveHandle:any;
+    public m_mouseUpHandle:any;
+    public m_mouseOutHandle:any;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -58,9 +62,9 @@ export class ForceVector extends XGameObject {
         this.m_bottomArrow = this.addGameObjectAsChild (ForceVectorArrow, 0, 0.0) as ForceVectorArrow;
         this.m_bottomArrow.afterSetup (["BottomArrow"]);
 
-        this.m_XApp.getStage ().on ("mousemove", this.onMouseMove.bind (this));
-        this.m_XApp.getStage ().on ("mouseup", this.onMouseUp.bind (this));
-        this.m_XApp.getStage ().on ("mouseout", this.onMouseOut.bind (this));
+        this.m_mouseMoveHandle = this.addStageEventListener ("mousemove", this.onMouseMove.bind (this));
+        this.m_mouseUpHandle = this.addStageEventListener ("mouseup", this.onMouseUp.bind (this));
+        this.m_mouseOutHandle = this.addStageEventListener ("mouseout", this.onMouseOut.bind (this));
 
         this.m_updateSignal = this.createXSignal ();
         this.m_firedSignal = this.createXSignal ();
@@ -85,9 +89,9 @@ export class ForceVector extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public onMouseUp (e:PIXI.InteractionEvent) {
-        this.m_XApp.getStage ().off ("mousemove", this.onMouseUp);
-        this.m_XApp.getStage ().off ("mouseup", this.onMouseUp);
-        this.m_XApp.getStage ().off ("mouseout", this.onMouseUp);
+        this.removeStageEventListener (this.m_mouseMoveHandle);
+        this.removeStageEventListener (this.m_mouseUpHandle);
+        this.removeStageEventListener (this.m_mouseOutHandle);
 
         console.log (": ForceVector: mouseUp: ");
 
@@ -113,8 +117,9 @@ export class ForceVector extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public onMouseOut (e:PIXI.InteractionEvent) {
-        this.m_XApp.getStage ().off ("mouseup", this.onMouseUp);
-        this.m_XApp.getStage ().off ("mouseout", this.onMouseUp);
+        this.removeStageEventListener (this.m_mouseMoveHandle);
+        this.removeStageEventListener (this.m_mouseUpHandle);
+        this.removeStageEventListener (this.m_mouseOutHandle);
 
         console.log (": ForceVector: mouseOut: ");
 

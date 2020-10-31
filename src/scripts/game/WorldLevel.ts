@@ -32,8 +32,8 @@ export class WorldLevel extends GolfGame {
 		this.m_worldName = __params[0];
         this.m_terrain = __params[1];
         
-        this.loadLayers ("levels\\" + this.m_worldName + "_Layers.xml");
-        this.loadTerrain ("levels\\Terrain" + this.m_terrain + ".xml");
+        this.loadLayers ("levels/" + this.m_worldName + "_Layers.xml");
+        this.loadTerrain ("levels/Terrain" + this.m_terrain + ".xml");
     }
 
 //------------------------------------------------------------------------------------------

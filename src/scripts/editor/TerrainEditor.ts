@@ -51,6 +51,9 @@ export class TerrainEditor extends XState {
     public m_layerPos:PIXI.Point;
 
     // html forms
+    public m_loadInput:any;
+    public m_saveLink:any;
+
     public m_worldForm:any;
     public m_reloadWorldButton:any;
 
@@ -71,9 +74,6 @@ export class TerrainEditor extends XState {
 
     public m_keyDownHandler:any;
     public m_keyUpHandler:any;
-    public m_mouseDownHandler:any;
-    public m_mouseMoveHandler:any;
-    public m_mouseUpHandler:any;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -110,6 +110,16 @@ export class TerrainEditor extends XState {
 
 //------------------------------------------------------------------------------------------
     public createForms ():void {
+        // var __loadSave:HTMLElement = document.createElement ("div");
+        // __loadSave.append ('<input class="inputFile" type="file" style="display: none;"/>');
+        // __loadSave.append ('<a href="#" download="data.csv" class="btnSave" style="display: none;">Save</a>	');
+
+        this.m_loadInput = document.createElement ("input");
+        this.m_loadInput.type = "file";
+ 
+        this.m_saveLink = document.createElement ("a");
+        this.m_saveLink.setAttribute ("href", "#");
+        
         this.m_worldForm = document.createElement ("input");
         this.m_worldForm.id = "__world";
         this.m_worldForm.value = "Earth";
@@ -225,11 +235,10 @@ export class TerrainEditor extends XState {
         this.m_loadTerrainButton.addEventListener ("click", ()=> {
             console.log (": load: ");	
 
-            (document.querySelector('.inputFile') as any).click();	
-            var input:any = document.querySelector('.inputFile');
-            input.onchange = () => {
-                console.log(": changed: ", this, input.files[0]);
-                this.readTerrainFile(input);
+            this.m_loadInput.click();	
+            this.m_loadInput.onchange = () => {
+                console.log(": changed: ", this, this.m_loadInput.files[0]);
+                this.readTerrainFile(this.m_loadInput);
             };
         });
     }
@@ -252,12 +261,11 @@ export class TerrainEditor extends XState {
 
                 console.log (": xml: ", __xml.toXMLString ());
 
-                var save:any = document.querySelector('.btnSave');
-                console.log(": ", save.download);
+                console.log(": ", this.m_saveLink.download);
                 var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(__xml.toXMLString ());
-                save.href = data;
-                save.download = "terrain_" + this.m_terrainNameForm.value + ".xml";
-                (document.querySelector('.btnSave') as any).click();
+                this.m_saveLink.href = data;
+                this.m_saveLink.download = "terrain_" + this.m_terrainNameForm.value + ".xml";
+                this.m_saveLink.click();
             }
         });
     }
@@ -376,9 +384,10 @@ export class TerrainEditor extends XState {
 
         document.addEventListener ('keydown', this.m_keyDownHandler = this.keyDownHandler.bind (this));
         document.addEventListener ('keyup', this.m_keyUpHandler = this.keyUpHandler.bind (this));
-        this.m_XApp.getStage ().on ("mousedown", this.m_mouseDownHandler = this.mouseDownHandler.bind (this));
-        this.m_XApp.getStage ().on ("mousemove", this.m_mouseMoveHandler = this.mouseMoveHandler.bind (this));
-        this.m_XApp.getStage ().on ("mouseup", this.m_mouseUpHandler = this.mouseUpHandler.bind (this));
+
+        this.addStageEventListener ("mousedown", this.mouseDownHandler.bind (this));
+        this.addStageEventListener ("mousemove", this.mouseMoveHandler.bind (this));
+        this.addStageEventListener ("mouseup", this.mouseUpHandler.bind (this));
 	}
 	
 //------------------------------------------------------------------------------------------
@@ -387,9 +396,6 @@ export class TerrainEditor extends XState {
 
         document.removeEventListener ('keydown', this.m_keyDownHandler);
         document.removeEventListener ('keyup', this.m_keyUpHandler);
-        this.m_XApp.getStage ().off ("mousedown", this.m_mouseDownHandler);
-        this.m_XApp.getStage ().off ("mousemove", this.m_mouseMoveHandler);
-        this.m_XApp.getStage ().off ("mouseup", this.m_mouseUpHandler);
 	}
 
 //------------------------------------------------------------------------------------------

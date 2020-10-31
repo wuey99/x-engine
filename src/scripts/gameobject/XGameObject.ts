@@ -59,6 +59,8 @@ export class XGameObject extends PIXI.Sprite {
 	public m_mousePoint:XPoint;
 
 	public static g_XApp:XApp;
+
+	public m_stageEvents:Map<any, string>;
 	
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -115,6 +117,8 @@ export class XGameObject extends PIXI.Sprite {
 
 		this.m_mousePoint = new XPoint ();
 
+		this.m_stageEvents = new Map<any, string> ();
+
 		return this;
 	}
 	
@@ -138,6 +142,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.removeAllXSignals ();
 		this.removeAllAnimatedSprites ();
 		this.removeAllSprites ();
+		this.removeAllStageEvents ();
 		
 		if (this.getParentObject () != null) { 
 			this.getParentObject ().removeSelfObject0 (this);
@@ -242,6 +247,33 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
+	public addStageEventListener (__eventName:string, __listener:any):any {
+		this.m_XApp.getStage ().on (__eventName, __listener);
+
+		this.m_stageEvents.set (__listener, __eventName);
+
+		return __listener;
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeStageEventListener (__listener:any):any {
+		var __eventName:string = this.m_stageEvents.get (__listener);
+
+		this.m_XApp.getStage ().off (__eventName, __listener);
+
+		this.m_stageEvents.delete (__listener);
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeAllStageEvents ():void {
+		XType.forEach (this.m_stageEvents,
+			(__listener:any) => {
+				this.removeStageEventListener (__listener);				
+			}
+		);
+	}
+
+//------------------------------------------------------------------------------------------
 	public static setXApp (__XApp:XApp):void {
 		XGameObject.g_XApp = __XApp;
 	}
@@ -320,6 +352,8 @@ export class XGameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public createAnimatedSprite (__name:string):PIXI.AnimatedSprite {	
+		console.log (": XGameObject: createAnimatedSprite: ", __name);
+		
 		var sheet:PIXI.Spritesheet = world.getResourceByName (__name);
 
 		var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (sheet.animations["root"]);
@@ -428,6 +462,11 @@ export class XGameObject extends PIXI.Sprite {
 		}
 
 		return __point;
+	}
+
+//------------------------------------------------------------------------------------------
+	public translateAlias (__path:string):string {
+		return this.m_XApp.getXProjectManager ().translateAlias (__path);
 	}
 
 //------------------------------------------------------------------------------------------

@@ -31,6 +31,8 @@ export class XProjectManager {
 
         this.m_loadComplete = false;
 
+        __manifestPath = this.translateAlias (__manifestPath);
+
         this.loader.add(__manifestPath).load ((loader, resources) => {
             this.m_loadComplete = true;
 
@@ -41,10 +43,23 @@ export class XProjectManager {
             this.m_manifest = new XSimpleXMLNode ();
             this.m_manifest.setupWithXMLString (__response);
 
-            this.parseResources (0, this.m_manifest);  
+            var __resources:Array<ResourceSpec> =  new Array<ResourceSpec> ();
+
+            this.parseResources (0, this.m_manifest, __resources);  
+
+            this.loadResources (__resources);
         });
     }
     
+    //------------------------------------------------------------------------------------------
+    public setup0 (__manifestPath:string, __aliases:any):void {
+        this.m_aliases = __aliases;
+
+        this.loader = new PIXI.Loader ();
+
+        this.m_loadComplete = false;
+    }
+
     //------------------------------------------------------------------------------------------
     public cleanup ():void {
     }
@@ -55,14 +70,28 @@ export class XProjectManager {
     }
 
     //------------------------------------------------------------------------------------------
-    public parseResources (__depth:number, __xml:XSimpleXMLNode):void {
+    public translateAlias (__path:string):string {
+        var __alias:string;
+        var __aliases:any = this.getAliases ();
+
+        for (__alias in __aliases) {
+            if (__path.startsWith (__alias + "/")) {
+                __path = __path.replace (__alias + "/", __aliases[__alias] + "/");
+
+                return __path;
+            }
+        }
+
+        return __path;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public parseResources (__depth:number, __xml:XSimpleXMLNode, __resources:Array<ResourceSpec>):void {
         var __tabs:Array<String> = ["", "...", "......", ".........", "............", "...............", "...................."];
 
         var __children:Array<XSimpleXMLNode> = __xml.child ("*");
 
         var i:number;
-
-        var __resources:Array<ResourceSpec> =  new Array<ResourceSpec> ();
 
         for (i = 0; i < __children.length; i++) {
             var __xml:XSimpleXMLNode = __children[i];
@@ -70,7 +99,7 @@ export class XProjectManager {
             console.log (": ", __tabs[__depth], __xml.localName (), __xml.attribute ("name"));
 
             if (__xml.localName () == "folder") {
-                this.parseResources (__depth + 1, __xml);
+                this.parseResources (__depth + 1, __xml, __resources);
             }
 
             if (__xml.localName () == "resource") {
@@ -87,8 +116,6 @@ export class XProjectManager {
                 }
             }
         }
-
-        this.loadResources (__resources);
     }
 
     //------------------------------------------------------------------------------------------
@@ -112,7 +139,7 @@ export class XProjectManager {
     }
 
     //------------------------------------------------------------------------------------------
-    public loadResources (__resourceList:Array<ResourceSpec>):void {
+    public loadResources (__resourceList:Array<ResourceSpec>):void {   
         this.m_resourceManager.loadResources (__resourceList);
     }
 

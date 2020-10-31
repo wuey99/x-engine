@@ -247,7 +247,11 @@ export class TerrainContainer extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public deserialize (__root:XSimpleXMLNode) {
+        console.log (": TerrainContainer: deserialize: 1: ");
+
         this.m_levelName = __root.getAttributeString ("name");
+
+        console.log (": TerrainContainer: deserialize: 2: ");
 
         var __ballXML:XSimpleXMLNode = __root.child ("ball")[0];
         var __arrowXML:XSimpleXMLNode = __root.child ("arrow")[0];

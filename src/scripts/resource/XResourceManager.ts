@@ -80,34 +80,20 @@ export class XResourceManager {
     public loadResources (__resourceList:Array<ResourceSpec>):void {
         var __resourceSpec:ResourceSpec;
 
+        console.log (": resourceList: ", __resourceList);
+
         for (__resourceSpec of __resourceList) {
             if (this.m_resourceMap.get (__resourceSpec.name) == null) {
                 var __resource:Resource;
 
                 __resource = XType.createInstance (this.m_typeMap.get (__resourceSpec.type));
-                __resource.setup (this.translateAliases (__resourceSpec.path));
+                __resource.setup (this.m_projectManager.translateAlias (__resourceSpec.path));
 
                 this.m_queue.push (__resource);
 
                 this.m_resourceMap.set (__resourceSpec.name, __resource);
             }
         }
-    }
-
-    //------------------------------------------------------------------------------------------
-    public translateAliases (__path:string):string {
-        var __alias:string;
-        var __aliases:any = this.m_projectManager.getAliases ();
-
-        for (__alias in __aliases) {
-            if (__path.startsWith (__alias + "/")) {
-                __path = __path.replace (__alias + "/", __aliases[__alias] + "/");
-
-                return __path;
-            }
-        }
-
-        return __path;
     }
 
     //------------------------------------------------------------------------------------------
