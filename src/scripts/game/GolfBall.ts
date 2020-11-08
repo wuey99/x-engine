@@ -13,14 +13,25 @@ import { XWorld} from '../../engine/sprite/XWorld';
 import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
-import { EnemyX } from '../objects/EnemyX';
+import { EnemyX } from '../test/EnemyX';
 import { TerrainContainer } from '../terrain/TerrainContainer';
 import * as Matter from 'matter-js';
+import { Reticle } from './Reticle';
+import { GolfGame } from '../game/GolfGame';
+import { GolfGameInstance } from '../game/GolfGameInstance';
+import { G } from '../../engine/app/G';
+import { BallFire } from './BallFire';
 
 //------------------------------------------------------------------------------------------
 export class GolfBall extends XGameObject {
-    public m_sprite:PIXI.Sprite;
+    public m_sprite:PIXI.AnimatedSprite;
     public x_sprite:XDepthSprite;
+
+	public m_reticle:Reticle;
+	public m_ballFire:BallFire;
+
+	public m_ballInHoleSignal:XSignal;
+	public m_ballOutrgSignal:XSignal;
 
 	public m_terrainContainer:TerrainContainer;
 	public m_worldName:string;
@@ -28,6 +39,15 @@ export class GolfBall extends XGameObject {
 	public m_mouseDownFlag:boolean;
 
     public script:XTask;
+
+	public m_ballInHole:boolean;
+	public m_ballOutrg:boolean;
+
+	public m_baseX:number;
+	public m_baseY:number;
+
+	public m_ballAngle:number;
+	public m_ballSpeed:number;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -45,13 +65,27 @@ export class GolfBall extends XGameObject {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
+		this.setCX (-20, +20, -20, +20);
+
 		this.m_terrainContainer = __params[0];
 		this.m_worldName = __params[1];
 		var __selfShooting:boolean = __params[2];
+		this.m_baseX = __params[3];
+		this.m_baseY = __params[4];
+
+		this.m_ballInHoleSignal = this.createXSignal ();
+		this.m_ballInHole = false;
+
+		this.m_ballOutrgSignal = this.createXSignal ();
+		this.m_ballOutrg = false;
 
 		this.m_mouseDownFlag = false;
 
-        this.createSprites ();
+		this.m_ballAngle = 0.0;
+		this.m_ballSpeed = 0.0;
+
+		this.createSprites ();
+		this.createObjects ();
 
 		if (__selfShooting) {
 			this.createInputHandlers ();
@@ -61,6 +95,20 @@ export class GolfBall extends XGameObject {
 
         this.Idle_Script ();
 
+		this.checkCollisions ();
+		
+        this.addTask ([
+            XTask.LABEL, "loop",
+                XTask.WAIT, 0x0100,
+
+                () => {
+                    this.m_ballFire.angle = this.m_ballAngle;
+                },
+
+                XTask.GOTO, "loop",
+            XTask.RETN,
+		]);
+		
 		return this;
 	}
 	
@@ -71,10 +119,119 @@ export class GolfBall extends XGameObject {
 	
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-        this.m_sprite = this.createSprite (this.m_worldName + "_Sprites_Ball");
-        this.addSpriteAsChild (this.m_sprite, -44/2, -44/2, 0, 999999.0, false);
+		// this.m_sprite = this.createSprite (this.m_worldName + "_Sprites_Ball");
+		// this.addSpriteAsChild (this.m_sprite, -44/2, -44/2, 0, GolfGame.PLAYFIELD_FRONT_DEPTH, false);
+
+		this.m_sprite = this.createAnimatedSprite ("GolfBall");
+		this.addSortableChild (this.m_sprite, 0, GolfGame.PLAYFIELD_FRONT_DEPTH, false);
 
 		this.show ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public createObjects ():void {
+		this.createReticle ();
+
+		this.m_ballFire = this.addGameObjectAsChild (BallFire, this.getLayer (), this.getDepth () - 1.0) as BallFire;
+		this.m_ballFire.afterSetup ([this]);
+	}
+	
+//------------------------------------------------------------------------------------------
+	public createReticle ():void {
+		this.m_reticle = this.addGameObjectAsChild (Reticle, this.getLayer (), this.getDepth ()) as Reticle;
+		this.m_reticle.afterSetup ([]);
+
+		this.m_reticle.addKillListener (() => {
+			this.m_reticle = null;
+		});
+	}
+
+//-----------------------------------------------------------------------------------------
+	public removeReticle ():void {
+		if (this.m_reticle != null) {
+			this.m_reticle.nukeLater ();
+		}
+	}
+	
+//------------------------------------------------------------------------------------------
+	public checkCollisions ():void {
+		this.addTask ([
+			XTask.LABEL, "loop",
+				XTask.WAIT, 0x0100,
+
+				() => {
+					var __gameObject:XGameObject
+					
+					__gameObject = (G.appX as GolfGameInstance).getHoleCollisionList ().findCollision (
+						this.getLayer (), this.getPos (), this.getCX ()
+					);
+
+					if (!this.m_ballInHole && __gameObject != null) {
+						this.m_ballInHoleSignal.fireSignal ();
+
+						this.m_ballInHole = true;
+					}
+
+					__gameObject = (G.appX as GolfGameInstance).getBorderCollisionList ().findCollision (
+						this.getLayer (), this.getPos (), this.getCX ()
+					);
+
+					if (__gameObject != null) {
+						console.log (": border collision: ", __gameObject);
+
+						this.m_ballOutrgSignal.fireSignal ();
+					}
+				},
+
+				XTask.GOTO, "loop",
+
+			XTask.RETN,
+		]);
+	}
+
+//--------------------------------------------------------------------------------------
+	public setAngle (__angle:number):void {
+		this.m_ballAngle = __angle;
+	}
+
+//--------------------------------------------------------------------------------------
+	public getAngle ():number {
+		return this.m_ballAngle;
+	}
+
+//--------------------------------------------------------------------------------------
+	public setSpeed (__speed:number):void {
+		this.m_ballSpeed = __speed;
+	}
+
+//--------------------------------------------------------------------------------------
+	public getSpeed ():number {
+		return this.m_ballSpeed;
+	}
+
+//------------------------------------------------------------------------------------------
+	public addBallInHoleListener (__listener:any):number {
+		return this.m_ballInHoleSignal.addListener (__listener);
+	}
+
+//------------------------------------------------------------------------------------------
+	public addBallOutrgListener (__listener:any):number {
+		return this.m_ballOutrgSignal.addListener (__listener);
+	}
+
+//------------------------------------------------------------------------------------------
+	public isBallInHole ():boolean {
+		return this.m_ballInHole;
+	}
+
+//------------------------------------------------------------------------------------------
+	public isBallOutrg ():boolean {
+		return this.m_ballOutrg;
+	}
+
+//------------------------------------------------------------------------------------------
+	public isBallOutOfView ():boolean {
+		return false;
 	}
 
 //------------------------------------------------------------------------------------------
@@ -163,6 +320,12 @@ export class GolfBall extends XGameObject {
 				y: __dy,	
 			}
 		);
+
+		this.world.getSoundSubManager ().playSoundFromName ("Common_Sound_BallLaunched",
+			1.0, 0, 1.0
+		);
+
+		this.m_ballFire.OnFire_Script ();
 	}
 
 	//------------------------------------------------------------------------------------------
@@ -191,6 +354,58 @@ export class GolfBall extends XGameObject {
                 XTask.WAIT, 0x0100,
 					
 				XTask.GOTO, "loop",
+				
+			XTask.RETN,
+				
+			//------------------------------------------------------------------------------------------			
+		]);
+			
+	//------------------------------------------------------------------------------------------
+	}
+	
+	//------------------------------------------------------------------------------------------
+	public Flash_Script (__finishedCallback:any):void {
+
+		this.script.gotoTask ([
+				
+			//------------------------------------------------------------------------------------------
+			// control
+			//------------------------------------------------------------------------------------------
+			() => {
+				this.script.addTask ([
+					XTask.LABEL, "loop",
+						XTask.WAIT, 0x0100,
+						
+					    XTask.GOTO, "loop",
+						
+					XTask.RETN,
+				]);	
+			},
+				
+			//------------------------------------------------------------------------------------------
+			// animation
+			//------------------------------------------------------------------------------------------	
+			XTask.LABEL, "loop",
+				XTask.LOOP, 12,
+					() => {
+						this.m_sprite.gotoAndStop (0);
+					}, XTask.WAIT, 0x0200,
+
+					() => {
+						this.m_sprite.gotoAndStop (1);
+					}, XTask.WAIT, 0x0200,
+				XTask.NEXT,
+
+				() => {
+					this.visible = false;
+
+					__finishedCallback ();
+				},
+
+			XTask.LABEL, "wait",
+				XTask.WAIT, 0x0100,
+
+				XTask.GOTO, "wait",
 				
 			XTask.RETN,
 				

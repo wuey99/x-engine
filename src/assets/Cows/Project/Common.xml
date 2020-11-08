@@ -70,17 +70,23 @@
         </resource>
       </folder>
       <folder name="GolfBall">
-        <resource name="@GolfBall" type=".pmp" embed="false" path="Common" src="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.pmp" dst="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.pmp" pmp_width="512" originX="241" originY="241" width="29" totalWidth="29" height="29" regX="-15" regY="-15"/>
+        <resource name="@GolfBall" type=".pmp" embed="false" path="Common" src="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.pmp" dst="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.pmp" pmp_width="512" originX="235" originY="235" width="41" totalWidth="287" height="41" regX="-21" regY="-21"/>
         <resource name="png_GolfBall" type=".png" embed="false" path="Common" src="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.png" dst="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.png"/>
         <resource name="$GolfBall" type=".json" embed="false" path="Common" src="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.json" dst="4F041405-1533-D080-F3A8-47DFECAC6B60-GolfBall.json"/>
         <resource name="GolfBall" type=".fla" embed="false" path="Common" src="0027E12D-56D9-E68D-52C6-A78733726AFB-GolfBall.fla" dst="0027E12D-56D9-E68D-52C6-A78733726AFB-GolfBall.swf">
           <classX name="GolfBall" regX="0" regY="0" width="32" height="32"/>
         </resource>
-        <resource name="@Reticle" type=".pmp" embed="false" path="Common" src="6089D1F0-D507-364D-40B3-0C2A2F083C15-Reticle.pmp" dst="6089D1F0-D507-364D-40B3-0C2A2F083C15-Reticle.pmp" pmp_width="512" originX="140" originY="140" width="231" totalWidth="231" height="231" regX="-116" regY="-116"/>
-        <resource name="png_Reticle" type=".png" embed="false" path="Common" src="6089D1F0-D507-364D-40B3-0C2A2F083C15-Reticle.png" dst="6089D1F0-D507-364D-40B3-0C2A2F083C15-Reticle.png"/>
-        <resource name="$Reticle" type=".json" embed="false" path="Common" src="6089D1F0-D507-364D-40B3-0C2A2F083C15-Reticle.json" dst="6089D1F0-D507-364D-40B3-0C2A2F083C15-Reticle.json"/>
-        <resource name="Reticle" type=".fla" embed="false" path="Common" src="A821F47D-E9F6-BFF1-4115-BB4AB0730F4D-Reticle.fla" dst="A821F47D-E9F6-BFF1-4115-BB4AB0730F4D-Reticle.swf">
+        <resource name="@Reticle" type=".pmp" embed="false" path="Common" src="19F51B46-F7C1-0F5B-BD46-87D9FB7DFB51-Reticle.pmp" dst="19F51B46-F7C1-0F5B-BD46-87D9FB7DFB51-Reticle.pmp" pmp_width="1024" originX="304" originY="313" width="408" totalWidth="408" height="408" regX="-206" regY="-206"/>
+        <resource name="png_Reticle" type=".png" embed="false" path="Common" src="19F51B46-F7C1-0F5B-BD46-87D9FB7DFB51-Reticle.png" dst="19F51B46-F7C1-0F5B-BD46-87D9FB7DFB51-Reticle.png"/>
+        <resource name="$Reticle" type=".json" embed="false" path="Common" src="19F51B46-F7C1-0F5B-BD46-87D9FB7DFB51-Reticle.json" dst="19F51B46-F7C1-0F5B-BD46-87D9FB7DFB51-Reticle.json"/>
+        <resource name="Reticle" type=".fla" embed="false" path="Common" src="0CC53ED5-B7A2-8E35-BE88-62CFA8157B3A-Reticle.fla" dst="0CC53ED5-B7A2-8E35-BE88-62CFA8157B3A-Reticle.swf">
           <classX name="Reticle" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+        <resource name="@BallExplosion" type=".pmp" embed="false" path="Common" src="BEED5E51-269A-8389-28D7-595F17D73BF5-BallExplosion.pmp" dst="BEED5E51-269A-8389-28D7-595F17D73BF5-BallExplosion.pmp" pmp_width="512" originX="0" originY="0" width="512" totalWidth="512" height="512" regX="-256" regY="-256"/>
+        <resource name="png_BallExplosion" type=".png" embed="false" path="Common" src="BEED5E51-269A-8389-28D7-595F17D73BF5-BallExplosion.png" dst="BEED5E51-269A-8389-28D7-595F17D73BF5-BallExplosion.png"/>
+        <resource name="$BallExplosion" type=".json" embed="false" path="Common" src="BEED5E51-269A-8389-28D7-595F17D73BF5-BallExplosion.json" dst="BEED5E51-269A-8389-28D7-595F17D73BF5-BallExplosion.json"/>
+        <resource name="BallExplosion" type=".fla" embed="false" path="Common" src="DB0B961A-2BCF-7827-D0B8-1F1550322248-BallExplosion.fla" dst="DB0B961A-2BCF-7827-D0B8-1F1550322248-BallExplosion.swf">
+          <classX name="BallExplosion" regX="0" regY="0" width="32" height="32"/>
         </resource>
       </folder>
       <folder name="Worlds">
@@ -112,7 +118,32 @@
             </resource>
           </folder>
           <folder name="Layers"/>
-          <folder name="Sprites"/>
+          <folder name="Sprites">
+            <resource name="@Earth_Sprites_Spaceship001" type=".pmp" embed="false" path="Common" src="EF1E1ABC-5EB6-3180-91E4-6D18108E6B16-Earth_Sprites_Spaceship001.pmp" dst="EF1E1ABC-5EB6-3180-91E4-6D18108E6B16-Earth_Sprites_Spaceship001.pmp" pmp_width="512" originX="122" originY="213" width="264" totalWidth="264" height="97" regX="-166" regY="-56"/>
+            <resource name="png_Earth_Sprites_Spaceship001" type=".png" embed="false" path="Common" src="EF1E1ABC-5EB6-3180-91E4-6D18108E6B16-Earth_Sprites_Spaceship001.png" dst="EF1E1ABC-5EB6-3180-91E4-6D18108E6B16-Earth_Sprites_Spaceship001.png"/>
+            <resource name="$Earth_Sprites_Spaceship001" type=".json" embed="false" path="Common" src="EF1E1ABC-5EB6-3180-91E4-6D18108E6B16-Earth_Sprites_Spaceship001.json" dst="EF1E1ABC-5EB6-3180-91E4-6D18108E6B16-Earth_Sprites_Spaceship001.json"/>
+            <resource name="Earth_Sprites_Spaceship001" type=".fla" embed="false" path="Common" src="607884F6-D4EE-DBD5-679D-9F7CC3938BF2-Earth_Sprites_Spaceship001.fla" dst="607884F6-D4EE-DBD5-679D-9F7CC3938BF2-Earth_Sprites_Spaceship001.swf">
+              <classX name="Earth_Sprites_Spaceship001" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+            <resource name="@Earth_Sprites_Spaceship002" type=".pmp" embed="false" path="Common" src="B88550A9-3CA4-9275-2BC5-453DE7ED9501-Earth_Sprites_Spaceship002.pmp" dst="B88550A9-3CA4-9275-2BC5-453DE7ED9501-Earth_Sprites_Spaceship002.pmp" pmp_width="512" originX="150" originY="193" width="204" totalWidth="204" height="90" regX="-110" regY="-60"/>
+            <resource name="png_Earth_Sprites_Spaceship002" type=".png" embed="false" path="Common" src="B88550A9-3CA4-9275-2BC5-453DE7ED9501-Earth_Sprites_Spaceship002.png" dst="B88550A9-3CA4-9275-2BC5-453DE7ED9501-Earth_Sprites_Spaceship002.png"/>
+            <resource name="$Earth_Sprites_Spaceship002" type=".json" embed="false" path="Common" src="B88550A9-3CA4-9275-2BC5-453DE7ED9501-Earth_Sprites_Spaceship002.json" dst="B88550A9-3CA4-9275-2BC5-453DE7ED9501-Earth_Sprites_Spaceship002.json"/>
+            <resource name="Earth_Sprites_Spaceship002" type=".fla" embed="false" path="Common" src="5D3726C2-DE02-2FE5-9257-2A22B3678866-Earth_Sprites_Spaceship002.fla" dst="5D3726C2-DE02-2FE5-9257-2A22B3678866-Earth_Sprites_Spaceship002.swf">
+              <classX name="Earth_Sprites_Spaceship002" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+            <resource name="@Earth_Sprites_Spaceship003" type=".pmp" embed="false" path="Common" src="A46AFB59-E083-135C-FC71-F64CD0550B19-Earth_Sprites_Spaceship003.pmp" dst="A46AFB59-E083-135C-FC71-F64CD0550B19-Earth_Sprites_Spaceship003.pmp" pmp_width="512" originX="158" originY="122" width="166" totalWidth="166" height="60" regX="-100" regY="-34"/>
+            <resource name="png_Earth_Sprites_Spaceship003" type=".png" embed="false" path="Common" src="A46AFB59-E083-135C-FC71-F64CD0550B19-Earth_Sprites_Spaceship003.png" dst="A46AFB59-E083-135C-FC71-F64CD0550B19-Earth_Sprites_Spaceship003.png"/>
+            <resource name="$Earth_Sprites_Spaceship003" type=".json" embed="false" path="Common" src="A46AFB59-E083-135C-FC71-F64CD0550B19-Earth_Sprites_Spaceship003.json" dst="A46AFB59-E083-135C-FC71-F64CD0550B19-Earth_Sprites_Spaceship003.json"/>
+            <resource name="Earth_Sprites_Spaceship003" type=".fla" embed="false" path="Common" src="9C271092-9630-445D-F92E-889F42A92204-Earth_Sprites_Spaceship003.fla" dst="9C271092-9630-445D-F92E-889F42A92204-Earth_Sprites_Spaceship003.swf">
+              <classX name="Earth_Sprites_Spaceship003" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+            <resource name="@Earth_Sprites_Spaceship004" type=".pmp" embed="false" path="Common" src="0A451B5D-6D16-AD00-3F08-8C1451593A4E-Earth_Sprites_Spaceship004.pmp" dst="0A451B5D-6D16-AD00-3F08-8C1451593A4E-Earth_Sprites_Spaceship004.pmp" pmp_width="512" originX="172" originY="198" width="174" totalWidth="174" height="77" regX="-96" regY="-50"/>
+            <resource name="png_Earth_Sprites_Spaceship004" type=".png" embed="false" path="Common" src="0A451B5D-6D16-AD00-3F08-8C1451593A4E-Earth_Sprites_Spaceship004.png" dst="0A451B5D-6D16-AD00-3F08-8C1451593A4E-Earth_Sprites_Spaceship004.png"/>
+            <resource name="$Earth_Sprites_Spaceship004" type=".json" embed="false" path="Common" src="0A451B5D-6D16-AD00-3F08-8C1451593A4E-Earth_Sprites_Spaceship004.json" dst="0A451B5D-6D16-AD00-3F08-8C1451593A4E-Earth_Sprites_Spaceship004.json"/>
+            <resource name="Earth_Sprites_Spaceship004" type=".fla" embed="false" path="Common" src="D6F7B875-F473-A974-FB9A-51539CD39C88-Earth_Sprites_Spaceship004.fla" dst="D6F7B875-F473-A974-FB9A-51539CD39C88-Earth_Sprites_Spaceship004.swf">
+              <classX name="Earth_Sprites_Spaceship004" regX="0" regY="0" width="32" height="32"/>
+            </resource>
+          </folder>
         </folder>
         <folder name="Mars">
           <folder name="Terrain">
@@ -254,6 +285,30 @@
           <resource name="$HoleMarker" type=".json" embed="false" path="Common" src="D9AAB2D7-C140-55F5-4F12-30967B5EED3B-HoleMarker.json" dst="D9AAB2D7-C140-55F5-4F12-30967B5EED3B-HoleMarker.json"/>
           <resource name="HoleMarker" type=".fla" embed="false" path="Common" src="2D25B2DE-8E0A-A6FC-39E2-6ACFEF117237-HoleMarker.fla" dst="2D25B2DE-8E0A-A6FC-39E2-6ACFEF117237-HoleMarker.swf">
             <classX name="HoleMarker" regX="0" regY="0" width="32" height="32"/>
+          </resource>
+          <resource name="@RangeBorder" type=".pmp" embed="false" path="Common" src="6822BDA9-5814-5B0B-2204-6D3F7EEE5CBA-RangeBorder.pmp" dst="6822BDA9-5814-5B0B-2204-6D3F7EEE5CBA-RangeBorder.pmp" pmp_width="512" originX="252" originY="0" width="17" totalWidth="17" height="512" regX="-4" regY="-511"/>
+          <resource name="png_RangeBorder" type=".png" embed="false" path="Common" src="6822BDA9-5814-5B0B-2204-6D3F7EEE5CBA-RangeBorder.png" dst="6822BDA9-5814-5B0B-2204-6D3F7EEE5CBA-RangeBorder.png"/>
+          <resource name="$RangeBorder" type=".json" embed="false" path="Common" src="6822BDA9-5814-5B0B-2204-6D3F7EEE5CBA-RangeBorder.json" dst="6822BDA9-5814-5B0B-2204-6D3F7EEE5CBA-RangeBorder.json"/>
+          <resource name="RangeBorder" type=".fla" embed="false" path="Common" src="A5A3929B-3A6A-7E5F-B406-D83700B06C5E-RangeBorder.fla" dst="A5A3929B-3A6A-7E5F-B406-D83700B06C5E-RangeBorder.swf">
+            <classX name="RangeBorder" regX="0" regY="0" width="32" height="32"/>
+          </resource>
+          <resource name="@BallFire" type=".pmp" embed="false" path="Common" src="EC3BBA6A-4BC8-9F80-CFE3-83AA52D7CD0D-BallFire.pmp" dst="EC3BBA6A-4BC8-9F80-CFE3-83AA52D7CD0D-BallFire.pmp" pmp_width="512" originX="238" originY="72" width="56" totalWidth="56" height="375" regX="-28" regY="-33"/>
+          <resource name="png_BallFire" type=".png" embed="false" path="Common" src="EC3BBA6A-4BC8-9F80-CFE3-83AA52D7CD0D-BallFire.png" dst="EC3BBA6A-4BC8-9F80-CFE3-83AA52D7CD0D-BallFire.png"/>
+          <resource name="$BallFire" type=".json" embed="false" path="Common" src="EC3BBA6A-4BC8-9F80-CFE3-83AA52D7CD0D-BallFire.json" dst="EC3BBA6A-4BC8-9F80-CFE3-83AA52D7CD0D-BallFire.json"/>
+          <resource name="BallFire" type=".fla" embed="false" path="Common" src="DB1C1D1D-635A-65C0-1990-752C4EC544F0-BallFire.fla" dst="DB1C1D1D-635A-65C0-1990-752C4EC544F0-BallFire.swf">
+            <classX name="BallFire" regX="0" regY="0" width="32" height="32"/>
+          </resource>
+          <resource name="@BallFireInner" type=".pmp" embed="false" path="Common" src="AA45C071-486A-B791-556D-7ADF66F94B38-BallFireInner.pmp" dst="AA45C071-486A-B791-556D-7ADF66F94B38-BallFireInner.pmp" pmp_width="512" originX="235" originY="184" width="45" totalWidth="45" height="116" regX="-23" regY="-20"/>
+          <resource name="png_BallFireInner" type=".png" embed="false" path="Common" src="AA45C071-486A-B791-556D-7ADF66F94B38-BallFireInner.png" dst="AA45C071-486A-B791-556D-7ADF66F94B38-BallFireInner.png"/>
+          <resource name="$BallFireInner" type=".json" embed="false" path="Common" src="AA45C071-486A-B791-556D-7ADF66F94B38-BallFireInner.json" dst="AA45C071-486A-B791-556D-7ADF66F94B38-BallFireInner.json"/>
+          <resource name="BallFireInner" type=".fla" embed="false" path="Common" src="9DE9C316-98C4-94B5-2885-8BA3ED7B4F4B-BallFireInner.fla" dst="9DE9C316-98C4-94B5-2885-8BA3ED7B4F4B-BallFireInner.swf">
+            <classX name="BallFireInner" regX="0" regY="0" width="32" height="32"/>
+          </resource>
+          <resource name="@BallFireBall" type=".pmp" embed="false" path="Common" src="D581F878-E1ED-3F3A-0390-42E2BB77F656-BallFireBall.pmp" dst="D581F878-E1ED-3F3A-0390-42E2BB77F656-BallFireBall.pmp" pmp_width="512" originX="251" originY="246" width="21" totalWidth="21" height="21" regX="-11" regY="-11"/>
+          <resource name="png_BallFireBall" type=".png" embed="false" path="Common" src="D581F878-E1ED-3F3A-0390-42E2BB77F656-BallFireBall.png" dst="D581F878-E1ED-3F3A-0390-42E2BB77F656-BallFireBall.png"/>
+          <resource name="$BallFireBall" type=".json" embed="false" path="Common" src="D581F878-E1ED-3F3A-0390-42E2BB77F656-BallFireBall.json" dst="D581F878-E1ED-3F3A-0390-42E2BB77F656-BallFireBall.json"/>
+          <resource name="BallFireBall" type=".fla" embed="false" path="Common" src="EB04E1E3-3C4C-E8A4-FD0E-927304FEFCA3-BallFireBall.fla" dst="EB04E1E3-3C4C-E8A4-FD0E-927304FEFCA3-BallFireBall.swf">
+            <classX name="BallFireBall" regX="0" regY="0" width="32" height="32"/>
           </resource>
         </folder>
       </folder>

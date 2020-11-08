@@ -14,6 +14,7 @@ import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { TerrainContainer } from '../terrain/TerrainContainer';
+import { GolfGame } from '../game/GolfGame';
 
 //------------------------------------------------------------------------------------------
 export class HoleHighlight extends XGameObject {
@@ -59,8 +60,8 @@ export class HoleHighlight extends XGameObject {
     
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
-        this.m_sprite = this.createSprite ("Earth_Sprites_Gauge");
-        this.addSpriteAsChild (this.m_sprite, -36/2, -200, 0, 999999.0, false);
+        this.m_sprite = this.createSprite (this.m_worldName + "_Sprites_Gauge");
+        this.addSpriteAsChild (this.m_sprite, -33/2, -200, 0, GolfGame.PLAYFIELD_BEHIND_DEPTH, false);
 
         this.show ();
     }

@@ -14,6 +14,8 @@ import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/XType';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XState } from './XState';
+import { XSoundManager } from '../sound/XSoundManager';
+import { XSoundSubManager } from '../sound/XSoundSubManager';
 
 //------------------------------------------------------------------------------------------
 export class XGameInstance {
@@ -44,7 +46,7 @@ export class XGameInstance {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup():void {
+	public cleanup ():void {
 		this.m_triggerSignal.removeAllListeners ();
 		this.m_triggerXSignal.removeAllListeners ();
 		this.m_pingSignal.removeAllListeners ();
@@ -74,6 +76,11 @@ export class XGameInstance {
 		}
 	}
 		
+	//------------------------------------------------------------------------------------------
+	public getGameStateObject ():XState {
+		return this.m_gameStateObject;
+	} 
+
 	//------------------------------------------------------------------------------------------
 	public gotoState (__name:string, __params:Array<any> = null, __layer:number = 0, __depth:number = 0.0):XGameObject {
 		if (this.m_states.has (__name)) {
@@ -106,55 +113,55 @@ export class XGameInstance {
 		return null;
     }
 		
-		//------------------------------------------------------------------------------------------
-		public fireTriggerSignal (__trigger:number):void {
-			this.m_triggerSignal.fireSignal (__trigger);
-		}
+	//------------------------------------------------------------------------------------------
+	public fireTriggerSignal (__trigger:number):void {
+		this.m_triggerSignal.fireSignal (__trigger);
+	}
 		
-		//------------------------------------------------------------------------------------------
-		public addTriggerListener (__listener:any):number {
-			return this.m_triggerSignal.addListener (__listener);
-		}
+	//------------------------------------------------------------------------------------------
+	public addTriggerListener (__listener:any):number {
+		return this.m_triggerSignal.addListener (__listener);
+	}
 		
-		//------------------------------------------------------------------------------------------
-		public removeTriggerListener (__id:number):void {
-			this.m_triggerSignal.removeListener (__id);
-		}
+	//------------------------------------------------------------------------------------------
+	public removeTriggerListener (__id:number):void {
+		this.m_triggerSignal.removeListener (__id);
+	}
 		
-		//------------------------------------------------------------------------------------------
-		public fireTriggerXSignal (__trigger:String):void {
-			this.m_triggerXSignal.fireSignal (__trigger);
-		}
+	//------------------------------------------------------------------------------------------
+	public fireTriggerXSignal (__trigger:String):void {
+		this.m_triggerXSignal.fireSignal (__trigger);
+	}
 		
-		//------------------------------------------------------------------------------------------
-		public addTriggerXListener (__listener:any):number {
-			return this.m_triggerXSignal.addListener (__listener);
-		}
+	//------------------------------------------------------------------------------------------
+	public addTriggerXListener (__listener:any):number {
+		return this.m_triggerXSignal.addListener (__listener);
+	}
 		
-		//------------------------------------------------------------------------------------------
-		public removeTriggerXListener (__id:number):void {
-			this.m_triggerXSignal.removeListener (__id);
-		}
+	//------------------------------------------------------------------------------------------
+	public removeTriggerXListener (__id:number):void {
+		this.m_triggerXSignal.removeListener (__id);
+	}
 		
-		//------------------------------------------------------------------------------------------
-		public addPingListener (__listener:any):number {
-			return this.m_pingSignal.addListener (__listener);
-		}
+	//------------------------------------------------------------------------------------------
+	public addPingListener (__listener:any):number {
+		return this.m_pingSignal.addListener (__listener);
+	}
 		
-		//------------------------------------------------------------------------------------------
-		public removePingListener (__id:number):void {
-			this.m_pingSignal.removeListener (__id);
-		}
+	//------------------------------------------------------------------------------------------
+	public removePingListener (__id:number):void {
+		this.m_pingSignal.removeListener (__id);
+	}
 
-		//------------------------------------------------------------------------------------------
-		public firePingSignal (
-			__id:number,
-			__type:String,
-			__logicObject:XGameObject,
-			__listener:any
-		):void {
-			this.m_pingSignal.fireSignal (__id, __type, __logicObject, __listener);
-		}
+	//------------------------------------------------------------------------------------------
+	public firePingSignal (
+		__id:number,
+		__type:String,
+		__logicObject:XGameObject,
+		__listener:any
+	):void {
+		this.m_pingSignal.fireSignal (__id, __type, __logicObject, __listener);
+	}
 
 //------------------------------------------------------------------------------------------
 }

@@ -14,6 +14,8 @@ import * as Matter from 'matter-js';
 import { World, Body, Engine } from 'matter-js';
 import { Class } from '../type/XType';
 import { G } from '../app/G';
+import { XSoundSubManager } from '../sound/XSoundSubManager';
+import { XBulletCollisionManager } from '../bullet/XBulletCollisionManager';
 
 //------------------------------------------------------------------------------------------
 export class XWorld extends XSprite {
@@ -28,6 +30,10 @@ export class XWorld extends XSprite {
     private m_gameObjects:Map<XGameObject, XDepthSprite>;
     private m_childObjects:Map<XGameObject, XDepthSprite>;	
     private m_children:Map<PIXI.DisplayObject, any>;
+
+    private m_soundSubManager:XSoundSubManager;
+
+    private m_XBulletCollisionManager:XBulletCollisionManager;
 
     private m_matterEngine:Engine;
 
@@ -72,6 +78,10 @@ export class XWorld extends XSprite {
         this.m_childObjects = new Map<XGameObject, XDepthSprite> ();
         this.m_children = new Map<PIXI.DisplayObject, any> ();
 
+        this.m_XBulletCollisionManager = new XBulletCollisionManager (this);
+
+        this.m_soundSubManager = new XSoundSubManager (this.m_XApp.getXSoundManager ());
+
         this.createMatterEngine ();
     }
 
@@ -94,6 +104,20 @@ export class XWorld extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
+    public clearCollisions ():void {
+        this.m_XBulletCollisionManager.clearCollisions ();
+    }
+    
+    //------------------------------------------------------------------------------------------
+    public updateCollisions ():void {
+        var __gameObject:XGameObject;
+
+        for (__gameObject of this.m_gameObjects.keys ()) { 
+            __gameObject.updateCollisions ();
+        }
+    }
+
+    //------------------------------------------------------------------------------------------
     public update ():void {
         var i:number;
 
@@ -105,7 +129,9 @@ export class XWorld extends XSprite {
         
         this.emptyKillQueue ();
         
-        Matter.Engine.update (this.getMatterEngine ());
+        if (!this.m_XApp.isPaused ()) {
+            Matter.Engine.update (this.getMatterEngine ());
+        }
 
         var __gameObject:XGameObject;
 
@@ -220,6 +246,11 @@ export class XWorld extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
+    public getSoundSubManager ():XSoundSubManager {
+        return this.m_soundSubManager;
+    }
+    
+    //------------------------------------------------------------------------------------------
     public createMatterEngine ():void {
         this.m_matterEngine = Matter.Engine.create ();
     }
@@ -231,6 +262,11 @@ export class XWorld extends XSprite {
     //------------------------------------------------------------------------------------------
     public getMatterEngine ():Engine {
         return this.m_matterEngine;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getXBulletCollisionManager ():XBulletCollisionManager {
+        return this.m_XBulletCollisionManager;
     }
 
     //------------------------------------------------------------------------------------------

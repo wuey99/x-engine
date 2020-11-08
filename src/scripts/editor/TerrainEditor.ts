@@ -25,7 +25,7 @@ import { TerrainContainer } from '../terrain/TerrainContainer';
 import { XSimpleXMLDocument } from '../../engine/xml/XSimpleXMLDocument';
 import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
 import { GolfBall } from '../game/GolfBall';
-import { OctopusBug } from '../game/OctopusBug';
+import { OctopusBug } from '../test/OctopusBug';
 import * as Matter from 'matter-js';
 import { World, Body, Engine } from 'matter-js';
 import { GameLayer } from '../terrain/GameLayer';
@@ -385,9 +385,9 @@ export class TerrainEditor extends XState {
         document.addEventListener ('keydown', this.m_keyDownHandler = this.keyDownHandler.bind (this));
         document.addEventListener ('keyup', this.m_keyUpHandler = this.keyUpHandler.bind (this));
 
-        this.addStageEventListener ("mousedown", this.mouseDownHandler.bind (this));
-        this.addStageEventListener ("mousemove", this.mouseMoveHandler.bind (this));
-        this.addStageEventListener ("mouseup", this.mouseUpHandler.bind (this));
+        this.addStageEventListenerX ("mousedown", this.mouseDownHandler.bind (this));
+        this.addStageEventListenerX ("mousemove", this.mouseMoveHandler.bind (this));
+        this.addStageEventListenerX ("mouseup", this.mouseUpHandler.bind (this));
 	}
 	
 //------------------------------------------------------------------------------------------
@@ -471,7 +471,7 @@ export class TerrainEditor extends XState {
                     var __x:number = __point.x;
                     var __y:number = __point.y;
 
-                    this.m_terrainContainer.createGolfBall (__x, __y);
+                    this.m_terrainContainer.createGolfBallAt (__x, __y);
                 }
 
                 break;

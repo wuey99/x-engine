@@ -6,13 +6,15 @@ import { FpsMeter } from './fps-meter';
 import { XApp } from '../engine/app/XApp';
 import { XWorld } from '../engine/sprite/XWorld';
 import { XType } from '../engine/type/XType';
-import { TestGameController } from './game/TestGameController';
+import { GolfGameController } from './game/GolfGameController';
 import { SpriteSheetResource } from '../engine/resource/SpriteSheetResource';
 import { ImageResource } from '../engine/resource/ImageResource';
+import { SoundResource } from '../engine/resource/SoundResource';
 import { G } from '../engine/app/G';
 import { graphicsUtils } from 'pixi.js';
 import * as Parser from 'fast-xml-parser';
 import { XTask } from '../engine/task/XTask';
+import { XGameController } from '../engine/state/XGameController';
 (window as any).decomp = require('poly-decomp');
 
 //------------------------------------------------------------------------------------------
@@ -23,15 +25,32 @@ let fpsMeter: FpsMeter;
 
 //------------------------------------------------------------------------------------------
 window.onload = () => {
-    var __main:Main = new Main ();
+    var __main:Main = new Main ({});
     __main.setup ();
 } 
 
 //------------------------------------------------------------------------------------------
 export class Main {
+    public m_gameController:XGameController;
+    public m_onStateChange:any;
 
 //------------------------------------------------------------------------------------------
-    constructor () {
+    constructor (__params:any) {
+        this.m_onStateChange = __params.onStateChange;
+
+        console.log (": Main: new: ",  this.m_onStateChange);
+
+        return;
+        
+        this.m_onStateChange ({
+            world: "world",
+            terrain: "terrain",
+            score: "score",
+            duration: "duration",
+            language: "language",
+            attempts: "attempts",
+            action: "attempts"
+        });
     }
 
 //------------------------------------------------------------------------------------------
@@ -68,46 +87,31 @@ export class Main {
         this.render ();
 
         this.startApp ();
+    }
 
-        return;
+//------------------------------------------------------------------------------------------
+    public pause ():void {
+        console.log (": pause: ");
 
-        /*
-        g_XApp.getXProjectManager ().registerType ("SpriteSheet", SpriteSheetResource);
-        g_XApp.getXProjectManager ().registerType ("ImageResource", ImageResource);
+        g_XApp.pause ();
+    }
 
-        g_XApp.getXProjectManager ().setup0 (
-                "assets/Common.xml",
-                {
-                    "images": "images",
-                    "assets": "assets/Cows/Project",
-                    "levels": "assets/levels",
-                    "sounds": "assets/sounds",
-                    "backgrounds": "assets/backgrounds",
-                    "sprites": "assets/sprites"
-                }
-        );
+//------------------------------------------------------------------------------------------
+    public resume ():void {
+        console.log (": resume: ");
 
-        g_XApp.getXProjectManager ().loadResources ([
-                {
-                    name: "OctopusBug",
-                    type: "SpriteSheet",
-                    path: "assets/Common/8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.json"
-                }
-        ]);
-        */
-       
-        g_XApp.getXTaskManager ().addTask ([
-            XTask.LABEL, "loop",
-                XTask.WAIT, 0x1000,
+        g_XApp.resume ();
+    }
 
-                () => {
-                    console.log (g_XApp.getXProjectManager ().getResourceByName ("OctopusBug"));
-                },
+//------------------------------------------------------------------------------------------
+    public reset ():void {
+        console.log (": reset: ");
 
-                XTask.GOTO, "loop",
-
-            XTask.RETN,
-        ]);
+        this.m_gameController.nuke ();
+    
+        this.m_gameController = new GolfGameController ();
+        this.m_gameController.setup (world, 0, 0.0);
+        this.m_gameController.afterSetup ();
     }
 
 //------------------------------------------------------------------------------------------
@@ -117,6 +121,10 @@ export class Main {
         g_XApp.update ();
 
         world.update ();
+
+        world.clearCollisions ();
+
+        world.updateCollisions ();
     }
 
 //------------------------------------------------------------------------------------------
@@ -129,25 +137,46 @@ export class Main {
     }
 
 //------------------------------------------------------------------------------------------
+    public setTerrainXML (__xml:any):void {
+        console.log (": setTerrainXML: ", __xml);
+    }
+
+//------------------------------------------------------------------------------------------
+    public setWorldXML (__xml:any):void {
+        console.log (": setWorldXML: ", __xml);
+    }
+    
+//------------------------------------------------------------------------------------------
     public startApp ():void {
-        var __gameController:TestGameController = new TestGameController ();
-        __gameController.setup (world, 0, 0.0);
-        __gameController.afterSetup ();
+        this.m_gameController = new GolfGameController ();
+        this.m_gameController.setup (world, 0, 0.0);
+        this.m_gameController.afterSetup ();
 
         g_XApp.getXProjectManager ().registerType ("SpriteSheet", SpriteSheetResource);
         g_XApp.getXProjectManager ().registerType ("ImageResource", ImageResource);
+        g_XApp.getXProjectManager ().registerType ("SoundResource", SoundResource);
+
+        const assetPrefix = process.env.REACT_APP_ASSET_DIRECTORY || '';
+
+        /*
+        g_XApp.getXProjectManager ().setup (
+            "assets/Common.xml",
+            {
+                "images": "images",
+                "assets": `${assetPrefix}assets/Cows/Project`,
+                "levels": `${assetPrefix}assets/levels`,
+                "sounds": `${assetPrefix}assets/sounds`,
+                "music": `${assetPrefix}assets/music`,
+                "backgrounds": `${assetPrefix}assets/backgrounds`,
+                "sprites": `${assetPrefix}assets/sprites`
+            }
+        );
+        */
 
         g_XApp.getXProjectManager ().setup (
             "assets/Common.xml",
             {
-                /*
-                "images": "images",
-                "assets": "assets/Cows/Project",
-                "levels": "assets/levels",
-                "sounds": "assets/sounds",
-                "backgrounds": "assets/backgrounds",
-                "sprites": "assets/sprites"
-                */
+
             }
         );
 
@@ -410,12 +439,120 @@ export class Main {
             },
 
             //------------------------------------------------------------------------------------------
-            // common
+            // common art
             //------------------------------------------------------------------------------------------
             {
                 name: "Common_Sprites_HoleArrow",
                 type: "ImageResource",
                 path: "sprites/Common/common-sprites-hole-arrow.svg"
+            },
+            {
+                name: "Common_Sprites_Reticle",
+                type: "ImageResource",
+                path: "sprites/Common/common-sprites-reticle.svg"
+            },
+            {
+                name: "Common_Sprites_ElectricBeam",
+                type: "ImageResource",
+                path: "sprites/Common/common-sprites-electric-beam.svg"
+            },
+            {
+                name: "Common_Sprites_BallHoleFlash",
+                type: "ImageResource",
+                path: "sprites/Common/common-sprites-ball-in-hole-flash.svg"
+            },
+            {
+                name: "Common_Sprites_BallBorderFlash",
+                type: "ImageResource",
+                path: "sprites/Common/common-sprites-ball-border-flash.svg"
+            },
+
+            //------------------------------------------------------------------------------------------
+            // common sounds
+            //------------------------------------------------------------------------------------------
+            {
+                name: "Common_Sound_BallInHole",
+                type: "SoundResource",
+                path: "sounds/ball-in-hole.mp3"
+            },
+            {
+                name: "Common_Sound_BallReappears",
+                type: "SoundResource",
+                path: "sounds/ball-reappears.mp3"
+            },
+            {
+                name: "Common_Sound_BallExplosion",
+                type: "SoundResource",
+                path: "sounds/explosion-after-ball-in-hole.mp3"
+            },
+            {
+                name: "Common_Sound_HoverState",
+                type: "SoundResource",
+                path: "sounds/hover-state-button_1.mp3"
+            },
+            {
+                name: "Common_Sound_PressStartButton",
+                type: "SoundResource",
+                path: "sounds/press-state-start_button.mp3"
+            },
+            {
+                name: "Common_Sound_BallHitTerrain1",
+                type: "SoundResource",
+                path: "sounds/ball-hit-terrain-1.mp3"
+            },
+            {
+                name: "Common_Sound_BallHitTerrain2",
+                type: "SoundResource",
+                path: "sounds/ball-hit-terrain-2.mp3"
+            },
+            {
+                name: "Common_Sound_BallHitTerrain3",
+                type: "SoundResource",
+                path: "sounds/ball-hit-terrain-3.mp3"
+            },
+            {
+                name: "Common_Sound_BallHitTerrain4",
+                type: "SoundResource",
+                path: "sounds/ball-hit-terrain-4.mp3"
+            },
+            {
+                name: "Common_Sound_BallLaunched",
+                type: "SoundResource",
+                path: "sounds/ball-launched.mp3"
+            },
+            {
+                name: "Common_Sound_OffScreen",
+                type: "SoundResource",
+                path: "sounds/ball-off-screen.mp3"
+            },
+
+            //------------------------------------------------------------------------------------------
+            // common music
+            //------------------------------------------------------------------------------------------
+            {
+                name: "Common_Music_EarthBGM",
+                type: "SoundResource",
+                path: "music/earth-bgm.mp3"
+            },
+            {
+                name: "Common_Music_MoonBGM",
+                type: "SoundResource",
+                path: "music/moon-bgm.mp3"
+            },
+            {
+                name: "Common_Music_MarsBGM",
+                type: "SoundResource",
+                path: "music/mars-bgm.mp3"
+            },
+            {
+                name: "Common_Music_IceBGM",
+                type: "SoundResource",
+                path: "music/ice-bgm.mp3"
+            },
+            {
+                name: "Common_Music_SquidBGM",
+                type: "SoundResource",
+                path: "music/squid-bgm.mp3"
             },
         ]);
     }

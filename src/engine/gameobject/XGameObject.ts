@@ -16,6 +16,8 @@ import { World, Body, Engine } from 'matter-js';
 import * as Matter from 'matter-js';
 import { XRect } from '../geom/XRect';
 import { XPoint } from '../geom/XPoint';
+import { G } from '../app/G';
+import { XState } from '../state/XState';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Sprite {
@@ -44,6 +46,10 @@ export class XGameObject extends PIXI.Sprite {
 	public m_flipY:number;
 	public m_masterFlipX:number;
 	public m_masterFlipY:number;
+	public m_cx:XRect;
+	public m_namedCX:Map<string, XRect>;
+	public m_pos:XPoint;
+	public m_vel:XPoint;
 
 	public m_attachedMatterBody:Body;
 	public m_attachedDebugSprite:PIXI.Sprite;
@@ -61,7 +67,8 @@ export class XGameObject extends PIXI.Sprite {
 	public static g_XApp:XApp;
 
 	public m_stageEvents:Map<any, string>;
-	
+	public m_stageEventsX:Map<any, __PausableListener>;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -118,7 +125,20 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_mousePoint = new XPoint ();
 
 		this.m_stageEvents = new Map<any, string> ();
+		this.m_stageEventsX = new Map<any, __PausableListener> ();
 
+		this.m_cx = new XRect ();
+
+		this.m_cx.x = 0;
+		this.m_cx.y = 0;
+		this.m_cx.width = 0;
+		this.m_cx.height = 0;
+
+		this.m_namedCX = new Map<string, XRect> ()
+
+		this.m_pos = new XPoint ();
+		this.m_vel = new XPoint ();
+		
 		return this;
 	}
 	
@@ -143,7 +163,8 @@ export class XGameObject extends PIXI.Sprite {
 		this.removeAllAnimatedSprites ();
 		this.removeAllSprites ();
 		this.removeAllStageEvents ();
-		
+		this.removeAllStageEventsX ();
+
 		if (this.getParentObject () != null) { 
 			this.getParentObject ().removeSelfObject0 (this);
 			this.getParentObject ().removeWorldObject0 (this);
@@ -274,6 +295,32 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
+	public addStageEventListenerX (__eventName:string, __listener:any):any {
+		var __pausableListener:__PausableListener = new __PausableListener (__eventName, __listener);
+
+		this.m_stageEventsX.set (__listener, __pausableListener);
+		
+		return __listener;
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeStageEventListenerX (__listener:any):any {
+		var __pausableListener:__PausableListener = this.m_stageEventsX.get (__listener);
+		__pausableListener.cleanup ();
+
+		this.m_stageEventsX.delete (__listener);
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeAllStageEventsX ():void {
+		XType.forEach (this.m_stageEventsX,
+			(__listener:any) => {
+				this.removeStageEventListenerX (__listener);				
+			}
+		);
+	}
+
+//------------------------------------------------------------------------------------------
 	public static setXApp (__XApp:XApp):void {
 		XGameObject.g_XApp = __XApp;
 	}
@@ -283,7 +330,12 @@ export class XGameObject extends PIXI.Sprite {
         return XGameObject.g_XApp;
     }
 
-	//------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
+	public getGameStateObject ():XState {
+		return G.appX.getGameStateObject ();
+	}
+
+//------------------------------------------------------------------------------------------
     public getMousePos ():XPoint {
 		var __point:XPoint = this.m_XApp.getMousePos ();
 
@@ -339,6 +391,54 @@ export class XGameObject extends PIXI.Sprite {
 		__displayObject.x = __x;
 			
 		return this;
+	}
+
+//------------------------------------------------------------------------------------------
+	public setCollisions ():void {
+	}
+
+//------------------------------------------------------------------------------------------
+	public getPos ():XPoint {
+		this.m_pos.x = this.x;
+		this.m_pos.y = this.y;
+
+		return this.m_pos;
+	}
+
+//------------------------------------------------------------------------------------------
+	public setCX (
+		__x1:number,
+		__x2:number,
+		__y1:number,
+		__y2:number
+		):void {
+			
+		this.m_cx.x = __x1;
+		this.m_cx.y = __y1;
+		this.m_cx.width = __x2 - __x1 + 1;
+		this.m_cx.height = __y2 - __y1 + 1;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getCX ():XRect {
+		return this.m_cx;
+	}
+
+//------------------------------------------------------------------------------------------
+	public setNamedCX (
+		__name:string,
+		__x1:number,
+		__x2:number,
+		__y1:number,
+		__y2:number
+		):void {
+			
+		this.m_namedCX.set (__name, new XRect (__x1, __y1, __x2 - __x1 + 1, __y2 - __y1 + 1));
+	}
+
+//------------------------------------------------------------------------------------------
+	public getNamedCX (__name:string):XRect {
+		return this.m_namedCX.get (__name).cloneX ();
 	}
 
 //------------------------------------------------------------------------------------------
@@ -904,6 +1004,17 @@ export class XGameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
+    public updateCollisions ():void {
+		this.setCollisions ();
+
+        var __gameObject:XGameObject;
+
+		for (__gameObject of this.m_childObjects.keys ()) {
+			__gameObject.updateCollisions ();
+		}
+	}
+	
+//------------------------------------------------------------------------------------------
 	public update ():void {
 			if (this.m_delayed > 0) {
 				this.m_delayed--;
@@ -1180,6 +1291,11 @@ export class XGameObject extends PIXI.Sprite {
 		public m_masterX:number;
 		public m_masterY:number;
 	
+//------------------------------------------------------------------------------------------	
+		public get vel ():XPoint {
+			return this.m_vel;
+		}
+		
 //------------------------------------------------------------------------------------------		
 		public setMasterX (__value:number):void {
 			this.m_masterX = __value;
@@ -1298,5 +1414,34 @@ export class XGameObject extends PIXI.Sprite {
 			return this.m_masterDepth;
 		}
 		
+//------------------------------------------------------------------------------------------
+}
+
+//------------------------------------------------------------------------------------------
+class __PausableListener {
+	public m_eventName:string;
+	public m_listener:any;
+	public boundListener:any;
+
+	//------------------------------------------------------------------------------------------
+	constructor (__eventName:string, __listener:any) {
+		this.m_eventName = __eventName;
+		this.m_listener = __listener;
+
+		XGameObject.getXApp ().getStage ().on (__eventName, this.boundListener = this.__listener.bind (this));
+	}
+
+	//------------------------------------------------------------------------------------------
+	public cleanup ():void {
+		XGameObject.getXApp ().getStage ().off (this.m_eventName, this.boundListener);
+	}
+
+	//------------------------------------------------------------------------------------------
+	private __listener (e:PIXI.InteractionEvent):void {
+		if (!XGameObject.getXApp ().isPaused ()) {
+			this.m_listener (e);
+		}
+	}
+
 //------------------------------------------------------------------------------------------
 }

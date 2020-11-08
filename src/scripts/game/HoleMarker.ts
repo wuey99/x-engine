@@ -14,6 +14,10 @@ import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { TerrainContainer } from '../terrain/TerrainContainer';
+import { GolfGame } from '../game/GolfGame';
+import { timeStamp } from 'console';
+import { GolfGameInstance } from '../game/GolfGameInstance';
+import { G } from '../../engine/app/G';
 
 //------------------------------------------------------------------------------------------
 export class HoleMarker extends XGameObject {
@@ -40,6 +44,8 @@ export class HoleMarker extends XGameObject {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
+		this.setCX (-16, +16, -16, +16);
+
 		this.m_terrainContainer = __params[0];
         this.m_worldName = __params[1];
         
@@ -60,10 +66,15 @@ export class HoleMarker extends XGameObject {
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
         this.m_sprite = this.createAnimatedSprite ("HoleMarker");
-        this.addSortableChild (this.m_sprite);
+        this.addSortableChild (this.m_sprite, 0, GolfGame.PLAYFIELD_FRONT_DEPTH, false);
 
         this.show ();
     }
+
+//------------------------------------------------------------------------------------------
+	public setCollisions ():void {
+		(G.appX as GolfGameInstance).getHoleCollisionList ().addCollision (this.getLayer (), this, this.getPos (), this.getCX ());
+	}
 
 //------------------------------------------------------------------------------------------
 	public Idle_Script ():void {

@@ -1,0 +1,84 @@
+//------------------------------------------------------------------------------------------
+import * as PIXI from 'pixi.js'
+import { XApp } from '../../engine/app/XApp';
+import { XSprite } from '../../engine/sprite/XSprite';
+import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
+import { XSignal } from '../../engine/signals/XSignal';
+import { XSignalManager } from '../../engine/signals/XSignalManager';
+import { world } from '../app';
+import { XTask } from '../../engine/task/XTask';
+import { XTaskManager} from '../../engine/task/XTaskManager';
+import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
+import { XWorld} from '../../engine/sprite/XWorld';
+import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
+import { XType } from '../../engine/type/XType';
+import { XGameObject} from '../../engine/gameobject/XGameObject';
+import { XGameController } from '../../engine/state/XGameController';
+import { TestGame } from '../test/TestGame';
+import { TestMatter } from '../test//TestMatter';
+import { TestRenderTexture } from '../test/TestRenderTexture';
+import { TestSVG } from '../test/TestSVG';
+import { TerrainEditor } from '../editor/TerrainEditor';
+import { GolfGame } from './GolfGame';
+import { EarthLevel } from '../worlds/EarthLevel';
+import { GolfGameInstance } from './GolfGameInstance';
+
+//------------------------------------------------------------------------------------------
+export class GolfGameController extends XGameController {
+	
+//------------------------------------------------------------------------------------------	
+	constructor () {
+		super ();
+	}
+	
+//------------------------------------------------------------------------------------------
+	public setup (__world:XWorld, __layer:number, __depth:number):XGameObject {
+        super.setup (__world, __layer, __depth);
+
+		return this;
+	}
+	
+//------------------------------------------------------------------------------------------
+	public afterSetup (__params:Array<any> = null):XGameObject {
+        super.afterSetup (__params);
+
+		this.getGameInstance ().registerState ("TestGame", TestGame);
+		this.getGameInstance ().registerState ("TestMatter", TestMatter);
+		this.getGameInstance ().registerState ("TestRenderTexture", TestRenderTexture);
+		this.getGameInstance ().registerState ("TestSVG", TestSVG);
+		this.getGameInstance ().registerState ("TerrainEditor", TerrainEditor);
+		this.getGameInstance ().registerState ("GolfGame", GolfGame);
+		this.getGameInstance ().registerState ("EarthLevel", EarthLevel);
+
+		this.addTask ([
+			XTask.LABEL, "loop",
+				XTask.WAIT, 0x0100,
+
+				XTask.FLAGS, (__task:XTask) => {
+					__task.ifTrue (this.m_XApp.getXProjectManager ().getLoadComplete ());
+				}, XTask.BNE, "loop",
+
+				() => {
+					console.log (": load complete: ");
+				},
+
+				() => this.getGameInstance ().gotoState ("EarthLevel", ["Earth", "01"]),
+
+			XTask.RETN,
+		]);
+
+		return this;
+	}
+	
+//------------------------------------------------------------------------------------------
+	public cleanup ():void {
+        super.cleanup ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public getGameInstanceClass ():any {
+		return GolfGameInstance;
+	}
+	
+//------------------------------------------------------------------------------------------
+}

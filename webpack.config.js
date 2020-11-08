@@ -33,6 +33,7 @@ const config = {
             { from: 'src/assets/sounds', to: 'sounds' },
             { from: 'src/assets/backgrounds', to: 'backgrounds' },
             { from: 'src/assets/sprites', to: 'sprites' },
+            { from: 'src/assets/music', to: 'music' },
         ]),
     ],
     devServer: {

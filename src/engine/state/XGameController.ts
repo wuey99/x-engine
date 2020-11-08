@@ -36,19 +36,24 @@ export class XGameController extends XGameObject {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-        this.m_gameInstance = new XGameInstance ();
-        this.m_gameInstance.setup (this.world);
-
-		G.appX = this.m_gameInstance;
-
+		G.appX = this.m_gameInstance = XType.createInstance (this.getGameInstanceClass ());
+		this.m_gameInstance.setup (this.world);
+		
 		return this;
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup():void {
-        super.cleanup ();
+	public cleanup ():void {
+		super.cleanup ();
+		
+		this.m_gameInstance.getGameStateObject ().nuke ();
 	}
-    
+
+//------------------------------------------------------------------------------------------
+	public getGameInstanceClass ():any {
+		return XGameInstance;
+	}
+
 //------------------------------------------------------------------------------------------
     public getGameInstance ():XGameInstance {
         return this.m_gameInstance;

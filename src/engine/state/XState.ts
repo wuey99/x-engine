@@ -41,7 +41,9 @@ export class XState extends XGameObject {
 	
 //------------------------------------------------------------------------------------------
 	public cleanup():void {
-        super.cleanup ();
+		super.cleanup ();
+		
+		this.world.getSoundSubManager ().removeAllSounds ();
 	}
     
 //------------------------------------------------------------------------------------------

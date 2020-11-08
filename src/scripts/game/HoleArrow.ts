@@ -14,6 +14,7 @@ import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { TerrainContainer } from '../terrain/TerrainContainer';
+import { XPoint } from '../../engine/geom/XPoint';
 
 //------------------------------------------------------------------------------------------
 export class HoleArrow extends XGameObject {
@@ -23,7 +24,10 @@ export class HoleArrow extends XGameObject {
     public m_worldName:string;
 
     public script:XTask;
-    
+	
+	public m_baseX:number;
+	public m_baseY:number;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -42,13 +46,24 @@ export class HoleArrow extends XGameObject {
 
 		this.m_terrainContainer = __params[0];
         this.m_worldName = __params[1];
-        
+		
         this.script = this.addEmptyTask ();
 
         this.createSprites ();
 
         this.Idle_Script ();
 
+		this.addTask ([
+			XTask.WAIT, 0x0100,
+
+			() => {
+				this.m_baseX = this.x;
+				this.m_baseY = this.y;
+			},
+
+			XTask.RETN,
+		]);
+		
 		return this;
 	}
 	
@@ -64,6 +79,11 @@ export class HoleArrow extends XGameObject {
 
         this.show ();
     }
+
+//------------------------------------------------------------------------------------------
+	public getBasePos ():XPoint {
+		return new XPoint (this.m_baseX, this.m_baseY);
+	}
 
 //------------------------------------------------------------------------------------------
 	public Idle_Script ():void {

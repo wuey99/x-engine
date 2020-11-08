@@ -62,9 +62,9 @@ export class ForceVector extends XGameObject {
         this.m_bottomArrow = this.addGameObjectAsChild (ForceVectorArrow, 0, 0.0) as ForceVectorArrow;
         this.m_bottomArrow.afterSetup (["BottomArrow"]);
 
-        this.m_mouseMoveHandle = this.addStageEventListener ("mousemove", this.onMouseMove.bind (this));
-        this.m_mouseUpHandle = this.addStageEventListener ("mouseup", this.onMouseUp.bind (this));
-        this.m_mouseOutHandle = this.addStageEventListener ("mouseout", this.onMouseOut.bind (this));
+        this.m_mouseMoveHandle = this.addStageEventListenerX ("mousemove", this.onMouseMove.bind (this));
+        this.m_mouseUpHandle = this.addStageEventListenerX ("mouseup", this.onMouseUp.bind (this));
+        this.m_mouseOutHandle = this.addStageEventListenerX ("mouseout", this.onMouseOut.bind (this));
 
         this.m_updateSignal = this.createXSignal ();
         this.m_firedSignal = this.createXSignal ();
@@ -89,9 +89,9 @@ export class ForceVector extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public onMouseUp (e:PIXI.InteractionEvent) {
-        this.removeStageEventListener (this.m_mouseMoveHandle);
-        this.removeStageEventListener (this.m_mouseUpHandle);
-        this.removeStageEventListener (this.m_mouseOutHandle);
+        this.removeStageEventListenerX (this.m_mouseMoveHandle);
+        this.removeStageEventListenerX (this.m_mouseUpHandle);
+        this.removeStageEventListenerX (this.m_mouseOutHandle);
 
         console.log (": ForceVector: mouseUp: ");
 
@@ -117,9 +117,9 @@ export class ForceVector extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public onMouseOut (e:PIXI.InteractionEvent) {
-        this.removeStageEventListener (this.m_mouseMoveHandle);
-        this.removeStageEventListener (this.m_mouseUpHandle);
-        this.removeStageEventListener (this.m_mouseOutHandle);
+        this.removeStageEventListenerX (this.m_mouseMoveHandle);
+        this.removeStageEventListenerX (this.m_mouseUpHandle);
+        this.removeStageEventListenerX (this.m_mouseOutHandle);
 
         console.log (": ForceVector: mouseOut: ");
 

@@ -24,6 +24,7 @@ import { HoleArrow } from '../game/HoleArrow';
 import * as Matter from 'matter-js';
 import { HoleHighlight } from '../game/HoleHighlight';
 import { HoleMarker } from '../game/HoleMarker';
+import { GolfGame } from '../game/GolfGame';
 
 //------------------------------------------------------------------------------------------
 export class TerrainContainer extends XGameObject {
@@ -37,6 +38,9 @@ export class TerrainContainer extends XGameObject {
     public m_holeArrow:HoleArrow;
     public m_holeHighlight:HoleHighlight;
     public m_holeMarker:HoleMarker;
+
+    public m_ballStartX:number;
+    public m_ballStartY:number;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -59,7 +63,7 @@ export class TerrainContainer extends XGameObject {
         var __sprite:PIXI.Sprite = new PIXI.Sprite ();
         this.graphics = new PIXI.Graphics ();
         __sprite.addChild (this.graphics);
-        this.addSortableChild (__sprite, 0, 999999.0, true);
+        this.addSortableChild (__sprite, 0, GolfGame.PLAYFIELD_FRONT_DEPTH, true);
 
         this.m_levelName = "";
 
@@ -109,15 +113,22 @@ export class TerrainContainer extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
-    public createGolfBall (__x:number, __y:number, __selfShooting:boolean = false):void {
+    public createGolfBall (__selfShooting:boolean = false):GolfBall {
+        return this.createGolfBallAt (this.m_ballStartX, this.m_ballStartY, __selfShooting);
+    }
+
+//------------------------------------------------------------------------------------------
+    public createGolfBallAt (__x:number, __y:number, __selfShooting:boolean = false):GolfBall {
         if (this.m_golfBall != null) {
             this.m_golfBall.nukeLater ();
         }
 
-        this.m_golfBall = this.addGameObjectAsChild (GolfBall, 0, 0.0, false) as GolfBall;
-        this.m_golfBall.afterSetup ([this, this.getWorldName (), __selfShooting])
-            .attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 15, {restitution: 0.80}), 15)
+        this.m_golfBall = this.addGameObjectAsChild (GolfBall, this.getLayer (), GolfGame.PLAYFIELD_FRONT_DEPTH, false) as GolfBall;
+        this.m_golfBall.afterSetup ([this, this.getWorldName (), __selfShooting, __x, __y])
+            .attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 20, {restitution: 0.80, label: "__ball__"}), 20)
             .setMatterRotate (false);
+
+        return this.m_golfBall;
     }
 
 //------------------------------------------------------------------------------------------
@@ -131,10 +142,15 @@ export class TerrainContainer extends XGameObject {
             this.m_holeArrow.nukeLater ();
         }
 
-        this.m_holeArrow = this.addGameObjectAsChild (HoleArrow, 0, 0.0, true) as HoleArrow;
+        this.m_holeArrow = this.addGameObjectAsChild (HoleArrow, 0, GolfGame.PLAYFIELD_BEHIND_DEPTH, true) as HoleArrow;
         this.m_holeArrow.afterSetup ([this, this.getWorldName ()]);
         this.m_holeArrow.x = __x;
         this.m_holeArrow.y = __y;
+    }
+
+//------------------------------------------------------------------------------------------
+    public getHoleArrow ():HoleArrow {
+        return this.m_holeArrow;
     }
 
 //------------------------------------------------------------------------------------------
@@ -143,10 +159,15 @@ export class TerrainContainer extends XGameObject {
             this.m_holeHighlight.nukeLater ();
         }
 
-        this.m_holeHighlight = this.addGameObjectAsChild (HoleHighlight, 0, 250.0, true) as HoleHighlight;
+        this.m_holeHighlight = this.addGameObjectAsChild (HoleHighlight, 0, GolfGame.PLAYFIELD_BEHIND_DEPTH, true) as HoleHighlight;
         this.m_holeHighlight.afterSetup ([this, this.getWorldName ()]);
         this.m_holeHighlight.x = __x;
         this.m_holeHighlight.y = __y;
+    }
+
+//------------------------------------------------------------------------------------------
+    public getHoleMarker ():HoleMarker {
+        return this.m_holeMarker;
     }
 
 //------------------------------------------------------------------------------------------
@@ -155,7 +176,7 @@ export class TerrainContainer extends XGameObject {
             this.m_holeMarker.nukeLater ();
         }
 
-        this.m_holeMarker = this.addGameObjectAsChild (HoleMarker, 0, 333.0, true) as HoleMarker;
+        this.m_holeMarker = this.addGameObjectAsChild (HoleMarker, 0, GolfGame.PLAYFIELD_FRONT_DEPTH, true) as HoleMarker;
         this.m_holeMarker.afterSetup ([this, this.getWorldName ()]);
         this.m_holeMarker.x = __x;
         this.m_holeMarker.y = __y;
@@ -197,11 +218,11 @@ export class TerrainContainer extends XGameObject {
 
         switch (__name) {
             case "Terrain":
-                __terrainTile = this.addGameObjectAsChild (TerrainTile, 0, 1000.0, true) as TerrainTile;
+                __terrainTile = this.addGameObjectAsChild (TerrainTile, 0, GolfGame.TERRAIN_DEPTH, true) as TerrainTile;
                 break;
             
             case "TerrainMisc":
-                __terrainTile = this.addGameObjectAsChild (TerrainMisc, 0, 1000.0, true) as TerrainTile;
+                __terrainTile = this.addGameObjectAsChild (TerrainMisc, 0, GolfGame.TERRAIN_DEPTH, true) as TerrainTile;
                 break;
         }
 
@@ -258,7 +279,10 @@ export class TerrainContainer extends XGameObject {
         var __markerXML:XSimpleXMLNode = __root.child ("marker")[0];
         var __highlightXML:XSimpleXMLNode = __root.child ("highlight")[0];
 
-        this.createGolfBall (__ballXML.getAttributeFloat ("x"), __ballXML.getAttributeFloat ("y"));
+        this.m_ballStartX = __ballXML.getAttributeFloat ("x");
+        this.m_ballStartY = __ballXML.getAttributeFloat ("y");
+
+        this.createGolfBallAt (__ballXML.getAttributeFloat ("x"), __ballXML.getAttributeFloat ("y"));
         this.createHoleArrow (__arrowXML.getAttributeFloat ("x"), __arrowXML.getAttributeFloat ("y"));
         this.createHoleMarker (__markerXML.getAttributeFloat ("x"), __markerXML.getAttributeFloat ("y"));
         this.createHoleHighlight (__highlightXML.getAttributeFloat ("x"), __highlightXML.getAttributeFloat ("y"));

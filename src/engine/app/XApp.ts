@@ -15,6 +15,8 @@ import { XProjectManager } from '../resource/XProjectManager';
 import { XPoint } from '../geom/XPoint';
 import { XRect } from '../geom/XRect';
 import { G } from './G';
+import { XPauseManager } from '../state/XPauseManager';
+import { XSoundManager } from '../sound/XSoundManager';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -26,7 +28,6 @@ export interface XAppParams {
 
 //------------------------------------------------------------------------------------------
 export class XApp {
-  
     public container: HTMLElement;
     public loader: PIXI.Loader;
     public renderer: PIXI.Renderer;
@@ -50,6 +51,7 @@ export class XApp {
 	// private m_XBitmapDataAnimManager:XBitmapDataAnimManager;
     private m_XBitmapPoolManager:XObjectPoolManager;
     private m_XProjectManager:XProjectManager;
+    private m_XSoundManager:XSoundManager;
 
     private m_frameRateScale:number;
 	private m_currentTimer:number;
@@ -68,6 +70,8 @@ export class XApp {
     private m_scaleRatio:number;
     private m_xoffset:number;
     private m_yoffset:number;
+
+    private m_paused:boolean;
 
     //------------------------------------------------------------------------------------------
     constructor (params: XAppParams, __container:HTMLElement = null) {
@@ -106,12 +110,14 @@ export class XApp {
 		// TODO XTileSubTextureManager.setXApp (this);
         // TODO XSubTextureManager.setXApp (this);
         XGameInstance.setXApp (this);
-
+        G.XApp = this;
+        
         this.__initPoolManagers (this.getDefaultPoolSettings ());
 
 		this.m_XTaskManager = new XTaskManager (this);	
         this.m_XSignalManager = new XSignalManager (this);
         this.m_XProjectManager = new XProjectManager (this);
+        this.m_XSoundManager = new XSoundManager (this);
 
         this.m_frameRateScale = 1.0;
 		this.m_previousTimer = XType.getNowDate ().getTime ();
@@ -119,6 +125,8 @@ export class XApp {
         this.m_inuse_TIMER_FRAME = 0;
         
         this.m_mousePoint = new XPoint ();
+
+        this.m_paused = false;
 
         this.getStage ().on ("mousemove", (e:PIXI.InteractionEvent) => {
             var __mousePos:PIXI.Point = e.data.getLocalPosition (this.getStage ());
@@ -232,6 +240,7 @@ export class XApp {
         __poolSettings.XTilemap.init, __poolSettings.XTilemap.overflow
     );
     */
+
 //------------------------------------------------------------------------------------------
 // XBitmap
 //------------------------------------------------------------------------------------------
@@ -291,6 +300,29 @@ export class XApp {
     }
 
 //------------------------------------------------------------------------------------------
+    public pause ():void {
+        if (!this.m_paused) {
+            XPauseManager.firePauseSignal ();
+
+            this.m_paused = true;
+        }
+    }
+
+//------------------------------------------------------------------------------------------
+    public resume ():void {
+        if (this.m_paused) {
+            XPauseManager.fireResumeSignal ();
+
+            this.m_paused = false;
+        }
+    }
+
+//------------------------------------------------------------------------------------------
+    public isPaused ():boolean {
+        return this.m_paused;
+    }
+
+//------------------------------------------------------------------------------------------
 	public update ():void {
 		if (this.m_inuse_TIMER_FRAME > 0) {
 			console.log (": overflow: TIMER_FRAME: ");
@@ -302,7 +334,7 @@ export class XApp {
 		
 		var __deltaTime:number = XType.getNowDate ().getTime () - this.m_previousTimer;
 		
-        {
+        if (!this.m_paused) {
             console.log (": XApp: update: ");
 
 			this.getXTaskManager ().updateTasks ();
@@ -314,7 +346,6 @@ export class XApp {
 		
 		this.m_inuse_TIMER_FRAME--;
     }
-
 
     //------------------------------------------------------------------------------------------
     public setupSize (__canvasWidth:number, __canvasHeight:number, __screenWidth:number, __screenHeight:number):void {
@@ -328,7 +359,6 @@ export class XApp {
         this.m_scaleYRatio = this.m_screenHeight / this.m_canvasHeight;
     }
 
-        
     //------------------------------------------------------------------------------------------
     public getCanvasWidth ():number {
         return this.m_canvasWidth;
@@ -433,6 +463,11 @@ export class XApp {
     //------------------------------------------------------------------------------------------
     public getXProjectManager ():XProjectManager {
         return this.m_XProjectManager;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getXSoundManager ():XSoundManager {
+        return this.m_XSoundManager;
     }
 
     //------------------------------------------------------------------------------------------
