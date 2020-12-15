@@ -29,12 +29,10 @@ export var world:XWorld;
 let fpsMeter: FpsMeter;
 
 //------------------------------------------------------------------------------------------
-/*
 window.onload = () => {
     var __main:Main = new Main ({});
     __main.setup ();
-} 
-*/
+}
 
 //------------------------------------------------------------------------------------------
 export class Main {
@@ -411,6 +409,7 @@ export class Main {
         g_XApp.getXProjectManager ().setup (
             "assets/Common.xml",
             {
+                /*
                 "images": "images",
                 "assets": `${assetPrefix}assets/Cows/Project`,
                 "levels": `${assetPrefix}assets/levels`,
@@ -418,6 +417,7 @@ export class Main {
                 "music": `${assetPrefix}assets/music`,
                 "backgrounds": `${assetPrefix}assets/backgrounds`,
                 "sprites": `${assetPrefix}assets/sprites`,
+                */
             },
             () => {
                 this.queuePreloadResources ();

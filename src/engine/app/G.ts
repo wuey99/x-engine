@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------------------
 import { XGameInstance } from "../state/XGameInstance";
 import { XApp } from "./XApp";
-import { Main } from "components/Game/scripts/app";
+import { Main } from "../../scripts/app";
 
 //------------------------------------------------------------------------------------------
 export class G {
