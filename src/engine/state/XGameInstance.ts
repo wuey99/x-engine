@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../app/XApp';
 import { XSprite } from '../sprite/XSprite';
 import { XSpriteLayer } from '../sprite/XSpriteLayer';
@@ -10,7 +10,6 @@ import { XTask } from '../task/XTask';
 import { XTaskManager} from '../task/XTaskManager';
 import { XTaskSubManager} from '../task/XTaskSubManager';
 import { XWorld} from '../sprite/XWorld';
-import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/XType';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XState } from './XState';
@@ -19,7 +18,6 @@ import { XSoundSubManager } from '../sound/XSoundSubManager';
 
 //------------------------------------------------------------------------------------------
 export class XGameInstance {
-    
     public m_states:Map<string, any>;
     public m_gameStateObject:XState;
 
@@ -88,6 +86,8 @@ export class XGameInstance {
 				
 			if (this.m_gameStateObject != null) {
 				this.m_gameStateObject.nuke ();
+
+				this.m_gameStateObject = null;
 			}
 				
 			this.getXApp ().getXTaskManager ().addTask ([

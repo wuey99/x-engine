@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XPoint } from '../geom/XPoint';
 import { XRect } from '../geom/XRect';
 import { XWorld} from '../sprite/XWorld';
@@ -12,7 +12,6 @@ import { world } from '../../scripts/app';
 import { XTask } from '../task/XTask';
 import { XTaskManager} from '../task/XTaskManager';
 import { XTaskSubManager} from '../task/XTaskSubManager';
-import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/XType';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XSubObjectPoolManager } from '../pool/XSubObjectPoolManager';

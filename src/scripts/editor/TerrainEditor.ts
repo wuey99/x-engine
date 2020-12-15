@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
@@ -10,7 +10,6 @@ import { XTask } from '../../engine/task/XTask';
 import { XTaskManager} from '../../engine/task/XTaskManager';
 import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
 import { XWorld} from '../../engine/sprite/XWorld';
-import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { XState } from '../../engine/state/XState';
@@ -29,21 +28,24 @@ import { OctopusBug } from '../test/OctopusBug';
 import * as Matter from 'matter-js';
 import { World, Body, Engine } from 'matter-js';
 import { GameLayer } from '../terrain/GameLayer';
-import { ForceVector } from '../game/ForceVector';
+import { ForceVectorToo } from '../game/ForceVectorToo';
 import { GameLayersContainer } from '../terrain/GameLayersContainer';
 import { HoleArrow } from '../game/HoleArrow';
 import { HoleHighlight } from '../game/HoleHighlight';
+import { GolfGame } from '../game/GolfGame';
+import { SidePanelPlaceHolder } from './SidePanelPlaceHolder';
 
 //------------------------------------------------------------------------------------------
 export class TerrainEditor extends XState {
     public m_currentBrush:TerrainTileBrush;
     public m_terrainContainer:TerrainContainer;
     public m_gameLayersContainer:GameLayersContainer;
+    public m_sidePanelPlaceHolder:SidePanelPlaceHolder;
     public m_terrainTilePalette64:TerrainTilePalette;
     public m_terrainTilePalette32:TerrainTilePalette;
     public m_terrainTilePalette16:TerrainTilePalette;
     public m_terrainTilePaletteMisc:TerrainTilePalette;
-    public m_forceVector:ForceVector;
+    public m_forceVector:ForceVectorToo;
 
     public m_ctrlKeyDown:boolean;
     public m_mouseDownFlag:boolean;
@@ -72,9 +74,13 @@ export class TerrainEditor extends XState {
     public m_terrainLayerButton:any;
     public m_platformLayerButton:any;
 
+    public m_htmlElements:Map<any, number>;
+
     public m_keyDownHandler:any;
     public m_keyUpHandler:any;
 
+    public m_resizeListenerID:number;
+    
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -91,63 +97,140 @@ export class TerrainEditor extends XState {
 	public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
+        var __layersXMLString = __params[0];
+        var __terrainXMLString = __params[1];
+
         this.m_currentBrush = null;
 
         this.m_layerPos = new PIXI.Point ();
 
         this.createForms ();
         
-        this.newTerrainContainer (this.m_worldForm.value);
-        this.newGameLayersContainer (this.m_worldForm.value);
+        // this.newTerrainContainer (this.m_worldForm.value);
+        // this.newGameLayersContainer (this.m_worldForm.value);
+
+        var __xml:XSimpleXMLNode = new XSimpleXMLNode ();
+        __xml.setupWithXMLString (__layersXMLString);
+            
+        this.m_worldForm.value = __xml.getAttributeString ("world");
+
+        this.newTerrainContainerFromXML (__terrainXMLString);
+        this.newGameLayersContainerFromXML (__layersXMLString);
+
         this.createPalettes ();
+        this.createSidePanelPlaceHolder ();
 
         this.createInputHandlers ();
 
         console.log (": getParentObject: ", this.m_terrainContainer.getParentObject ());
 
+        this.m_resizeListenerID = this.m_XApp.addWindowResizeListener (this.resize.bind (this));
+        this.resize ();
+
         return this;
+    }
+	
+//------------------------------------------------------------------------------------------
+    public cleanup ():void {
+        super.cleanup ();
+
+        XType.forEach (this.m_htmlElements,
+            (__htmlElement:any) => {
+                __htmlElement.remove ();
+            }
+        );
+
+        document.removeEventListener ('keydown', this.m_keyDownHandler);
+        document.removeEventListener ('keyup', this.m_keyUpHandler);
+    }
+
+//------------------------------------------------------------------------------------------
+    public resize ():void {
+//        console.log (": Editor: resize: ", this.m_XApp.getWindowWidth (), this.m_XApp.getWindowHeight (), this.m_XApp.getScaleRatio ());
+
+ //       this.m_XApp.getStage ().scale.x = this.m_XApp.getScaleRatio ();
+ //       this.m_XApp.getStage ().scale.y = this.m_XApp.getScaleRatio ();
+
+        this.m_XApp.getRenderer ().resize (this.getWindowWidth (), this.getWindowHeight ());
+
+        var __scaleX:number = this.getWindowWidth () / this.m_XApp.getScreenWidth ();
+        var __scaleY:number = this.getWindowHeight () / this.m_XApp.getScreenHeight ();
+
+        var __scaleRatio:number = Math.min (__scaleX, __scaleY);
+        
+        this.m_XApp.getStage ().scale.x = __scaleRatio;
+        this.m_XApp.getStage ().scale.y = __scaleRatio;
+
+        this.world.resetLayers ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getWindowWidth ():number {
+        var __gameElement:HTMLElement = document.getElementById ("game");
+        var __rect:DOMRect = __gameElement.getBoundingClientRect ();
+
+        // console.log (": domRect: ", __rect, window.innerWidth, window.innerHeight);
+
+        // return window.innerWidth;
+        return Math.min (__rect.width, window.innerWidth - __rect.x);
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getWindowHeight ():number {
+        var __gameElement:HTMLElement = document.getElementById ("game");
+        var __rect:DOMRect = __gameElement.getBoundingClientRect ();
+
+        // return window.innerHeight;
+        return Math.min (__rect.height - 250, window.innerHeight - __rect.y) - 8;
+    }
+
+//------------------------------------------------------------------------------------------
+    public createElement (__name:string):HTMLElement {
+        var __htmlElement:any = document.createElement (__name);
+
+        this.m_htmlElements.set (__htmlElement, 0);
+
+        return __htmlElement;
     }
 
 //------------------------------------------------------------------------------------------
     public createForms ():void {
-        // var __loadSave:HTMLElement = document.createElement ("div");
-        // __loadSave.append ('<input class="inputFile" type="file" style="display: none;"/>');
-        // __loadSave.append ('<a href="#" download="data.csv" class="btnSave" style="display: none;">Save</a>	');
+        this.m_htmlElements = new Map<any, number> ();
 
-        this.m_loadInput = document.createElement ("input");
+        this.m_loadInput = this.createElement ("input");
         this.m_loadInput.type = "file";
  
-        this.m_saveLink = document.createElement ("a");
+        this.m_saveLink = this.createElement ("a");
         this.m_saveLink.setAttribute ("href", "#");
         
-        this.m_worldForm = document.createElement ("input");
+        this.m_worldForm = this.createElement ("input");
         this.m_worldForm.id = "__world";
         this.m_worldForm.value = "Earth";
-        this.m_terrainNameForm = document.createElement ("input");
+        this.m_terrainNameForm = this.createElement ("input");
         this.m_terrainNameForm.id = "__terain";
         this.m_terrainNameForm.value = "";
 
-        this.m_layersNameForm = document.createElement ("input");
+        this.m_layersNameForm = this.createElement ("input");
         this.m_layersNameForm.id = "__layers";
         this.m_layersNameForm.value = "";
 
-        this.m_bgLayerButton = document.createElement ("input");
+        this.m_bgLayerButton = this.createElement ("input");
         this.m_bgLayerButton.id = "__bg";
         this.m_bgLayerButton.type = "radio";
         this.m_bgLayerButton.name = "layer";
 
-        this.m_fgLayerButton = document.createElement ("input");
+        this.m_fgLayerButton = this.createElement ("input");
         this.m_fgLayerButton.id = "__fg";
         this.m_fgLayerButton.type = "radio";
         this.m_fgLayerButton.name = "layer";
 
-        this.m_terrainLayerButton = document.createElement ("input");
+        this.m_terrainLayerButton = this.createElement ("input");
         this.m_terrainLayerButton.id = "__terrain";
         this.m_terrainLayerButton.type = "radio";
         this.m_terrainLayerButton.name = "layer";
         this.m_terrainLayerButton.checked = true;
 
-        this.m_platformLayerButton = document.createElement ("input");
+        this.m_platformLayerButton = this.createElement ("input");
         this.m_platformLayerButton.id = "__platform";
         this.m_platformLayerButton.type = "radio";
         this.m_platformLayerButton.name = "layer";
@@ -190,27 +273,47 @@ export class TerrainEditor extends XState {
         this.appendNewLayersButton ();
         this.appendLoadLayersButton ();
         this.appendSaveLayersButton ();
+
+        this.appendLineBreak ();
+
+        var __gap:string = "  ...  ";
+        this.appendLabel ("[b] toggle brush");
+        this.appendLabel (__gap);
+        this.appendLabel ("[a] position hole arrow");
+        this.appendLabel (__gap);
+        this.appendLabel ("[h] position hole highlight");
+        this.appendLabel (__gap);
+        this.appendLabel ("[w] add golf ball");
+        this.appendLabel (__gap);
+        this.appendLabel ("[x] position hole marker");
+        this.appendLabel (__gap);
+        this.appendLabel ("[ctrl] + [mouse-down-drag] position layer");
+
     }
 
 //------------------------------------------------------------------------------------------
     public appendReloadWorldButton ():void {
-        this.m_reloadWorldButton = document.createElement ("button");
+        this.m_reloadWorldButton = this.createElement ("button");
         this.m_reloadWorldButton.id = "__reload";
         this.m_reloadWorldButton.appendChild (document.createTextNode ("reload"));
         this.m_XApp.container.appendChild (this.m_reloadWorldButton);
         this.m_reloadWorldButton.addEventListener ("click", ()=> {
             console.log (": reload: ");
 
-            this.removePalettes ();
-            this.m_gameLayersContainer.changeWorldName (this.m_worldForm.value, this.m_terrainContainer);
-            this.m_terrainContainer.changeWorldName (this.m_worldForm.value);
-            this.createPalettes ();
+            if (["Earth", "Moon", "Mars", "Ice", "Squid"].indexOf (this.m_worldForm.value) > -1) {
+                this.removePalettes ();
+                this.m_gameLayersContainer.changeWorldName (this.m_worldForm.value, this.m_terrainContainer);
+                this.m_terrainContainer.changeWorldName (this.m_worldForm.value);
+                this.createPalettes ();
+            } else {
+                window.alert (': valid worlds are: "Earth", "Moon", "Mars", "Ice", "Squid": ');
+            }
         });
     }
 
 //------------------------------------------------------------------------------------------
     public appendNewTerrainButton ():void {
-        this.m_newTerrainButton = document.createElement ("button");
+        this.m_newTerrainButton = this.createElement ("button");
         this.m_newTerrainButton.id = "__new";
         this.m_newTerrainButton.appendChild (document.createTextNode ("new terrain"));
         this.m_XApp.container.appendChild (this.m_newTerrainButton);
@@ -228,7 +331,7 @@ export class TerrainEditor extends XState {
 
 //------------------------------------------------------------------------------------------
     public appendLoadTerrainButton ():void {
-        this.m_loadTerrainButton = document.createElement ("button");
+        this.m_loadTerrainButton = this.createElement ("button");
         this.m_loadTerrainButton.id = "__load";
         this.m_loadTerrainButton.appendChild (document.createTextNode ("load terrain"));
         this.m_XApp.container.appendChild (this.m_loadTerrainButton);
@@ -245,7 +348,7 @@ export class TerrainEditor extends XState {
 
 //------------------------------------------------------------------------------------------
     public appendSaveTerrainButton ():void {
-        this.m_saveTerrainButton = document.createElement ("button");
+        this.m_saveTerrainButton = this.createElement ("button");
         this.m_saveTerrainButton.id = "__save";
         this.m_saveTerrainButton.appendChild (document.createTextNode ("save terain"));
         this.m_XApp.container.appendChild (this.m_saveTerrainButton);
@@ -272,7 +375,7 @@ export class TerrainEditor extends XState {
 
 //------------------------------------------------------------------------------------------
     public appendNewLayersButton ():void {
-        this.m_newLayersButton = document.createElement ("button");
+        this.m_newLayersButton = this.createElement ("button");
         this.m_newLayersButton.id = "__new";
         this.m_newLayersButton.appendChild (document.createTextNode ("new layers"));
         this.m_XApp.container.appendChild (this.m_newLayersButton);
@@ -291,7 +394,7 @@ export class TerrainEditor extends XState {
 
 //------------------------------------------------------------------------------------------
     public appendLoadLayersButton ():void {
-        this.m_loadLayersButton = document.createElement ("button");
+        this.m_loadLayersButton = this.createElement ("button");
         this.m_loadLayersButton.id = "__load";
         this.m_loadLayersButton.appendChild (document.createTextNode ("load layers"));
         this.m_XApp.container.appendChild (this.m_loadLayersButton);
@@ -299,18 +402,17 @@ export class TerrainEditor extends XState {
             console.log (": load: ");	
 
              // TODO reload terrain container with new world (while keeping contents)
-            (document.querySelector('.inputFile') as any).click();	
-            var input:any = document.querySelector('.inputFile');
-            input.onchange = () => {
-                console.log(": changed: ", this, input.files[0]);
-                this.readLayersFile(input);
+             this.m_loadInput.click();
+            this.m_loadInput.onchange = () => {
+                console.log(": changed: ", this, this.m_loadInput.files[0]);
+                this.readLayersFile(this.m_loadInput);
             };
         });
     }
 
 //------------------------------------------------------------------------------------------
     public appendSaveLayersButton ():void {
-        this.m_saveLayersButton = document.createElement ("button");
+        this.m_saveLayersButton = this.createElement ("button");
         this.m_saveLayersButton.id = "__save";
         this.m_saveLayersButton.appendChild (document.createTextNode ("save layers"));
         this.m_XApp.container.appendChild (this.m_saveLayersButton);
@@ -326,12 +428,11 @@ export class TerrainEditor extends XState {
 
                 console.log (": xml: ", __xml.toXMLString ());
 
-                var save:any = document.querySelector('.btnSave');
-                console.log(": ", save.download);
+                console.log(": ", this.m_saveLink.download);
                 var data = 'data:application/text;charset=utf-8,' + encodeURIComponent(__xml.toXMLString ());
-                save.href = data;
-                save.download = "layers_" + this.m_layersNameForm.value + ".xml";
-                (document.querySelector('.btnSave') as any).click();
+                this.m_saveLink.href = data;
+                this.m_saveLink.download = "layers_" + this.m_layersNameForm.value + ".xml";
+                this.m_saveLink.click();
             }
         });
     }
@@ -346,14 +447,24 @@ export class TerrainEditor extends XState {
         return this.m_worldForm.value;
     }
 
+    //------------------------------------------------------------------------------------------
+    public serializeLayers ():XSimpleXMLNode {
+        return this.m_gameLayersContainer.serialize (this.m_terrainContainer);
+    }
+
+    //------------------------------------------------------------------------------------------
+    public serializeTerrain ():XSimpleXMLNode {
+        return this.m_terrainContainer.serialize ();
+    }
+
 //------------------------------------------------------------------------------------------
     public appendLineBreak ():void {
-        this.m_XApp.container.appendChild (document.createElement ("br"));
+        this.m_XApp.container.appendChild (this.createElement ("br"));
     }
 
 //------------------------------------------------------------------------------------------
     public appendLabel (__text:string):void {
-        var __label = document.createElement ("label");
+        var __label = this.createElement ("label");
         __label.appendChild (document.createTextNode (__text));
         this.m_XApp.container.appendChild (__label);
     }
@@ -389,26 +500,46 @@ export class TerrainEditor extends XState {
         this.addStageEventListenerX ("mousemove", this.mouseMoveHandler.bind (this));
         this.addStageEventListenerX ("mouseup", this.mouseUpHandler.bind (this));
 	}
-	
-//------------------------------------------------------------------------------------------
-	public cleanup ():void {
-        super.cleanup ();
-
-        document.removeEventListener ('keydown', this.m_keyDownHandler);
-        document.removeEventListener ('keyup', this.m_keyUpHandler);
-	}
 
 //------------------------------------------------------------------------------------------
     public keyDownHandler (key:KeyboardEvent):void {
         console.log (": keyDown: ", key.code);
 
         switch (key.code) {
+            /*
+            case "Digit1":
+                var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
+                this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
+
+                this.m_terrainContainer.createLeftRangeBorder (__point.x, __point.y);
+
+                break;
+
+            case "Digit2":
+                var __point:XPoint = this.m_XApp.getMousePos ().cloneX ();
+                this.m_terrainContainer.globalToLocal (this.m_terrainContainer, __point);
+
+                this.m_terrainContainer.createRightRangeBorder (__point.x, __point.y)
+
+                break;
+            */
+           
+            case "Digit9":
+                this.showPalettes ();
+
+                break;
+
+            case "Digit0":
+                this.hidePalettes ();
+
+                break;
+
             case "ControlLeft":
                 this.m_ctrlKeyDown = true;
 
                 break;
 
-            case "Space":
+            case "KeyB":
                 if (this.isEditingTerrain ()) {
                     if (this.m_currentBrush != null) {
                         this.m_currentBrush.nukeLater ();
@@ -457,7 +588,7 @@ export class TerrainEditor extends XState {
                     var __octopusBug:OctopusBug = this.m_terrainContainer.addGameObjectAsChild (OctopusBug, 0, 0.0, false) as OctopusBug;
                     __octopusBug.afterSetup ().attachMatterBodyCircle (Matter.Bodies.circle (__x, __y, 8, {restitution: 0.80}), 8);
                 }
-                
+               
                 break;
 
             case "KeyW":
@@ -480,9 +611,9 @@ export class TerrainEditor extends XState {
                 this.getGameInstance ().gotoState (
                     "GolfGame",
                     [
-                        this.m_worldForm.value,
-                        this.m_gameLayersContainer.serialize (this.m_terrainContainer),
-                        this.m_terrainContainer.serialize ()
+                        this.getWorldName (),
+                        this.serializeLayers (),
+                        this.serializeTerrain ()
                     ]
                 );
 
@@ -555,6 +686,8 @@ export class TerrainEditor extends XState {
                     this.moveTerrain (e);
                 }
             }
+        } else {
+            this.pointInTerrainTile (e);
         }
     }
 
@@ -680,6 +813,15 @@ export class TerrainEditor extends XState {
     }
 
 //------------------------------------------------------------------------------------------
+    public pointInTerrainTile (e:PIXI.InteractionEvent):void {
+        var __x:number = e.data.getLocalPosition (this.m_terrainContainer).x;
+        var __y:number = e.data.getLocalPosition (this.m_terrainContainer).y;
+
+        var __collision:boolean = this.m_terrainContainer.pointInTerrainTile (__x, __y);
+        console.log (": terrainTile: ", __collision);
+    }
+
+//------------------------------------------------------------------------------------------
     public editTerrain (e:PIXI.InteractionEvent):void {
         if (this.m_currentBrush == null) {
             // var __x:number = e.data.getLocalPosition (this.m_XApp.getStage ()).x;
@@ -708,7 +850,7 @@ export class TerrainEditor extends XState {
                 var __interactionData:PIXI.InteractionData = e.data;
 
                 
-                this.m_forceVector = this.m_terrainContainer.addGameObjectAsChild (ForceVector, 0, 0.0, true) as ForceVector;
+                this.m_forceVector = this.m_terrainContainer.addGameObjectAsChild (ForceVectorToo, GolfGame.PLAYFIELD_FRONT_LAYER, GolfGame.PLAYFIELD_FRONT_DEPTH, true) as ForceVectorToo;
                 this.m_forceVector.afterSetup ([this.m_terrainContainer]);
 
                 // this.m_forceVector.x = __interactionData.getLocalPosition (this.m_XApp.getStage ()).x;
@@ -760,12 +902,42 @@ export class TerrainEditor extends XState {
     }
 
 //------------------------------------------------------------------------------------------
+    public newTerrainContainerFromXML (__xmlString:string):void {
+        var __xml:XSimpleXMLNode = new XSimpleXMLNode ();
+        __xml.setupWithXMLString (__xmlString);
+        
+        this.createTerrainContainer ().deserialize (__xml);
+    }
+
+//------------------------------------------------------------------------------------------
+    public newGameLayersContainerFromXML (__xmlString:string):void {
+        var __xml:XSimpleXMLNode = new XSimpleXMLNode ();
+        __xml.setupWithXMLString (__xmlString);
+            
+        this.m_worldForm.value = __xml.getAttributeString ("world");
+        
+        this.createGameLayersContainer ().deserialize (__xml, this.m_terrainContainer);
+    }
+
+//------------------------------------------------------------------------------------------
+    public createSidePanelPlaceHolder ():SidePanelPlaceHolder {
+        this.m_sidePanelPlaceHolder = this.addGameObjectAsChild (SidePanelPlaceHolder, GolfGame.SIDEPANEL_LAYER, GolfGame.SIDEPANEL_DEPTH) as SidePanelPlaceHolder;
+        this.m_sidePanelPlaceHolder.afterSetup ([]);
+        this.m_sidePanelPlaceHolder.x = 0;
+        this.m_sidePanelPlaceHolder.y = 0;
+        this.m_sidePanelPlaceHolder.alpha = 0.66;
+
+        return this.m_sidePanelPlaceHolder;
+    }
+
+//------------------------------------------------------------------------------------------
     public createTerrainContainer ():TerrainContainer {
         this.m_terrainContainer = this.addGameObjectAsChild (TerrainContainer, 0, 500.0) as TerrainContainer;
-        this.m_terrainContainer.afterSetup ([this.m_worldForm.value]);
+        this.m_terrainContainer.afterSetup ([this.m_worldForm.value, true]);
         this.m_terrainContainer.x = 0;
         this.m_terrainContainer.y = 0;
-
+        this.m_terrainContainer.setPropagateCount (-1);
+        
         return this.m_terrainContainer;
     }
 
@@ -783,29 +955,29 @@ export class TerrainEditor extends XState {
 	public createPalettes ():void {
 		var __y:number = 16;
 
-		var __terrainTilePalette64:TerrainTilePalette = this.m_terrainTilePalette64 = this.addGameObjectAsChild (TerrainTilePalette, 0, 1000.0) as TerrainTilePalette;
+		var __terrainTilePalette64:TerrainTilePalette = this.m_terrainTilePalette64 = this.addGameObjectAsChild (TerrainTilePalette, GolfGame.HUD_LAYER, 1000.0) as TerrainTilePalette;
 		__terrainTilePalette64.afterSetup (["Terrain", 128, this.getWorldName (), TerrainTileIcon.MAX_ICONS, -32, 0.66]);
 		__terrainTilePalette64.x = 16;
 		__terrainTilePalette64.y = __y;
         __terrainTilePalette64.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
         __y += 128 + 16;
 
-		var __terrainTilePalette32:TerrainTilePalette = this.m_terrainTilePalette32 = this.addGameObjectAsChild (TerrainTilePalette, 0, 1000.0) as TerrainTilePalette;
+		var __terrainTilePalette32:TerrainTilePalette = this.m_terrainTilePalette32 = this.addGameObjectAsChild (TerrainTilePalette, GolfGame.HUD_LAYER, 1000.0) as TerrainTilePalette;
 		__terrainTilePalette32.afterSetup (["Terrain", 64, this.getWorldName (), TerrainTileIcon.MAX_ICONS, 16, 1.0]);
 		__terrainTilePalette32.x = 16;
 		__terrainTilePalette32.y = __y;
         __terrainTilePalette32.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
         __y += 64 + 16;
         
-		var __terrainTilePalette16:TerrainTilePalette = this.m_terrainTilePalette16 = this.addGameObjectAsChild (TerrainTilePalette, 0, 1000.0) as TerrainTilePalette;
+		var __terrainTilePalette16:TerrainTilePalette = this.m_terrainTilePalette16 = this.addGameObjectAsChild (TerrainTilePalette, GolfGame.HUD_LAYER, 1000.0) as TerrainTilePalette;
 		__terrainTilePalette16.afterSetup (["Terrain", 32, this.getWorldName (), TerrainTileIcon.MAX_ICONS, 16, 1.0]);
 		__terrainTilePalette16.x = 16;
         __terrainTilePalette16.y = __y;
         __terrainTilePalette16.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
         __y += 32 + 16;
 
-		var __terrainTileMisc:TerrainTilePalette = this.m_terrainTilePaletteMisc = this.addGameObjectAsChild (TerrainTilePalette, 0, 1000.0) as TerrainTilePalette;
-		__terrainTileMisc.afterSetup (["TerrainMisc", 32, this.getWorldName (), 16, 16, 1.0]);
+		var __terrainTileMisc:TerrainTilePalette = this.m_terrainTilePaletteMisc = this.addGameObjectAsChild (TerrainTilePalette, GolfGame.HUD_LAYER, 1000.0) as TerrainTilePalette;
+		__terrainTileMisc.afterSetup (["TerrainMisc", 32, this.getWorldName (), 20, 16, 1.0]);
 		__terrainTileMisc.x = 16;
         __terrainTileMisc.y = __y;
         __terrainTileMisc.addSelectedListener (this.createTerrainTileBrushFromIcon.bind (this));
@@ -817,6 +989,22 @@ export class TerrainEditor extends XState {
         this.m_terrainTilePalette32.nukeLater ();
         this.m_terrainTilePalette16.nukeLater ();
         this.m_terrainTilePaletteMisc.nukeLater ();
+    }
+
+//------------------------------------------------------------------------------------------
+    public showPalettes ():void {
+        this.m_terrainTilePalette64.show ();
+        this.m_terrainTilePalette32.show ();
+        this.m_terrainTilePalette16.show ();
+        this.m_terrainTilePaletteMisc.show ();
+    }
+
+//------------------------------------------------------------------------------------------
+    public hidePalettes ():void {
+        this.m_terrainTilePalette64.hide ();
+        this.m_terrainTilePalette32.hide ();
+        this.m_terrainTilePalette16.hide ();
+        this.m_terrainTilePaletteMisc.hide ();
     }
 
 //------------------------------------------------------------------------------------------

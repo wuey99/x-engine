@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
@@ -10,7 +10,6 @@ import { XTask } from '../../engine/task/XTask';
 import { XTaskManager} from '../../engine/task/XTaskManager';
 import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
 import { XWorld} from '../../engine/sprite/XWorld';
-import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { TerrainContainer } from '../terrain/TerrainContainer';
@@ -61,7 +60,8 @@ export class HoleHighlight extends XGameObject {
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
         this.m_sprite = this.createSprite (this.m_worldName + "_Sprites_Gauge");
-        this.addSpriteAsChild (this.m_sprite, -33/2, -200, 0, GolfGame.PLAYFIELD_BEHIND_DEPTH, false);
+		this.addSpriteAsChild (this.m_sprite, -16/2, -100, GolfGame.PLAYFIELD_BEHIND_LAYER, GolfGame.PLAYFIELD_BEHIND_DEPTH, false);
+		this.scale.x = this.scale.y = 2.0;
 
         this.show ();
     }

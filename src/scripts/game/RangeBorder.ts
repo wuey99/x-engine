@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
@@ -10,12 +10,12 @@ import { XTask } from '../../engine/task/XTask';
 import { XTaskManager} from '../../engine/task/XTaskManager';
 import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
 import { XWorld} from '../../engine/sprite/XWorld';
-import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { TerrainContainer } from '../terrain/TerrainContainer';
 import { GolfGameInstance } from './GolfGameInstance';
 import { G } from '../../engine/app/G';
+import { GolfGame } from './GolfGame';
 
 //------------------------------------------------------------------------------------------
 export class RangeBorder extends XGameObject {
@@ -66,14 +66,15 @@ export class RangeBorder extends XGameObject {
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
         this.m_sprite = this.createAnimatedSprite ("RangeBorder");
-        this.addSortableChild (this.m_sprite, 0, 999999.0, false);
-
+        this.addSortableChild (this.m_sprite, GolfGame.PLAYFIELD_FRONT_LAYER, GolfGame.PLAYFIELD_FRONT_DEPTH, false);
+        this.scale.y = 2.0;
+        
         this.show ();
     }
 
 //------------------------------------------------------------------------------------------
     public setCollisions ():void {
-        (G.appX as GolfGameInstance).getBorderCollisionList ().addCollision (this.getLayer (), this, this.getPos (), this.getCX ());
+        (G.appX as GolfGameInstance).getBorderCollisionList ().addCollision (0, this, this.getPos (), this.getCX ());
     }
 
 //------------------------------------------------------------------------------------------

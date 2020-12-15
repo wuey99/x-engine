@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<terrain name="Level 3">
+	<ball x="549.4196242171191" y="652.296000277778"/>
+	<arrow x="2176.0208768267225" y="443.4530271398748"/>
+	<marker x="2176.0208768267225" y="699.883089770355"/>
+	<highlight x="2158" y="551.6993736951985"/>
+	<leftRangeBorder x="363.89722785665987" y="1065.8309668695063"/>
+	<rightRangeBorder x="2726.458417849898" y="1093.5388776200134"/>
+	<tiles>
+		<tile x="320" y="672" name="Terrain" size="128" frame="10"/>
+		<tile x="448" y="672" name="Terrain" size="128" frame="10"/>
+		<tile x="576" y="672" name="Terrain" size="128" frame="10"/>
+		<tile x="704" y="544" name="Terrain" size="128" frame="2"/>
+		<tile x="832" y="544" name="Terrain" size="128" frame="10"/>
+		<tile x="960" y="544" name="Terrain" size="64" frame="3"/>
+		<tile x="1024" y="608" name="Terrain" size="128" frame="10"/>
+		<tile x="1136" y="608" name="Terrain" size="128" frame="10"/>
+		<tile x="1264" y="480" name="Terrain" size="128" frame="2"/>
+		<tile x="1392" y="480.00000000000006" name="Terrain" size="128" frame="1"/>
+		<tile x="1520" y="608" name="Terrain" size="128" frame="1"/>
+		<tile x="1648" y="736" name="Terrain" size="64" frame="10"/>
+		<tile x="1712" y="736" name="Terrain" size="64" frame="10"/>
+		<tile x="1776" y="736" name="Terrain" size="64" frame="10"/>
+		<tile x="1904" y="608" name="Terrain" size="128" frame="2"/>
+		<tile x="2016" y="608" name="Terrain" size="128" frame="3"/>
+		<tile x="2208" y="608" name="Terrain" size="128" frame="2"/>
+		<tile x="2336" y="608" name="Terrain" size="128" frame="10"/>
+		<tile x="752" y="672" name="Terrain" size="128" frame="12"/>
+		<tile x="880" y="672" name="Terrain" size="128" frame="12"/>
+		<tile x="1008" y="672" name="Terrain" size="128" frame="12"/>
+		<tile x="1120" y="672" name="Terrain" size="128" frame="12"/>
+		<tile x="1248" y="672" name="Terrain" size="128" frame="12"/>
+		<tile x="1376" y="672" name="Terrain" size="128" frame="12"/>
+		<tile x="1248" y="624" name="Terrain" size="64" frame="12"/>
+		<tile x="1280" y="608" name="Terrain" size="64" frame="12"/>
+		<tile x="1344" y="608" name="Terrain" size="64" frame="12"/>
+		<tile x="1392" y="608" name="Terrain" size="64" frame="12"/>
+		<tile x="1424" y="608" name="Terrain" size="64" frame="12"/>
+		<tile x="1488" y="608" name="TerrainMisc" size="32" frame="1"/>
+		<tile x="1488" y="640" name="Terrain" size="32" frame="12"/>
+		<tile x="1504" y="672" name="Terrain" size="32" frame="12"/>
+		<tile x="1440" y="672" name="Terrain" size="128" frame="12"/>
+		<tile x="1552" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="1616" y="736" name="TerrainMisc" size="32" frame="1"/>
+		<tile x="1616" y="768" name="Terrain" size="32" frame="12"/>
+		<tile x="1936" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="2000" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="1904" y="768" name="Terrain" size="32" frame="12"/>
+		<tile x="2144" y="736" name="Terrain" size="64" frame="10"/>
+		<tile x="2208" y="768" name="Terrain" size="32" frame="12"/>
+		<tile x="2240" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="2304" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="2368" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="2400" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="736" y="672" name="Terrain" size="64" frame="12"/>
+		<tile x="688" y="704" name="Terrain" size="64" frame="12"/>
+		<tile x="704" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="704" y="672" name="TerrainMisc" size="32" frame="16"/>
+		<tile x="992" y="608" name="TerrainMisc" size="32" frame="17"/>
+		<tile x="960" y="608" name="Terrain" size="32" frame="12"/>
+		<tile x="960" y="640" name="Terrain" size="32" frame="12"/>
+		<tile x="992" y="640" name="Terrain" size="32" frame="12"/>
+		<tile x="1264" y="608" name="TerrainMisc" size="32" frame="16"/>
+		<tile x="1840" y="736" name="Terrain" size="64" frame="10"/>
+		<tile x="2464" y="608" name="Terrain" size="128" frame="10"/>
+		<tile x="2592" y="608" name="Terrain" size="128" frame="10"/>
+		<tile x="2704" y="608" name="Terrain" size="128" frame="10"/>
+		<tile x="2464" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="2528" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="2592" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="2656" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="2688" y="736" name="Terrain" size="64" frame="12"/>
+		<tile x="1904" y="736" name="TerrainMisc" size="32" frame="16"/>
+		<tile x="2112" y="736" name="TerrainMisc" size="32" frame="17"/>
+		<tile x="2064" y="768" name="Terrain" size="32" frame="12"/>
+		<tile x="2064" y="736" name="Terrain" size="32" frame="12"/>
+		<tile x="2096" y="736" name="Terrain" size="32" frame="12"/>
+		<tile x="2096" y="768" name="Terrain" size="32" frame="12"/>
+		<tile x="2112" y="768" name="Terrain" size="32" frame="12"/>
+		<tile x="2208" y="736" name="TerrainMisc" size="32" frame="16"/>
+	</tiles>
+</terrain>

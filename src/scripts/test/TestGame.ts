@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
@@ -10,7 +10,6 @@ import { XTask } from '../../engine/task/XTask';
 import { XTaskManager} from '../../engine/task/XTaskManager';
 import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
 import { XWorld} from '../../engine/sprite/XWorld';
-import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { XState } from '../../engine/state/XState';
 import { OctopusBug } from './OctopusBug';

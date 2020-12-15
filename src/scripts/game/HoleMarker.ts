@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
@@ -10,7 +10,6 @@ import { XTask } from '../../engine/task/XTask';
 import { XTaskManager} from '../../engine/task/XTaskManager';
 import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
 import { XWorld} from '../../engine/sprite/XWorld';
-import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { TerrainContainer } from '../terrain/TerrainContainer';
@@ -66,14 +65,14 @@ export class HoleMarker extends XGameObject {
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
         this.m_sprite = this.createAnimatedSprite ("HoleMarker");
-        this.addSortableChild (this.m_sprite, 0, GolfGame.PLAYFIELD_FRONT_DEPTH, false);
+        this.addSortableChild (this.m_sprite, GolfGame.PLAYFIELD_FRONT_LAYER, GolfGame.PLAYFIELD_FRONT_DEPTH, false);
 
         this.show ();
     }
 
 //------------------------------------------------------------------------------------------
 	public setCollisions ():void {
-		(G.appX as GolfGameInstance).getHoleCollisionList ().addCollision (this.getLayer (), this, this.getPos (), this.getCX ());
+		(G.appX as GolfGameInstance).getHoleCollisionList ().addCollision (0, this, this.getPos (), this.getCX ());
 	}
 
 //------------------------------------------------------------------------------------------

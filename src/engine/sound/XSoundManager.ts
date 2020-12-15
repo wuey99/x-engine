@@ -14,6 +14,8 @@ export interface SoundHandle {
     id: number;
     complete: any;
     end: any;
+    loops: number;
+    volume: number;
 }
 
 //------------------------------------------------------------------------------------------
@@ -55,6 +57,7 @@ export class XSoundManager {
         __priority:number = 1.0,
         __loops:number = 0,
         __volume:number = 1.0,
+        __mute:boolean = false,
         __successListener?:any,
         __completeListener?:any
         ):number {
@@ -64,6 +67,7 @@ export class XSoundManager {
 
         __sound.loop (__loops > 0, __id);
         __sound.volume (__volume, __id);
+        __sound.mute (__mute, __id);
 
         var __guid:number = XSoundManager.g_GUID++;
 
@@ -74,9 +78,15 @@ export class XSoundManager {
         var __end:any;
 
         __sound.on ("end", __end = () => {
-            this.removeSound (__guid);
+            var __soundHandle:SoundHandle = this.m_sounds.get (__guid);
 
-            // console.log (": sound end: ", __resourceName);
+            if (__soundHandle.loops > 0) {
+                __sound.play (__soundHandle.id);
+                __sound.loop (__soundHandle.loops > 0, __soundHandle.id);
+                __sound.volume (__soundHandle.volume, __soundHandle.id)
+            } else {
+                this.removeSound (__guid);
+            }
         });
 
         this.m_sounds.set (__guid,
@@ -85,7 +95,9 @@ export class XSoundManager {
                 sound: __sound,
                 id: __id,
                 complete: __completeListener,
-                end: __end
+                end: __end,
+                loops: __loops,
+                volume: __volume,
             }
         );
         

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<layers world="Mars" name="test">
-	<background x="0" y="0"/>
+<layers world="Mars" name="Mars">
+	<background x="360" y="0"/>
 	<foreground x="0" y="0"/>
-	<platform x="320" y="192"/>
-    <terrain x="0" y="16"/>
+	<platform x="363.57816092843893" y="883.4129936591748"/>
+	<terrain x="-1.9116968481683898" y="88.9034320974273"/>
 </layers>

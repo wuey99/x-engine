@@ -1,34 +1,25 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
-import { XApp } from '../../engine/app/XApp';
-import { XSprite } from '../../engine/sprite/XSprite';
-import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
-import { XSignal } from '../../engine/signals/XSignal';
-import { XSignalManager } from '../../engine/signals/XSignalManager';
-import { world } from '../app';
-import { XTask } from '../../engine/task/XTask';
-import { XTaskManager} from '../../engine/task/XTaskManager';
-import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
-import { XWorld} from '../../engine/sprite/XWorld';
-import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
-import { XType } from '../../engine/type/XType';
-import { XGameObject} from '../../engine/gameobject/XGameObject';
-import { EnemyX } from '../test/EnemyX';
-import { TerrainContainer } from '../terrain/TerrainContainer';
 import * as Matter from 'matter-js';
-import { Reticle } from './Reticle';
+import * as PIXI from 'pixi.js-legacy';
+import { G } from '../../engine/app/G';
+import { XGameObject } from '../../engine/gameobject/XGameObject';
+import { XSignal } from '../../engine/signals/XSignal';
+import { XWorld } from '../../engine/sprite/XWorld';
+import { XTask } from '../../engine/task/XTask';
 import { GolfGame } from '../game/GolfGame';
 import { GolfGameInstance } from '../game/GolfGameInstance';
-import { G } from '../../engine/app/G';
+import { TerrainContainer } from '../terrain/TerrainContainer';
 import { BallFire } from './BallFire';
+import { Reticle } from './Reticle';
+import { TrackingArrow } from './TrackingArrow';
 
 //------------------------------------------------------------------------------------------
 export class GolfBall extends XGameObject {
     public m_sprite:PIXI.AnimatedSprite;
-    public x_sprite:XDepthSprite;
 
 	public m_reticle:Reticle;
 	public m_ballFire:BallFire;
+	public m_trackingArrow:TrackingArrow;
 
 	public m_ballInHoleSignal:XSignal;
 	public m_ballOutrgSignal:XSignal;
@@ -97,24 +88,30 @@ export class GolfBall extends XGameObject {
 
 		this.checkCollisions ();
 		
+		this.calculateBallSpeed ();
+
         this.addTask ([
             XTask.LABEL, "loop",
                 XTask.WAIT, 0x0100,
 
                 () => {
-                    this.m_ballFire.angle = this.m_ballAngle;
+					this.m_ballFire.angle = this.m_ballAngle;
+					this.m_trackingArrow.x = this.x;
+					this.m_trackingArrow.y = -this.m_terrainContainer.y + 36;
                 },
 
                 XTask.GOTO, "loop",
             XTask.RETN,
 		]);
-		
+
 		return this;
 	}
 	
 //------------------------------------------------------------------------------------------
 	public cleanup():void {
-        super.cleanup ();
+		super.cleanup ();
+		
+		this.m_trackingArrow.nukeLater ();
 	}
 	
 //------------------------------------------------------------------------------------------
@@ -123,7 +120,7 @@ export class GolfBall extends XGameObject {
 		// this.addSpriteAsChild (this.m_sprite, -44/2, -44/2, 0, GolfGame.PLAYFIELD_FRONT_DEPTH, false);
 
 		this.m_sprite = this.createAnimatedSprite ("GolfBall");
-		this.addSortableChild (this.m_sprite, 0, GolfGame.PLAYFIELD_FRONT_DEPTH, false);
+		this.addSortableChild (this.m_sprite, GolfGame.PLAYFIELD_FRONT_LAYER, GolfGame.PLAYFIELD_FRONT_DEPTH, false);
 
 		this.show ();
 	}
@@ -134,6 +131,9 @@ export class GolfBall extends XGameObject {
 
 		this.m_ballFire = this.addGameObjectAsChild (BallFire, this.getLayer (), this.getDepth () - 1.0) as BallFire;
 		this.m_ballFire.afterSetup ([this]);
+
+		this.m_trackingArrow = this.m_terrainContainer.addGameObjectAsChild (TrackingArrow, this.getLayer (), this.getDepth () - 1.0) as TrackingArrow;
+		this.m_trackingArrow.afterSetup ([this]);
 	}
 	
 //------------------------------------------------------------------------------------------
@@ -152,7 +152,7 @@ export class GolfBall extends XGameObject {
 			this.m_reticle.nukeLater ();
 		}
 	}
-	
+
 //------------------------------------------------------------------------------------------
 	public checkCollisions ():void {
 		this.addTask ([
@@ -163,7 +163,7 @@ export class GolfBall extends XGameObject {
 					var __gameObject:XGameObject
 					
 					__gameObject = (G.appX as GolfGameInstance).getHoleCollisionList ().findCollision (
-						this.getLayer (), this.getPos (), this.getCX ()
+						0, this.getPos (), this.getCX ()
 					);
 
 					if (!this.m_ballInHole && __gameObject != null) {
@@ -173,13 +173,25 @@ export class GolfBall extends XGameObject {
 					}
 
 					__gameObject = (G.appX as GolfGameInstance).getBorderCollisionList ().findCollision (
-						this.getLayer (), this.getPos (), this.getCX ()
+						0, this.getPos (), this.getCX ()
 					);
 
 					if (__gameObject != null) {
 						console.log (": border collision: ", __gameObject);
 
 						this.m_ballOutrgSignal.fireSignal ();
+					}
+
+					__gameObject = (G.appX as GolfGameInstance).getTopCollisionList ().findCollision (
+						0, this.getPos (), this.getCX ()
+					);
+
+					if (__gameObject != null) {
+						console.log (": top collision: ", __gameObject);
+
+						this.m_trackingArrow.visible = true;
+					} else {
+						this.m_trackingArrow.visible = false;
 					}
 				},
 
@@ -189,6 +201,11 @@ export class GolfBall extends XGameObject {
 		]);
 	}
 
+//--------------------------------------------------------------------------------------
+	public fireOutrgSignal ():void {
+		this.m_ballOutrgSignal.fireSignal ();
+	}
+	
 //--------------------------------------------------------------------------------------
 	public setAngle (__angle:number):void {
 		this.m_ballAngle = __angle;
@@ -309,6 +326,14 @@ export class GolfBall extends XGameObject {
 
 //------------------------------------------------------------------------------------------
 	public shootBall (__dx:number, __dy:number):void {
+		var __dist:number = Math.sqrt (__dx * __dx + __dy * __dy);
+		var __clampedDist:number = Math.min (360.0, __dist);
+
+		console.log (": shootBall: ", __clampedDist, __dist);
+
+		__dx = __clampedDist * __dx / __dist / 2048;
+		__dy = __clampedDist * __dy / __dist / 2948;
+
 		Matter.Body.applyForce (
 			this.getMatterBody (),
 			{
@@ -321,11 +346,62 @@ export class GolfBall extends XGameObject {
 			}
 		);
 
-		this.world.getSoundSubManager ().playSoundFromName ("Common_Sound_BallLaunched",
+		this.world.getSFXSoundManager ().playSoundFromName ("Common_Sound_BallLaunched",
 			1.0, 0, 1.0
 		);
 
 		this.m_ballFire.OnFire_Script ();
+	}
+
+	//------------------------------------------------------------------------------------------
+	public calculateBallSpeed ():void {
+		var __prevX:number = this.x;
+		var __prevY:number = this.y;
+
+		var __aggregateDistance:number = 0;
+		var __ticks:number = 0;
+
+		this.addTask ([
+			XTask.LABEL, "loop",
+				XTask.WAIT, 0x0100,
+
+				() => {
+					var __dx:number = this.x - __prevX;
+					var __dy:number = this.y - __prevY;
+
+					__aggregateDistance += Math.sqrt (__dx * __dx + __dy * __dy);
+					__ticks++;
+
+					__prevX = this.x;
+					__prevY = this.y;
+
+					this.m_ballAngle = Math.atan2 (__dy, __dx);
+
+					this.setAngle ((this.m_ballAngle * 180 / Math.PI + 90.0) % 360);
+				},
+
+				XTask.GOTO, "loop",
+
+			XTask.RETN,
+		]);
+
+		this.addTask ([
+			XTask.LABEL, "loop",
+				() => {
+					__aggregateDistance = 0;
+					__ticks = 0;
+				},
+
+				XTask.WAIT1000, 0.50 * 1000,
+
+				() => {
+					this.setSpeed (__aggregateDistance / __ticks);
+				},
+
+				XTask.GOTO, "loop",
+
+			XTask.RETN,
+		]);
 	}
 
 	//------------------------------------------------------------------------------------------

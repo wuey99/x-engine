@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
@@ -10,13 +10,11 @@ import { XTask } from '../../engine/task/XTask';
 import { XTaskManager} from '../../engine/task/XTaskManager';
 import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
 import { XWorld} from '../../engine/sprite/XWorld';
-import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { TerrainContainer } from '../terrain/TerrainContainer';
 import { XState } from '../../engine/state/XState';
 import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
-import { ForceVector } from './ForceVector';
 import { GolfBall } from './GolfBall';
 import * as Matter from 'matter-js';
 import {Howl, Howler} from 'howler';
@@ -26,15 +24,6 @@ import { GolfGame } from './GolfGame';
 
 //------------------------------------------------------------------------------------------
 export class WorldLevel extends GolfGame {
-
-//------------------------------------------------------------------------------------------
-    public loadLevel (__params:Array<any>):void {
-		this.m_worldName = __params[0];
-        this.m_terrain = __params[1];
-        
-        this.loadLayers ("levels/" + this.m_worldName + "_Layers.xml");
-        this.loadTerrain ("levels/Terrain" + this.m_terrain + ".xml");
-    }
 
 //------------------------------------------------------------------------------------------
 }

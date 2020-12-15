@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
@@ -10,14 +10,12 @@ import { XTask } from '../../engine/task/XTask';
 import { XTaskManager} from '../../engine/task/XTaskManager';
 import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
 import { XWorld} from '../../engine/sprite/XWorld';
-import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 
 //------------------------------------------------------------------------------------------
 export class SidePanel_ForceNeedle extends XGameObject {
     public m_sprite:PIXI.Sprite;
-    public x_sprite:XDepthSprite;
 
     public m_worldName:string;
 
@@ -52,7 +50,7 @@ export class SidePanel_ForceNeedle extends XGameObject {
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
         this.m_sprite = this.createSprite (this.m_worldName + "_Sprites_ForceNeedle");
-        this.addSpriteAsChild (this.m_sprite, -31, -88, 0, 999999.0 + 1.0, false);
+        this.addSpriteAsChild (this.m_sprite, -31, -88, this.getLayer (), this.getDepth () + 1.0, false);
 
         this.show ();
     }

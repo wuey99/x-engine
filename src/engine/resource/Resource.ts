@@ -1,20 +1,25 @@
 //------------------------------------------------------------------------------------------
+import * as PIXI from 'pixi.js-legacy';
 import { XApp } from "../app/XApp";
 
 //------------------------------------------------------------------------------------------
 export class Resource {
 
     public m_path:string;
+    public loader:PIXI.Loader;
     public m_loadComplete:boolean;
+    public m_isDead:boolean;
 
     //------------------------------------------------------------------------------------------		
     constructor () {
         this.m_loadComplete = false;
+        this.m_isDead = false;
     }
 
     //------------------------------------------------------------------------------------------
-    public setup (__path:string):void {
+    public setup (__path:string, __loader:PIXI.Loader):void {
         this.m_path = __path;
+        this.loader = __loader;
     }
 
     //------------------------------------------------------------------------------------------
@@ -23,6 +28,9 @@ export class Resource {
 
     //------------------------------------------------------------------------------------------
     public cleanup ():void {
+        console.log (": resource: cleanup: ", this.m_path);
+
+        this.m_isDead = true;
     }
 
     //------------------------------------------------------------------------------------------

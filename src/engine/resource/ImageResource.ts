@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js';
+import * as PIXI from 'pixi.js-legacy';
 import { XApp } from "../app/XApp";
 import { Resource } from './Resource';
 
@@ -12,23 +12,26 @@ export class ImageResource extends Resource {
     }
 
     //------------------------------------------------------------------------------------------
-    public setup (__path:string):void {
-        super.setup (__path);
-    }
-
-    //------------------------------------------------------------------------------------------
     public load ():void {
-		PIXI.Loader.shared.add (this.m_path).load (() => {
-            console.log (": ImageResource: loadComplete: ", this);
+		this.loader.add (this.m_path).load (() => {
+            // console.log (": ImageResource: loadComplete: ", this);
 
-            this.m_loadComplete = true;
+            if (this.m_isDead) {
+                console.log (": isDead: ", this.m_path);
+
+                if (this.getResource () != null) {
+                    (this.getResource () as PIXI.Texture).destroy ();
+                }
+            } else {
+                this.m_loadComplete = true;
+            }
         });
     }
 
     //------------------------------------------------------------------------------------------
     public getResource ():any {
         if (this.getLoadComplete ()) {
-            return PIXI.Loader.shared.resources[this.m_path].texture;
+            return this.loader.resources[this.m_path].texture;
         } else {
             return null;
         }
@@ -36,6 +39,13 @@ export class ImageResource extends Resource {
 
     //------------------------------------------------------------------------------------------
     public cleanup ():void {
+        super.cleanup ();
+
+        if (this.getResource () != null) {
+            (this.getResource () as PIXI.Texture).destroy ();
+        } else {
+            console.log (": error: ", this.m_path);
+        }
     }
 
 //------------------------------------------------------------------------------------------

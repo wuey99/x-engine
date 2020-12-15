@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
@@ -10,7 +10,6 @@ import { XTask } from '../../engine/task/XTask';
 import { XTaskManager} from '../../engine/task/XTaskManager';
 import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
 import { XWorld} from '../../engine/sprite/XWorld';
-import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import * as Matter from 'matter-js';
@@ -21,11 +20,14 @@ import { XPoint } from '../../engine/geom/XPoint';
 //------------------------------------------------------------------------------------------
 export class TerrainTile extends XGameObject {
     public m_sprite:PIXI.AnimatedSprite;
-    public x_sprite:XDepthSprite;
 
 	public m_size:number;
 	public m_world:string;
 	public m_frame:number;
+
+    public m_editFlag:boolean;
+
+    public m_vertices:Array<any>;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -47,7 +49,8 @@ export class TerrainTile extends XGameObject {
         this.y = __params[1];
 		this.m_size = __params[2] as number;
 		this.m_world = __params[3] as string;
-		this.m_frame = __params[4] as number;
+        this.m_frame = __params[4] as number;
+        this.m_editFlag = __params[5] as boolean;
 
         this.createSprites ();
 
@@ -57,16 +60,24 @@ export class TerrainTile extends XGameObject {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup():void {
+	public cleanup ():void {
         super.cleanup ();
 	}
     
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
         this.m_sprite = this.createAnimatedSprite (this.m_world + "_" + this.getName () + this.m_size + "x" + this.m_size);
-        this.addSortableChild (this.m_sprite, this.getLayer (), this.getDepth (), true);
+        if (this.m_editFlag) {
+            this.addSortableChild (this.m_sprite, this.getLayer (), this.getDepth (), true);
+        } else {
+            this.addSpriteToSelf (this.m_sprite, 0, 0);
+        }
+        this.m_sprite.scale.x = 1 + 1 / this.m_size;
+        this.m_sprite.scale.y = 1 + 1 / this.m_size;
 
         this.m_sprite.gotoAndStop (this.m_frame);
+
+        this.m_sprite.visible = true;
 
         this.show ();
     }
@@ -98,7 +109,7 @@ export class TerrainTile extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
-    public static calculateCenter (__frame:number, __size:number):XPoint {   
+    public calculateCenter (__frame:number, __size:number):XPoint {   
         var __shape2Vertices:Array<Array<any>> =
         [
             // frame 1, UL45
@@ -474,12 +485,79 @@ export class TerrainTile extends XGameObject {
             __vertex.y *= this.getSize ();
         }
 
+        this.m_vertices = __vertices;
+
         this.attachMatterBodyVertices (
             Matter.Bodies.fromVertices (this.x, this.y, __vertices, { isStatic: true, angle: 0 }),
             __vertices,
             true
         );
     }
+
+//------------------------------------------------------------------------------------------
+    public getVertices ():Array<any> {
+        return this.m_vertices;
+    }
+
+
+//------------------------------------------------------------------------------------------
+    public pointInPoly (px:number, py:number):boolean {
+        var collision:boolean = false;
+
+        // go through each of the vertices, plus
+        // the next vertex in the list
+        var next:number = 0;
+        var current:number;
+
+        for (current=0; current < this.m_vertices.length; current++) {
+      
+          // get next vertex in list
+          // if we've hit the end, wrap around to 0
+          next = current+1;
+          if (next == this.m_vertices.length) next = 0;
+      
+          // get the vectors at our current position
+          // this makes our if statement a little cleaner
+          var vc:any = this.m_vertices[current];    // c for "current"
+          var vn:any = this.m_vertices[next];       // n for "next"
+      
+          // compare position, flip 'collision' variable
+          // back and forth
+
+          var vc_x:number = this.x + vc.x;
+          var vc_y:number = this.y + vc.y;
+          var vn_x:number = this.x + vn.x;
+          var vn_y:number = this.y + vn.y;
+
+          if (((vc_y >= py && vn_y < py) || (vc_y < py && vn_y >= py)) &&
+               (px < (vn_x-vc_x)*(py-vc_y) / (vn_y-vc_y)+vc_x)) {
+                  collision = !collision;
+          }
+        }
+        return collision;
+    }
+
+//------------------------------------------------------------------------------------------
+    public getVerticesAsArray ():Array<any> {
+        var __vertices:Array<any> = new Array<any> ();
+
+        var i:number;
+
+        for (i = 0; i < this.m_vertices.length; i++) {
+            __vertices.push ([
+                this.x + this.m_vertices[i].x, this.y + this.m_vertices[i].y
+            ]);
+        }
+
+        return __vertices;
+    }
+
+//------------------------------------------------------------------------------------------
+        /*
+        [
+            [[6,6],[8,8],[25,8],[25,6]]
+        ];
+        */
 
 //------------------------------------------------------------------------------------------
 }

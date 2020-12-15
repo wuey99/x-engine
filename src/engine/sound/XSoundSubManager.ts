@@ -15,6 +15,7 @@ export class XSoundSubManager {
     public m_sounds:Map<number, number>;
     public m_maxChannels:number;
     public m_numChannels:number;
+    public m_muted:boolean;
 
     //------------------------------------------------------------------------------------------		
     constructor (__manager:XSoundManager) {
@@ -24,6 +25,7 @@ export class XSoundSubManager {
 
         this.m_maxChannels = 8;
         this.m_numChannels = 0;
+        this.m_muted = false;
     }
 
 //------------------------------------------------------------------------------------------
@@ -56,6 +58,7 @@ export class XSoundSubManager {
             __priority,
             __loops,
             __volume,
+            this.m_muted,
             (__guid:number) => {
                 this.m_sounds.set (__guid, __priority);
                 this.m_numChannels++;
@@ -73,6 +76,18 @@ export class XSoundSubManager {
                     this.m_sounds.delete (__guid);	
                     this.m_numChannels--;
                 }
+            }
+        );
+    }
+
+//------------------------------------------------------------------------------------------
+    public mute (__mute:boolean):void {
+        this.m_muted = __mute;
+
+        XType.forEach (this.getSounds (), 
+            (__guid:number) => {
+                var __soundHandle:SoundHandle = this.getSoundHandle (__guid);
+                __soundHandle.sound.mute (__mute, __soundHandle.id);
             }
         );
     }
@@ -136,6 +151,11 @@ export class XSoundSubManager {
                 this.removeSound (__guid);
             }
         );
+     }
+
+     //------------------------------------------------------------------------------------------
+     public getSounds ():Map<number, number> {
+        return this.m_sounds;
      }
 
      //------------------------------------------------------------------------------------------

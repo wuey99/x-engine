@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
@@ -10,7 +10,6 @@ import { XTask } from '../../engine/task/XTask';
 import { XTaskManager} from '../../engine/task/XTaskManager';
 import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
 import { XWorld} from '../../engine/sprite/XWorld';
-import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { GameLayer } from './GameLayer';
@@ -22,7 +21,7 @@ import { GolfGame } from '../game/GolfGame';
 
 //------------------------------------------------------------------------------------------
 export class GameLayersContainer extends XGameObject {
-    public m_worldName:string;;
+    public m_worldName:string;
     public m_levelName:string;	
 
     public m_bgLayer:GameLayer;
@@ -72,15 +71,14 @@ export class GameLayersContainer extends XGameObject {
 
 //------------------------------------------------------------------------------------------
 	public createLayers ():void {
-		if (this.m_XApp.getResourceByName (this.getWorldName () + "_Layers_BackgroundX") != null) {
-			this.m_bgLayer = this.addGameObjectAsChild (GameLayer, 0, GolfGame.BACKGROUND_DEPTH) as GameLayer;
-			this.m_bgLayer.afterSetup ([this.getWorldName () + "_Layers_BackgroundX"])
+		if (false && this.m_XApp.getResourceByName (this.getWorldName () + "_Layers_BackgroundX") != null) {
+			this.m_bgLayer = this.addGameObjectAsChild (GameLayer, GolfGame.BACKGROUND_LAYER, GolfGame.BACKGROUND_DEPTH) as GameLayer;
+			this.m_bgLayer.afterSetup ([this.getWorldName () + "_Layers_BackgroundX"]);
 		}
 
 		if (this.m_XApp.getResourceByName (this.getWorldName () + "_Layers_PlatformX") != null) {
-			this.m_platformLayer = this.addGameObjectAsChild (GameLayer, 0, GolfGame.PLATFORM_DEPTH) as GameLayer;
+			this.m_platformLayer = this.addGameObjectAsChild (GameLayer, GolfGame.PLATFORM_LAYER, GolfGame.PLATFORM_DEPTH) as GameLayer;
 			this.m_platformLayer.afterSetup ([this.getWorldName () + "_Layers_PlatformX"])
-			this.m_platformLayer.y = 384;
 		}
 	}
 

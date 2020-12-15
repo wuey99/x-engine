@@ -1,4 +1,5 @@
 //------------------------------------------------------------------------------------------
+import * as PIXI from 'pixi.js-legacy';
 import { XApp } from "../app/XApp";
 import { Resource} from './Resource';
 import { SpriteSheetResource } from './SpriteSheetResource';
@@ -18,8 +19,13 @@ export class XResourceManager {
     public m_XApp:XApp;
     public m_projectManager:XProjectManager;
     public m_resourceMap:Map<string, Resource>;
-    public m_queue:Array<Resource>;
-    public m_typeMap:Map<string, any>;
+    public m_queues:Array<Array<Resource>>;
+    public loaders:Array<PIXI.Loader>;
+    public m_paused:boolean;
+    public m_loadedFiles:number;
+    public m_totalFiles:number;
+
+    public static NUM_QUEUES:number = 4; // has to be a power of two.
 
     //------------------------------------------------------------------------------------------		
     constructor (__XApp:XApp, __projectManager:XProjectManager) {
@@ -27,26 +33,68 @@ export class XResourceManager {
         this.m_projectManager = __projectManager;
 
         this.m_resourceMap = new Map<string, Resource> ();
-        this.m_queue = new Array<Resource> ();
-        this.m_typeMap = new Map<string, any> ();
+        this.m_queues = new Array<Array<Resource>> ();
+        this.loaders = new Array<PIXI.Loader> ();
 
-        this.checkQueueTask ();
+        this.m_paused = false;
+
+        this.m_loadedFiles = 0;
+        this.m_totalFiles = 0;
+
+        var i:number;
+
+        for (i = 0; i < XResourceManager.NUM_QUEUES; i++) {
+            this.m_queues.push (new Array<Resource> ());
+            this.loaders.push (new PIXI.Loader ());
+
+            this.checkQueueTask (i);
+        }
     }
 
     //------------------------------------------------------------------------------------------
     public cleanup ():void {
+        var __name:string;
+
+        console.log (": XResourceManager: cleanup: ");
+
+        for (__name of this.m_resourceMap.keys ()) {
+            var __resource:Resource = this.m_resourceMap.get (__name);
+            __resource.cleanup ();
+
+            this.m_resourceMap.delete (__name);
+        }
+
+        var __loader:PIXI.Loader;
+
+        for (__loader of this.loaders) {
+            __loader.destroy ();
+        }
     }
 
     //------------------------------------------------------------------------------------------
-    public checkQueueTask ():void {
+    public pause ():void {
+        this.m_paused = true;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public start ():void {
+        this.m_paused = false;
+    }
+    
+    //------------------------------------------------------------------------------------------
+    public checkQueueTask (__queueIndex:number):void {
         var __currentResource:Resource = null;
 
         this.m_XApp.getXTaskManager ().addTask ([
             XTask.LABEL, "loop",
                 XTask.WAIT, 0x0100,
                     XTask.FLAGS, (__task:XTask) => {
-                        if (this.m_queue.length > 0) {
-                            __currentResource = this.m_queue.pop ();
+                        __task.ifTrue (this.m_paused);
+                    }, XTask.BEQ, "loop",
+
+                    XTask.FLAGS, (__task:XTask) => {
+                        if (this.m_queues[__queueIndex].length > 0) {
+                            __currentResource = this.m_queues[__queueIndex].pop ();
 
                             __currentResource.load ();
 
@@ -60,10 +108,12 @@ export class XResourceManager {
                 XTask.WAIT, 0x0100,
 
                 XTask.FLAGS, (__task:XTask) => {
-                    console.log (": queue: ", __currentResource, __currentResource.getLoadComplete ());
-
                     __task.ifTrue (__currentResource.getLoadComplete ());
                 }, XTask.BNE, "wait",
+
+                () => {
+                    this.m_loadedFiles++;
+                },
 
             XTask.GOTO, "loop",
 
@@ -72,24 +122,42 @@ export class XResourceManager {
     }
 
     //------------------------------------------------------------------------------------------
-    public registerType (__type:string, __class:any):void {
-        this.m_typeMap.set (__type, __class);
+    public getLoadedFiles ():number {
+        return this.m_loadedFiles;
     }
 
     //------------------------------------------------------------------------------------------
-    public loadResources (__resourceList:Array<ResourceSpec>):void {
+    public getTotalFiles ():number {
+        return this.m_totalFiles;
+    }
+    
+    //------------------------------------------------------------------------------------------
+    public queueResources (__resourceList:Array<ResourceSpec>):void {
+        this.loadResources (__resourceList, true);
+    }
+
+    //------------------------------------------------------------------------------------------
+    public loadResources (__resourceList:Array<ResourceSpec>, __paused:boolean = false):void {
+        this.m_paused = __paused;
+
         var __resourceSpec:ResourceSpec;
 
         console.log (": resourceList: ", __resourceList);
+
+        var __queueIndex:number = 0;
 
         for (__resourceSpec of __resourceList) {
             if (this.m_resourceMap.get (__resourceSpec.name) == null) {
                 var __resource:Resource;
 
-                __resource = XType.createInstance (this.m_typeMap.get (__resourceSpec.type));
-                __resource.setup (this.m_projectManager.translateAlias (__resourceSpec.path));
+                __resource = XType.createInstance (this.m_projectManager.getTypeMap ().get (__resourceSpec.type));
+                __resource.setup (this.m_projectManager.translateAlias (__resourceSpec.path), this.loaders[__queueIndex]);
 
-                this.m_queue.push (__resource);
+                this.m_queues[__queueIndex].push (__resource);
+
+                __queueIndex = (__queueIndex + 1) & (XResourceManager.NUM_QUEUES - 1);
+                
+                this.m_totalFiles++;
 
                 this.m_resourceMap.set (__resourceSpec.name, __resource);
             }

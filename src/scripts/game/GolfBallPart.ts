@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
@@ -10,7 +10,6 @@ import { XTask } from '../../engine/task/XTask';
 import { XTaskManager} from '../../engine/task/XTaskManager';
 import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
 import { XWorld} from '../../engine/sprite/XWorld';
-import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { EnemyX } from '../test/EnemyX';
@@ -24,7 +23,6 @@ import { G } from '../../engine/app/G';
 //------------------------------------------------------------------------------------------
 export class GolfBallPart extends XGameObject {
     public m_sprite:PIXI.AnimatedSprite;
-    public x_sprite:XDepthSprite;
 
     public script:XTask;
 
@@ -64,7 +62,7 @@ export class GolfBallPart extends XGameObject {
         this.scale.x = this.scale.y = 1.5;
 
         this.Spin_Script ();
-
+		
 		return this;
 	}
 	
@@ -76,7 +74,7 @@ export class GolfBallPart extends XGameObject {
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
 		this.m_sprite = this.createAnimatedSprite ("GolfBall");
-		this.addSortableChild (this.m_sprite, 0, GolfGame.PLAYFIELD_FRONT_DEPTH + 1.0, false);
+		this.addSortableChild (this.m_sprite, GolfGame.PLAYFIELD_FRONT_LAYER, GolfGame.PLAYFIELD_FRONT_DEPTH + 1.0, false);
         this.m_sprite.gotoAndStop (this.m_frame + 2);
 
 		this.show ();

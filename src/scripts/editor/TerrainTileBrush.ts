@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
@@ -10,7 +10,6 @@ import { XTask } from '../../engine/task/XTask';
 import { XTaskManager} from '../../engine/task/XTaskManager';
 import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
 import { XWorld} from '../../engine/sprite/XWorld';
-import { XDepthSprite} from '../../engine/sprite/XDepthSprite';
 import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { XPoint } from '../../engine/geom/XPoint';
@@ -20,7 +19,6 @@ import { TerrainContainer } from '../terrain/TerrainContainer';
 //------------------------------------------------------------------------------------------
 export class TerrainTileBrush extends XGameObject {
     public m_sprite:PIXI.AnimatedSprite;
-    public x_sprite:XDepthSprite;
     
     public m_name:string;
 	public m_size:number;
@@ -67,7 +65,9 @@ export class TerrainTileBrush extends XGameObject {
             XTask.WAIT, 0x0800,
 
             () => {
-                this.m_XApp.getStage ().on ("mousedown", this.dropTile.bind (this));
+                // this.m_XApp.getStage ().on ("mousedown", this.dropTile.bind (this));
+                
+                this.addStageEventListenerX ("mousedown", this.dropTile.bind (this));
             },
 
             XTask.RETN,
@@ -80,7 +80,7 @@ export class TerrainTileBrush extends XGameObject {
 	public cleanup ():void {
         super.cleanup ();
 
-        this.m_XApp.getStage ().off ("mousedown", this.dropTile.bind (this));
+        // this.m_XApp.getStage ().off ("mousedown", this.dropTile.bind (this));
 	}
    
 //------------------------------------------------------------------------------------------

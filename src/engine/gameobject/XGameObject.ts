@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../app/XApp';
 import { XSprite } from '../sprite/XSprite';
 import { XSpriteLayer } from '../sprite/XSpriteLayer';
@@ -24,12 +24,13 @@ export class XGameObject extends PIXI.Sprite {
 	public m_selfObjects:Map<XGameObject, number>;	
 	public m_worldObjects:Map<XGameObject, number>;
 	public m_childObjects:Map<XGameObject, number>;
-	public m_selfSprites:Map<PIXI.Sprite, number>;
+	public m_selfSprites:Map<PIXI.DisplayObject, number>;
 	public m_childSprites:Map<PIXI.DisplayObject, number>;
-	public m_worldSprites:Map<PIXI.Sprite, number>;	
+	public m_worldSprites:Map<PIXI.DisplayObject, number>;	
 	public m_animatedSprites:Map<string, PIXI.AnimatedSprite>;
 	public m_sprites:Map<string, PIXI.Sprite>;
 	public m_signals:Map<XSignal, number>;
+	public m_bitmapFonts:Map<string, number>;
 	public m_XTaskSubManager:XTaskSubManager;
 	public m_killSignal:XSignal;
 	public m_parent:XGameObject;
@@ -50,6 +51,7 @@ export class XGameObject extends PIXI.Sprite {
 	public m_namedCX:Map<string, XRect>;
 	public m_pos:XPoint;
 	public m_vel:XPoint;
+	public m_propagateCount:number;
 
 	public m_attachedMatterBody:Body;
 	public m_attachedDebugSprite:PIXI.Sprite;
@@ -63,15 +65,41 @@ export class XGameObject extends PIXI.Sprite {
 	public m_touchEndSignal:XSignal;
 
 	public m_mousePoint:XPoint;
+	public m_touchPoint:XPoint;
 
 	public static g_XApp:XApp;
 
 	public m_stageEvents:Map<any, string>;
 	public m_stageEventsX:Map<any, __PausableListener>;
 
+	public m_poolClass:any;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
+
+		this.m_worldObjects = new Map<XGameObject, number> ();
+		this.m_childObjects = new Map<XGameObject, number> ();
+		this.m_selfObjects = new Map<XGameObject, number> ();
+		this.m_selfSprites = new Map<PIXI.DisplayObject, number> ();
+		this.m_childSprites = new Map<PIXI.DisplayObject, number> ();
+		this.m_worldSprites = new Map<PIXI.DisplayObject, number> ();
+		this.m_animatedSprites = new Map<string, PIXI.AnimatedSprite> ();
+		this.m_sprites = new Map<string, PIXI.Sprite> ();	
+		this.m_signals = new Map<XSignal, number> ();
+		this.m_bitmapFonts = new Map<string, number> ();
+		this.m_XTaskSubManager = new XTaskSubManager (XGameObject.getXApp ().getXTaskManager ());
+		this.m_parent = null;
+		this.m_XApp = XGameObject.g_XApp;
+		this.m_killSignal = this.createXSignal ();
+		this.m_mouseUpSignal = this.createXSignal ();
+		this.m_mouseDownSignal = this.createXSignal ();
+		this.m_touchStartSignal = this.createXSignal ();
+		this.m_touchEndSignal = this.createXSignal ();
+		this.m_cx = new XRect ();
+		this.m_pos = new XPoint ();
+		this.m_vel = new XPoint ();
+		this.m_mousePoint = new XPoint ();
 	}
 	
 //------------------------------------------------------------------------------------------
@@ -98,36 +126,44 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_isDead = false;
 		this.m_cleanedUp = false;
 		
+		this.m_poolClass = null;
+
+		/*
 		this.m_worldObjects = new Map<XGameObject, number> ();
 		this.m_childObjects = new Map<XGameObject, number> ();
 		this.m_selfObjects = new Map<XGameObject, number> ();
-		this.m_selfSprites = new Map<PIXI.Sprite, number> ();
+		this.m_selfSprites = new Map<PIXI.DisplayObject, number> ();
 		this.m_childSprites = new Map<PIXI.DisplayObject, number> ();
-		this.m_worldSprites = new Map<PIXI.Sprite, number> ();
+		this.m_worldSprites = new Map<PIXI.DisplayObject, number> ();
 		this.m_animatedSprites = new Map<string, PIXI.AnimatedSprite> ();
 		this.m_sprites = new Map<string, PIXI.Sprite> ();	
 		this.m_signals = new Map<XSignal, number> ();
+		this.m_bitmapFonts = new Map<string, number> ();
 		this.m_XTaskSubManager = new XTaskSubManager (XGameObject.getXApp ().getXTaskManager ());
 		this.m_parent = null;
 		this.m_XApp = XGameObject.g_XApp;
 		this.m_killSignal = this.createXSignal ();
+		this.m_mouseUpSignal = this.createXSignal ();
+		this.m_mouseDownSignal = this.createXSignal ();
+		this.m_touchStartSignal = this.createXSignal ();
+		this.m_touchEndSignal = this.createXSignal ();
+		this.m_mousePoint = new XPoint ();
+		this.m_cx = new XRect ();
+		this.m_pos = new XPoint ();
+		this.m_vel = new XPoint ();
+		*/
+
+		this.alpha = 1.0;
+		this.scale.x = this.scale.y = 1.0;
+		this.pivot.x = this.pivot.y = 1.0;
 
 		this.m_attachedMatterBody = null;
 		this.m_matterDX = 0;
 		this.m_matterDY = 0;
 		this.m_matterRotate = true;
 
-		this.m_mouseUpSignal = this.createXSignal ();
-		this.m_mouseDownSignal = this.createXSignal ();
-		this.m_touchStartSignal = this.createXSignal ();
-		this.m_touchEndSignal = this.createXSignal ();
-
-		this.m_mousePoint = new XPoint ();
-
 		this.m_stageEvents = new Map<any, string> ();
 		this.m_stageEventsX = new Map<any, __PausableListener> ();
-
-		this.m_cx = new XRect ();
 
 		this.m_cx.x = 0;
 		this.m_cx.y = 0;
@@ -135,10 +171,9 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_cx.height = 0;
 
 		this.m_namedCX = new Map<string, XRect> ()
-
-		this.m_pos = new XPoint ();
-		this.m_vel = new XPoint ();
 		
+		this.m_propagateCount = -1;
+
 		return this;
 	}
 	
@@ -156,14 +191,12 @@ export class XGameObject extends PIXI.Sprite {
 		this.removeAllSelfSprites ();
 		this.removeAllChildSprites ();
 		this.removeAllWorldSprites ();
-		this.removeAllBitmaps ();
-		this.removeAllXBitmaps ();
-		this.removeAllXTilemaps ();
 		this.removeAllXSignals ();
 		this.removeAllAnimatedSprites ();
 		this.removeAllSprites ();
 		this.removeAllStageEvents ();
 		this.removeAllStageEventsX ();
+		this.removeAllBitmapFonts ();
 
 		if (this.getParentObject () != null) { 
 			this.getParentObject ().removeSelfObject0 (this);
@@ -175,6 +208,10 @@ export class XGameObject extends PIXI.Sprite {
 
 		this.fireKillSignal();
 		
+		if (this.m_poolClass != null) {
+			this.world.getXLogicObjectPoolManager ().returnObject (this.m_poolClass, this);
+		}
+
 		this.m_isDead = true;
 		this.m_cleanedUp = true;
 	}
@@ -346,6 +383,18 @@ export class XGameObject extends PIXI.Sprite {
 
         return this.m_mousePoint;
 	}
+
+    //------------------------------------------------------------------------------------------
+    public getTouchPos ():XPoint {
+		var __point:XPoint = this.m_XApp.getTouchPos ();
+
+        this.m_touchPoint.x = __point.x;
+        this.m_touchPoint.y = __point.y;
+		
+		this.globalToLocal (this, this.m_touchPoint);
+
+        return this.m_touchPoint;
+	}
 	
 //------------------------------------------------------------------------------------------
 	public getVerticalPercent (__percent:number):number {
@@ -452,8 +501,6 @@ export class XGameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public createAnimatedSprite (__name:string):PIXI.AnimatedSprite {	
-		console.log (": XGameObject: createAnimatedSprite: ", __name);
-		
 		var sheet:PIXI.Spritesheet = world.getResourceByName (__name);
 
 		var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (sheet.animations["root"]);
@@ -527,9 +574,22 @@ export class XGameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
+	public addPooledGameObjectToWorld (__class:any, __layer:number = 0, __depth:number = 0.0):XGameObject {
+		if (this.world != null) {
+			var __gameObject = this.world.addPooledGameObject (__class, __layer, __depth);
+			
+			this.m_worldObjects.set (__gameObject, 0);
+			
+			return __gameObject;
+		}
+		
+		return null;
+	}
+
+//------------------------------------------------------------------------------------------
 	public addGameObjectAsChild (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
 		if (this.world != null) {
-			var __gameObject = this.world.addChildObject(__class, __layer, __depth, __visible);
+			var __gameObject = this.world.addChildObject (__class, __layer, __depth, __visible);
 			__gameObject.setParentObject (this);
 
 			this.m_childObjects.set (__gameObject, 0);
@@ -541,6 +601,20 @@ export class XGameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
+	public addPooledGameObjectAsChild (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+		if (this.world != null) {
+			var __gameObject = this.world.addPooledChildObject (__class, __layer, __depth, __visible);
+			__gameObject.setParentObject (this);
+
+			this.m_childObjects.set (__gameObject, 0);
+			
+			return __gameObject;
+		}
+		
+		return null;
+	}
+
+//------------------------------------------------------------------------------------------
 	public getParentObject ():XGameObject {
 		return this.m_parent;
 	}
@@ -550,6 +624,11 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_parent = __parent;
 	}
 	
+	//------------------------------------------------------------------------------------------
+	public setPoolClass (__class:any):void {
+		this.m_poolClass = __class;
+	}
+
 //------------------------------------------------------------------------------------------
 	public globalToLocal (__gameObject:XGameObject, __point:XPoint):XPoint {
 		// console.log (": XGameObject: globalToLocal: ", this.getParentObject ());
@@ -691,31 +770,20 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-    // TODO
-	public addSpriteAssetToSelf (bitmapName:string, __dx:number, __dy:number):PIXI.Sprite {
-		var __sprite:PIXI.Sprite = null; // TODO createSpriteFromAssets(bitmapName);
-		
-		return this.addSpriteToSelf (__sprite, __dx, __dy);
-	}
-	
-//------------------------------------------------------------------------------------------
-	public addSpriteToSelf (__sprite__:PIXI.Sprite, __dx:number, __dy:number):PIXI.Sprite {
-		var __sprite = new PIXI.Sprite();
-		__sprite.addChild(__sprite__);
-		
-		this.m_selfSprites.set (__sprite, 0);	
+	public addSpriteToSelf (__sprite__:PIXI.DisplayObject, __dx:number, __dy:number):PIXI.DisplayObject {
+		this.m_selfSprites.set (__sprite__, 0);	
 
-		__sprite__.x = __dx;
-		__sprite__.y = __dy;
+		__sprite__.pivot.x = -__dx;
+		__sprite__.pivot.y = -__dy;
 		
-		this.addChild (__sprite);	
+		this.addChild (__sprite__);	
 		
-		return __sprite;
+		return __sprite__;
 	}
 	
 //------------------------------------------------------------------------------------------
 	public removeAllSelfSprites ():void {
-        var __sprite:PIXI.Sprite;
+        var __sprite:PIXI.DisplayObject;
 
 		for (__sprite of this.m_selfSprites.keys ()) {
             this.m_selfSprites.delete (__sprite);
@@ -731,24 +799,13 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-    // TODO
-	public addSpriteAssetAsChild (bitmapName:string, __dx:number, __dy:number, __layer:number, __depth:number):PIXI.Sprite {
-		var __sprite:PIXI.Sprite = null; // TODO createSpriteFromAppAssets(bitmapName);
+	public addSpriteAsChild (__sprite__:PIXI.DisplayObject, __dx:number, __dy:number, __layer:number, __depth:number, __visible:boolean = false):PIXI.DisplayObject {
+		__sprite__.pivot.x = -__dx;
+		__sprite__.pivot.y = -__dy;
 		
-		return this.addSpriteAsChild (__sprite, __dx, __dy, __layer, __depth);	
-	}
-	
-//------------------------------------------------------------------------------------------
-	public addSpriteAsChild (__sprite__:PIXI.Sprite, __dx:number, __dy:number, __layer:number, __depth:number, __visible:boolean = false):PIXI.Sprite {
-		var __sprite = new PIXI.Sprite ();
-		__sprite.addChild(__sprite__);
-
-		__sprite__.x = __dx;
-		__sprite__.y = __dy;
+		this.addSortableChild (__sprite__, __layer, __depth, __visible);	
 		
-		this.addSortableChild (__sprite, __layer, __depth, __visible);	
-		
-		return __sprite;
+		return __sprite__;
 	}
 	
 //------------------------------------------------------------------------------------------
@@ -781,37 +838,26 @@ export class XGameObject extends PIXI.Sprite {
 // World
 //
 //------------------------------------------------------------------------------------------
-
+	
 //------------------------------------------------------------------------------------------
-    // TODO
-	public addSpriteAssetToWorld (bitmapName:string, __dx:number, __dy:number, __layer:number, __depth:number, __visible:boolean = true):PIXI.Sprite {
-		var __sprite:PIXI.Sprite = null; // createSpriteFromAppAssets(bitmapName);
+	public addSpriteToWorld (__sprite__:PIXI.DisplayObject, __dx:number, __dy:number, __layer:number, __depth:number, __visible:boolean = true):PIXI.DisplayObject {
+		__sprite__.pivot.x = -__dx;
+		__sprite__.pivot.y = -__dy;
+
+		this.addSortableChildToWorld (__sprite__, __layer, __depth, __visible);	
 		
-		return this.addSpriteToWorld (__sprite, __dx, __dy, __layer, __depth, __visible);	
+		return __sprite__;
 	}
 	
 //------------------------------------------------------------------------------------------
-	public addSpriteToWorld (__sprite__:PIXI.Sprite, __dx:number, __dy:number, __layer:number, __depth:number, __visible:boolean = true):PIXI.Sprite {
-		var __sprite = new PIXI.Sprite ();
-		__sprite.addChild (__sprite__);
-	
-		__sprite__.x = __dx;
-		__sprite__.y = __dy;
-
-		this.addSortableChildToWorld (__sprite, __layer, __depth, __visible);	
-		
-		return __sprite;
-	}
-	
-//------------------------------------------------------------------------------------------
-	public addSortableChildToWorld (__sprite:PIXI.Sprite, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):void {
+	public addSortableChildToWorld (__sprite:PIXI.DisplayObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):void {
 		this.m_worldSprites.set (__sprite, 0);
 		
 		this.world.addSortableChild (__sprite, __layer, __depth, __visible);
 	}
 	
 //------------------------------------------------------------------------------------------
-	public removeWorldSprite (__sprite:PIXI.Sprite):void {
+	public removeWorldSprite (__sprite:PIXI.DisplayObject):void {
 		if (this.m_worldSprites.has (__sprite)) {
 			this.m_worldSprites.delete (__sprite);
 			
@@ -821,7 +867,7 @@ export class XGameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public removeAllWorldSprites ():void {
-        var __sprite:PIXI.Sprite;
+        var __sprite:PIXI.DisplayObject;
 
 		for (__sprite of this.m_worldSprites.keys ()) {
 			this.removeWorldSprite (__sprite);
@@ -835,29 +881,35 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-    public createSpriteFromAssets (bitmapName:String):PIXI.Sprite {
-        var __sprite:PIXI.Sprite = new PIXI.Sprite ();
-        
-        // TODO __sprite.addChild (createBitmapFromAssets(bitmapName));
-        
-        return __sprite;
-    }
-	
-//------------------------------------------------------------------------------------------
-	public removeAllBitmaps ():void {
-        /* TODO */
+	public createBitmapFont (__name:string, __style:any, __options:any):void {
+        PIXI.BitmapFont.from (__name, __style, __options);
+
+		this.m_bitmapFonts.set (__name, 0);
 	}
-		
+
 //------------------------------------------------------------------------------------------
-	public removeAllXBitmaps ():void {
-        /* TODO */
+	public getBitmapFontChars ():Array<any> {
+		return PIXI.BitmapFont.ASCII.concat (["á", "é", "í", "ó", "ú", "ü", "ñ", "¿", "¡"]);
 	}
 	
 //------------------------------------------------------------------------------------------
-	public removeAllXTilemaps ():void {
-        /* TODO */
+	public removeBitmapFont (__name:string):void {
+		if (this.m_bitmapFonts.has (__name)) {
+			PIXI.BitmapFont.uninstall (__name);
+
+			this.m_bitmapFonts.delete (__name);
+		}
 	}
-	
+
+//------------------------------------------------------------------------------------------
+	public removeAllBitmapFonts ():void {
+        var __name:string;
+
+		for (__name of this.m_bitmapFonts.keys ()) {
+			this.removeBitmapFont (__name);
+		}
+	}
+
 //------------------------------------------------------------------------------------------
 	public createXSignal ():XSignal {
 		var __signal:XSignal = XGameObject.getXApp ().getXSignalManager ().createXSignal ();
@@ -999,6 +1051,16 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
+	public get propagateCount ():number {
+		return this.m_propagateCount;
+	}
+
+//------------------------------------------------------------------------------------------
+	public set propagateCount (__count:number) {
+		this.m_propagateCount = __count;
+	}
+
+//------------------------------------------------------------------------------------------
 	public isReady ():boolean {
 		return this.m_delayed == 0;
 	}
@@ -1021,52 +1083,40 @@ export class XGameObject extends PIXI.Sprite {
 				
 				return;
 			}
-			
+	
 //------------------------------------------------------------------------------------------
 			var __x:number;
 			var __y:number;
 			var __rotation:number;
 
-			/*
 			if (this.m_attachedMatterBody != null) {
-				__x = this.m_attachedMatterBody.position.x;
-				__y = this.m_attachedMatterBody.position.y;
-				if (this.m_matterRotate) {
-					__rotation = this.m_attachedMatterBody.angle * 180 / Math.PI;
-				} else {
-					__rotation = this.getMasterRotation ();					
-				}
-			} else {
-				__x = this.getMasterX ();
-				__y = this.getMasterY ();
-				__rotation = this.getMasterRotation ();
-			}
-			*/
-
-			if (this.m_attachedMatterBody != null) {
-				/*
-				this.setMasterX (this.x = this.m_attachedMatterBody.position.x);
-				this.setMasterY (this.y = this.m_attachedMatterBody.position.y);
-				*/
-
 				this.x = this.m_attachedMatterBody.position.x;
 				this.y = this.m_attachedMatterBody.position.y;
 				if (this.m_matterRotate) {
-					this.setMasterRotation (this.angle = this.m_attachedMatterBody.angle * 180 / Math.PI);
+					this.m_masterRotation = this.angle = this.m_attachedMatterBody.angle * 180 / Math.PI; // this.setMasterRotation (this.angle = this.m_attachedMatterBody.angle * 180 / Math.PI);
 				}
 			}
 			
-			__x = this.getMasterX ();
-			__y = this.getMasterY ();
-			__rotation = this.getMasterRotation ();
+			__x = this.m_masterX; // this.getMasterX ();
+			__y = this.m_masterY; // this.getMasterY ();
+			__rotation = this.m_masterRotation; // this.getMasterRotation ();
 
-			var __visible:boolean = this.getMasterVisible ();
-			var __scaleX:number = this.getMasterScaleX () * this.m_masterScaleRatio;
-			var __scaleY:number = this.getMasterScaleY () * this.m_masterScaleRatio;
-			var __flipX:number = this.getMasterFlipX ();
-			var __flipY:number = this.getMasterFlipY ();
-			var __depth:number = this.getMasterDepth ();
-			var __alpha:number = this.getMasterAlpha ();
+			var __visible:boolean = this.m_masterVisible; // this.getMasterVisible ();
+			var __scaleX:number = this.m_masterScaleX * this.m_masterScaleRatio; // this.getMasterScaleX () * this.m_masterScaleRatio;
+			var __scaleY:number = this.m_masterScaleY * this.m_masterScaleRatio; // this.getMasterScaleY () * this.m_masterScaleRatio;
+			var __flipX:number = this.m_masterFlipX; // this.getMasterFlipX ();
+			var __flipY:number = this.m_masterFlipY; // this.getMasterFlipY ();
+			var __depth:number = this.m_masterDepth; // this.getMasterDepth ();
+			var __alpha:number = this.m_masterAlpha; // this.getMasterAlpha ();
+
+//------------------------------------------------------------------------------------------
+			if (this.m_propagateCount >= 0) {
+				if (this.m_propagateCount == 0) {
+					return;
+				}
+
+				this.m_propagateCount--;
+			}
 
 //------------------------------------------------------------------------------------------
 // update child objects that live in the World
@@ -1078,25 +1128,27 @@ export class XGameObject extends PIXI.Sprite {
 
 			for (__gameObject of this.m_childObjects.keys ()) {	
 				if (__gameObject != null && !__gameObject.isDead) {	
-					__gameObject.parent.x = __x;
-					__gameObject.parent.y = __y;
-					__gameObject.parent.angle = __rotation;
-					__gameObject.parent.visible = __visible;
-					__gameObject.parent.scale.x = __scaleX * __flipX;
-					__gameObject.parent.scale.y = __scaleY * __flipY;
-					__gameObject.parent.alpha = __alpha;
-						
+					var __parent:PIXI.DisplayObject = __gameObject.parent;
+
+					__parent.x = __x;
+					__parent.y = __y;
+					__parent.angle = __rotation;
+					__parent.visible = __visible;
+					__parent.scale.x = __scaleX * __flipX;
+					__parent.scale.y = __scaleY * __flipY;
+					__parent.alpha = __alpha;
+
 					// propagate rotation, scale, visibility, alpha
-					__gameObject.setMasterX (__gameObject.x * __scaleX + __x);
-					__gameObject.setMasterY (__gameObject.y * __scaleY + __y);
-					__gameObject.setMasterRotation (__gameObject.angle + __rotation);
-					__gameObject.setMasterScaleX (__gameObject.scale.x * __scaleX);
-					__gameObject.setMasterScaleY (__gameObject.scale.y * __scaleY);
-					__gameObject.setMasterFlipX (__gameObject.getFlipX () * __flipX);
-					__gameObject.setMasterFlipY (__gameObject.getFlipY () * __flipY);
-					__gameObject.setMasterVisible (__gameObject.visible && __visible);
-					__gameObject.setMasterDepth (__gameObject.getDepth ());
-					__gameObject.setMasterAlpha (__gameObject.alpha * __alpha);
+					__gameObject.m_masterX = __gameObject.x * __scaleX + __x; // __gameObject.setMasterX (__gameObject.x * __scaleX + __x);
+					__gameObject.m_masterY = __gameObject.y * __scaleY + __y; // __gameObject.setMasterY (__gameObject.y * __scaleY + __y);
+					__gameObject.m_masterRotation = (__gameObject.angle + __rotation) % 360; //__gameObject.setMasterRotation (__gameObject.angle + __rotation);
+					__gameObject.m_masterScaleX = __gameObject.scale.x * __scaleX; //__gameObject.setMasterScaleX (__gameObject.scale.x * __scaleX);
+					__gameObject.m_masterScaleY = __gameObject.scale.y * __scaleY; //__gameObject.setMasterScaleY (__gameObject.scale.y * __scaleY);
+					__gameObject.m_masterFlipX = __gameObject.m_flipX * __flipX; //__gameObject.setMasterFlipX (__gameObject.getFlipX () * __flipX);
+					__gameObject.m_masterFlipY = __gameObject.m_flipY * __flipY; //__gameObject.setMasterFlipY (__gameObject.getFlipY () * __flipY);
+					__gameObject.m_masterVisible = __gameObject.visible && __visible; // __gameObject.setMasterVisible (__gameObject.visible && __visible);
+					__gameObject.m_masterDepth = __gameObject.m_depth; // __gameObject.setMasterDepth (__gameObject.getDepth ());
+					__gameObject.m_masterAlpha = __gameObject.alpha * __alpha; //__gameObject.setMasterAlpha (__gameObject.alpha * __alpha);
 					
                     __gameObject.update ();
                 }
@@ -1125,13 +1177,15 @@ export class XGameObject extends PIXI.Sprite {
 				}
 					
 				if (__sprite != null) {
-					__sprite.parent.x = __x;
-					__sprite.parent.y = __y;
-					__sprite.parent.angle = __rotation;
-					__sprite.parent.visible = __sprite.visible && __visible;
-					__sprite.parent.scale.x = __scaleX * __flipX;
-					__sprite.parent.scale.y = __scaleY * __flipY;
-					__sprite.parent.alpha = __alpha;
+					var __parent:PIXI.DisplayObject = __sprite.parent;
+
+					__parent.x = __x;
+					__parent.y = __y;
+					__parent.angle = __rotation;
+					__parent.visible = __sprite.visible && __visible;
+					__parent.scale.x = __scaleX * __flipX;
+					__parent.scale.y = __scaleY * __flipY;
+					__parent.alpha = __alpha;
 				}
 			}
 	}
@@ -1142,10 +1196,14 @@ export class XGameObject extends PIXI.Sprite {
 
 //------------------------------------------------------------------------------------------
 	public attachMatterBodyCircle (__body:Body, __radius:number, __debug:boolean = true):XGameObject {
+		var __graphics:PIXI.Graphics = null;
+
+		/*
 		var __graphics:PIXI.Graphics = new PIXI.Graphics ();
 		__graphics.beginFill (0xff00ff);
 		__graphics.drawCircle (0, 0, __radius);
 		__graphics.endFill ();
+		*/
 
 		this.attachMatterBodyDebug (__body, __graphics, __debug);
 
@@ -1154,10 +1212,14 @@ export class XGameObject extends PIXI.Sprite {
 
 //------------------------------------------------------------------------------------------
 	public attachMatterBodyRectangle (__body:Body, __rect:XRect, __debug:boolean = true):XGameObject {
+		var __graphics:PIXI.Graphics = null;
+		
+		/*
 		var __graphics:PIXI.Graphics = new PIXI.Graphics ();
 		__graphics.beginFill (0xff00ff);
 		__graphics.drawRect (-__rect.width/2, -__rect.height/2, __rect.width, __rect.height);
 		__graphics.endFill ();
+		*/
 
 		this.attachMatterBodyDebug (__body, __graphics, __debug);
 
@@ -1166,6 +1228,9 @@ export class XGameObject extends PIXI.Sprite {
 
 //------------------------------------------------------------------------------------------
 	public attachMatterBodyVertices (__body:Body, __vertices:Array<any>, __debug:boolean = true):XGameObject {
+		var __graphics:PIXI.Graphics = null;
+
+		/*
 		var __graphics:PIXI.Graphics = new PIXI.Graphics ();
 		__graphics.beginFill (0xff00ff);
 
@@ -1176,7 +1241,10 @@ export class XGameObject extends PIXI.Sprite {
 		__graphics.endFill ();
 
 		__graphics.alpha = 0.33;
+		*/
 
+		this.convertVerticesToPoints (__vertices);
+		
 		 this.attachMatterBodyDebug (__body, __graphics, __debug);
 
 		 return this;
@@ -1221,7 +1289,7 @@ export class XGameObject extends PIXI.Sprite {
 	public attachMatterBodyDebug (__body:Body, __graphics:PIXI.Graphics, __debug:boolean = false):XGameObject {
 		this.m_attachedDebugSprite = new PIXI.Sprite ();
 		__debug = false; if (__debug) {
-			this.m_attachedDebugSprite.addChild (__graphics);
+			// this.m_attachedDebugSprite.addChild (__graphics);
 		}
 		this.addSortableChild (this.m_attachedDebugSprite, this.getLayer (), this.getDepth ());
 
@@ -1294,6 +1362,11 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------	
 		public get vel ():XPoint {
 			return this.m_vel;
+		}
+
+//------------------------------------------------------------------------------------------
+		public setScale (__scale:number):void {
+			this.scale.x = this.scale.y = __scale;
 		}
 		
 //------------------------------------------------------------------------------------------		

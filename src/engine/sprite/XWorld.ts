@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../app/XApp';
 import { XSprite } from './XSprite';
 import { XSpriteLayer } from './XSpriteLayer';
@@ -16,6 +16,7 @@ import { Class } from '../type/XType';
 import { G } from '../app/G';
 import { XSoundSubManager } from '../sound/XSoundSubManager';
 import { XBulletCollisionManager } from '../bullet/XBulletCollisionManager';
+import { XClassPoolManager } from '../pool/XClassPoolManager';
 
 //------------------------------------------------------------------------------------------
 export class XWorld extends XSprite {
@@ -31,7 +32,10 @@ export class XWorld extends XSprite {
     private m_childObjects:Map<XGameObject, XDepthSprite>;	
     private m_children:Map<PIXI.DisplayObject, any>;
 
-    private m_soundSubManager:XSoundSubManager;
+    private m_musicSoundManager:XSoundSubManager;
+    private m_sfxSoundManager:XSoundSubManager;
+
+    public m_XLogicObjectPoolManager:XClassPoolManager;
 
     private m_XBulletCollisionManager:XBulletCollisionManager;
 
@@ -46,13 +50,16 @@ export class XWorld extends XSprite {
 
         this.m_XApp = __XApp;
 
-        // TODO (i needed a add background to allow events to be captured.  figure uot if there's a better solution)
+        // TODO (i needed a add background to allow events to be captured.  figure out if there's a better solution)
         var graphics = new PIXI.Graphics ();
-        graphics.beginFill (0x8080ff, 1.0);
-        graphics.drawRect (0, 0, G.SCREEN_WIDTH, G.SCREEN_HEIGHT);
+        graphics.beginFill (0x000000, 1.0);
+        graphics.drawRect (0, 0, G.SCREEN_WIDTH/4, G.SCREEN_HEIGHT/4);
         graphics.endFill ();
+        graphics.alpha = 0.0;
+        graphics.scale.x = 4.0;
+        graphics.scale.y = 4.0;
         this.addChild (graphics);
-            
+       
         XWorld.MAX_LAYERS = __layers;
 
         this.m_layers = new Array<XSpriteLayer> ();
@@ -79,8 +86,10 @@ export class XWorld extends XSprite {
         this.m_children = new Map<PIXI.DisplayObject, any> ();
 
         this.m_XBulletCollisionManager = new XBulletCollisionManager (this);
+        this.m_XLogicObjectPoolManager = new XClassPoolManager ();
 
-        this.m_soundSubManager = new XSoundSubManager (this.m_XApp.getXSoundManager ());
+        this.m_musicSoundManager = new XSoundSubManager (this.m_XApp.getXSoundManager ());
+        this.m_sfxSoundManager = new XSoundSubManager (this.m_XApp.getXSoundManager ());
 
         this.createMatterEngine ();
     }
@@ -90,7 +99,7 @@ export class XWorld extends XSprite {
         this.m_layers[i] = new XSpriteLayer ();
         this.m_layers[i].setup ();
         this.m_layers[i].world = this;
-        this.addChild (this.m_layers[i]);
+        this.addChild (this .m_layers[i]);
     }
     
 	//------------------------------------------------------------------------------------------
@@ -101,6 +110,22 @@ export class XWorld extends XSprite {
 	//------------------------------------------------------------------------------------------
 	public cleanup ():void {
         super.cleanup ();
+
+        this.cleanupMatterEngine ();
+    
+        this.m_XBulletCollisionManager.cleanup ();
+        this.m_musicSoundManager.cleanup ();
+        this.m_sfxSoundManager.cleanup ();
+        
+        var i:number;
+
+        for (i = 0; i < XWorld.MAX_LAYERS; i++) {
+            this.m_layers[i].cleanup ();
+            this.removeChild (this.m_layers[i]);
+        }
+        
+        this.m_hudLayer.cleanup();
+        this.removeChild (this.m_hudLayer);
     }
 
     //------------------------------------------------------------------------------------------
@@ -114,6 +139,19 @@ export class XWorld extends XSprite {
 
         for (__gameObject of this.m_gameObjects.keys ()) { 
             __gameObject.updateCollisions ();
+        }
+    }
+
+    //------------------------------------------------------------------------------------------
+    public resetLayers ():void {
+        var i:number;
+
+        for (i=0; i < XWorld.MAX_LAYERS; i++) {
+            var __layer:XSpriteLayer = this.getLayer (i);
+            __layer.x = 0;
+            __layer.y = 0;
+            __layer.scale.x = 1.0;
+            __layer.scale.y = 1.0;
         }
     }
 
@@ -166,10 +204,42 @@ export class XWorld extends XSprite {
     }			
 
     //------------------------------------------------------------------------------------------
+    public addPooledGameObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+        var __gameObject:XGameObject = this.getXLogicObjectPoolManager ().borrowObject (__class) as XGameObject;
+        __gameObject.setup (this, __layer, __depth);
+        
+        __gameObject.setPoolClass (__class);
+        
+        var __depthSprite:XDepthSprite;
+        
+        __depthSprite = this.m_layers[__layer].addSprite (__gameObject, __depth, __visible);
+
+        this.m_gameObjects.set (__gameObject, __depthSprite);
+        
+        return __gameObject;
+    }			
+
+    //------------------------------------------------------------------------------------------
     public addChildObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
         var __gameObject:XGameObject = XType.createInstance (__class) as XGameObject;
         __gameObject.setup(this, __layer, __depth);
         
+        var __depthSprite:XDepthSprite;
+        
+        __depthSprite = this.m_layers[__layer].addSprite (__gameObject, __depth, __visible);
+
+        this.m_childObjects.set (__gameObject, __depthSprite);
+        
+        return __gameObject;
+    }	
+
+    //------------------------------------------------------------------------------------------
+    public addPooledChildObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+        var __gameObject:XGameObject = this.getXLogicObjectPoolManager ().borrowObject (__class) as XGameObject;
+        __gameObject.setup(this, __layer, __depth);
+        
+        __gameObject.setPoolClass (__class);
+
         var __depthSprite:XDepthSprite;
         
         __depthSprite = this.m_layers[__layer].addSprite (__gameObject, __depth, __visible);
@@ -208,7 +278,12 @@ export class XWorld extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
-    public  removeSortableChild (__sprite:PIXI.DisplayObject):void {
+    public getChildDepthSprite (__sprite:PIXI.DisplayObject):XDepthSprite {
+        return this.m_children.get (__sprite)[XWorld.SPRITE_XDEPTHSPRITE];
+    }
+
+    //------------------------------------------------------------------------------------------
+    public removeSortableChild (__sprite:PIXI.DisplayObject):void {
         if (this.m_children.has (__sprite)) {
             var x:any  = this.m_children.get (__sprite);
             
@@ -245,9 +320,20 @@ export class XWorld extends XSprite {
         return this.m_XApp.getStage ();
     }
 
+
     //------------------------------------------------------------------------------------------
-    public getSoundSubManager ():XSoundSubManager {
-        return this.m_soundSubManager;
+    public getXLogicObjectPoolManager ():XClassPoolManager {
+        return this.m_XLogicObjectPoolManager;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getMusicSoundManager ():XSoundSubManager {
+        return this.m_musicSoundManager;
+    }
+    
+    //------------------------------------------------------------------------------------------
+    public getSFXSoundManager ():XSoundSubManager {
+        return this.m_sfxSoundManager;
     }
     
     //------------------------------------------------------------------------------------------
@@ -257,6 +343,8 @@ export class XWorld extends XSprite {
 
     //------------------------------------------------------------------------------------------
     public cleanupMatterEngine ():void {
+        Matter.World.clear (this.m_matterEngine.world, false);
+        Matter.Engine.clear (this.m_matterEngine);
     }
 
     //------------------------------------------------------------------------------------------

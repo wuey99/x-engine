@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { XType } from '../type/XType';
 import { XTask } from '../task/XTask';
 import { XTaskManager} from '../task/XTaskManager';
@@ -17,6 +17,7 @@ import { XRect } from '../geom/XRect';
 import { G } from './G';
 import { XPauseManager } from '../state/XPauseManager';
 import { XSoundManager } from '../sound/XSoundManager';
+import { Main } from '../../scripts/app';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -30,9 +31,8 @@ export interface XAppParams {
 export class XApp {
     public container: HTMLElement;
     public loader: PIXI.Loader;
-    public renderer: PIXI.Renderer;
+    public renderer: PIXI.Renderer | PIXI.CanvasRenderer;
     public stage: PIXI.Container;
-    public graphics: PIXI.Graphics;
     public fpsMax: number;
 
 	private m_XTaskManager:XTaskManager;
@@ -59,6 +59,7 @@ export class XApp {
     private m_inuse_TIMER_FRAME:number;
 
     private m_mousePoint:XPoint;
+    private m_touchPoint:XPoint;
 
     private m_canvasWidth:number;
     private m_canvasHeight:number;
@@ -73,16 +74,33 @@ export class XApp {
 
     private m_paused:boolean;
 
+    private m_resizeTrigger:boolean;
+    private m_windowResizeSignal:XSignal;
+
+    private m_hasFocus:boolean;
+
+    private m_main:Main;
+
+    private m_pointerDownHandle:any;
+    private m_pointerMoveHandle:any;
+    private m_touchMoveHandle:any;
+    private m_visibilityChangedHandle:any;
+    private m_resizerHandle:any;
+
+    private m_firstClick:boolean;
+
     //------------------------------------------------------------------------------------------
-    constructor (params: XAppParams, __container:HTMLElement = null) {
+    constructor (__main:Main, params: XAppParams, __container:HTMLElement = null) {
         this.loader = PIXI.Loader.shared;
         this.renderer = PIXI.autoDetectRenderer ({
-            width: params.canvasW,
-            height: params.canvasH,
+            transparent: true,
+            width: this.getWindowWidth (), // params.canvasW,
+            height: this.getWindowHeight (), // params.canvasH,
             antialias: true
         });
+
+        this.m_main = __main;
         this.stage = new PIXI.Container ();
-        this.graphics = new PIXI.Graphics ();
         this.fpsMax = params.fpsMax;
 
         this.stage.interactive = true;
@@ -93,16 +111,9 @@ export class XApp {
         } else {
             this.container = params.containerId ? document.getElementById(params.containerId) || document.body : document.body;
         }
-        this.container.appendChild (this.renderer.view)
+        this.container.appendChild (this.renderer.view);
 
-        this.setupSize (params.canvasW, params.canvasH, G.SCREEN_WIDTH, G.SCREEN_HEIGHT);
-        this.fitScreenToCanvas ();
-        this.stage.scale.x = this.getScaleRatio ();
-        this.stage.scale.y = this.getScaleRatio ();
-
-        console.log (": scaleRatio: ", this.getScaleRatio (), this.getXOffset (), this.getYOffset ());
-
-		XGameObject.setXApp(this);
+		XGameObject.setXApp (this);
 		XTask.setXApp (this);
 		// TODO XTilemap.setXApp (this);
 		XSprite.setXApp (this);
@@ -118,6 +129,7 @@ export class XApp {
         this.m_XSignalManager = new XSignalManager (this);
         this.m_XProjectManager = new XProjectManager (this);
         this.m_XSoundManager = new XSoundManager (this);
+        this.m_XClassPoolManager = new XClassPoolManager ();
 
         this.m_frameRateScale = 1.0;
 		this.m_previousTimer = XType.getNowDate ().getTime ();
@@ -125,18 +137,78 @@ export class XApp {
         this.m_inuse_TIMER_FRAME = 0;
         
         this.m_mousePoint = new XPoint ();
-
+        this.m_touchPoint = new XPoint ();
+        
         this.m_paused = false;
 
-        this.getStage ().on ("mousemove", (e:PIXI.InteractionEvent) => {
+        this.setupResizer ();
+
+        this.m_firstClick = false;
+
+        this.getStage ().on ("pointerup", this.m_pointerDownHandle = (e:PIXI.InteractionEvent) => {
+            this.m_firstClick = true;
+        });
+
+        this.getStage ().on ("pointermove", this.m_pointerMoveHandle = (e:PIXI.InteractionEvent) => {
             var __mousePos:PIXI.Point = e.data.getLocalPosition (this.getStage ());
 
             this.m_mousePoint.x = __mousePos.x;
             this.m_mousePoint.y = __mousePos.y;
-        })
+    
+            // this.m_main.setDebugMessage ("" + __mousePos.x + ", " + __mousePos.y);
+        });
+
+        this.getStage ().on ("touchmove", this.m_touchMoveHandle = (e:PIXI.InteractionEvent) => {
+            var __mousePos:PIXI.Point = e.data.getLocalPosition (this.getStage ());
+
+            this.m_touchPoint.x = __mousePos.x;
+            this.m_touchPoint.y = __mousePos.y;
+
+            // this.m_main.setDebugMessage ("" + __mousePos.x + ", " + __mousePos.y);
+        });
+
+        this.m_hasFocus = true;
+
+        document.addEventListener ("visibilitychange", this.m_visibilityChangedHandle = () => {
+            this.m_hasFocus = document.visibilityState === "visible";
+
+            if (this.m_hasFocus) {
+                if (!this.m_paused) {
+                    XPauseManager.fireResumeSignal ();
+                }
+            } else {
+                if (!this.m_paused) {
+                    XPauseManager.firePauseSignal ();
+                }
+            }
+        });
     }
 
-   //------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
+    public cleanup ():void {
+        this.m_XTaskManager.removeAllTasks ();
+        this.m_XSignalManager.removeAllXSignals ();
+        
+        this.getStage ().off ("pointerdown", this.m_pointerDownHandle);
+        this.getStage ().off ("pointermove", this.m_pointerMoveHandle);
+        this.getStage ().off ("touchmove", this.m_touchMoveHandle);
+        document.removeEventListener ("visibilitychange", this.m_visibilityChangedHandle);
+        window.removeEventListener ("resize", this.m_resizerHandle);
+
+        console.log (": XProjectManager.cleanup (): ");
+
+        this.m_XProjectManager.cleanup ();
+        XPauseManager.cleanup ();
+
+        this.container.removeChild (this.renderer.view);
+  
+        console.log (": render: destroy: ");
+        
+        this.renderer.destroy ();
+        this.renderer = null;
+    }
+
+//------------------------------------------------------------------------------------------
     public getMaximalPoolSettings ():any {
         return {
             XSignal: {init: 10000, overflow: 1000},
@@ -151,8 +223,8 @@ export class XApp {
     public getDefaultPoolSettings ():any {
         return {
             XSignal: {init: 2000, overflow: 1000},
-            XRect: {init: 25000, overflow: 1000},				
-            XPoint: {init: 25000, overflow: 1000},
+            XRect: {init: 2000, overflow: 1000},				
+            XPoint: {init: 2000, overflow: 1000},
             XTilemap: {init: 4000, overflow: 1000},
             XBitmap: {init: 4000, overflow: 1000},
             Tile: {init: 4000, overflow: 1000},
@@ -300,6 +372,16 @@ export class XApp {
     }
 
 //------------------------------------------------------------------------------------------
+    public gotFirstClick ():boolean {
+        return this.m_firstClick;
+    }
+
+//------------------------------------------------------------------------------------------
+    public hasFocus ():boolean {
+        return this.m_hasFocus;
+    }
+
+//------------------------------------------------------------------------------------------
     public pause ():void {
         if (!this.m_paused) {
             XPauseManager.firePauseSignal ();
@@ -323,6 +405,16 @@ export class XApp {
     }
 
 //------------------------------------------------------------------------------------------
+    public muteMusic (__mute:boolean):void {
+        XPauseManager.fireMuteMusicSignal (__mute);
+    }
+
+//------------------------------------------------------------------------------------------
+    public muteSFX (__mute:boolean):void {
+        XPauseManager.fireMuteSFXSignal (__mute)
+    }
+
+//------------------------------------------------------------------------------------------
 	public update ():void {
 		if (this.m_inuse_TIMER_FRAME > 0) {
 			console.log (": overflow: TIMER_FRAME: ");
@@ -335,7 +427,7 @@ export class XApp {
 		var __deltaTime:number = XType.getNowDate ().getTime () - this.m_previousTimer;
 		
         if (!this.m_paused) {
-            console.log (": XApp: update: ");
+            // console.log (": XApp: update: ");
 
 			this.getXTaskManager ().updateTasks ();
 			
@@ -347,8 +439,90 @@ export class XApp {
 		this.m_inuse_TIMER_FRAME--;
     }
 
+//------------------------------------------------------------------------------------------
+    public setupResizer ():void {
+        this.m_resizeTrigger = false;
+
+        this.m_windowResizeSignal = this.m_XSignalManager.createXSignal ();
+
+        window.addEventListener ("resize", this.m_resizerHandle = () => {
+            this.m_resizeTrigger = true;
+        });
+
+        this.getXTaskManager ().addTask ([
+            XTask.LABEL, "loop",
+                XTask.WAIT, 0x0800,
+
+                XTask.FLAGS, (__task:XTask) => {
+                    __task.ifTrue (this.m_resizeTrigger);
+                }, XTask.BNE, "loop",
+
+                () => {
+                    this.resize ();
+
+                    this.m_resizeTrigger = false;
+                },
+
+                XTask.GOTO, "loop",
+            XTask.RETN,
+        ]);
+        
+        this.resize ();
+    }
+
+//------------------------------------------------------------------------------------------
+    public resize ():void {
+        // console.log (": XApp: resize: ", this.getWindowWidth (), this.getWindowHeight ());
+
+        this.getRenderer ().resize (window.innerWidth, window.innerHeight);
+
+        // this.getRenderer ().resize (this.getWindowWidth (), this.getWindowHeight ());
+
+        this.setupSize (
+            this.getWindowWidth (), this.getWindowHeight (),
+            G.SCREEN_WIDTH, G.SCREEN_HEIGHT
+        );
+
+        this.fitScreenToCanvas ();;
+
+        this.m_windowResizeSignal.fireSignal ();
+    }
+
+//------------------------------------------------------------------------------------------
+    public addWindowResizeListener (__listener:any):number {
+        return this.m_windowResizeSignal.addListener (__listener);
+    }
+
+//------------------------------------------------------------------------------------------
+    public removeWindowResizeListener (__id:number):void {
+        this.m_windowResizeSignal.removeListener (__id);
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getWindowWidth ():number {
+        var __gameElement:HTMLElement = document.getElementById ("game");
+        var __rect:DOMRect = __gameElement.getBoundingClientRect ();
+
+        // console.log (": domRect: ", __rect, window.innerWidth, window.innerHeight);
+
+        // return window.innerWidth;
+        return Math.min (__rect.width, window.innerWidth - __rect.x);
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getWindowHeight ():number {
+        var __gameElement:HTMLElement = document.getElementById ("game");
+        var __rect:DOMRect = __gameElement.getBoundingClientRect ();
+
+        // return window.innerHeight;
+        return Math.min (__rect.height, window.innerHeight - __rect.y) - 0;
+    }
+
     //------------------------------------------------------------------------------------------
     public setupSize (__canvasWidth:number, __canvasHeight:number, __screenWidth:number, __screenHeight:number):void {
+        G.CANVAS_WIDTH = __canvasWidth;
+        G.CANVAS_HEIGHT = __canvasHeight;
+
         this.m_canvasWidth = __canvasWidth;
         this.m_canvasHeight = __canvasHeight;
 
@@ -406,8 +580,13 @@ export class XApp {
 	}
 
     //------------------------------------------------------------------------------------------
-    public getRenderer ():PIXI.Renderer {
+    public getRenderer ():PIXI.Renderer | PIXI.CanvasRenderer {
         return this.renderer;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getMain ():Main {
+        return this.m_main;
     }
 
     //------------------------------------------------------------------------------------------
@@ -418,6 +597,11 @@ export class XApp {
     //------------------------------------------------------------------------------------------
     public getMousePos ():XPoint {
         return this.m_mousePoint;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getTouchPos ():XPoint {
+        return this.m_touchPoint;
     }
 
     //------------------------------------------------------------------------------------------
@@ -463,6 +647,11 @@ export class XApp {
     //------------------------------------------------------------------------------------------
     public getXProjectManager ():XProjectManager {
         return this.m_XProjectManager;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getClassPoolManager ():XClassPoolManager {
+        return this.m_XClassPoolManager;
     }
 
     //------------------------------------------------------------------------------------------
