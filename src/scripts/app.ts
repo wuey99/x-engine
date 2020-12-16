@@ -17,7 +17,6 @@ import { GolfGame } from './game/GolfGame';
 import { GolfGameController } from './game/GolfGameController';
 import { TestGameController } from './test/TestGameController';
 import { XSignal } from '../engine/signals/XSignal';
-import { OPENSSL_VERSION_NUMBER } from 'constants';
 
 //------------------------------------------------------------------------------------------
 (window as any).decomp = require('poly-decomp');
@@ -32,7 +31,7 @@ let fpsMeter: FpsMeter;
 window.onload = () => {
     var __main:Main = new Main ({});
     __main.setup ();
-}
+} 
 
 //------------------------------------------------------------------------------------------
 export class Main {
@@ -150,6 +149,15 @@ export class Main {
         g_XApp.cleanup ();
     }
 
+//------------------------------------------------------------------------------------------
+    public fatalError (__message:string):void {
+        this.m_onStateChange (
+            {
+                fatalError: __message
+            }
+        );
+    }
+    
 //------------------------------------------------------------------------------------------
     public setDebugMessage (__message:string):void {
         this.m_debugMessage = __message;

@@ -26,6 +26,9 @@ export class MusicResource extends Resource {
         this.m_sound.on ("load", () => {
             // console.log (": MusicResource: loadComplete: ", this.m_path);
         });
+
+        this.m_sound.on ("loaderror", () => {
+        });
     }
 
     //------------------------------------------------------------------------------------------

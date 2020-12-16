@@ -20,6 +20,7 @@ import { TerrainMisc } from './TerrainMisc';
 import { TerrainTile } from './TerrainTile';
 import { XTask } from '../../engine/task/XTask';
 import { PolygonUtils} from '../utils/PolygonUtils';
+import { G } from '../../engine/app/G';
 
 //------------------------------------------------------------------------------------------
 export class TerrainContainer extends InteractiveLayer {
@@ -82,11 +83,13 @@ export class TerrainContainer extends InteractiveLayer {
                 XTask.WAIT, 0x0100,
 
                 () => {
-                    var __renderTexture:PIXI.RenderTexture = this.m_tileTexture = PIXI.RenderTexture.create ({width: this.m_XApp.getScreenWidth (), height: this.m_XApp.getScreenHeight ()});
+                    var __renderTexture:PIXI.RenderTexture = this.m_tileTexture = PIXI.RenderTexture.create ({width: this.m_XApp.getScreenWidth () / G.scaleRatio, height: this.m_XApp.getScreenHeight () / G.scaleRatio});
+                     this.m_tileContainer.scale.x = this.m_tileContainer.scale.y = 1 / G.scaleRatio;
                     this.m_XApp.getRenderer ().render (this.m_tileContainer, __renderTexture);
 
                     var __sprite:PIXI.Sprite = new PIXI.Sprite (__renderTexture);
                     this.addSortableChild (__sprite, GolfGame.TERRAIN_LAYER, GolfGame.TERRAIN_DEPTH, true);
+                    __sprite.scale.x = __sprite.scale.y = G.scaleRatio;
 
                     this.m_tileContainer.hide ();
 

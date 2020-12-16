@@ -139,10 +139,12 @@ export class GolfGame extends XState {
 			XTask.LABEL, "loop",
 				XTask.WAIT, 0x0100,
 
+				/*
 				XTask.FLAGS, (__task:XTask) => {
 					__task.ifTrue (this.m_XApp.gotFirstClick ());
 				}, XTask.BNE, "loop",
-
+				*/
+				
 				() => {
 					this.world.getMusicSoundManager ().playSoundFromName ("Common_Music_" + this.m_worldName + "BGM",
 						1.0, 999, 0.20,
@@ -441,8 +443,8 @@ export class GolfGame extends XState {
 
 		__layer.x = __x;
 		__layer.y = __y;
-		__layer.scale.x = __scaleX;
-		__layer.scale.y = __scaleY;
+		__layer.scale.x = __scaleX * G.scaleRatio;
+		__layer.scale.y = __scaleY * G.scaleRatio;
 	}
 
 //------------------------------------------------------------------------------------------

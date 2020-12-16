@@ -119,7 +119,11 @@ export class GolfBall extends XGameObject {
 		// this.m_sprite = this.createSprite (this.m_worldName + "_Sprites_Ball");
 		// this.addSpriteAsChild (this.m_sprite, -44/2, -44/2, 0, GolfGame.PLAYFIELD_FRONT_DEPTH, false);
 
-		this.m_sprite = this.createAnimatedSprite ("GolfBall");
+		if (this.m_worldName != "Mars") {
+			this.m_sprite = this.createAnimatedSprite ("GolfBall");
+		} else {
+			this.m_sprite = this.createAnimatedSprite ("GolfBallX");
+		}
 		this.addSortableChild (this.m_sprite, GolfGame.PLAYFIELD_FRONT_LAYER, GolfGame.PLAYFIELD_FRONT_DEPTH, false);
 
 		this.show ();

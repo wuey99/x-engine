@@ -3,6 +3,7 @@ import { Howl } from 'howler';
 import * as PIXI from 'pixi.js-legacy';
 import { XApp } from "../app/XApp";
 import { Resource } from './Resource';
+import { G } from '../../engine/app/G';
 
 //------------------------------------------------------------------------------------------
 export class SoundResource extends Resource {
@@ -23,6 +24,10 @@ export class SoundResource extends Resource {
             // console.log (": SoundResource: loadComplete: ", this.m_path);
 
             this.m_loadComplete = true;
+        });
+
+        this.m_sound.on ("loaderror", () => {
+            G.main.fatalError ("unable to load resource: " + this.m_path);
         });
     }
 

@@ -92,8 +92,19 @@ export class ForceVectorToo extends XGameObject {
     public onMouseMove (e:PIXI.InteractionEvent) {
         var __point:XPoint = this.m_interactiveLayer.getMousePos ();
 
+        /*
         var __dx:number = (this.x - __point.x) / 2;
         var __dy:number = (this.y - __point.y) / 2;
+        */
+
+       var __x:number = this.x / G.scaleRatio;
+       var __y:number = this.y / G.scaleRatio;
+
+       var __px:number = __point.x; // G.scaleRatio;
+       var __py:number = __point.y; // G.scaleRatio;
+
+       var __dx:number = (__x - __px) * G.scaleRatio / 2;
+       var __dy:number = (__y - __py) * G.scaleRatio / 2;
 
         this.m_currentPoint.x = __point.x;
         this.m_currentPoint.y = __point.y;
@@ -111,8 +122,19 @@ export class ForceVectorToo extends XGameObject {
         var pt = new PIXI.Point(__touches[0].clientX, __touches[0].clientY);
         var __point:PIXI.Point = e.data.getLocalPosition (this.m_XApp.getStage (), pt);
 
+        /*
         var __dx:number = (this.x - __point.x) / 2;
         var __dy:number = (this.y - __point.y) / 2;
+        */
+
+       var __x:number = this.x / G.scaleRatio;
+       var __y:number = this.y / G.scaleRatio;
+
+       var __px:number = __point.x; // G.scaleRatio;
+       var __py:number = __point.y; // G.scaleRatio;
+
+       var __dx:number = (__x - __px) * G.scaleRatio / 2;
+       var __dy:number = (__y - __py) * G.scaleRatio / 2;
 
         this.m_currentPoint.x = __point.x;
         this.m_currentPoint.y = __point.y;
@@ -130,8 +152,19 @@ export class ForceVectorToo extends XGameObject {
 
         var __point:XPoint = this.m_interactiveLayer.getMousePos ();
 
+        /*
         var __dx:number = (this.x - __point.x);
         var __dy:number = (this.y - __point.y);
+        */
+
+       var __x:number = this.x / G.scaleRatio;
+       var __y:number = this.y / G.scaleRatio;
+
+       var __px:number = __point.x; // G.scaleRatio;
+       var __py:number = __point.y; // G.scaleRatio;
+
+       var __dx:number = (__x - __px) * G.scaleRatio;
+       var __dy:number = (__y - __py) * G.scaleRatio;
 
         this.m_firedSignal.fireSignal (__dx, __dy);
 
@@ -157,8 +190,19 @@ export class ForceVectorToo extends XGameObject {
 
         var __point:XPoint = this.m_interactiveLayer.getTouchPos ();
 
+        /*
         var __dx:number = (this.x - __point.x);
         var __dy:number = (this.y - __point.y);
+        */
+
+       var __x:number = this.x / G.scaleRatio;
+       var __y:number = this.y / G.scaleRatio;
+
+       var __px:number = __point.x; // G.scaleRatio;
+       var __py:number = __point.y; // G.scaleRatio;
+
+       var __dx:number = (__x - __px) * G.scaleRatio;
+       var __dy:number = (__y - __py) * G.scaleRatio;
 
         this.m_firedSignal.fireSignal (__dx, __dy);
 
@@ -226,8 +270,16 @@ export class ForceVectorToo extends XGameObject {
                                 return;
                            }
 
-                           var __dx:number = (this.x - __point.x);
-                           var __dy:number = (this.y - __point.y);
+                           var __x:number = this.x / G.scaleRatio;
+                           var __y:number = this.y / G.scaleRatio;
+
+                           var __px:number = __point.x; // G.scaleRatio;
+                           var __py:number = __point.y; // G.scaleRatio;
+
+                           var __dx:number = (__x - __px);
+                           var __dy:number = (__y - __py);
+
+                           console.log (": ", this.x, this.y, __point.x, __point.y);
 
                            this.m_topArrow.x = __dx;
                            this.m_topArrow.y = __dy;
@@ -237,16 +289,28 @@ export class ForceVectorToo extends XGameObject {
                            this.m_bottomArrow.y = 0;
                            this.m_bottomArrow.angle = Math.atan2 (__dy, __dx) * 180/Math.PI + 90.0;
 
+                           __x *= G.scaleRatio;
+                           __y *= G.scaleRatio;
+
+                           __px *= G.scaleRatio;
+                           __py *= G.scaleRatio;
+
+                           __dx *= G.scaleRatio;
+                           __dy *= G.scaleRatio;
+
+                           this.m_topArrow.x = __dx;
+                           this.m_topArrow.y = __dy;
+
                            this.m_interactiveLayer.clearGraphics ();
                            this.m_interactiveLayer.drawForceVectorDashed (
                                0x16AFFF, 0x16AFFF,
-                               __point.x, __point.y, this.x, this.y,
+                               __px, __py, __x, __y,
                                24 / GameInteractiveLayer.RES_DIVISOR, 24 / GameInteractiveLayer.RES_DIVISOR,
                                6.0 / GameInteractiveLayer.RES_DIVISOR
                             );
                            this.m_interactiveLayer.drawForceVectorDashed (
                                0xFFFF00, 0xFC1614,
-                               this.x, this.y, this.x + __dx, this.y + __dy,
+                               __x, __y, __x + __dx, __y + __dy,
                                24 / GameInteractiveLayer.RES_DIVISOR, 12 / GameInteractiveLayer.RES_DIVISOR,
                                6.0 / GameInteractiveLayer.RES_DIVISOR
                             );

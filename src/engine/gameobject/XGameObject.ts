@@ -1130,12 +1130,12 @@ export class XGameObject extends PIXI.Sprite {
 				if (__gameObject != null && !__gameObject.isDead) {	
 					var __parent:PIXI.DisplayObject = __gameObject.parent;
 
-					__parent.x = __x;
-					__parent.y = __y;
+					__parent.x = __x / G.scaleRatio;
+					__parent.y = __y / G.scaleRatio;
 					__parent.angle = __rotation;
 					__parent.visible = __visible;
-					__parent.scale.x = __scaleX * __flipX;
-					__parent.scale.y = __scaleY * __flipY;
+					__parent.scale.x = __scaleX * __flipX / G.scaleRatio;
+					__parent.scale.y = __scaleY * __flipY / G.scaleRatio;
 					__parent.alpha = __alpha;
 
 					// propagate rotation, scale, visibility, alpha
@@ -1162,8 +1162,8 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 			for (__sprite of this.m_selfSprites.keys ()) {
 				if (__sprite != null) {
-					__sprite.scale.x = __flipX;
-					__sprite.scale.y = __flipY;
+					__sprite.scale.x = __flipX / G.scaleRatio;
+					__sprite.scale.y = __flipY / G.scaleRatio;
                 }
 			}
 	
@@ -1179,12 +1179,12 @@ export class XGameObject extends PIXI.Sprite {
 				if (__sprite != null) {
 					var __parent:PIXI.DisplayObject = __sprite.parent;
 
-					__parent.x = __x;
-					__parent.y = __y;
+					__parent.x = __x / G.scaleRatio;
+					__parent.y = __y / G.scaleRatio;
 					__parent.angle = __rotation;
 					__parent.visible = __sprite.visible && __visible;
-					__parent.scale.x = __scaleX * __flipX;
-					__parent.scale.y = __scaleY * __flipY;
+					__parent.scale.x = __scaleX * __flipX / G.scaleRatio;
+					__parent.scale.y = __scaleY * __flipY / G.scaleRatio;
 					__parent.alpha = __alpha;
 				}
 			}
