@@ -29,11 +29,6 @@ const config = {
             { from: 'src/css/style.css', to: 'css/' },
             { from: 'src/images', to: 'images' },
             { from: 'src/assets/Cows/Project', to: 'assets' },
-            { from: 'src/assets/levels', to: 'levels' },
-            { from: 'src/assets/sounds', to: 'sounds' },
-            { from: 'src/assets/backgrounds', to: 'backgrounds' },
-            { from: 'src/assets/sprites', to: 'sprites' },
-            { from: 'src/assets/music', to: 'music' },
         ]),
     ],
     devServer: {

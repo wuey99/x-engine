@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<layers world="Moon" name="test">
-	<background x="0" y="0"/>
-	<foreground x="0" y="0"/>
-	<platform x="359.7398480989136" y="810.3831166820218"/>
-	<terrain x="10.010821681670336" y="13.861329247270646"/>
-</layers>
