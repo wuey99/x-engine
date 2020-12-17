@@ -29,7 +29,12 @@ let fpsMeter: FpsMeter;
 
 //------------------------------------------------------------------------------------------
 window.onload = () => {
-    var __main:Main = new Main ({});
+    var __main:Main = new Main (
+        {
+            onStateChange: () => {}
+        }
+    );
+
     __main.setup ();
 } 
 
@@ -127,7 +132,7 @@ export class Main {
    
         this.m_delay = 0;
 
-        // this.reset ();
+        this.reset ();
     }
 
 //------------------------------------------------------------------------------------------
@@ -177,7 +182,9 @@ export class Main {
 
 //------------------------------------------------------------------------------------------
     public getTranslation (__message:string):string {
-        return this.m_localizations[this.m_currentLanguage][__message];
+        return __message;
+
+        // return this.m_localizations[this.m_currentLanguage][__message];
     }
 
 //------------------------------------------------------------------------------------------
