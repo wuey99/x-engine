@@ -14,17 +14,6 @@ import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { XGameController } from '../../engine/state/XGameController';
 import { TestGame } from './TestGame';
-import { TestMatter } from './TestMatter';
-import { TestRenderTexture } from '../test/TestRenderTexture';
-import { TestSVG } from './TestSVG';
-import { TerrainEditor } from '../editor/TerrainEditor';
-import { GolfGame } from '../game/GolfGame';
-import { EarthLevel } from '../worlds/EarthLevel';
-import { MoonLevel } from '../worlds/MoonLevel';
-import { MarsLevel } from '../worlds/MarsLevel';
-import { IceLevel } from '../worlds/IceLevel';
-import { SquidLevel } from '../worlds/SquidLevel';
-import { GolfGameInstance } from '../game/GolfGameInstance';
 import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
 
 //------------------------------------------------------------------------------------------
@@ -47,7 +36,6 @@ export class TestGameController extends XGameController {
 		super.afterSetup (__params);
 
 		this.getGameInstance ().registerState ("TestGame", TestGame);
-		this.getGameInstance ().registerState ("TestMatter", TestMatter);
 
 		this.m_XApp.getXProjectManager ().pauseAllResourceManagers ();
 
