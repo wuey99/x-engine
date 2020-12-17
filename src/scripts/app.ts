@@ -213,44 +213,9 @@ export class Main {
             this.m_gameController = null;
         }
 
-        /*
         this.m_gameController = new TestGameController ();
         this.m_gameController.setup (world, 0, 0.0);
-        this.m_gameController.afterSetup ([
-            this.m_onStateChange,
-            "Earth",
-            "01",
-            this.m_layersXMLString,
-            this.m_terrainXMLString,
-            this.m_levelData,
-            this.m_score
-        ]);
-        */
-       
-        if (!this.editingFlag) {
-            this.m_gameController = new GolfGameController ();
-            this.m_gameController.setup (world, 0, 0.0);
-            this.m_gameController.afterSetup ([
-                this.m_onStateChange,
-                "Earth",
-                "01",
-                this.m_layersXMLString,
-                this.m_terrainXMLString,
-                this.m_levelData,
-                this.m_score
-            ]);
-        } else {
-            this.m_gameController = new GameEditorController ();
-            this.m_gameController.setup (world, 0, 0.0);
-            this.m_gameController.afterSetup ([
-                "Earth",
-                "01",
-                this.m_layersXMLString,
-                this.m_terrainXMLString,
-                this.m_levelData,
-                this.m_score
-            ]);
-        }
+        this.m_gameController.afterSetup ([]);
 
         this.m_delay = 30;
     }
