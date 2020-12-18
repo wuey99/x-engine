@@ -39,6 +39,7 @@ export class TestGame extends XState {
 
 		console.log (": guid: ", GUID.create ());
 
+		/*
 	    // Create configuration object
 		var config = {};
 		config.host = document.getElementById("addressIn").value;
@@ -52,7 +53,8 @@ export class TestGame extends XState {
 		sfs.logger.level = SFS2X.LogLevel.DEBUG;
 		sfs.logger.enableConsoleOutput = true;
 		sfs.logger.enableEventDispatching = true;
-	
+		*/
+		
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
 		__leader.afterSetup ();
 		
