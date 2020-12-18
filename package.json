@@ -5,7 +5,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
     "serve": "webpack-dev-server --hot",
-    "test": "mocha tests"
+x   "test": "mocha tests"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,8 @@
     "matter-js": "^0.14.2",
     "pixi.js-legacy": "^5.3.3",
     "poly-decomp": "^0.3.0",
-    "polygon-clipping": "^0.15.1"
+    "polygon-clipping": "^0.15.1",
+    "@types/smart-fox-server": "0.0.6",
+    "sfs2x-api": "1.7.10"
   }
 }

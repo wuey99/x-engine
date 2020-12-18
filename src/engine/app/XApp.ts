@@ -24,7 +24,8 @@ export interface XAppParams {
     containerId: string,
     canvasW: number,
     canvasH: number,
-    fpsMax: number
+    fpsMax: number,
+    devicePixelRatio:number
 }
 
 //------------------------------------------------------------------------------------------
@@ -106,6 +107,20 @@ export class XApp {
         this.stage.interactive = true;
         this.stage.interactiveChildren = true;
 
+        switch (params.devicePixelRatio) {
+            case 1:
+                G.scaleRatio = 2;
+                break;
+            case 2:
+                G.scaleRatio = 1;
+                break;
+            default:
+                G.scaleRatio = 1;
+                break;
+        }
+
+        console.log (": -------------------------->: window.devicePixelRatio: ", window.devicePixelRatio);
+        
         if (__container != null) {
             this.container = __container;
         } else {

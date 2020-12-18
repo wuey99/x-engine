@@ -16,6 +16,7 @@ import { OctopusBug } from './OctopusBug';
 import { GUID } from '../../engine/utils/GUID';
 import { FlockLeader } from './FlockLeader';
 import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
+import * as SFS2X from "sfs2x-api";
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
@@ -38,6 +39,20 @@ export class TestGame extends XState {
 
 		console.log (": guid: ", GUID.create ());
 
+	    // Create configuration object
+		var config = {};
+		config.host = document.getElementById("addressIn").value;
+		config.port = Number(document.getElementById("portIn").value);
+		config.debug = document.getElementB
+		
+		// Create SmartFox client instance
+		var sfs = new SFS2X.SmartFox(config);
+	
+		// Set logging
+		sfs.logger.level = SFS2X.LogLevel.DEBUG;
+		sfs.logger.enableConsoleOutput = true;
+		sfs.logger.enableEventDispatching = true;
+	
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
 		__leader.afterSetup ();
 		

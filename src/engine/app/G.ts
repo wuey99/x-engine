@@ -12,7 +12,7 @@ export class G {
     public static CANVAS_HEIGHT:number = 546;
     public static SCREEN_WIDTH:number = 2732;
     public static SCREEN_HEIGHT:number = 1092;
-    public static scaleRatio:number = 2;
+    public static scaleRatio:number = 1;
 
 //------------------------------------------------------------------------------------------
 }

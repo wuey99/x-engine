@@ -55,7 +55,8 @@ export class Main {
                 containerId: 'game',
                 canvasW: G.CANVAS_WIDTH,
                 canvasH: G.CANVAS_HEIGHT,
-                fpsMax: 60
+                fpsMax: 60,
+                devicePixelRatio: window.devicePixelRatio,
             },
 
             __container
