@@ -35,7 +35,6 @@
     "pixi.js-legacy": "^5.3.3",
     "poly-decomp": "^0.3.0",
     "polygon-clipping": "^0.15.1",
-    "@types/smart-fox-server": "0.0.6",
     "sfs2x-api": "1.7.10"
   }
 }

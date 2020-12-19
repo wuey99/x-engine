@@ -39,22 +39,19 @@ export class TestGame extends XState {
 
 		console.log (": guid: ", GUID.create ());
 
-		/*
-	    // Create configuration object
-		var config = {};
-		config.host = document.getElementById("addressIn").value;
-		config.port = Number(document.getElementById("portIn").value);
-		config.debug = document.getElementB
-		
-		// Create SmartFox client instance
-		var sfs = new SFS2X.SmartFox(config);
-	
-		// Set logging
-		sfs.logger.level = SFS2X.LogLevel.DEBUG;
-		sfs.logger.enableConsoleOutput = true;
-		sfs.logger.enableEventDispatching = true;
-		*/
-		
+        var sfs:SFS2X.SmartFox = new SFS2X.SmartFox();
+        sfs.addEventListener(SFS2X.SFSEvent.CONNECTION, onConnection, this);
+        
+        sfs.connect("127.0.0.1", 8080);
+        
+        function onConnection(evtParams)
+        {
+             if (evtParams.success)
+                 console.log("Connected to SmartFoxServer 2X!");
+             else
+                 console.log("Connection failed. Is the server running at all?");
+        }
+
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
 		__leader.afterSetup ();
 		
