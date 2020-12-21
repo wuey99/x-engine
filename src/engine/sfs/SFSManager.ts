@@ -5,8 +5,8 @@ import { XSignalManager } from '../signals/XSignalManager';
 import { XType } from '../type/XType';
 
 //------------------------------------------------------------------------------------------
-export class SFSConnectionManager {
-    public static self:SFSConnectionManager;
+export class SFSManager {
+    public static self:SFSManager;
     public m_sfs:SFS2X.SmartFox;
     public m_connected:boolean;
 
@@ -17,12 +17,12 @@ export class SFSConnectionManager {
     public m_sfsEvents:Map<any, __SFSListener>;
     
 //------------------------------------------------------------------------------------------
-	public static instance ():SFSConnectionManager {
-        if (SFSConnectionManager.self == null) {
-            SFSConnectionManager.self = new SFSConnectionManager ();
+	public static instance ():SFSManager {
+        if (SFSManager.self == null) {
+            SFSManager.self = new SFSManager ();
         }
 
-        return SFSConnectionManager.self;
+        return SFSManager.self;
     }
     
 //------------------------------------------------------------------------------------------	
@@ -30,18 +30,13 @@ export class SFSConnectionManager {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public setup ():SFSConnectionManager {
+	public setup ():SFSManager {
         this.m_connectedSignal = new XSignal ();
         this.m_disconnectedSignal = new XSignal ();
         this.m_errorSignal = new XSignal ();
 
         this.m_sfsEvents = new Map<any, __SFSListener> ();
 
-        return this;
-	}
-
-//------------------------------------------------------------------------------------------
-    public connect ():SFSConnectionManager {
         this.m_sfs = new SFS2X.SmartFox ();
 
         this.addEventListener (SFS2X.SFSEvent.CONNECTION, this.onConnection.bind (this));
@@ -51,7 +46,20 @@ export class SFSConnectionManager {
 
         this.m_connected = false;
 
-        this.m_sfs.connect ("127.0.0.1", 8080);
+        return this;
+	}
+
+//------------------------------------------------------------------------------------------
+    public connect (__url:string, __port:number, __connected?:any, __disconnected?:any):SFSManager {
+        this.m_sfs.connect (__url, __port);
+
+        if (__connected != null) {
+            this.once (SFS2X.SFSEvent.CONNECTION, __connected)
+        }
+
+        if (__disconnected != null) {
+            this.once (SFS2X.SFSEvent.CONNECTION_LOST, __disconnected)
+        }
 
         return this;
     }
@@ -71,12 +79,36 @@ export class SFSConnectionManager {
     }
 
 //------------------------------------------------------------------------------------------
+    public on (__eventName:string, __listener:any):any {
+        this.addEventListener (__eventName, __listener);
+    }
+
+//------------------------------------------------------------------------------------------
     public addEventListener (__eventName:string, __listener:any):any {
         var __sfsListener:__SFSListener = new __SFSListener (__eventName, __listener);
 
         this.m_sfsEvents.set (__listener, __sfsListener);
         
         return __listener;
+    }
+
+//------------------------------------------------------------------------------------------
+    public once (__eventName:string, __listener:any):any {
+        this.addOnceEventListener (__eventName, __listener);
+    }
+
+//------------------------------------------------------------------------------------------
+    public addOnceEventListener (__eventName:string, __listener:any):any {
+        var __sfsListener:__SFSListener = new __SFSOnceListener (__eventName, __listener);
+
+        this.m_sfsEvents.set (__listener, __sfsListener);
+        
+        return __listener;
+    }
+
+//------------------------------------------------------------------------------------------
+    public off (__listener:any):any {
+        this.removeEventListener (__listener);
     }
 
 //------------------------------------------------------------------------------------------
@@ -131,7 +163,7 @@ export class SFSConnectionManager {
 
 //------------------------------------------------------------------------------------------
     public onConnectionLost (evt:SFS2X.SFSEvent):void {
-        console.log ("Connection was lost. Reason: ", evt.params.reason)
+        console.log ("Connection was lost. Reason: ", evt.params)
 
         this.m_connected = false;
 
@@ -164,17 +196,30 @@ class __SFSListener {
 		this.m_eventName = __eventName;
 		this.m_listener = __listener;
 
-		SFSConnectionManager.instance ().getSFS ().addEventListener (__eventName, this.boundListener = this.__listener.bind (this));
+		SFSManager.instance ().getSFS ().addEventListener (__eventName, this.boundListener = this.__listener.bind (this));
 	}
 
 	//------------------------------------------------------------------------------------------
 	public cleanup ():void {
-		SFSConnectionManager.instance ().getSFS ().removeEventListener (this.m_eventName, this.boundListener);
+		SFSManager.instance ().getSFS ().removeEventListener (this.m_eventName, this.boundListener);
 	}
 
 	//------------------------------------------------------------------------------------------
-	private __listener (evt:SFS2X.SFSEvent):void {
+	public __listener (evt:SFS2X.SFSEvent):void {
 		this.m_listener (evt);
+	}
+
+//------------------------------------------------------------------------------------------
+}
+
+//------------------------------------------------------------------------------------------
+class __SFSOnceListener extends __SFSListener {
+
+	//------------------------------------------------------------------------------------------
+	public __listener (evt:SFS2X.SFSEvent):void {
+        this.m_listener (evt);
+        
+        SFSManager.instance ().removeEventListener (this.m_listener);
 	}
 
 //------------------------------------------------------------------------------------------

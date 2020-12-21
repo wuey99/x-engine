@@ -17,7 +17,7 @@ import { GUID } from '../../engine/utils/GUID';
 import { FlockLeader } from './FlockLeader';
 import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
 import * as SFS2X from "sfs2x-api";
-import { SFSConnectionManager } from '../../engine/sfs/SFSConnectionManager';
+import { SFSManager } from '../../engine/sfs/SFSManager';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
@@ -40,7 +40,7 @@ export class TestGame extends XState {
 
 		console.log (": guid: ", GUID.create ());
 
-		var __sfs:SFSConnectionManager = SFSConnectionManager.instance ().setup ();
+		var __sfs:SFSManager = SFSManager.instance ().setup ();
 
 		__sfs.addConnectedistener (() => {
 			console.log (": connected to smartfox server: ");
@@ -54,7 +54,15 @@ export class TestGame extends XState {
 			console.log (": error connecting to smartfox server: ", __error);
 		});
 
-		__sfs.connect ();
+		SFSManager.instance ().connect (
+			"127.0.0.1", 8080,
+			(e:SFS2X.SFSEvent) => {
+				console.log (": ----------------->: connected: ");
+			},
+			(e:SFS2X.SFSEvent) => {
+				console.log (": ----------------->: disconnected: ");
+			}
+		);
 
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
 		__leader.afterSetup ();
