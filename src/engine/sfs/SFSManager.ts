@@ -65,6 +65,18 @@ export class SFSManager {
     }
 
 //------------------------------------------------------------------------------------------
+    public isConnected ():boolean {
+        return this.m_connected;
+    }
+
+//------------------------------------------------------------------------------------------
+    public send (__request:any):SFSManager {
+        this.m_sfs.send (__request);
+
+        return this;
+    }
+
+//------------------------------------------------------------------------------------------
 	public cleanup ():void {
         this.removeAllEventListeners ();
     

@@ -40,19 +40,7 @@ export class TestGame extends XState {
 
 		console.log (": guid: ", GUID.create ());
 
-		var __sfs:SFSManager = SFSManager.instance ().setup ();
-
-		__sfs.addConnectedistener (() => {
-			console.log (": connected to smartfox server: ");
-		});
-
-		__sfs.addDisconnectedistener (() => {
-			console.log (": disconnected from smartfox server: ");
-		});
-
-		__sfs.addErrorListener ((__error:string) => {
-			console.log (": error connecting to smartfox server: ", __error);
-		});
+		SFSManager.instance ().setup ();
 
 		SFSManager.instance ().connect (
 			"127.0.0.1", 8080,
@@ -63,6 +51,31 @@ export class TestGame extends XState {
 				console.log (": ----------------->: disconnected: ");
 			}
 		);
+
+		this.addTask ([
+			XTask.LABEL, "loop",
+				XTask.WAIT, 0x0100,
+
+				XTask.FLAGS, (__task:XTask) => {
+					__task.ifTrue (
+						SFSManager.instance ().isConnected ()
+					);
+				}, XTask.BNE, "loop",
+
+				() => {
+					console.log (": connected: ");
+
+					SFSManager.instance ().send (new SFS2X.LoginRequest("FozzieTheBear", "", null, "BasicExamples"));
+					SFSManager.instance ().once (SFS2X.SFSEvent.LOGIN, (e:SFS2X.SFSEvent) => {
+						console.log (": logged in: ", e);
+					});
+					SFSManager.instance ().once (SFS2X.LOGIN_ERROR, (e:SFS2X.SFSEvent) => {
+						console.log (": login error: ", e);
+					});
+				},
+
+		XTask.RETN,
+	]);
 
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
 		__leader.afterSetup ();

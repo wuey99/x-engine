@@ -107,11 +107,17 @@ export class XApp {
         this.stage.interactive = true;
         this.stage.interactiveChildren = true;
 
-        switch (params.devicePixelRatio) {
+        switch (Math.round (params.devicePixelRatio)) {
             case 1:
                 G.scaleRatio = 2;
                 break;
             case 2:
+                G.scaleRatio = 1;
+                break;
+            case 3:
+                G.scaleRatio = 1;
+                break;
+            case 4:
                 G.scaleRatio = 1;
                 break;
             default:
@@ -119,7 +125,7 @@ export class XApp {
                 break;
         }
 
-        console.log (": -------------------------->: window.devicePixelRatio: ", window.devicePixelRatio);
+        console.log (": -------------------------->: window.devicePixelRatio: ", Math.round (params.devicePixelRatio));
         
         if (__container != null) {
             this.container = __container;
