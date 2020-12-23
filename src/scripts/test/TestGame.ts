@@ -18,7 +18,8 @@ import { FlockLeader } from './FlockLeader';
 import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
 import * as SFS2X from "sfs2x-api";
 import { SFSManager } from '../../engine/sfs/SFSManager';
-import { XButton } from '../../engine/ui/XButton';
+import { XSpriteButton } from '../../engine/ui/XSpriteButton';
+import { XTextButton } from '../../engine/ui/XTextButton';
 import { XTextSprite } from '../../engine/sprite/XTextSprite';
 
 //------------------------------------------------------------------------------------------
@@ -82,7 +83,7 @@ export class TestGame extends XState {
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
 		__leader.afterSetup ([]);
 
-		var __testButton:XButton = this.addGameObjectAsChild (XButton, 0, 0.0, false) as XButton;
+		var __testButton:XSpriteButton = this.addGameObjectAsChild (XSpriteButton, 0, 0.0, false) as XSpriteButton;
 		__testButton.afterSetup (["TestButton"]);
 		__testButton.x = 256;
 		__testButton.y = 256;
@@ -97,8 +98,26 @@ export class TestGame extends XState {
             },
             {chars: this.getBitmapFontChars ()}
 		);
+
+		var __testButton2:XTextButton = this.addGameObjectAsChild (XTextButton, 0, 0.0, false) as XTextButton;
+		__testButton2.afterSetup ([
+			120,
+			64,
+			"press me",
+			"Aller",
+			100,
+			0x0000ff,
+			0xff0000,
+			0x00ff00,
+			0x0000ff,
+			0x0000ff,
+			false,
+			"center"
+		]);
+		__testButton2.x = 512;
+		__testButton2.y = 512;
 		
-		var __textSprite:XTextSprite = new XTextSprite (
+		var __textSprite:XTextSprite = this.createXTextSprite (
 			120,
 			64,
 			"hello world",

@@ -19,6 +19,7 @@ import { XPoint } from '../geom/XPoint';
 import { G } from '../app/G';
 import { XState } from '../state/XState';
 import { PausableListener} from '../events/PausableListener';
+import { XTextSprite } from '../sprite/XTextSprite';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Sprite {
@@ -29,6 +30,7 @@ export class XGameObject extends PIXI.Sprite {
 	public m_childSprites:Map<PIXI.DisplayObject, number>;
 	public m_worldSprites:Map<PIXI.DisplayObject, number>;	
 	public m_animatedSprites:Map<string, PIXI.AnimatedSprite>;
+	public m_textSprites:Map<string, XTextSprite>;
 	public m_sprites:Map<string, PIXI.Sprite>;
 	public m_signals:Map<XSignal, number>;
 	public m_bitmapFonts:Map<string, number>;
@@ -82,6 +84,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_childSprites = new Map<PIXI.DisplayObject, number> ();
 		this.m_worldSprites = new Map<PIXI.DisplayObject, number> ();
 		this.m_animatedSprites = new Map<string, PIXI.AnimatedSprite> ();
+		this.m_textSprites  = new Map<string, XTextSprite> ();
 		this.m_sprites = new Map<string, PIXI.Sprite> ();	
 		this.m_signals = new Map<XSignal, number> ();
 		this.m_bitmapFonts = new Map<string, number> ();
@@ -183,6 +186,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.removeAllWorldSprites ();
 		this.removeAllXSignals ();
 		this.removeAllAnimatedSprites ();
+		this.removeAllXTextSprites ();
 		this.removeAllSprites ();
 		this.removeAllStageEvents ();
 		this.removeAllStageEventsX ();
@@ -521,6 +525,44 @@ export class XGameObject extends PIXI.Sprite {
 		}
 
 		this.m_sprites.clear ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public createXTextSprite (
+		__width:number=32,
+		__height:number=32,
+		__text:string="",
+		__fontName:string="Aller",
+		__fontSize:number=12,
+		__color:number=0x000000,
+		__bold:boolean=false,
+		__align:string="left"
+	):XTextSprite {
+
+		var __textSprite:XTextSprite = new XTextSprite (
+			__width,
+			__height,
+			__text,
+			__fontName,
+			__fontSize,
+			__color,
+			__bold,
+			__align
+		);
+
+		return __textSprite;
+	}
+
+	//------------------------------------------------------------------------------------------
+	public removeAllXTextSprites ():void {
+		var __name:string;
+
+		for (__name of this.m_textSprites.keys ()) {
+			var __textSprite:XTextSprite = this.m_textSprites.get (__name);
+			__textSprite.cleanup ();
+		}
+
+		this.m_textSprites.clear ();
 	}
 
 //------------------------------------------------------------------------------------------

@@ -10,13 +10,12 @@ import { XType } from '../type/XType';
 
 //------------------------------------------------------------------------------------------
 export class XButton extends XGameObject {
-	private m_sprite:PIXI.AnimatedSprite;
-	private m_buttonClassName:string;
-	private m_mouseDownSignal:XSignal;
-	private m_mouseUpSignal:XSignal;
-	private m_mouseOutSignal:XSignal;
-	private m_keyboardDownSignal:XSignal;
-	private m_keyboardUpSignal:XSignal;
+	public m_sprite:PIXI.Container;
+	public m_mouseDownSignal:XSignal;
+	public m_mouseUpSignal:XSignal;
+	public m_mouseOutSignal:XSignal;
+	public m_keyboardDownSignal:XSignal;
+	public m_keyboardUpSignal:XSignal;
 
 	public static NORMAL_STATE:number = 1;
 	public static OVER_STATE:number = 2;
@@ -26,9 +25,9 @@ export class XButton extends XGameObject {
 				
 	public m_label:number;
 	public m_currState:number;
-	private m_disabledFlag:boolean;
-    private m_keyboardDownListener:number;
-		
+	public m_disabledFlag:boolean;
+    public m_keyboardDownListener:number;
+
 //------------------------------------------------------------------------------------------
 	public constructor () {
 		super ();
@@ -45,7 +44,7 @@ export class XButton extends XGameObject {
     public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-        this.m_buttonClassName = __params[0];
+		this.getParams (__params);
 
         this.m_mouseDownSignal = this.createXSignal ();	
         this.m_mouseOutSignal = this.createXSignal ();
@@ -62,7 +61,7 @@ export class XButton extends XGameObject {
         
         this.setupListeners ();
         
-        this.__gotoState (this.getNormalState ());
+        this.gotoState (this.getNormalState ());
         
         this.m_currState = this.getNormalState ();
     
@@ -87,6 +86,7 @@ export class XButton extends XGameObject {
 				this.addPausableEventListener ("pointermove", this.m_sprite, this.onMouseMove.bind (this));
 				this.addPausableEventListener ("pointerup", this.m_sprite, this.onMouseUp.bind (this));
 				this.addPausableEventListener ("pointerout", this.m_sprite, this.onMouseOut.bind (this));
+				this.addPausableEventListener ("pointerupoutside", this.m_sprite, this.onMouseOut.bind (this));
                 // m_keyboardDownListener = xxx.addKeyboardDownListener (onKeyboardDown);
 			},
 				
@@ -99,6 +99,10 @@ export class XButton extends XGameObject {
        this.m_mouseDownSignal.removeAllListeners ();
        this.m_mouseUpSignal.removeAllListeners ();
        this.m_mouseOutSignal.removeAllListeners ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public getParams (__params:Array<any> = null):void {
 	}
 
 //------------------------------------------------------------------------------------------
@@ -123,16 +127,6 @@ export class XButton extends XGameObject {
 		
 //------------------------------------------------------------------------------------------
 	public createHighlightTask ():void {
-		this.addTask ([
-			XTask.LABEL, "__loop",
-				XTask.WAIT, 0x0100,
-					
-				() => {
-					this.m_sprite.gotoAndStop (this.m_label);
-				},
-									
-			XTask.GOTO, "__loop",
-		]);
 	}
 		
 //------------------------------------------------------------------------------------------
@@ -146,7 +140,7 @@ export class XButton extends XGameObject {
 			return;
 		}
 			
-		this.__gotoState (XButton.OVER_STATE);
+		this.gotoState (XButton.OVER_STATE);
 			
 		this.m_currState = XButton.OVER_STATE;
 	}
@@ -157,7 +151,7 @@ export class XButton extends XGameObject {
 			return;
 		}
 			
-		this.__gotoState (XButton.DOWN_STATE);	
+		this.gotoState (XButton.DOWN_STATE);	
 			
 		this.m_currState = XButton.DOWN_STATE;
 			
@@ -170,7 +164,7 @@ export class XButton extends XGameObject {
 			return;
 		}
 			
-		this.__gotoState (this.getNormalState ());
+		this.gotoState (this.getNormalState ());
 			
 		this.m_currState = this.getNormalState ();
 			
@@ -187,7 +181,7 @@ export class XButton extends XGameObject {
 			return;
 		}
 			
-		this.__gotoState (this.getNormalState ());
+		this.gotoState (this.getNormalState ());
 			
 		this.m_currState = this.getNormalState ();
 			
@@ -221,13 +215,13 @@ export class XButton extends XGameObject {
 
 //------------------------------------------------------------------------------------------
 	public setNormalState ():void {
-		this.__gotoState (this.getNormalState ());
+		this.gotoState (this.getNormalState ());
 			
 		this.m_currState = this.getNormalState ();		
 	}
 
 //------------------------------------------------------------------------------------------
-	private getNormalState ():number {
+	public getNormalState ():number {
 		return XButton.NORMAL_STATE;
 	}
 		
@@ -239,7 +233,7 @@ export class XButton extends XGameObject {
 //------------------------------------------------------------------------------------------
 	public setDisabled (__disabled:boolean):void {
 		if (__disabled) {
-			this.__gotoState (XButton.DISABLED_STATE);
+			this.gotoState (XButton.DISABLED_STATE);
 							
 			this.m_disabledFlag = true;
 		} else {
@@ -253,14 +247,6 @@ export class XButton extends XGameObject {
 // create sprites
 //------------------------------------------------------------------------------------------
 	public  createSprites ():void {
-		this.m_sprite = this.createAnimatedSprite (this.m_buttonClassName);
-        this.addSortableChild (this.m_sprite, this.getLayer (), this.getDepth (), false);
-			
-		this.__gotoState (XButton.NORMAL_STATE);
-			
-		this.m_currState = this.getNormalState ();
-			
-		this.show ();
 	}
 
 //------------------------------------------------------------------------------------------
@@ -268,11 +254,6 @@ export class XButton extends XGameObject {
 		this.m_label = __label;
 	}
 		
-//------------------------------------------------------------------------------------------
-	private __gotoState (__label:number):void {
-		this.m_label = __label;
-	}
-
 //------------------------------------------------------------------------------------------
 	public addMouseDownListener (__listener:any):number {
 		return this.m_mouseDownSignal.addListener (__listener);
