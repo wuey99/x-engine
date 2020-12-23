@@ -55,9 +55,8 @@ export class XButton extends XGameObject {
         
         this.createSprites ();
         
-        if (true) {
-            // TODO this.m_sprite.mouseEnabled = true;
-        }
+        this.m_sprite.interactive = true;
+        this.m_sprite.interactiveChildren = true;
         
         this.m_disabledFlag = false;
         
@@ -83,14 +82,12 @@ export class XButton extends XGameObject {
 	public setupListeners ():void {		
 	    this.addTask ([
 			() => {
-                /*
-					m_sprite.addEventListener (xxx.MOUSE_OVER, onMouseOver);
-					m_sprite.addEventListener (xxx.MOUSE_DOWN, onMouseDown);
-					m_sprite.addEventListener (xxx.MOUSE_MOVE, onMouseMove);
-					m_sprite.addEventListener (xxx.MOUSE_UP, onMouseUp);
-					m_sprite.addEventListener (xxx.MOUSE_OUT, onMouseOut);
-                    m_keyboardDownListener = xxx.addKeyboardDownListener (onKeyboardDown);	
-                */
+				this.m_sprite.on ("pointerover", this.onMouseOver.bind (this));
+				this.m_sprite.on ("pointerdown", this.onMouseDown.bind (this));
+				this.m_sprite.on ("pointermove", this.onMouseMove.bind (this));
+				this.m_sprite.on ("pointerup", this.onMouseUp.bind (this));
+				this.m_sprite.on ("pointerout", this.onMouseOut.bind (this));
+                // m_keyboardDownListener = xxx.addKeyboardDownListener (onKeyboardDown);
 			},
 				
 			XTask.RETN,
@@ -107,6 +104,10 @@ export class XButton extends XGameObject {
 			m_sprite.removeEventListener (xxx.MOUSE_OUT, onMouseOut);
             xxx.removeKeyboardDownListener (m_keyboardDownListener);
         */
+
+       this.m_mouseDownSignal.removeAllListeners ();
+       this.m_mouseUpSignal.removeAllListeners ();
+       this.m_mouseOutSignal.removeAllListeners ();
 	}
 
 //------------------------------------------------------------------------------------------
@@ -144,8 +145,8 @@ export class XButton extends XGameObject {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public addMouseUpEventListener (func:any):void {
-		// TODO m_sprite.addEventListener (xxx.MOUSE_UP, func);
+	public addMouseUpEventListener (__listener:any):void {
+		this.m_sprite.on ("pointerup", __listener);
 	}
 
 //------------------------------------------------------------------------------------------
@@ -310,14 +311,7 @@ export class XButton extends XGameObject {
 	public fireMouseOutSignal ():void {
 		this.m_mouseOutSignal.fireSignal ();
 	}
-			
-//------------------------------------------------------------------------------------------
-	public removeAllListeners ():void {
-		this.m_mouseDownSignal.removeAllListeners ();
-		this.m_mouseUpSignal.removeAllListeners ();
-		this.m_mouseOutSignal.removeAllListeners ();
-	}
-			
+
 //------------------------------------------------------------------------------------------	
 }
 	

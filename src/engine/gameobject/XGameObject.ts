@@ -59,11 +59,6 @@ export class XGameObject extends PIXI.Sprite {
 	public m_matterDY:number;
 	public m_matterRotate:boolean;
 
-	public m_mouseUpSignal:XSignal;
-	public m_mouseDownSignal:XSignal;
-	public m_touchStartSignal:XSignal;
-	public m_touchEndSignal:XSignal;
-
 	public m_mousePoint:XPoint;
 	public m_touchPoint:XPoint;
 
@@ -92,10 +87,6 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_parent = null;
 		this.m_XApp = XGameObject.g_XApp;
 		this.m_killSignal = this.createXSignal ();
-		this.m_mouseUpSignal = this.createXSignal ();
-		this.m_mouseDownSignal = this.createXSignal ();
-		this.m_touchStartSignal = this.createXSignal ();
-		this.m_touchEndSignal = this.createXSignal ();
 		this.m_cx = new XRect ();
 		this.m_pos = new XPoint ();
 		this.m_vel = new XPoint ();
@@ -143,10 +134,6 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_parent = null;
 		this.m_XApp = XGameObject.g_XApp;
 		this.m_killSignal = this.createXSignal ();
-		this.m_mouseUpSignal = this.createXSignal ();
-		this.m_mouseDownSignal = this.createXSignal ();
-		this.m_touchStartSignal = this.createXSignal ();
-		this.m_touchEndSignal = this.createXSignal ();
 		this.m_mousePoint = new XPoint ();
 		this.m_cx = new XRect ();
 		this.m_pos = new XPoint ();
@@ -262,46 +249,6 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 	public fireKillSignal ():void {
 		this.m_killSignal.fireSignal ();
-	}
-
-//------------------------------------------------------------------------------------------
-	public addMouseDownListener (__listener:any):number {
-		return this.m_mouseDownSignal.addListener (__listener);
-	}
-
-//------------------------------------------------------------------------------------------
-	public fireMouseDownSignal (e:PIXI.InteractionEvent):void {
-		return this.m_mouseDownSignal.fireSignal (this, e);
-	}
-
-//------------------------------------------------------------------------------------------
-	public addMouseUpListener (__listener:any):number {
-		return this.m_mouseUpSignal.addListener (__listener);
-	}
-
-//------------------------------------------------------------------------------------------
-	public fireMouseUpSignal (e:PIXI.InteractionEvent):void {
-		return this.m_mouseUpSignal.fireSignal (this, e);
-	}
-
-//------------------------------------------------------------------------------------------
-	public addTouchStartListener (__listener:any):number {
-		return this.m_touchStartSignal.addListener (__listener);
-	}
-
-//------------------------------------------------------------------------------------------
-	public fireTouchStartSignal (e:PIXI.InteractionEvent):void {
-		return this.m_touchStartSignal.fireSignal (this, e);
-	}
-
-//------------------------------------------------------------------------------------------
-	public addTouchEndListener (__listener:any):number {
-		return this.m_touchEndSignal.addListener (__listener);
-	}
-
-//------------------------------------------------------------------------------------------
-	public fireTouchEndSignal (e:PIXI.InteractionEvent):void {
-		return this.m_touchEndSignal.fireSignal (this, e);
 	}
 
 //------------------------------------------------------------------------------------------

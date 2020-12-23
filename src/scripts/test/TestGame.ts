@@ -18,6 +18,7 @@ import { FlockLeader } from './FlockLeader';
 import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
 import * as SFS2X from "sfs2x-api";
 import { SFSManager } from '../../engine/sfs/SFSManager';
+import { XButton } from '../../engine/ui/XButton';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
@@ -78,8 +79,13 @@ export class TestGame extends XState {
 			]);
 
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
-		__leader.afterSetup ();
-		
+		__leader.afterSetup ([]);
+
+		var __testButton:XButton = this.addGameObjectAsChild (XButton, 0, 0.0, false) as XButton;
+		__testButton.afterSetup (["TestButton"]);
+		__testButton.x = 256;
+		__testButton.y = 256;
+
 		return this;
 	}
 
