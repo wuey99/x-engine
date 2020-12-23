@@ -74,8 +74,8 @@ export class TestGame extends XState {
 					});
 				},
 
-		XTask.RETN,
-	]);
+				XTask.RETN,
+			]);
 
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
 		__leader.afterSetup ();

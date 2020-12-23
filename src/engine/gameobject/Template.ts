@@ -36,7 +36,7 @@ export class Template extends XGameObject {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup():void {
+	public cleanup ():void {
         super.cleanup ();
 	}
 	
