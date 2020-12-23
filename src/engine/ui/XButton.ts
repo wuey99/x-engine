@@ -82,11 +82,11 @@ export class XButton extends XGameObject {
 	public setupListeners ():void {		
 	    this.addTask ([
 			() => {
-				this.m_sprite.on ("pointerover", this.onMouseOver.bind (this));
-				this.m_sprite.on ("pointerdown", this.onMouseDown.bind (this));
-				this.m_sprite.on ("pointermove", this.onMouseMove.bind (this));
-				this.m_sprite.on ("pointerup", this.onMouseUp.bind (this));
-				this.m_sprite.on ("pointerout", this.onMouseOut.bind (this));
+				this.addPausableEventListener ("pointerover", this.m_sprite, this.onMouseOver.bind (this));
+				this.addPausableEventListener ("pointerdown", this.m_sprite, this.onMouseDown.bind (this));
+				this.addPausableEventListener ("pointermove", this.m_sprite, this.onMouseMove.bind (this));
+				this.addPausableEventListener ("pointerup", this.m_sprite, this.onMouseUp.bind (this));
+				this.addPausableEventListener ("pointerout", this.m_sprite, this.onMouseOut.bind (this));
                 // m_keyboardDownListener = xxx.addKeyboardDownListener (onKeyboardDown);
 			},
 				
@@ -96,15 +96,6 @@ export class XButton extends XGameObject {
 		
 //------------------------------------------------------------------------------------------
 	public cleanupListeners ():void {
-        /*
-			m_sprite.removeEventListener (xxx.MOUSE_OVER, onMouseOver);
-			m_sprite.removeEventListener (xxx.MOUSE_DOWN, onMouseDown);
-			m_sprite.removeEventListener (xxx.MOUSE_MOVE, onMouseMove);
-			m_sprite.removeEventListener (xxx.MOUSE_UP, onMouseUp);
-			m_sprite.removeEventListener (xxx.MOUSE_OUT, onMouseOut);
-            xxx.removeKeyboardDownListener (m_keyboardDownListener);
-        */
-
        this.m_mouseDownSignal.removeAllListeners ();
        this.m_mouseUpSignal.removeAllListeners ();
        this.m_mouseOutSignal.removeAllListeners ();

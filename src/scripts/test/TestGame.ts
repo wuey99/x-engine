@@ -19,6 +19,7 @@ import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
 import * as SFS2X from "sfs2x-api";
 import { SFSManager } from '../../engine/sfs/SFSManager';
 import { XButton } from '../../engine/ui/XButton';
+import { XTextSprite } from '../../engine/sprite/XTextSprite';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
@@ -85,6 +86,31 @@ export class TestGame extends XState {
 		__testButton.afterSetup (["TestButton"]);
 		__testButton.x = 256;
 		__testButton.y = 256;
+
+		this.createBitmapFont (
+            "Aller",
+            {
+                fontFamily: "Nunito",
+                fontSize: 60,
+                strokeThickness: 0,
+                fill: "0xffffff",         
+            },
+            {chars: this.getBitmapFontChars ()}
+		);
+		
+		var __textSprite:XTextSprite = new XTextSprite (
+			120,
+			64,
+			"hello world",
+			"Aller",
+			100,
+			0xff0000,
+			true,
+			"left"
+		);
+		this.addSortableChild (__textSprite, 0, 0.0, true);
+		__textSprite.x = 256;
+		__textSprite.y = 256;
 
 		return this;
 	}
