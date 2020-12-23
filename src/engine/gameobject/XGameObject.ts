@@ -18,6 +18,7 @@ import { XRect } from '../geom/XRect';
 import { XPoint } from '../geom/XPoint';
 import { G } from '../app/G';
 import { XState } from '../state/XState';
+import { PausableListener} from '../events/PausableListener';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Sprite {
@@ -66,6 +67,7 @@ export class XGameObject extends PIXI.Sprite {
 
 	public m_stageEvents:Map<any, string>;
 	public m_stageEventsX:Map<any, __PausableListener>;
+	public m_pausableEvents:Map<any, PausableListener>;
 
 	public m_poolClass:any;
 
@@ -151,6 +153,7 @@ export class XGameObject extends PIXI.Sprite {
 
 		this.m_stageEvents = new Map<any, string> ();
 		this.m_stageEventsX = new Map<any, __PausableListener> ();
+		this.m_pausableEvents = new Map<any, PausableListener> ();
 
 		this.m_cx.x = 0;
 		this.m_cx.y = 0;
@@ -183,6 +186,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.removeAllSprites ();
 		this.removeAllStageEvents ();
 		this.removeAllStageEventsX ();
+		this.removeAllPausableEvents ();
 		this.removeAllBitmapFonts ();
 
 		if (this.getParentObject () != null) { 
@@ -300,6 +304,32 @@ export class XGameObject extends PIXI.Sprite {
 		XType.forEach (this.m_stageEventsX,
 			(__listener:any) => {
 				this.removeStageEventListenerX (__listener);				
+			}
+		);
+	}
+
+//------------------------------------------------------------------------------------------
+	public addPausableEventListener (__eventName:string, __displayObject:PIXI.DisplayObject, __listener:any):any {
+		var __pausableListener:PausableListener = new PausableListener (__eventName, __displayObject, __listener);
+
+		this.m_pausableEvents.set (__listener, __pausableListener);
+		
+		return __listener;
+	}
+
+//------------------------------------------------------------------------------------------
+	public removePausableEventListener (__listener:any):any {
+		var __pausableListener:PausableListener = this.m_pausableEvents.get (__listener);
+		__pausableListener.cleanup ();
+
+		this.m_pausableEvents.delete (__listener);
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeAllPausableEvents ():void {
+		XType.forEach (this.m_pausableEvents,
+			(__listener:any) => {
+				this.removePausableEventListener (__listener);				
 			}
 		);
 	}
