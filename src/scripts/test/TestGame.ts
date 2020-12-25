@@ -20,6 +20,7 @@ import * as SFS2X from "sfs2x-api";
 import { SFSManager } from '../../engine/sfs/SFSManager';
 import { XSpriteButton } from '../../engine/ui/XSpriteButton';
 import { XTextButton } from '../../engine/ui/XTextButton';
+import { XTextSpriteButton } from '../../engine/ui/XTextSpriteButton';
 import { XTextSprite } from '../../engine/sprite/XTextSprite';
 
 //------------------------------------------------------------------------------------------
@@ -112,11 +113,28 @@ export class TestGame extends XState {
 			0x0000ff,
 			0x0000ff,
 			false,
-			"center"
+			"center", "center"
 		]);
 		__testButton2.x = 512;
 		__testButton2.y = 512;
 		
+		var __testButton3:XTextSpriteButton = this.addGameObjectAsChild (XTextSpriteButton, 0, 0.0, false) as XTextSpriteButton;
+		__testButton3.afterSetup ([
+			"TestButtonToo",
+			"press me",
+			"Aller",
+			50,
+			0x0000ff,
+			0xff0000,
+			0x00ff00,
+			0x0000ff,
+			0x0000ff,
+			false,
+			"center", "center"
+		]);
+		__testButton3.x = 1924;
+		__testButton3.y = 512;
+
 		var __textSprite:XTextSprite = this.createXTextSprite (
 			120,
 			64,
@@ -125,7 +143,7 @@ export class TestGame extends XState {
 			100,
 			0xff0000,
 			true,
-			"left"
+			"center", "center"
 		);
 		this.addSortableChild (__textSprite, 0, 0.0, true);
 		__textSprite.x = 256;

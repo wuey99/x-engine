@@ -11,6 +11,10 @@ import { XType } from '../type/XType';
 //------------------------------------------------------------------------------------------
 	export class XTextSprite extends XSprite {
 		private m_text:PIXI.BitmapText;
+		private m_width:number;
+		private m_height:number;
+		private m_horizontalAlignment:string;
+		private m_verticalAlignment:string;
 
 //------------------------------------------------------------------------------------------
 		public constructor (
@@ -21,24 +25,30 @@ import { XType } from '../type/XType';
             __fontSize:number=12,
 			__color:number=0x000000,
             __bold:boolean=false,
-            __align:string="left"
+			__horzAlign:string="left",
+			__vertAlign:string="top"
 		) {
 			super ();
 			
 			this.setup ();
-            
+			
+			this.m_width = __width;
+			this.m_height = __height;
+			this.m_horizontalAlignment = __horzAlign;
+			this.m_verticalAlignment = __vertAlign;
+
 			this.m_text = new PIXI.BitmapText (
                 __text,
                 {
                     fontName: __fontName,
                     fontSize: __fontSize,
                     tint: __color,
-                    align: __align,
+                    align: __horzAlign,
                     maxWidth: __width
                 }
             );		
 				
-			this.addChild (this.m_text);
+			this.addChild (this.m_text); this.format ();	
 		}
 
 //------------------------------------------------------------------------------------------
@@ -56,6 +66,33 @@ import { XType } from '../type/XType';
 			return this.m_text;
 		}
 		
+//------------------------------------------------------------------------------------------
+		public format ():void {
+			switch (this.m_horizontalAlignment) {
+				case "center":
+					this.m_text.x = (this.m_width - this.m_text.width) / 2;
+					break;
+				case "right":
+					this.m_text.x = (this.m_width - this.m_text.width);
+					break;
+				default:
+					this.m_text.x = 0;
+					break;
+			}
+
+			switch (this.m_verticalAlignment) {
+				case "center":
+					this.m_text.y = (this.m_height - this.m_text.height) / 2;
+					break;
+				case "bottom":
+					this.m_text.y = (this.m_height - this.m_text.height);
+					break;
+				default:
+					this.m_text.y = 0;
+					break;
+			}
+		}
+
 //------------------------------------------------------------------------------------------
 		public get text ():string {
 			return this.m_text.text;
@@ -79,7 +116,8 @@ import { XType } from '../type/XType';
 			return true;
 		}
 		
-		public set bold (__val:boolean) {			
+		public set bold (__val:boolean) {	
+			this.format ();		
 		}
 			
 //------------------------------------------------------------------------------------------
@@ -88,7 +126,7 @@ import { XType } from '../type/XType';
 		}
 		
 		public set font (__val:string) {
-			this.m_text.fontName = __val;			
+			this.m_text.fontName = __val; this.format ();		
 		}
 		
 //------------------------------------------------------------------------------------------
@@ -97,7 +135,7 @@ import { XType } from '../type/XType';
 		}
 		
 		public set size (__val:number) {
-			this.m_text.fontSize = __val;		
+			this.m_text.fontSize = __val; this.format ();	
 		}
 
 //------------------------------------------------------------------------------------------
@@ -106,7 +144,7 @@ import { XType } from '../type/XType';
 		}
 		
 		public set align (__val:string) {
-			this.m_text.align = __val;		
+			this.m_text.align = __val; this.format ();		
 		}
 		
 //------------------------------------------------------------------------------------------
@@ -115,7 +153,7 @@ import { XType } from '../type/XType';
 		}
 		
 		public set textWidth (__val:number) {
-            this.m_text.maxWidth = __val;
+            this.m_text.maxWidth = __val; this.format ();	
 		}
 		
 //------------------------------------------------------------------------------------------
@@ -124,6 +162,7 @@ import { XType } from '../type/XType';
         }
 
         public set textHeight (__val:number) {
+			this.format ();	
         }
 
 //------------------------------------------------------------------------------------------
@@ -132,7 +171,7 @@ import { XType } from '../type/XType';
 		}
 		
 		public set letterSpacing (__val:number) {
-			this.m_text.letterSpacing = __val;		
+			this.m_text.letterSpacing = __val; this.format ();		
 		}
 
 //------------------------------------------------------------------------------------------

@@ -75,6 +75,12 @@
         <resource name="TestButton" type=".fla" embed="false" path="Common" src="B10501A5-8A43-4214-F22E-1107A0AB39B1-TestButton.fla" dst="B10501A5-8A43-4214-F22E-1107A0AB39B1-TestButton.swf">
           <classX name="TestButton" regX="0" regY="0" width="32" height="32"/>
         </resource>
+        <resource name="@TestButtonToo" type=".pmp" embed="false" path="Common" src="F3171504-B336-A968-BEDA-0B262E34A2BA-TestButtonToo.pmp" dst="F3171504-B336-A968-BEDA-0B262E34A2BA-TestButtonToo.pmp" pmp_width="512" originX="142" originY="202" width="250" totalWidth="1250" height="100" regX="0" regY="0"/>
+        <resource name="png_TestButtonToo" type=".png" embed="false" path="Common" src="F3171504-B336-A968-BEDA-0B262E34A2BA-TestButtonToo.png" dst="F3171504-B336-A968-BEDA-0B262E34A2BA-TestButtonToo.png"/>
+        <resource name="$TestButtonToo" type=".json" embed="false" path="Common" src="F3171504-B336-A968-BEDA-0B262E34A2BA-TestButtonToo.json" dst="F3171504-B336-A968-BEDA-0B262E34A2BA-TestButtonToo.json"/>
+        <resource name="TestButtonToo" type=".fla" embed="false" path="Common" src="CE90AE75-8210-3636-9474-F502A0F84935-TestButtonToo.fla" dst="CE90AE75-8210-3636-9474-F502A0F84935-TestButtonToo.swf">
+          <classX name="TestButtonToo" regX="0" regY="0" width="32" height="32"/>
+        </resource>
       </folder>
     </folder>
     <folder name="Sketches">

@@ -536,7 +536,8 @@ export class XGameObject extends PIXI.Sprite {
 		__fontSize:number=12,
 		__color:number=0x000000,
 		__bold:boolean=false,
-		__align:string="left"
+		__horzAlign:string="left",
+		__vertAlign:string="top"
 	):XTextSprite {
 
 		var __textSprite:XTextSprite = new XTextSprite (
@@ -547,7 +548,8 @@ export class XGameObject extends PIXI.Sprite {
 			__fontSize,
 			__color,
 			__bold,
-			__align
+			__horzAlign,
+			__vertAlign
 		);
 
 		return __textSprite;
