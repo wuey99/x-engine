@@ -22,6 +22,7 @@ import { XSpriteButton } from '../../engine/ui/XSpriteButton';
 import { XTextButton } from '../../engine/ui/XTextButton';
 import { XTextSpriteButton } from '../../engine/ui/XTextSpriteButton';
 import { XTextSprite } from '../../engine/sprite/XTextSprite';
+import { TextInput } from 'pixi-textinput-v5';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
@@ -149,6 +150,16 @@ export class TestGame extends XState {
 		__textSprite.x = 256;
 		__textSprite.y = 256;
 
+		var __textInput:TextInput = new TextInput (
+			{
+				input: {fontSize: '60px'}, 
+				box: {fill: 0xEEEEEE}
+			}
+		);
+		this.addSortableChild (__textInput, 0, 0.0, true);
+		__textInput.x = 1024;
+		__textInput.y = 768;
+	
 		return this;
 	}
 
