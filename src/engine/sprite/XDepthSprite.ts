@@ -5,7 +5,6 @@ import { XSpriteLayer } from './XSpriteLayer';
 
 //------------------------------------------------------------------------------------------
 export class XDepthSprite extends XSprite {
-
     public m_depth:number;
     public m_depth2:number;
     public m_relativeDepthFlag:boolean;

@@ -86,7 +86,10 @@ export class TestGame extends XState {
 		__leader.afterSetup ([]);
 
 		var __testButton:XSpriteButton = this.addGameObjectAsChild (XSpriteButton, 0, 0.0, false) as XSpriteButton;
-		__testButton.afterSetup (["TestButton"]);
+		__testButton.afterSetup ([
+			"TestButton",
+			true, 10, 250, 50
+		]);
 		__testButton.x = 256;
 		__testButton.y = 256;
 
@@ -122,6 +125,7 @@ export class TestGame extends XState {
 		var __testButton3:XTextSpriteButton = this.addGameObjectAsChild (XTextSpriteButton, 0, 0.0, false) as XTextSpriteButton;
 		__testButton3.afterSetup ([
 			"TestButtonToo",
+			true, 10, 300, 100,
 			"press me",
 			"Aller",
 			50,

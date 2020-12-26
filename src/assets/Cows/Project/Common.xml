@@ -61,7 +61,11 @@
       </resource>
     </folder>
     <folder name="sprites">
-      <folder name="Common"/>
+      <folder name="Common">
+        <folder name="ui">
+          <resource name="@StandardButton" type=".pmp" embed="false" path="Common" src="F664A9D2-6DC1-02B2-93BC-170C0C94E2B7-StandardButton.pmp" dst="F664A9D2-6DC1-02B2-93BC-170C0C94E2B7-StandardButton.pmp" pmp_width="512" originX="0" originY="0" width="32" totalWidth="32" height="32" regX="0" regY="0"/>
+        </folder>
+      </folder>
       <folder name="Test">
         <resource name="@OctopusBug" type=".pmp" embed="false" path="Common" src="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.pmp" dst="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.pmp" pmp_width="512" originX="192" originY="184" width="144" totalWidth="2304" height="138" regX="-65" regY="-72"/>
         <resource name="png_OctopusBug" type=".png" embed="false" path="Common" src="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.png" dst="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.png"/>
@@ -69,7 +73,7 @@
         <resource name="OctopusBug" type=".fla" embed="false" path="Common" src="B2D8B6D7-1F2B-E40E-1280-5D9F0FA4BFF4-OctopusBug.fla" dst="B2D8B6D7-1F2B-E40E-1280-5D9F0FA4BFF4-OctopusBug.swf">
           <classX name="OctopusBug" regX="0" regY="0" width="32" height="32"/>
         </resource>
-        <resource name="@TestButton" type=".pmp" embed="false" path="Common" src="F443FA5D-FB53-8763-C2F1-51B2A676C243-TestButton.pmp" dst="F443FA5D-FB53-8763-C2F1-51B2A676C243-TestButton.pmp" pmp_width="512" originX="168" originY="218" width="125" totalWidth="625" height="50" regX="-63" regY="-25"/>
+        <resource name="@TestButton" type=".pmp" embed="false" path="Common" src="F443FA5D-FB53-8763-C2F1-51B2A676C243-TestButton.pmp" dst="F443FA5D-FB53-8763-C2F1-51B2A676C243-TestButton.pmp" pmp_width="512" originX="168" originY="218" width="125" totalWidth="625" height="50" regX="0" regY="0"/>
         <resource name="png_TestButton" type=".png" embed="false" path="Common" src="F443FA5D-FB53-8763-C2F1-51B2A676C243-TestButton.png" dst="F443FA5D-FB53-8763-C2F1-51B2A676C243-TestButton.png"/>
         <resource name="$TestButton" type=".json" embed="false" path="Common" src="F443FA5D-FB53-8763-C2F1-51B2A676C243-TestButton.json" dst="F443FA5D-FB53-8763-C2F1-51B2A676C243-TestButton.json"/>
         <resource name="TestButton" type=".fla" embed="false" path="Common" src="B10501A5-8A43-4214-F22E-1107A0AB39B1-TestButton.fla" dst="B10501A5-8A43-4214-F22E-1107A0AB39B1-TestButton.swf">
@@ -82,6 +86,7 @@
           <classX name="TestButtonToo" regX="0" regY="0" width="32" height="32"/>
         </resource>
       </folder>
+      <folder name="startup"/>
     </folder>
     <folder name="Sketches">
       <resource name="#Sketch001" type=".pmp" embed="false" path="Common" src="65B9669A-4F2D-D829-78C6-615EF4C5F524-Sketch001.pmp" dst="65B9669A-4F2D-D829-78C6-615EF4C5F524-Sketch001.pmp"/>

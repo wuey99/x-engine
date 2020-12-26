@@ -17,11 +17,11 @@ export class XButton extends XGameObject {
 	public m_keyboardDownSignal:XSignal;
 	public m_keyboardUpSignal:XSignal;
 
-	public static NORMAL_STATE:number = 1;
-	public static OVER_STATE:number = 2;
-	public static DOWN_STATE:number = 3;
-	public static SELECTED_STATE:number = 4;
-	public static DISABLED_STATE:number = 5;
+	public static NORMAL_STATE:number = 0;
+	public static OVER_STATE:number = 1;
+	public static DOWN_STATE:number = 2;
+	public static SELECTED_STATE:number = 3;
+	public static DISABLED_STATE:number = 4;
 				
 	public m_label:number;
 	public m_currState:number;
