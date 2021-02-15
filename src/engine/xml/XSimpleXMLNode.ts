@@ -221,6 +221,11 @@ export class XSimpleXMLNode {
 	}
 
 	//-----------------------------------------------------------------------------------------
+	public attributes(): Map<string, any> {
+		return this.m_attribsMap;
+	}
+
+	//-----------------------------------------------------------------------------------------
 	public attribute(__name: string): any {
 		return this.m_attribsMap.get(__name);
 	}
@@ -242,7 +247,7 @@ export class XSimpleXMLNode {
 
 	//-----------------------------------------------------------------------------------------
 	public getAttributeString(__name: string): string {
-		return this.m_attribsMap.get(__name);
+		return "" + this.m_attribsMap.get(__name);
 	}
 
 	//-----------------------------------------------------------------------------------------

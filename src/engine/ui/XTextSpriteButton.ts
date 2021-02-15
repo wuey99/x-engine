@@ -81,6 +81,22 @@ export class XTextSpriteButton extends XSpriteButton {
     }
 
 //------------------------------------------------------------------------------------------
+    public getText ():string {
+        return this.m_text;
+    }
+
+//------------------------------------------------------------------------------------------
+    public setText (__value:string):void {
+        this.m_text = __value;
+        this.m_textSprite.text = __value;
+    }
+
+//------------------------------------------------------------------------------------------
+    public getTextSprite ():XTextSprite {
+        return this.m_textSprite;
+    }
+
+//------------------------------------------------------------------------------------------
 // create sprites
 //------------------------------------------------------------------------------------------
 	public createSprites ():void {

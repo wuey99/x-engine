@@ -23,7 +23,8 @@ export class XTextButton extends XButton {
     private m_colorSelected:number;
     private m_colorDisabled:number;
     private m_bold:boolean;
-    private m_align:string;
+    private m_horizontalAlignment:string;
+    private m_verticalAlignment:string
 
 //------------------------------------------------------------------------------------------
 	public getParams (__params:Array<any> = null):void {
@@ -38,38 +39,49 @@ export class XTextButton extends XButton {
         this.m_colorSelected = __params[8];
         this.m_colorDisabled = __params[9];
         this.m_bold = __params[10];
-        this.m_align = __params[11];
+        this.m_horizontalAlignment = __params[11];
+        this.m_verticalAlignment = __params[12];
 	}
 
 //------------------------------------------------------------------------------------------
-public createHighlightTask ():void {
-    this.addTask ([
-        XTask.LABEL, "loop",
-            XTask.WAIT, 0x0100,
-                
-            () => {
-                switch (this.m_label) {
-                    case XButton.NORMAL_STATE:
-                        (this.m_sprite as XTextSprite).color = this.m_colorNormal;
-                        break;
-                    case XButton.OVER_STATE:
-                        (this.m_sprite as XTextSprite).color = this.m_colorOver;
-                        break;
-                    case XButton.DOWN_STATE:
-                        (this.m_sprite as XTextSprite).color = this.m_colorDown;
-                        break;
-                    case XButton.SELECTED_STATE:
-                        (this.m_sprite as XTextSprite).color = this.m_colorSelected;
-                        break;
-                    case XButton.DISABLED_STATE:
-                        (this.m_sprite as XTextSprite).color = this.m_colorDisabled;
-                        break;
-                }
-            },
-                                
-        XTask.GOTO, "loop",
-    ]);
-}
+    public createHighlightTask ():void {
+        this.addTask ([
+            XTask.LABEL, "loop",
+                XTask.WAIT, 0x0100,
+                    
+                () => {
+                    switch (this.m_label) {
+                        case XButton.NORMAL_STATE:
+                            (this.m_sprite as XTextSprite).color = this.m_colorNormal;
+                            break;
+                        case XButton.OVER_STATE:
+                            (this.m_sprite as XTextSprite).color = this.m_colorOver;
+                            break;
+                        case XButton.DOWN_STATE:
+                            (this.m_sprite as XTextSprite).color = this.m_colorDown;
+                            break;
+                        case XButton.SELECTED_STATE:
+                            (this.m_sprite as XTextSprite).color = this.m_colorSelected;
+                            break;
+                        case XButton.DISABLED_STATE:
+                            (this.m_sprite as XTextSprite).color = this.m_colorDisabled;
+                            break;
+                    }
+                },
+                                    
+            XTask.GOTO, "loop",
+        ]);
+    }
+
+//------------------------------------------------------------------------------------------
+    public get width ():number {
+        return this.m_width;
+    }
+
+//------------------------------------------------------------------------------------------
+    public get height ():number {
+        return this.m_height;
+    }
 
 //------------------------------------------------------------------------------------------
 // create sprites
@@ -83,7 +95,8 @@ public createHighlightTask ():void {
             this.m_fontSize,
             this.m_colorNormal,
             this.m_bold,
-            this.m_align
+            this.m_horizontalAlignment,
+            this.m_verticalAlignment
         );
 
         this.addSortableChild (this.m_sprite, this.getLayer (), this.getDepth (), false);

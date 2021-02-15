@@ -10,11 +10,11 @@ export class SFSManager {
     public m_sfs:SFS2X.SmartFox;
     public m_connected:boolean;
 
-    public m_connectedSignal:XSignal;
-    public m_disconnectedSignal:XSignal;
     public m_errorSignal:XSignal;
 
     public m_sfsEvents:Map<any, __SFSListener>;
+    
+    public static SFS2X_SERVER:string = "104.217.137.195";
     
 //------------------------------------------------------------------------------------------
 	public static instance ():SFSManager {
@@ -31,10 +31,6 @@ export class SFSManager {
 	
 //------------------------------------------------------------------------------------------
 	public setup ():SFSManager {
-        this.m_connectedSignal = new XSignal ();
-        this.m_disconnectedSignal = new XSignal ();
-        this.m_errorSignal = new XSignal ();
-
         this.m_sfsEvents = new Map<any, __SFSListener> ();
 
         this.m_sfs = new SFS2X.SmartFox ();
@@ -44,13 +40,15 @@ export class SFSManager {
         this.addEventListener (SFS2X.SFSEvent.CONFIG_LOAD_SUCCESS, this.onConfigLoadSuccess.bind (this));
         this.addEventListener (SFS2X.SFSEvent.CONFIG_LOAD_FAILURE, this.onConfigLoadFailure.bind (this));
 
+        this.m_errorSignal = new XSignal ();
+
         this.m_connected = false;
 
         return this;
 	}
 
 //------------------------------------------------------------------------------------------
-    public connect (__url:string, __port:number, __connected?:any, __disconnected?:any):SFSManager {
+    public connect (__url:string, __port:number, __connected?:any,  __error?:any, __disconnected?:any):SFSManager {
         this.m_sfs.connect (__url, __port);
 
         if (__connected != null) {
@@ -59,6 +57,12 @@ export class SFSManager {
 
         if (__disconnected != null) {
             this.once (SFS2X.SFSEvent.CONNECTION_LOST, __disconnected)
+        }
+        
+        if (__error != null) {
+            this.addErrorListener (() => {
+                __error ();
+            })
         }
 
         return this;
@@ -79,9 +83,7 @@ export class SFSManager {
 //------------------------------------------------------------------------------------------
 	public cleanup ():void {
         this.removeAllEventListeners ();
-    
-		this.m_connectedSignal.removeAllListeners ();
-        this.m_disconnectedSignal.removeAllListeners ();
+
         this.m_errorSignal.removeAllListeners ();
 	}
     
@@ -89,6 +91,11 @@ export class SFSManager {
     public getSFS ():SFS2X.SmartFox {
         return this.m_sfs;
     }
+
+	//------------------------------------------------------------------------------------------
+	public addErrorListener (__listener:any):number {
+		return this.m_errorSignal.addListener (__listener);
+	}
 
 //------------------------------------------------------------------------------------------
     public on (__eventName:string, __listener:any):any {
@@ -141,28 +148,11 @@ export class SFSManager {
     }
 
 //------------------------------------------------------------------------------------------
-    public addConnectedistener (__listener:any):number {
-        return this.m_connectedSignal.addListener (__listener);
-    }
-
-//------------------------------------------------------------------------------------------
-    public addDisconnectedistener (__listener:any):number {
-        return this.m_disconnectedSignal.addListener (__listener);
-    }
-
-//------------------------------------------------------------------------------------------
-    public addErrorListener (__listener:any):number {
-        return this.m_errorSignal.addListener (__listener);
-    }
-
-//------------------------------------------------------------------------------------------
     public onConnection (evt:SFS2X.SFSEvent):void {
         if (evt.success) {
             console.log ("Connected to SmartFoxServer 2X!");
 
             this.m_connected = true;
-
-            this.m_connectedSignal.fireSignal ();
 
         } else {
             console.log ("Connection failed. Is the server running at all?");
@@ -178,8 +168,6 @@ export class SFSManager {
         console.log ("Connection was lost. Reason: ", evt.params)
 
         this.m_connected = false;
-
-        this.m_disconnectedSignal.fireSignal ();
     }
 
 //------------------------------------------------------------------------------------------

@@ -10,11 +10,11 @@ import { XType } from '../type/XType';
 	
 //------------------------------------------------------------------------------------------
 	export class XTextSprite extends XSprite {
-		private m_text:PIXI.BitmapText;
-		private m_width:number;
-		private m_height:number;
-		private m_horizontalAlignment:string;
-		private m_verticalAlignment:string;
+		public m_bitmapText:PIXI.BitmapText;
+		public m_width:number;
+		public m_height:number;
+		public m_horizontalAlignment:string;
+		public m_verticalAlignment:string;
 
 //------------------------------------------------------------------------------------------
 		public constructor (
@@ -37,7 +37,7 @@ import { XType } from '../type/XType';
 			this.m_horizontalAlignment = __horzAlign;
 			this.m_verticalAlignment = __vertAlign;
 
-			this.m_text = new PIXI.BitmapText (
+			this.m_bitmapText = new PIXI.BitmapText (
                 __text,
                 {
                     fontName: __fontName,
@@ -48,7 +48,7 @@ import { XType } from '../type/XType';
                 }
             );		
 				
-			this.addChild (this.m_text); this.format ();	
+			this.addChild (this.m_bitmapText); this.format ();	
 		}
 
 //------------------------------------------------------------------------------------------
@@ -63,52 +63,69 @@ import { XType } from '../type/XType';
 		
 //------------------------------------------------------------------------------------------
 		public getBitmapText ():PIXI.BitmapText {
-			return this.m_text;
+			return this.m_bitmapText;
 		}
 		
 //------------------------------------------------------------------------------------------
+		public get width ():number {
+			return this.m_bitmapText.width;
+		}
+
+//------------------------------------------------------------------------------------------
+		public get height ():number {
+			return this.m_bitmapText.height;
+		}
+
+//------------------------------------------------------------------------------------------
 		public format ():void {
-			switch (this.m_horizontalAlignment) {
+			this.m_bitmapText.dirty = true;
+			
+			if (this.m_width > 0) switch (this.m_horizontalAlignment) {
 				case "center":
-					this.m_text.x = (this.m_width - this.m_text.width) / 2;
+					this.m_bitmapText.x = (this.m_width - this.m_bitmapText.width) / 2;
 					break;
 				case "right":
-					this.m_text.x = (this.m_width - this.m_text.width);
+					this.m_bitmapText.x = (this.m_width - this.m_bitmapText.width);
 					break;
 				default:
-					this.m_text.x = 0;
+					this.m_bitmapText.x = 0;
 					break;
 			}
 
-			switch (this.m_verticalAlignment) {
+			if (this.m_height > 0) switch (this.m_verticalAlignment) {
 				case "center":
-					this.m_text.y = (this.m_height - this.m_text.height) / 2;
+					this.m_bitmapText.y = (this.m_height - this.m_bitmapText.height) / 2;
 					break;
 				case "bottom":
-					this.m_text.y = (this.m_height - this.m_text.height);
+					this.m_bitmapText.y = (this.m_height - this.m_bitmapText.height);
 					break;
 				default:
-					this.m_text.y = 0;
+					this.m_bitmapText.y = 0;
 					break;
 			}
+		}
+
+//------------------------------------------------------------------------------------------
+		public get bitmapText ():PIXI.BitmapText {
+			return this.m_bitmapText;
 		}
 
 //------------------------------------------------------------------------------------------
 		public get text ():string {
-			return this.m_text.text;
+			return this.m_bitmapText.text;
 		}
 		
 		public set text (__text:string) {
-			this.m_text.text = __text;
+			this.m_bitmapText.text = __text; this.format ();
 		}
 
 //------------------------------------------------------------------------------------------
 		public get color ():number {
-			return this.m_text.tint;
+			return this.m_bitmapText.tint;
 		}
 		
 		public set color (__color:number) {
-			this.m_text.tint = __color;		
+			this.m_bitmapText.tint = __color;		
 		}
 		
 //------------------------------------------------------------------------------------------
@@ -122,43 +139,43 @@ import { XType } from '../type/XType';
 			
 //------------------------------------------------------------------------------------------
 		public get font ():string {
-			return this.m_text.fontName;
+			return this.m_bitmapText.fontName;
 		}
 		
 		public set font (__val:string) {
-			this.m_text.fontName = __val; this.format ();		
+			this.m_bitmapText.fontName = __val; this.format ();		
 		}
 		
 //------------------------------------------------------------------------------------------
 		public get size ():number {
-			return this.m_text.fontSize;
+			return this.m_bitmapText.fontSize;
 		}
 		
 		public set size (__val:number) {
-			this.m_text.fontSize = __val; this.format ();	
+			this.m_bitmapText.fontSize = __val; this.format ();	
 		}
 
 //------------------------------------------------------------------------------------------
 		public get align ():string {
-			return this.m_text.align;
+			return this.m_bitmapText.align;
 		}
 		
 		public set align (__val:string) {
-			this.m_text.align = __val; this.format ();		
+			this.m_bitmapText.align = __val; this.format ();		
 		}
 		
 //------------------------------------------------------------------------------------------
 		public get textWidth ():number {
-			return this.m_text.maxWidth;
+			return this.m_bitmapText.maxWidth;
 		}
 		
 		public set textWidth (__val:number) {
-            this.m_text.maxWidth = __val; this.format ();	
+            this.m_bitmapText.maxWidth = __val; this.format ();	
 		}
 		
 //------------------------------------------------------------------------------------------
         public get textHeight ():number {
-            return this.m_text.height;
+            return this.m_bitmapText.height;
         }
 
         public set textHeight (__val:number) {
@@ -167,11 +184,11 @@ import { XType } from '../type/XType';
 
 //------------------------------------------------------------------------------------------
 		public get letterSpacing ():number {
-			return this.m_text.letterSpacing;
+			return this.m_bitmapText.letterSpacing;
 		}
 		
 		public set letterSpacing (__val:number) {
-			this.m_text.letterSpacing = __val; this.format ();		
+			this.m_bitmapText.letterSpacing = __val; this.format ();		
 		}
 
 //------------------------------------------------------------------------------------------

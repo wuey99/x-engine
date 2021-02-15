@@ -11,11 +11,6 @@ import { XType } from '../type/XType';
 //------------------------------------------------------------------------------------------
 export class XButton extends XGameObject {
 	public m_sprite:PIXI.Container;
-	public m_mouseDownSignal:XSignal;
-	public m_mouseUpSignal:XSignal;
-	public m_mouseOutSignal:XSignal;
-	public m_keyboardDownSignal:XSignal;
-	public m_keyboardUpSignal:XSignal;
 
 	public static NORMAL_STATE:number = 0;
 	public static OVER_STATE:number = 1;
@@ -46,12 +41,6 @@ export class XButton extends XGameObject {
 
 		this.getParams (__params);
 
-        this.m_mouseDownSignal = this.createXSignal ();	
-        this.m_mouseOutSignal = this.createXSignal ();
-        this.m_mouseUpSignal = this.createXSignal ();
-        this.m_keyboardDownSignal = this.createXSignal ();
-        this.m_keyboardUpSignal = this.createXSignal ();
-        
         this.createSprites ();
         
         this.m_sprite.interactive = true;
@@ -59,7 +48,14 @@ export class XButton extends XGameObject {
         
         this.m_disabledFlag = false;
         
-        this.setupListeners ();
+		this.enableInteractivity ([
+			"pointerover",
+			"pointerdown",
+			"pointermove",
+			"pointerup",
+			"pointerout",
+			"pointerupoutside"
+		]);
         
         this.gotoState (this.getNormalState ());
         
@@ -73,58 +69,17 @@ export class XButton extends XGameObject {
 //------------------------------------------------------------------------------------------
     public cleanup ():void {
         super.cleanup ();
-
-        this.cleanupListeners ();
     }
 
 //------------------------------------------------------------------------------------------
-	public setupListeners ():void {		
-	    this.addTask ([
-			() => {
-				this.addPausableEventListener ("pointerover", this.m_sprite, this.onMouseOver.bind (this));
-				this.addPausableEventListener ("pointerdown", this.m_sprite, this.onMouseDown.bind (this));
-				this.addPausableEventListener ("pointermove", this.m_sprite, this.onMouseMove.bind (this));
-				this.addPausableEventListener ("pointerup", this.m_sprite, this.onMouseUp.bind (this));
-				this.addPausableEventListener ("pointerout", this.m_sprite, this.onMouseOut.bind (this));
-				this.addPausableEventListener ("pointerupoutside", this.m_sprite, this.onMouseOut.bind (this));
-                // m_keyboardDownListener = xxx.addKeyboardDownListener (onKeyboardDown);
-			},
-				
-			XTask.RETN,
-		]);
-	}
-		
-//------------------------------------------------------------------------------------------
-	public cleanupListeners ():void {
-       this.m_mouseDownSignal.removeAllListeners ();
-       this.m_mouseUpSignal.removeAllListeners ();
-       this.m_mouseOutSignal.removeAllListeners ();
+	public getInteractiveArea ():PIXI.Container {
+		return this.m_sprite;
 	}
 
 //------------------------------------------------------------------------------------------
 	public getParams (__params:Array<any> = null):void {
 	}
-
-//------------------------------------------------------------------------------------------
-	public onKeyboardDown (e:PIXI.InteractionEvent):void {
-		this.m_keyboardDownSignal.fireSignal (e);
-	}
-		
-//------------------------------------------------------------------------------------------
-	public onKeyboardUp (e:PIXI.InteractionEvent):void {
-		this.m_keyboardUpSignal.fireSignal (e);
-	}
-
-//------------------------------------------------------------------------------------------
-	public addKeyboardDownListener (__listener:any):number {
-		return this.m_keyboardDownSignal.addListener (__listener);
-	}
-		
-//------------------------------------------------------------------------------------------
-	public addKeyboardUpListener (__listener:any):number{
-		return this.m_keyboardUpSignal.addListener (__listener);
-	}
-		
+	
 //------------------------------------------------------------------------------------------
 	public createHighlightTask ():void {
 	}
@@ -189,27 +144,27 @@ export class XButton extends XGameObject {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public onMouseOver (e:PIXI.InteractionData):void {
+	public onMouseOver (e:PIXI.InteractionEvent):void {
 		this.__onMouseOver ();
 	}			
 
 //------------------------------------------------------------------------------------------
-	public onMouseDown (e:PIXI.InteractionData):void {
+	public onMouseDown (e:PIXI.InteractionEvent):void {
 		this.__onMouseDown ();
 	}			
 
 //------------------------------------------------------------------------------------------
-	public onMouseUp (e:PIXI.InteractionData):void {
+	public onMouseUp (e:PIXI.InteractionEvent):void {
 		this.__onMouseUp ();
 	}			
 
 //------------------------------------------------------------------------------------------
-	public onMouseMove (e:PIXI.InteractionData):void {	
+	public onMouseMove (e:PIXI.InteractionEvent):void {	
 		this.__onMouseMove ();
 	}			
 		
 //------------------------------------------------------------------------------------------	
-	public onMouseOut (e:PIXI.InteractionData):void {
+	public onMouseOut (e:PIXI.InteractionEvent):void {
 		this.__onMouseOut ();
 	}			
 
@@ -246,42 +201,12 @@ export class XButton extends XGameObject {
 //------------------------------------------------------------------------------------------
 // create sprites
 //------------------------------------------------------------------------------------------
-	public  createSprites ():void {
+	public createSprites ():void {
 	}
 
 //------------------------------------------------------------------------------------------
 	public gotoState (__label:number):void {
 		this.m_label = __label;
-	}
-		
-//------------------------------------------------------------------------------------------
-	public addMouseDownListener (__listener:any):number {
-		return this.m_mouseDownSignal.addListener (__listener);
-	}
-
-//------------------------------------------------------------------------------------------
-	public fireMouseDownSignal ():void {
-		this.m_mouseDownSignal.fireSignal ();
-	}
-						
-//------------------------------------------------------------------------------------------
-	public addMouseUpListener (__listener:any):number {
-		return this.m_mouseUpSignal.addListener (__listener);
-	}
-
-//------------------------------------------------------------------------------------------
-	public fireMouseUpSignal ():void {
-		this.m_mouseUpSignal.fireSignal ();
-	}
-
-//------------------------------------------------------------------------------------------
-	public addMouseOutListener (__listener:any):number {
-		return this.m_mouseOutSignal.addListener (__listener);
-	}
-
-//------------------------------------------------------------------------------------------
-	public fireMouseOutSignal ():void {
-		this.m_mouseOutSignal.fireSignal ();
 	}
 
 //------------------------------------------------------------------------------------------	

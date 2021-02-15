@@ -70,7 +70,16 @@ export class XType {
 	public static clearArray (__array:Array<any>):void {
 		__array.length = 0;
     }
-        
+     
+    //------------------------------------------------------------------------------------------
+	public static ofEach (__array:Array<any>, __callback:any):void {
+        var __key:any;
+
+        for (__key of __array) {
+            __callback (__key);
+        }
+    }
+
     //------------------------------------------------------------------------------------------
 	public static forEach (__map:Map<any, any>, __callback:any):void {
         var __key:any;

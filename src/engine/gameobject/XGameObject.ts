@@ -20,6 +20,7 @@ import { G } from '../app/G';
 import { XState } from '../state/XState';
 import { PausableListener} from '../events/PausableListener';
 import { XTextSprite } from '../sprite/XTextSprite';
+import { TextInput } from 'pixi-textinput-v5';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Sprite {
@@ -71,7 +72,17 @@ export class XGameObject extends PIXI.Sprite {
 	public m_stageEventsX:Map<any, __PausableListener>;
 	public m_pausableEvents:Map<any, PausableListener>;
 
+	public m_mouseDownFlag:Boolean;
+
+	public m_mouseDownSignal:XSignal;
+	public m_mouseOverSignal:XSignal;
+	public m_mouseMoveSignal:XSignal;
+	public m_mouseUpSignal:XSignal;
+	public m_mouseOutSignal:XSignal;
+
 	public m_poolClass:any;
+
+	public m_paramIndex:number;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -145,6 +156,12 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_vel = new XPoint ();
 		*/
 
+		this.m_mouseDownSignal = this.createXSignal ();
+		this.m_mouseOverSignal = this.createXSignal ();
+		this.m_mouseMoveSignal = this.createXSignal ();
+		this.m_mouseUpSignal = this.createXSignal ();
+		this.m_mouseOutSignal = this.createXSignal();
+
 		this.alpha = 1.0;
 		this.scale.x = this.scale.y = 1.0;
 		this.pivot.x = this.pivot.y = 1.0;
@@ -167,11 +184,13 @@ export class XGameObject extends PIXI.Sprite {
 		
 		this.m_propagateCount = -1;
 
+		this.m_paramIndex = 0;
+	
 		return this;
 	}
 	
 //------------------------------------------------------------------------------------------
-	public afterSetup (__params:Array<any> = null):XGameObject {
+	public afterSetup (__params:Array<any> = null):XGameObject {	
 		return this;
 	}
 	
@@ -257,6 +276,171 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 	public fireKillSignal ():void {
 		this.m_killSignal.fireSignal ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public getInteractiveArea ():PIXI.Container {
+		return null;
+	}
+
+//------------------------------------------------------------------------------------------
+	public enableInteractivity (
+		__eventFilter:Array<string> =
+			[
+				"pointerdown",
+				"pointerover",
+				"pointermove",
+				"pointerup",
+				"pointerout",
+				"pointerupoutside",
+			]
+		):void {
+
+		this.getInteractiveArea ().interactive = true;
+		this.getInteractiveArea ().interactiveChildren = true;
+
+		this.m_mouseDownFlag = false;
+		
+		if (__eventFilter.indexOf ("pointerdown") >= 0) {
+			this.addPausableEventListener ("pointerdown", this.getInteractiveArea (), this.onMouseDown.bind (this));
+		}
+		if (__eventFilter.indexOf ("pointermove") >= 0) {
+			this.addPausableEventListener ("pointermove", this.getInteractiveArea (), this.onMouseMove.bind (this));
+		}
+		if (__eventFilter.indexOf ("pointerover") >= 0) {
+			this.addPausableEventListener ("pointerover", this.getInteractiveArea (), this.onMouseOver.bind (this));
+		}		
+		if (__eventFilter.indexOf ("pointerup") >= 0) {
+			this.addPausableEventListener ("pointerup", this.getInteractiveArea (), this.onMouseUp.bind (this));
+		}
+		if (__eventFilter.indexOf ("pointerout") >= 0) {
+			this.addPausableEventListener ("pointerout", this.getInteractiveArea (), this.onMouseOut.bind (this));
+		}
+		if (__eventFilter.indexOf ("pointerupoutside") >= 0) {
+			this.addPausableEventListener ("pointerupoutside", this.getInteractiveArea (), this.onMouseOut.bind (this));
+		}
+	}
+
+//------------------------------------------------------------------------------------------
+	public globalToLayer (__layerNum:number, __point:PIXI.Point):void {
+		var __layer:XSpriteLayer = this.world.getLayer (__layerNum);
+
+		__point.x /= __layer.scale.x;
+		__point.y /= __layer.scale.y;
+		
+		__point.x *= G.scaleRatio;
+		__point.y *= G.scaleRatio;
+
+		__point.x -= __layer.x;
+		__point.y -= __layer.y;
+	}
+
+//------------------------------------------------------------------------------------------
+	public onMouseDown (e:PIXI.InteractionEvent):void {
+		this.m_mouseDownSignal.fireSignal (this, e);
+
+		this.m_mouseDownFlag = true;
+	}			
+
+//------------------------------------------------------------------------------------------
+	public onMouseOver (e:PIXI.InteractionEvent):void {
+		this.m_mouseOverSignal.fireSignal (this, e);
+	}	
+
+//------------------------------------------------------------------------------------------
+	public onMouseUp (e:PIXI.InteractionEvent):void {
+		this.m_mouseUpSignal.fireSignal (this, e);
+
+		this.m_mouseDownFlag = false;
+	}			
+
+//------------------------------------------------------------------------------------------
+	public onMouseOut (e:PIXI.InteractionEvent):void {
+		this.m_mouseOutSignal.fireSignal (this, e);
+		
+		this.m_mouseDownFlag = false;
+	}	
+
+//------------------------------------------------------------------------------------------
+	public onMouseMove (e:PIXI.InteractionEvent):void {
+		if (this.m_mouseDownFlag) {
+			this.m_mouseMoveSignal.fireSignal (this, e);
+		}
+	}	
+
+//------------------------------------------------------------------------------------------
+	public addMouseDownListener (__listener:any):number {
+		return this.m_mouseDownSignal.addListener (__listener);
+	}
+			
+//------------------------------------------------------------------------------------------
+	public removeMouseDownListener (__id:number):void {
+		this.m_mouseDownSignal.removeListener (__id);
+	}
+
+//------------------------------------------------------------------------------------------
+	public fireMouseDownSignal ():void {
+		this.m_mouseDownSignal.fireSignal ();
+	}
+	
+//------------------------------------------------------------------------------------------
+	public addMouseOverListener (__listener:any):number {
+		return this.m_mouseOverSignal.addListener (__listener);
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeMouseOverListener (__id:number):void {
+		this.m_mouseOverSignal.removeListener (__id);
+	}
+
+//------------------------------------------------------------------------------------------
+	public fireMouseOverSignal ():void {
+		this.m_mouseOverSignal.fireSignal ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public addMouseUpListener (__listener:any):number {
+		return this.m_mouseUpSignal.addListener (__listener);
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeMouseUpListener (__id:number):void {
+		this.m_mouseUpSignal.removeListener (__id);
+	}
+
+//------------------------------------------------------------------------------------------
+	public fireMouseUpSignal ():void {
+		this.m_mouseUpSignal.fireSignal ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public addMouseMoveListener (__listener:any):number {
+		return this.m_mouseMoveSignal.addListener (__listener);
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeMouseMoveListener (__id:number):void {
+		this.m_mouseMoveSignal.removeListener (__id);
+	}
+
+//------------------------------------------------------------------------------------------
+	public fireMouseMoveSignal ():void {
+		this.m_mouseMoveSignal.fireSignal ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public addMouseOutListener (__listener:any):number {
+		return this.m_mouseOutSignal.addListener (__listener);
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeMouseOutListener (__id:number):void {
+		this.m_mouseOutSignal.removeListener (__id);
+	}
+
+//------------------------------------------------------------------------------------------
+	public fireMouseOutSignal ():void {
+		this.m_mouseOutSignal.fireSignal ();
 	}
 
 //------------------------------------------------------------------------------------------
@@ -383,8 +567,8 @@ export class XGameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public verticalPercent (__displayObject:PIXI.Sprite, __percent:number):XGameObject {
-		var __y:number = (this.getActualHeight () - __displayObject.height) * __percent;
+	public verticalPercent (__displayObject:PIXI.Sprite | TextInput, __percent:number):XGameObject {
+		var __y:number = (this.getActualHeight () - (__displayObject.height - __displayObject.pivot.y)) * __percent;
 			
 		__displayObject.y = __y;
 			
@@ -392,7 +576,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public verticalPercentCentered (__displayObject:PIXI.Sprite, __percent:number):XGameObject {
+	public verticalPercentCentered (__displayObject:PIXI.Sprite | TextInput, __percent:number):XGameObject {
 		var __y:number = this.getActualHeight () * __percent;
 			
 		__displayObject.y = __y;
@@ -406,8 +590,8 @@ export class XGameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public horizontalPercent (__displayObject:PIXI.Sprite, __percent:number):XGameObject {
-		var __x:number = (this.getActualWidth () - __displayObject.width) * __percent;
+	public horizontalPercent (__displayObject:PIXI.Sprite | TextInput, __percent:number):XGameObject {
+		var __x:number = (this.getActualWidth () - (__displayObject.width - __displayObject.pivot.x)) * __percent;
 			
 		__displayObject.x = __x;
 			
@@ -415,7 +599,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public horizontalPercentCentered (__displayObject:PIXI.Sprite, __percent:number):XGameObject {
+	public horizontalPercentCentered (__displayObject:PIXI.Sprite | TextInput, __percent:number):XGameObject {
 		var __x:number = this.getActualWidth () * __percent;
 			
 		__displayObject.x = __x;
@@ -651,14 +835,48 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public globalToLocal (__gameObject:XGameObject, __point:XPoint):XPoint {
-		// console.log (": XGameObject: globalToLocal: ", this.getParentObject ());
+	public globalToLocalX (__gameObject:XGameObject, __point:XPoint, __depth:number = 0):XPoint {
+        var __tabs:Array<String> = ["...", "......", ".........", "............", "...............", "...................."];
+
+		console.log (": XGameObject: globalToLocal: ", __tabs[__depth], __point.x, __point.y, __gameObject, __gameObject.x, __gameObject.y);
 		
 		__point.x -= __gameObject.x;
 		__point.y -= __gameObject.y;
 
 		if (__gameObject.getParentObject () != null) {
-		 	return __gameObject.globalToLocal (this.getParentObject (), __point);
+		 	return __gameObject.globalToLocalX (__gameObject.getParentObject (), __point, __depth + 1);
+		}
+
+		return __point;
+	}
+
+//------------------------------------------------------------------------------------------
+	public globalToLocal (__gameObject:XGameObject, __point:PIXI.Point, __depth:number = 0):PIXI.Point {
+		var __tabs:Array<String> = ["...", "......", ".........", "............", "...............", "...................."];
+
+		// console.log (": XGameObject: globalToLocal: ", __tabs[__depth], __point.x, __point.y, __gameObject, __gameObject.x, __gameObject.y);
+		
+		__point.x -= __gameObject.x;
+		__point.y -= __gameObject.y;
+
+		if (__gameObject.getParentObject () != null) {
+			return __gameObject.globalToLocal (__gameObject.getParentObject (), __point, __depth + 1);
+		}
+
+		return __point;
+	}
+
+//------------------------------------------------------------------------------------------
+	public localToGlobal (__gameObject:XGameObject, __point:PIXI.Point, __depth:number = 0):PIXI.Point {
+		var __tabs:Array<String> = ["...", "......", ".........", "............", "...............", "...................."];
+
+		// console.log (": XGameObject: globalToLocal: ", __tabs[__depth], __point.x, __point.y, __gameObject, __gameObject.x, __gameObject.y);
+		
+		__point.x += __gameObject.x;
+		__point.y += __gameObject.y;
+
+		if (__gameObject.getParentObject () != null) {
+			return __gameObject.localToGlobal (__gameObject.getParentObject (), __point, __depth + 1);
 		}
 
 		return __point;

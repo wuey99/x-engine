@@ -132,6 +132,11 @@ export class XResourceManager {
     }
     
     //------------------------------------------------------------------------------------------
+    public getResourceMap ():Map<string, Resource> {
+        return this.m_resourceMap;
+    }
+
+    //------------------------------------------------------------------------------------------
     public queueResources (__resourceList:Array<ResourceSpec>):void {
         this.loadResources (__resourceList, true);
     }
