@@ -17,6 +17,7 @@ import { G } from '../app/G';
 import { XSoundSubManager } from '../sound/XSoundSubManager';
 import { XBulletCollisionManager } from '../bullet/XBulletCollisionManager';
 import { XClassPoolManager } from '../pool/XClassPoolManager';
+import { XSoundManager } from '../sound/XSoundManager';
 
 //------------------------------------------------------------------------------------------
 export class XWorld extends XSprite {
@@ -32,6 +33,7 @@ export class XWorld extends XSprite {
     private m_childObjects:Map<XGameObject, XDepthSprite>;	
     private m_children:Map<PIXI.DisplayObject, any>;
 
+    private m_streamingSoundManager:XSoundSubManager;
     private m_musicSoundManager:XSoundSubManager;
     private m_sfxSoundManager:XSoundSubManager;
 
@@ -55,7 +57,7 @@ export class XWorld extends XSprite {
         graphics.beginFill (0x000000, 1.0);
         graphics.drawRect (0, 0, G.SCREEN_WIDTH/4, G.SCREEN_HEIGHT/4);
         graphics.endFill ();
-        graphics.alpha = 0.0;
+        graphics.alpha = 1.0;
         graphics.scale.x = 4.0;
         graphics.scale.y = 4.0;
         this.addChild (graphics);
@@ -88,6 +90,7 @@ export class XWorld extends XSprite {
         this.m_XBulletCollisionManager = new XBulletCollisionManager (this);
         this.m_XLogicObjectPoolManager = new XClassPoolManager ();
 
+        this.m_streamingSoundManager = new XSoundSubManager (this.m_XApp.getXSoundManager ());
         this.m_musicSoundManager = new XSoundSubManager (this.m_XApp.getXSoundManager ());
         this.m_sfxSoundManager = new XSoundSubManager (this.m_XApp.getXSoundManager ());
 
@@ -114,6 +117,7 @@ export class XWorld extends XSprite {
         this.cleanupMatterEngine ();
     
         this.m_XBulletCollisionManager.cleanup ();
+        this.m_streamingSoundManager.cleanup ();
         this.m_musicSoundManager.cleanup ();
         this.m_sfxSoundManager.cleanup ();
         
@@ -184,6 +188,7 @@ export class XWorld extends XSprite {
             __gameObject.setMasterFlipX (__gameObject.getFlipX ());
             __gameObject.setMasterFlipY (__gameObject.getFlipY ());
             __gameObject.setMasterRotation (__gameObject.angle);
+            __gameObject.setMasterMouseEnabled (__gameObject.m_mouseEnabled);
                     
             __gameObject.update ();
         }
@@ -324,6 +329,11 @@ export class XWorld extends XSprite {
     //------------------------------------------------------------------------------------------
     public getXLogicObjectPoolManager ():XClassPoolManager {
         return this.m_XLogicObjectPoolManager;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getStreamingSoundManager ():XSoundSubManager {
+        return this.m_streamingSoundManager;
     }
 
     //------------------------------------------------------------------------------------------

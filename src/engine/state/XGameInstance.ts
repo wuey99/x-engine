@@ -15,6 +15,7 @@ import { XGameObject} from '../gameobject/XGameObject';
 import { XState } from './XState';
 import { XSoundManager } from '../sound/XSoundManager';
 import { XSoundSubManager } from '../sound/XSoundSubManager';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
 export class XGameInstance {

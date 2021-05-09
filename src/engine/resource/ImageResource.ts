@@ -14,6 +14,12 @@ export class ImageResource extends Resource {
 
     //------------------------------------------------------------------------------------------
     public load ():void {
+        if (this.m_path in this.loader.resources) {
+            this.m_loadComplete = true;
+            
+            return;
+        }
+
 		this.loader.add (this.m_path).load (() => {
             // console.log (": ImageResource: loadComplete: ", this);
 

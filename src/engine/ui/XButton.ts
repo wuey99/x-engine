@@ -23,6 +23,8 @@ export class XButton extends XGameObject {
 	public m_disabledFlag:boolean;
     public m_keyboardDownListener:number;
 
+	public m_trigger:string;
+	
 //------------------------------------------------------------------------------------------
 	public constructor () {
 		super ();
@@ -77,9 +79,32 @@ export class XButton extends XGameObject {
 	}
 
 //------------------------------------------------------------------------------------------
+	public setTrigger (__value:string):void {
+		this.m_trigger = __value;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getTrigger ():string {
+		return this.m_trigger;
+	}
+
+//------------------------------------------------------------------------------------------
 	public getParams (__params:Array<any> = null):void {
 	}
 	
+//------------------------------------------------------------------------------------------
+	public enableButton (__sprite:PIXI.Container, __sprites:Array<PIXI.Container>):void {
+		var __disable:PIXI.Container;
+
+		for (__disable of __sprites) {
+			__disable.alpha = 0.0;
+		}
+
+		__sprite.alpha = 1.0;
+
+		this.m_sprite = __sprite;
+	}
+
 //------------------------------------------------------------------------------------------
 	public createHighlightTask ():void {
 	}
@@ -186,7 +211,12 @@ export class XButton extends XGameObject {
 	}
 			
 //------------------------------------------------------------------------------------------
-	public setDisabled (__disabled:boolean):void {
+	public setEnabled (__enabled:boolean = true):void {
+		this.setDisabled (!__enabled);
+	}
+
+//------------------------------------------------------------------------------------------
+	public setDisabled (__disabled:boolean = true):void {
 		if (__disabled) {
 			this.gotoState (XButton.DISABLED_STATE);
 							

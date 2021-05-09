@@ -24,13 +24,15 @@ export class XResourceManager {
     public m_paused:boolean;
     public m_loadedFiles:number;
     public m_totalFiles:number;
+    public m_groupName:string;
 
     public static NUM_QUEUES:number = 4; // has to be a power of two.
 
     //------------------------------------------------------------------------------------------		
-    constructor (__XApp:XApp, __projectManager:XProjectManager) {
+    constructor (__XApp:XApp, __projectManager:XProjectManager, __groupName:string) {
         this.m_XApp = __XApp;
         this.m_projectManager = __projectManager;
+        this.m_groupName = __groupName;
 
         this.m_resourceMap = new Map<string, Resource> ();
         this.m_queues = new Array<Array<Resource>> ();
@@ -85,16 +87,24 @@ export class XResourceManager {
     public checkQueueTask (__queueIndex:number):void {
         var __currentResource:Resource = null;
 
+        // console.log (": paused: ", this.m_paused, ": queued files: ", this.m_queues);
+        
+        console.log (": groupName: ", this.m_groupName);
+
         this.m_XApp.getXTaskManager ().addTask ([
             XTask.LABEL, "loop",
                 XTask.WAIT, 0x0100,
                     XTask.FLAGS, (__task:XTask) => {
+                        // console.log (": paused: ", this.m_paused, ": groupName: ", this.m_groupName, ": queued files: ", this.m_queues);
+
                         __task.ifTrue (this.m_paused);
                     }, XTask.BEQ, "loop",
 
                     XTask.FLAGS, (__task:XTask) => {
                         if (this.m_queues[__queueIndex].length > 0) {
                             __currentResource = this.m_queues[__queueIndex].pop ();
+
+                            console.log (": -------------------->: groupName: ", __currentResource.m_path);
 
                             __currentResource.load ();
 
@@ -112,6 +122,8 @@ export class XResourceManager {
                 }, XTask.BNE, "wait",
 
                 () => {
+                    console.log (": loaded ", __currentResource.m_path);
+
                     this.m_loadedFiles++;
                 },
 
@@ -135,10 +147,10 @@ export class XResourceManager {
     public getResourceMap ():Map<string, Resource> {
         return this.m_resourceMap;
     }
-
+    
     //------------------------------------------------------------------------------------------
     public queueResources (__resourceList:Array<ResourceSpec>):void {
-        this.loadResources (__resourceList, true);
+        this.loadResources (__resourceList, false /* true */);
     }
 
     //------------------------------------------------------------------------------------------
@@ -167,6 +179,13 @@ export class XResourceManager {
                 this.m_resourceMap.set (__resourceSpec.name, __resource);
             }
         }
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getResourceHandleByName (__name:string):Resource {
+        var __resource:Resource = this.m_resourceMap.get (__name);
+
+        return __resource;
     }
 
     //------------------------------------------------------------------------------------------

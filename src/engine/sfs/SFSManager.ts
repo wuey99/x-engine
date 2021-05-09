@@ -14,7 +14,7 @@ export class SFSManager {
 
     public m_sfsEvents:Map<any, __SFSListener>;
     
-    public static SFS2X_SERVER:string = "104.217.137.195";
+    public static SFS2X_SERVER:string = "45.79.55.202"; // "104.217.137.195";
     
 //------------------------------------------------------------------------------------------
 	public static instance ():SFSManager {

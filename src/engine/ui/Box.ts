@@ -23,7 +23,8 @@ export class Box extends XGameObject {
     public m_leftPadding:number;
     public m_rightPadding:number;
     public m_items:Array<PIXI.Sprite | TextInput>;
-    public m_idToItem:Map<string, PIXI.Sprite | TextInput>;
+    public m_ids:Map<string, PIXI.Sprite | TextInput>;
+    public m_groups:Map<string, Map<PIXI.Sprite | TextInput, number>>;
     public m_fill:PIXI.Graphics;
 
 //------------------------------------------------------------------------------------------
@@ -36,7 +37,8 @@ export class Box extends XGameObject {
         super.setup (__world, __layer, __depth);
 
         this.m_items = new Array<PIXI.Sprite | TextInput> ();
-        this.m_idToItem = new Map<string, PIXI.Sprite | TextInput> ();
+        this.m_ids = new Map<string, PIXI.Sprite | TextInput> ();
+        this.m_groups = new Map<string, Map<PIXI.Sprite | TextInput, number>> ();
         
         return this;
     }
@@ -116,9 +118,53 @@ export class Box extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
-    public addItem (__item:PIXI.Sprite | TextInput, __id:string = ""):void {
+    public addItemToGroup (__item:PIXI.Sprite | TextInput, __groupName:string):void {
+        if (__groupName != "") {
+            var __group:Map<PIXI.Sprite | TextInput, number>;
+
+            if (this.m_groups.has (__groupName)) {
+                __group = this.m_groups.get (__groupName);
+            } else {
+                __group = new Map<PIXI.Sprite | TextInput, number> ();
+
+                this.m_groups.set (__groupName, __group);
+            }
+
+            __group.set (__item, 0);
+        }
+    }
+
+//------------------------------------------------------------------------------------------
+    public getItemsFromGroup (__groupName:string):Map<PIXI.Sprite | TextInput, number> {
+        if (__groupName != "") {
+            if (this.m_groups.has (__groupName)) {
+                return this.m_groups.get (__groupName);
+            } 
+        }
+
+        return null
+    }
+    
+//------------------------------------------------------------------------------------------
+    public removeItemFromGroup (__item:PIXI.Sprite | TextInput, __groupName:string):void {
+        if (__groupName != "") {
+            var __group:Map<PIXI.Sprite | TextInput, number>;
+
+            if (this.m_groups.has (__groupName)) {
+                __group = this.m_groups.get (__groupName);
+
+                __group.delete (__item);
+            }
+        }
+    }
+
+//------------------------------------------------------------------------------------------
+    public addItem (__item:PIXI.Sprite | TextInput, __id:string = "", __groupName:string = ""):void {
         this.m_items.push (__item);
-        this.m_idToItem.set (__id, __item);
+
+        this.m_ids.set (__id, __item);
+
+        this.addItemToGroup (__item, __groupName);
 
         this.reorder ();
     }
@@ -138,7 +184,7 @@ export class Box extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public getItemById (__id:string = ""):PIXI.Sprite | TextInput {
-        return this.m_idToItem.get (__id);
+        return this.m_ids.get (__id);
     }
 
 //------------------------------------------------------------------------------------------
@@ -156,10 +202,10 @@ export class Box extends XGameObject {
 
             this.m_items.splice (__index, 1);
 
-            XType.forEach (this.m_idToItem,
+            XType.forEach (this.m_ids,
                 (__id:string) => {
-                    if (this.m_idToItem.get (__id) == __item) {
-                        this.m_idToItem.delete (__id);
+                    if (this.m_ids.get (__id) == __item) {
+                        this.m_ids.delete (__id);
                     }
                 }
             );

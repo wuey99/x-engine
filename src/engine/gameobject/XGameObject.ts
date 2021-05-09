@@ -35,6 +35,7 @@ export class XGameObject extends PIXI.Sprite {
 	public m_sprites:Map<string, PIXI.Sprite>;
 	public m_signals:Map<XSignal, number>;
 	public m_bitmapFonts:Map<string, number>;
+	public m_XTaskSubManager0:XTaskSubManager;
 	public m_XTaskSubManager:XTaskSubManager;
 	public m_killSignal:XSignal;
 	public m_parent:XGameObject;
@@ -55,6 +56,7 @@ export class XGameObject extends PIXI.Sprite {
 	public m_namedCX:Map<string, XRect>;
 	public m_pos:XPoint;
 	public m_vel:XPoint;
+	public m_pivot:XPoint;
 	public m_propagateCount:number;
 
 	public m_attachedMatterBody:Body;
@@ -72,7 +74,8 @@ export class XGameObject extends PIXI.Sprite {
 	public m_stageEventsX:Map<any, __PausableListener>;
 	public m_pausableEvents:Map<any, PausableListener>;
 
-	public m_mouseDownFlag:Boolean;
+	public m_mouseEnabled:boolean;
+	public m_mouseDownFlag:boolean;
 
 	public m_mouseDownSignal:XSignal;
 	public m_mouseOverSignal:XSignal;
@@ -99,6 +102,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_sprites = new Map<string, PIXI.Sprite> ();	
 		this.m_signals = new Map<XSignal, number> ();
 		this.m_bitmapFonts = new Map<string, number> ();
+		this.m_XTaskSubManager0 = new XTaskSubManager (XGameObject.getXApp ().getXTaskManager0 ());
 		this.m_XTaskSubManager = new XTaskSubManager (XGameObject.getXApp ().getXTaskManager ());
 		this.m_parent = null;
 		this.m_XApp = XGameObject.g_XApp;
@@ -106,6 +110,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_cx = new XRect ();
 		this.m_pos = new XPoint ();
 		this.m_vel = new XPoint ();
+		this.m_pivot = new XPoint ();
 		this.m_mousePoint = new XPoint ();
 	}
 	
@@ -146,6 +151,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_sprites = new Map<string, PIXI.Sprite> ();	
 		this.m_signals = new Map<XSignal, number> ();
 		this.m_bitmapFonts = new Map<string, number> ();
+		this.m_XTaskSubManager0 = new XTaskSubManager (XGameObject.getXApp ().getXTaskManager0 ());
 		this.m_XTaskSubManager = new XTaskSubManager (XGameObject.getXApp ().getXTaskManager ());
 		this.m_parent = null;
 		this.m_XApp = XGameObject.g_XApp;
@@ -154,7 +160,10 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_cx = new XRect ();
 		this.m_pos = new XPoint ();
 		this.m_vel = new XPoint ();
+		this.m_pivot = new XPoint ();
 		*/
+
+		this.m_mouseEnabled = true;
 
 		this.m_mouseDownSignal = this.createXSignal ();
 		this.m_mouseOverSignal = this.createXSignal ();
@@ -164,7 +173,8 @@ export class XGameObject extends PIXI.Sprite {
 
 		this.alpha = 1.0;
 		this.scale.x = this.scale.y = 1.0;
-		this.pivot.x = this.pivot.y = 1.0;
+		this.pivot.x = this.pivot.y = 0.0;
+		this.m_pivot.x = this.m_pivot.y = 0.0;
 
 		this.m_attachedMatterBody = null;
 		this.m_matterDX = 0;
@@ -196,6 +206,7 @@ export class XGameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public cleanup():void {
+		this.removeAllTasks0 ();
 		this.removeAllTasks ();
 		this.removeAllSelfObjects ();
 		this.removeAllWorldObjects ();
@@ -299,6 +310,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.getInteractiveArea ().interactive = true;
 		this.getInteractiveArea ().interactiveChildren = true;
 
+		this.m_mouseEnabled = true;
 		this.m_mouseDownFlag = false;
 		
 		if (__eventFilter.indexOf ("pointerdown") >= 0) {
@@ -319,6 +331,16 @@ export class XGameObject extends PIXI.Sprite {
 		if (__eventFilter.indexOf ("pointerupoutside") >= 0) {
 			this.addPausableEventListener ("pointerupoutside", this.getInteractiveArea (), this.onMouseOut.bind (this));
 		}
+	}
+
+//------------------------------------------------------------------------------------------
+	public setMouseEnabled (__enabled:boolean):void {
+		this.m_mouseEnabled = __enabled;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getMouseEnabled ():boolean {
+		return this.m_masterMouseEnabled;
 	}
 
 //------------------------------------------------------------------------------------------
@@ -472,7 +494,7 @@ export class XGameObject extends PIXI.Sprite {
 
 //------------------------------------------------------------------------------------------
 	public addStageEventListenerX (__eventName:string, __listener:any):any {
-		var __pausableListener:__PausableListener = new __PausableListener (__eventName, __listener);
+		var __pausableListener:__PausableListener = new __PausableListener (this, __eventName, __listener);
 
 		this.m_stageEventsX.set (__listener, __pausableListener);
 		
@@ -498,7 +520,7 @@ export class XGameObject extends PIXI.Sprite {
 
 //------------------------------------------------------------------------------------------
 	public addPausableEventListener (__eventName:string, __displayObject:PIXI.DisplayObject, __listener:any):any {
-		var __pausableListener:PausableListener = new PausableListener (__eventName, __displayObject, __listener);
+		var __pausableListener:PausableListener = new PausableListener (this, __eventName, __displayObject, __listener);
 
 		this.m_pausableEvents.set (__listener, __pausableListener);
 		
@@ -561,14 +583,30 @@ export class XGameObject extends PIXI.Sprite {
         return this.m_touchPoint;
 	}
 	
+	
+//------------------------------------------------------------------------------------------
+	public getPivot ():XPoint {
+		return this.m_pivot;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getPivotX ():number {
+		return this.m_pivot.x;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getPivotY ():number {
+		return this.m_pivot.y;
+	}
+
 //------------------------------------------------------------------------------------------
 	public getVerticalPercent (__percent:number):number {
 		return this.getActualHeight () * __percent;
 	}
 		
 //------------------------------------------------------------------------------------------
-	public verticalPercent (__displayObject:PIXI.Sprite | TextInput, __percent:number):XGameObject {
-		var __y:number = (this.getActualHeight () - (__displayObject.height - __displayObject.pivot.y)) * __percent;
+	public verticalPercent (__displayObject:PIXI.Sprite | TextInput, __percent:number, __pivotY:number = 0):XGameObject {
+		var __y:number = (this.getActualHeight () - __displayObject.height) * __percent + __pivotY;
 			
 		__displayObject.y = __y;
 			
@@ -590,8 +628,8 @@ export class XGameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public horizontalPercent (__displayObject:PIXI.Sprite | TextInput, __percent:number):XGameObject {
-		var __x:number = (this.getActualWidth () - (__displayObject.width - __displayObject.pivot.x)) * __percent;
+	public horizontalPercent (__displayObject:PIXI.Sprite | TextInput, __percent:number, __pivotX:number = 0):XGameObject {
+		var __x:number = (this.getActualWidth () - __displayObject.width) * __percent + __pivotX;
 			
 		__displayObject.x = __x;
 			
@@ -1179,7 +1217,65 @@ export class XGameObject extends PIXI.Sprite {
 			this.removeXSignal (__signal);
 		}
 	}
+	
+//------------------------------------------------------------------------------------------
+	public getXTaskManager0 ():XTaskManager {
+		return XGameObject.getXApp ().getXTaskManager0 ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public addTask0 (
+		__taskList:Array<any>,
+		__findLabelsFlag:boolean = true
+		):XTask {
+
+		var __task:XTask = this.m_XTaskSubManager0.addTask (__taskList, __findLabelsFlag);
+			
+		__task.setParent (this);
+			
+		return __task;
+	}
+
+//------------------------------------------------------------------------------------------
+	public changeTask0 (
+		__task:XTask,
+		__taskList:Array<any>,
+		__findLabelsFlag:boolean = true
+		):XTask {
 				
+		return this.m_XTaskSubManager0.changeTask (__task, __taskList, __findLabelsFlag);
+	}
+
+//------------------------------------------------------------------------------------------
+	public isTask0 (__task:XTask):boolean {
+		return this.m_XTaskSubManager0.isTask (__task);
+	}		
+	
+//------------------------------------------------------------------------------------------
+	public removeTask0 (__task:XTask):void {
+		this.m_XTaskSubManager0.removeTask (__task);	
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeAllTasks0 ():void {
+		this.m_XTaskSubManager0.removeAllTasks ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public addEmptyTask0 ():XTask {
+		return this.m_XTaskSubManager0.addEmptyTask ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public getEmptyTaskX0 ():Array<any> {
+		return this.m_XTaskSubManager0.getEmptyTaskX ();
+	}	
+	
+//------------------------------------------------------------------------------------------
+	public gotoLogic0 (__logic:any):void {
+		this.m_XTaskSubManager0.gotoLogic (__logic);
+	}
+
 //------------------------------------------------------------------------------------------
 	public getXTaskManager ():XTaskManager {
 		return XGameObject.getXApp ().getXTaskManager ();
@@ -1347,6 +1443,7 @@ export class XGameObject extends PIXI.Sprite {
 			var __flipY:number = this.m_masterFlipY; // this.getMasterFlipY ();
 			var __depth:number = this.m_masterDepth; // this.getMasterDepth ();
 			var __alpha:number = this.m_masterAlpha; // this.getMasterAlpha ();
+			var __mouseEnabled:boolean = this.m_masterMouseEnabled;
 
 //------------------------------------------------------------------------------------------
 			if (this.m_propagateCount >= 0) {
@@ -1388,7 +1485,8 @@ export class XGameObject extends PIXI.Sprite {
 					__gameObject.m_masterVisible = __gameObject.visible && __visible; // __gameObject.setMasterVisible (__gameObject.visible && __visible);
 					__gameObject.m_masterDepth = __gameObject.m_depth; // __gameObject.setMasterDepth (__gameObject.getDepth ());
 					__gameObject.m_masterAlpha = __gameObject.alpha * __alpha; //__gameObject.setMasterAlpha (__gameObject.alpha * __alpha);
-					
+					__gameObject.m_masterMouseEnabled =  __gameObject.m_mouseEnabled && __mouseEnabled;
+
                     __gameObject.update ();
                 }
 			}
@@ -1597,6 +1695,7 @@ export class XGameObject extends PIXI.Sprite {
 		public m_masterAlpha:number;
 		public m_masterX:number;
 		public m_masterY:number;
+		public m_masterMouseEnabled:boolean;
 	
 //------------------------------------------------------------------------------------------	
 		public get vel ():XPoint {
@@ -1627,7 +1726,7 @@ export class XGameObject extends PIXI.Sprite {
 		public getMasterY ():number {
 			return this.m_masterY;
 		}
-		
+
 //------------------------------------------------------------------------------------------		
 		public setMasterAlpha (__alpha:number):void {
 			this.m_masterAlpha = __alpha;
@@ -1726,17 +1825,29 @@ export class XGameObject extends PIXI.Sprite {
 			return this.m_masterDepth;
 		}
 		
+//------------------------------------------------------------------------------------------		
+		public setMasterMouseEnabled (__enabled:boolean):void {
+			this.m_masterMouseEnabled = __enabled;
+		}
+
+//------------------------------------------------------------------------------------------		
+		public getMasterMouseEnabled ():boolean {
+			return this.m_masterMouseEnabled;
+		}
+
 //------------------------------------------------------------------------------------------
 }
 
 //------------------------------------------------------------------------------------------
 class __PausableListener {
+	public m_gameObject:XGameObject;
 	public m_eventName:string;
 	public m_listener:any;
 	public boundListener:any;
 
 	//------------------------------------------------------------------------------------------
-	constructor (__eventName:string, __listener:any) {
+	constructor (__gameObject:XGameObject, __eventName:string, __listener:any) {
+		this.m_gameObject = __gameObject;
 		this.m_eventName = __eventName;
 		this.m_listener = __listener;
 
@@ -1750,7 +1861,7 @@ class __PausableListener {
 
 	//------------------------------------------------------------------------------------------
 	private __listener (e:PIXI.InteractionEvent):void {
-		if (!XGameObject.getXApp ().isPaused ()) {
+		if (!XGameObject.getXApp ().isPaused () && this.m_gameObject.getMasterMouseEnabled ()) {
 			this.m_listener (e);
 		}
 	}

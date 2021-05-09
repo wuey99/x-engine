@@ -75,12 +75,12 @@ export class XTextButton extends XButton {
 
 //------------------------------------------------------------------------------------------
     public get width ():number {
-        return this.m_width;
+        return this.m_sprite.width;
     }
 
 //------------------------------------------------------------------------------------------
     public get height ():number {
-        return this.m_height;
+        return this.m_sprite.height;
     }
 
 //------------------------------------------------------------------------------------------

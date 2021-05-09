@@ -4,6 +4,7 @@
 import { G } from '../engine/app/G';
 import { XApp } from '../engine/app/XApp';
 import { ImageResource } from '../engine/resource/ImageResource';
+import { StreamingResource } from '../engine/resource/StreamingResource';
 import { MusicResource } from '../engine/resource/MusicResource';
 import { SoundResource } from '../engine/resource/SoundResource';
 import { SpriteSheetResource } from '../engine/resource/SpriteSheetResource';
@@ -212,6 +213,7 @@ export class Main {
         g_XApp.getXProjectManager ().registerType ("SpriteSheet", SpriteSheetResource);
         g_XApp.getXProjectManager ().registerType ("ImageResource", ImageResource);
         g_XApp.getXProjectManager ().registerType ("SoundResource", SoundResource);
+        g_XApp.getXProjectManager ().registerType ("StreamingResource", StreamingResource);
         g_XApp.getXProjectManager ().registerType ("MusicResource", MusicResource);
 
         g_XApp.getXProjectManager ().setup (

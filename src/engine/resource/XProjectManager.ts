@@ -4,6 +4,7 @@ import { XApp } from "../app/XApp";
 import { XType } from '../type/XType';
 import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 import { XResourceManager } from './XResourceManager';
+import { Resource } from './Resource';
 import { ResourceSpec } from './XResourceManager';
 
 //------------------------------------------------------------------------------------------
@@ -209,6 +210,23 @@ export class XProjectManager {
     }
 
     //------------------------------------------------------------------------------------------
+    public getResourceHandleByName (__name:string):Resource {
+        var __resource:Resource = null;
+
+        XType.forEach (this.m_resourceManagers,
+            (__groupName:string) => {
+                var __resourceManager:XResourceManager = this.m_resourceManagers.get (__groupName);
+
+                if (__resourceManager.getResourceHandleByName (__name) != null) {
+                    __resource = __resourceManager.getResourceHandleByName (__name);
+                }
+            }
+        );
+
+        return __resource;
+    }
+
+    //------------------------------------------------------------------------------------------
     public getResourceByName (__name:string):any {
         var __resource:any = null;
 
@@ -240,7 +258,7 @@ export class XProjectManager {
         if (this.m_resourceManagers.has (__groupName)) {
             return this.m_resourceManagers.get (__groupName);
         } else {
-            var __resourceManager:XResourceManager = new XResourceManager (this.m_XApp, this);
+            var __resourceManager:XResourceManager = new XResourceManager (this.m_XApp, this, __groupName);
             this.m_resourceManagers.set (__groupName, __resourceManager);
             return __resourceManager;
         }

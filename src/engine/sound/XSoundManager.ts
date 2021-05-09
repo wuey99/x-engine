@@ -9,7 +9,7 @@ import { XPauseManager } from '../state/XPauseManager';
 
 //------------------------------------------------------------------------------------------
 export interface SoundHandle {
-    name: string,
+    name: string;
     sound: Howl;
     id: number;
     complete: any;
@@ -26,29 +26,57 @@ export class XSoundManager {
 
     public static g_GUID:number = 0;
 
+    public m_paused:number;
+
     //------------------------------------------------------------------------------------------		
     constructor (__XApp:XApp) {
         this.m_XApp = __XApp;
 
         this.m_sounds = new Map<number, SoundHandle> ();
 
-        XPauseManager.addPauseListener (() => {
+        this.m_paused = 0;
+
+        if (!XApp.DISABLE_PAUSE) {
+            XPauseManager.addPauseListener (() => {
+                this.pause ();
+            });
+
+            XPauseManager.addResumeListener (() => {
+                this.resume ();
+            });
+        }
+    }
+
+    //------------------------------------------------------------------------------------------
+    public pause ():void {
+        if (this.m_paused == 0) {
             XType.forEach (this.m_sounds, 
                 (__guid:number) => {
                     var __soundHandle:SoundHandle = this.m_sounds.get (__guid);
                     __soundHandle.sound.pause (__soundHandle.id);
                 }
             );
-        });
+        }
 
-        XPauseManager.addResumeListener (() => {
-            XType.forEach (this.m_sounds, 
-                (__guid:number) => {
-                    var __soundHandle:SoundHandle = this.m_sounds.get (__guid);
-                    __soundHandle.sound.play (__soundHandle.id);
-                }
-            );
-        });
+        // only allow one level of pause for now
+        // this.m_paused++;
+        this.m_paused = 1;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public resume ():void {
+        if (this.m_paused > 0) {
+            this.m_paused--;
+
+            if (this.m_paused == 0) {
+                XType.forEach (this.m_sounds, 
+                    (__guid:number) => {
+                        var __soundHandle:SoundHandle = this.m_sounds.get (__guid);
+                        __soundHandle.sound.play (__soundHandle.id);
+                    }
+                );
+            }
+        }
     }
 
     //------------------------------------------------------------------------------------------	
@@ -115,6 +143,7 @@ export class XSoundManager {
             var __soundHandle:SoundHandle = this.m_sounds.get (__guid);
 
             var __sound = __soundHandle.sound;
+            var __resourceName = __soundHandle.name;
             var __id = __soundHandle.id;
             var __completeListener = __soundHandle.complete;
             var __end = __soundHandle.end;
@@ -129,6 +158,9 @@ export class XSoundManager {
 
              __sound.stop (__id);
 
+             var __resource:Resource = this.m_XApp.getResourceHandleByName (__resourceName); 
+             __resource.unload ();
+             
              this.m_sounds.delete (__guid);
          }
      }

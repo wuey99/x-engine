@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------------------
 	export class XSignal {
-		private m_listeners:Map<number, any>;
-		private m_parent:any
-		private m_id:number;
+		public m_listeners:Map<number, any>;
+		public m_parent:any
+		public m_id:number;
 		
 //------------------------------------------------------------------------------------------
 		constructor () {

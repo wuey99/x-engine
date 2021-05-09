@@ -48,6 +48,11 @@ export class XMLAnimatedSprite extends XMLSprite {
     }
 
 //------------------------------------------------------------------------------------------
+	public getSprite ():PIXI.AnimatedSprite {
+		return this.m_sprite as PIXI.AnimatedSprite;
+	}
+
+//------------------------------------------------------------------------------------------
 	public get width ():number {
 		return this.m_sprite.width;
 	}
@@ -55,6 +60,16 @@ export class XMLAnimatedSprite extends XMLSprite {
 //------------------------------------------------------------------------------------------
 	public get height ():number {
 		return this.m_sprite.height;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getPivotX ():number {
+		return this.m_sprite.pivot.x;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getPivotY ():number {
+		return this.m_sprite.pivot.y;
 	}
 
 //------------------------------------------------------------------------------------------

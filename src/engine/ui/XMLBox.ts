@@ -30,6 +30,7 @@ import { XType } from '../../engine/type/XType';
 import { G } from '../../engine/app/G';
 import { XMLAnimatedSprite } from './XMLAnimatedSprite';
 import { XMLSprite } from './XMLSprite';
+import { XImageButton } from './XImageButton';
 
 //------------------------------------------------------------------------------------------
 export class XMLBox extends Box {
@@ -38,6 +39,7 @@ export class XMLBox extends Box {
 	public m_xml:XSimpleXMLNode;
 
 	public static VBox:string = "VBox";
+	public static SortedVBox:string = "SortedVBox";
 	public static HBox:string = "HBox";
 	public static SpriteButton:string = "SpriteButton";
 	public static TextSpriteButton:string = "TextSpriteButton";
@@ -46,6 +48,7 @@ export class XMLBox extends Box {
 	public static AnimatedSprite:string = "AnimatedSprite";
 	public static Sprite:string = "Sprite";
 	public static Text:string = "Text";
+	public static ImageButton:string = "ImageButton";
 
 	//------------------------------------------------------------------------------------------	
 	constructor () {
@@ -86,8 +89,40 @@ export class XMLBox extends Box {
 	}
 
 	//------------------------------------------------------------------------------------------
+	public getXMLWidth (__box:Box, __xml:XSimpleXMLNode):number {
+		if (__xml.hasAttribute ("width")) {
+			var __value:string = __xml.getAttributeString ("width");
+			if (__value.endsWith ("%")) {
+				return __box.width * XType.parseFloat (__value) / 100.0;
+			} else {
+				return XType.parseFloat (__value);
+			}
+		} else {
+			return 300;
+		}
+	}
+
+	//------------------------------------------------------------------------------------------
+	public getXMLHeight (__box:Box, __xml:XSimpleXMLNode):number {
+		if (__xml.hasAttribute ("height")) {
+			var __value:string = __xml.getAttributeString ("height");
+			if (__value.endsWith ("%")) {
+				return __box.height * XType.parseFloat (__value) / 100.0;
+			} else {
+				return XType.parseFloat (__value);
+			}
+		} else {
+			return 150;
+		}
+	}
+
+	//------------------------------------------------------------------------------------------
 	public addItemToBox (__box:Box, __xml:XSimpleXMLNode, __gameObject:XGameObject):void {
-		__box.addItem (__gameObject, __xml.hasAttribute ("id") ? __xml.getAttributeString ("id") : "");
+		__box.addItem (
+			__gameObject,
+			__xml.hasAttribute ("id") ? __xml.getAttributeString ("id") : "",
+			__xml.hasAttribute ("group") ? __xml.getAttributeString ("group") : ""
+		);
 
 		if (__xml.hasAttribute ("x")) {
 			var __x:number = this.getPercent (__xml.getAttributeString ("x"));
@@ -95,7 +130,7 @@ export class XMLBox extends Box {
 			if (__x < 0) {
 				__gameObject.x = __xml.getAttributeFloat ("x");
 			} else {
-				__box.horizontalPercent (__gameObject, __x);
+				__box.horizontalPercent (__gameObject, __x, __gameObject.getPivotX ());
 			}	
 		}
 
@@ -105,7 +140,7 @@ export class XMLBox extends Box {
 			if (__y < 0) {
 				__gameObject.y = __xml.getAttributeFloat ("y");
 			} else {
-				__box.verticalPercent (__gameObject, __y);
+				__box.verticalPercent (__gameObject, __y, __gameObject.getPivotY ());
 			}
 		}
 	}
@@ -114,8 +149,8 @@ export class XMLBox extends Box {
 	public addHBoxFromXML (__box:Box, __xml:XSimpleXMLNode):Box {
 		var __hbox:HBox = __box.addGameObjectAsChild (HBox, __box.getBoxLayer (__xml), __box.getBoxDepth (__xml), false) as HBox;
 		__hbox.afterSetup ([
-			__xml.hasAttribute ("width") ? __xml.getAttributeFloat ("width") : 300,
-			__xml.hasAttribute ("height") ? __xml.getAttributeFloat ("height") : 150,
+			this.getXMLWidth (__box, __xml),
+			this.getXMLHeight (__box, __xml),
 			__xml.hasAttribute ("justify") ? __xml.getAttributeString ("justify") : XJustify.SPACE_BETWEEN,
 			__xml.hasAttribute ("fill") ? __xml.getAttributeFloat ("fill") : -1
 		]);
@@ -129,8 +164,8 @@ export class XMLBox extends Box {
 	public addVBoxFromXML (__box:Box, __xml:XSimpleXMLNode):Box {
 		var __vbox:VBox = __box.addGameObjectAsChild (VBox, __box.getBoxLayer (__xml), __box.getBoxDepth (__xml), false) as VBox;
 		__vbox.afterSetup ([
-			__xml.hasAttribute ("width") ? __xml.getAttributeFloat ("width") : 300,
-			__xml.hasAttribute ("height") ? __xml.getAttributeFloat ("height") : 150,
+			this.getXMLWidth (__box, __xml),
+			this.getXMLHeight (__box, __xml),
 			__xml.hasAttribute ("justify") ? __xml.getAttributeString ("justify") : XJustify.SPACE_BETWEEN,
 			__xml.hasAttribute ("fill") ? __xml.getAttributeFloat ("fill") : -1
 		]);
@@ -154,7 +189,38 @@ export class XMLBox extends Box {
 			__xml.hasAttribute ("9size") ? __xml.getAttributeFloat ("9size") : 0,
 			__xml.hasAttribute ("9width") ? __xml.getAttributeFloat ("9width") : 0,
 			__xml.hasAttribute ("9height") ? __xml.getAttributeFloat ("9height") : 0,
+			__xml.hasAttribute ("pivotX") ? __xml.getAttributeFloat ("pivotX") : 0,
+			__xml.hasAttribute ("pivotY") ? __xml.getAttributeFloat ("pivotY") : 0,
 		]);
+
+		__button.setTrigger (__xml.hasAttribute ("trigger") ? __xml.getAttributeString ("trigger") : "");
+		
+		this.addItemToBox (__box, __xml, __button);
+	}
+
+	//------------------------------------------------------------------------------------------
+	public addImageButtonFromXML (__box:Box, __xml:XSimpleXMLNode):void {
+		var __button:XImageButton = __box.addGameObjectAsChild (
+			XImageButton, __box.getBoxLayer (__xml), __box.getBoxDepth (__xml), false
+		) as XImageButton;
+
+		console.log (": addImageButtonFromXML: ", __xml.attributes ());
+
+		__button.afterSetup ([
+			__xml.hasAttribute ("normalButtonName") ? __xml.getAttributeString ("normalButtonName") : "StandardButton",
+			__xml.hasAttribute ("overButtonName") ? __xml.getAttributeString ("overButtonName") : "StandardButton",
+			__xml.hasAttribute ("downButtonName") ? __xml.getAttributeString ("downButtonName") : "StandardButton",
+			__xml.hasAttribute ("selectedButtonName") ? __xml.getAttributeString ("selectedButtonName") : "StandardButton",
+			__xml.hasAttribute ("disabledButtonName") ? __xml.getAttributeString ("disabledButtonName") : "StandardButton",
+			__xml.hasAttribute ("9slice") ? __xml.getAttributeBoolean ("9slice") : false,
+			__xml.hasAttribute ("9size") ? __xml.getAttributeFloat ("9size") : 0,
+			__xml.hasAttribute ("9width") ? __xml.getAttributeFloat ("9width") : 0,
+			__xml.hasAttribute ("9height") ? __xml.getAttributeFloat ("9height") : 0,
+			__xml.hasAttribute ("pivotX") ? __xml.getAttributeFloat ("pivotX") : 0,
+			__xml.hasAttribute ("pivotY") ? __xml.getAttributeFloat ("pivotY") : 0,
+		]);
+
+		__button.setTrigger (__xml.hasAttribute ("trigger") ? __xml.getAttributeString ("trigger") : "");
 
 		this.addItemToBox (__box, __xml, __button);
 	}
@@ -181,8 +247,10 @@ export class XMLBox extends Box {
 			__xml.hasAttribute ("colorDisabled") ? __xml.getAttributeInt ("colorDisabled") : 0xc0c0c0,
 			__xml.hasAttribute ("bold") ? __xml.getAttributeBoolean ("bold") : false,
 			__xml.hasAttribute ("horizontalAlignment") ? __xml.getAttributeString ("horizontalAlignment") : "center",
-			__xml.hasAttribute ("verticalAlignment") ? __xml.getAttributeString ("verticalAlignment") : "center"
+			__xml.hasAttribute ("verticalAlignment") ? __xml.getAttributeString ("verticalAlignment") : "center",
 		]);
+
+		__button.setTrigger (__xml.hasAttribute ("trigger") ? __xml.getAttributeString ("trigger") : "");
 
 		this.addItemToBox (__box, __xml, __button);
 	}
@@ -206,8 +274,10 @@ export class XMLBox extends Box {
 			__xml.hasAttribute ("colorDisabled") ? __xml.getAttributeInt ("colorDisabled") : 0xc0c0c0,
 			__xml.hasAttribute ("bold") ? __xml.getAttributeBoolean ("bold") : false,
 			__xml.hasAttribute ("horizontalAlignment") ? __xml.getAttributeString ("horizontalAlignment") : "center",
-			__xml.hasAttribute ("verticalAlignment") ? __xml.getAttributeString ("verticalAlignment") : "center"
+			__xml.hasAttribute ("verticalAlignment") ? __xml.getAttributeString ("verticalAlignment") : "center",
 		]);
+
+		__button.setTrigger (__xml.hasAttribute ("trigger") ? __xml.getAttributeString ("trigger") : "");
 
 		this.addItemToBox (__box, __xml, __button);
 	}
@@ -241,11 +311,12 @@ export class XMLBox extends Box {
 			__xml.getAttributeString ("className"),
 			__xml.hasAttribute ("scaleX") ? __xml.getAttributeFloat ("scaleX") : 1.0,
 			__xml.hasAttribute ("scaleY") ? __xml.getAttributeFloat ("scaleY") : 1.0,
+			__xml.hasAttribute ("pivotX") ? __xml.getAttributeFloat ("pivotX") : 0,
+			__xml.hasAttribute ("pivotY") ? __xml.getAttributeFloat ("pivotY") : 0,
 		]);
 
 		this.addItemToBox (__box, __xml, __gameObject);
 	}
-
 
 	//------------------------------------------------------------------------------------------
 	public addTextFromXML (__box:Box, __xml:XSimpleXMLNode):void {
@@ -269,10 +340,16 @@ export class XMLBox extends Box {
 	}
 
     //------------------------------------------------------------------------------------------
-    public parseXML (__depth:number, __box:Box, __xml:XSimpleXMLNode):void {
+    public parseXML (__depth:number, __box:Box, __xml:XSimpleXMLNode, __sortOnAttribute:string = null):void {
         var __tabs:Array<String> = ["", "...", "......", ".........", "............", "...............", "...................."];
 
         var __children:Array<XSimpleXMLNode> = __xml.child ("*");
+
+		if (__sortOnAttribute != null) {
+			__children.sort ((a:XSimpleXMLNode, b:XSimpleXMLNode) => {
+				return a.getAttributeInt (__sortOnAttribute) - b.getAttributeInt (__sortOnAttribute);
+			});
+		}
 
         var i:number;
 
@@ -283,18 +360,28 @@ export class XMLBox extends Box {
 			
 			switch (__xml.localName ()) {
 				case XMLBox.HBox:
-					this.parseXML (__depth + 1, this.addHBoxFromXML (__box, __xml), __xml);
+					this.parseXML (__depth + 1, this.addHBoxFromXML (__box, __xml), __xml, __xml.hasAttribute ("sorton") ? __xml.getAttributeString ("sorton") : null);
 
 					break;
 
 				case XMLBox.VBox:
-					this.parseXML (__depth + 1, this.addVBoxFromXML (__box, __xml), __xml);	
+					this.parseXML (__depth + 1, this.addVBoxFromXML (__box, __xml), __xml, __xml.hasAttribute ("sorton") ? __xml.getAttributeString ("sorton") : null);	
 
+					break;
+
+				case XMLBox.SortedVBox:
+					this.parseXML (__depth + 1, this.addVBoxFromXML (__box, __xml), __xml, __xml.hasAttribute ("sorton") ? __xml.getAttributeString ("sorton") : null);	
+	
 					break;
 
 				case XMLBox.SpriteButton:
 					this.addSpriteButtonFromXML (__box, __xml);
 
+					break;
+		
+				case XMLBox.ImageButton:
+					this.addImageButtonFromXML (__box, __xml);
+	
 					break;
 
 				case XMLBox.TextSpriteButton:

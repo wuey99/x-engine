@@ -48,6 +48,7 @@ export class XState extends XGameObject {
 
 		this.m_XApp.removeWindowResizeListener (this.m_resizeListenerID);
 
+		this.world.getStreamingSoundManager ().removeAllSounds ();
 		this.world.getMusicSoundManager ().removeAllSounds ();
 		this.world.getSFXSoundManager ().removeAllSounds ();
 	}
@@ -74,7 +75,7 @@ export class XState extends XGameObject {
 			var __scaleX:number = this.m_XApp.getCanvasWidth () / __screenWidth;
 			var __scaleY:number = this.m_XApp.getCanvasHeight () / __screenHeight;
 
-			var __scaleRatio:number = Math.max (__scaleX, __scaleY);
+			var __scaleRatio:number = Math.min (__scaleX, __scaleY);
 				
 			__x = (this.m_XApp.getCanvasWidth () - __screenWidth * __scaleRatio) / 2;
 			__y = (this.m_XApp.getCanvasHeight () - __screenHeight * __scaleRatio) / 2;

@@ -3,7 +3,23 @@
     <meta charset="utf-8"> 
     <head>
         <link rel="stylesheet" href="css/style.css" />
-        <title>Minimal pixi-js Engine demo</title>
+        <title>Dark Arcade Theater (DAT)</title>
+        <style>
+            html,body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+            #openfl-content { background: #000000; width: 100%; height: 100%; }
+            @font-face {
+                font-family: 'PressStart2P';
+                src: url('fonts/PressStart2P-vaV7.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            }
+            @font-face {
+                font-family: 'FreeSans';
+                src: url('fonts/FreeSans.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            }
+        </style>
     </head>
     <body>
         <div id="game"></div>

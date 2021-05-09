@@ -69,11 +69,18 @@ export class XMLSprite extends XGameObject {
         var __assetName:string = __params[0];
         var __scaleX:number = __params[1];
         var __scaleY:number = __params[2];
+        var __pivotX:number = __params[3];
+        var __pivotY:number = __params[4];
 
         this.m_sprite = this.createSprite (__assetName);
+
+		var __pivot = this.getPivot ();
+		__pivot.x = this.m_sprite.width * __pivotX;
+		__pivot.y = this.m_sprite.height * __pivotY;
+		
         this.addSpriteAsChild (
             this.m_sprite, 
-            this.m_sprite.width / 2, this.m_sprite.height / 2, 
+            -this.m_sprite.width * __pivotX, -this.m_sprite.height * __pivotY, 
             this.getLayer (), this.getDepth (), 
             false
         );

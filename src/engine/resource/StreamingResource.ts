@@ -5,7 +5,7 @@ import { XApp } from "../app/XApp";
 import { Resource } from './Resource';
 
 //------------------------------------------------------------------------------------------
-export class MusicResource extends Resource {
+export class StreamingResource extends Resource {
     public m_sound:Howl;
 
     //------------------------------------------------------------------------------------------		
@@ -36,7 +36,7 @@ export class MusicResource extends Resource {
         if (this.m_sound == null) {
             this.load ();
         }
-        
+
         if (this.getLoadComplete ()) {
             return this.m_sound;
         } else {
@@ -63,6 +63,8 @@ export class MusicResource extends Resource {
         
         if (this.getResource () != null) {
             (this.getResource () as Howl).unload ();
+
+            this.m_loadComplete = false;
 
             this.m_sound = null;
         } else {

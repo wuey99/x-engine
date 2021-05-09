@@ -18,6 +18,7 @@ import { G } from './G';
 import { XPauseManager } from '../state/XPauseManager';
 import { XSoundManager } from '../sound/XSoundManager';
 import { Main } from '../../scripts/app';
+import { Resource } from '../resource/Resource';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -36,6 +37,7 @@ export class XApp {
     public stage: PIXI.Container;
     public fpsMax: number;
 
+	private m_XTaskManager0:XTaskManager;
 	private m_XTaskManager:XTaskManager;
     private m_XSignalManager:XSignalManager;
     
@@ -89,6 +91,8 @@ export class XApp {
     private m_resizerHandle:any;
 
     private m_firstClick:boolean;
+
+    public static DISABLE_PAUSE:boolean = true;
 
     //------------------------------------------------------------------------------------------
     constructor (__main:Main, params: XAppParams, __container:HTMLElement = null) {
@@ -146,6 +150,7 @@ export class XApp {
         
         this.__initPoolManagers (this.getDefaultPoolSettings ());
 
+        this.m_XTaskManager0 = new XTaskManager (this);	
 		this.m_XTaskManager = new XTaskManager (this);	
         this.m_XSignalManager = new XSignalManager (this);
         this.m_XProjectManager = new XProjectManager (this);
@@ -190,23 +195,26 @@ export class XApp {
 
         this.m_hasFocus = true;
 
-        document.addEventListener ("visibilitychange", this.m_visibilityChangedHandle = () => {
-            this.m_hasFocus = document.visibilityState === "visible";
-
-            if (this.m_hasFocus) {
-                if (!this.m_paused) {
-                    XPauseManager.fireResumeSignal ();
+        if (!XApp.DISABLE_PAUSE) {
+            document.addEventListener ("visibilitychange", this.m_visibilityChangedHandle = () => {
+                this.m_hasFocus = document.visibilityState === "visible";
+                
+                if (this.m_hasFocus) {
+                    if (!this.m_paused) {
+                        XPauseManager.fireResumeSignal ();
+                    }
+                } else {
+                    if (!this.m_paused) {
+                        XPauseManager.firePauseSignal ();
+                    }
                 }
-            } else {
-                if (!this.m_paused) {
-                    XPauseManager.firePauseSignal ();
-                }
-            }
-        });
+            });
+        }
     }
 
 //------------------------------------------------------------------------------------------
     public cleanup ():void {
+        this.m_XTaskManager0.removeAllTasks ();
         this.m_XTaskManager.removeAllTasks ();
         this.m_XSignalManager.removeAllXSignals ();
         
@@ -404,6 +412,10 @@ export class XApp {
 
 //------------------------------------------------------------------------------------------
     public pause ():void {
+        if (XApp.DISABLE_PAUSE) {
+            return;
+        }
+
         if (!this.m_paused) {
             XPauseManager.firePauseSignal ();
 
@@ -413,6 +425,10 @@ export class XApp {
 
 //------------------------------------------------------------------------------------------
     public resume ():void {
+        if (XApp.DISABLE_PAUSE) {
+            return;
+        }
+
         if (this.m_paused) {
             XPauseManager.fireResumeSignal ();
 
@@ -447,6 +463,8 @@ export class XApp {
 		
 		var __deltaTime:number = XType.getNowDate ().getTime () - this.m_previousTimer;
 		
+        this.getXTaskManager0 ().updateTasks ();
+        
         if (!this.m_paused) {
             // console.log (": XApp: update: ");
 
@@ -521,6 +539,8 @@ export class XApp {
 
     //------------------------------------------------------------------------------------------
     public getWindowWidth ():number {
+        return window.innerWidth;
+
         var __gameElement:HTMLElement = document.getElementById ("game");
         var __rect:DOMRect = __gameElement.getBoundingClientRect ();
 
@@ -532,6 +552,8 @@ export class XApp {
 
     //------------------------------------------------------------------------------------------
     public getWindowHeight ():number {
+        return window.innerHeight;
+        
         var __gameElement:HTMLElement = document.getElementById ("game");
         var __rect:DOMRect = __gameElement.getBoundingClientRect ();
 
@@ -636,6 +658,11 @@ export class XApp {
     }
 
     //------------------------------------------------------------------------------------------
+    public getXTaskManager0 ():XTaskManager {
+        return this.m_XTaskManager0;
+    }
+
+    //------------------------------------------------------------------------------------------
     public getXTaskManager ():XTaskManager {
         return this.m_XTaskManager;
     }
@@ -678,6 +705,11 @@ export class XApp {
     //------------------------------------------------------------------------------------------
     public getXSoundManager ():XSoundManager {
         return this.m_XSoundManager;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getResourceHandleByName (__name:string):Resource {
+        return this.m_XProjectManager.getResourceHandleByName (__name);
     }
 
     //------------------------------------------------------------------------------------------
