@@ -62,6 +62,17 @@ export class SpriteSheetResource extends Resource {
     }
 
     //------------------------------------------------------------------------------------------
+    public unload ():void {
+        if (!this.m_isDead) {
+            if (this.getResource () != null) {
+                (this.getResource () as PIXI.Spritesheet).destroy ();
+            }
+
+            this.m_loadComplete = false;
+        }
+    }
+
+    //------------------------------------------------------------------------------------------
     public getResource ():any {
         if (this.getLoadComplete ()) {
             return this.loader.resources[this.m_path].spritesheet;

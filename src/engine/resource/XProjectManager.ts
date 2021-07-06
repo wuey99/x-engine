@@ -255,6 +255,11 @@ export class XProjectManager {
     }
 
     //------------------------------------------------------------------------------------------
+    public getClass (__name:string):any {
+        return this.getResourceByName (__name);
+    }
+
+    //------------------------------------------------------------------------------------------
     public getResourceByName (__name:string):any {
         var __resource:any = null;
 
@@ -271,6 +276,16 @@ export class XProjectManager {
         return __resource;
     }
 
+    //------------------------------------------------------------------------------------------
+    public unloadClass (__name:string):void {
+        this.unload (__name);
+    }
+
+    //------------------------------------------------------------------------------------------
+    public unload (__name:string):void {
+        this.getResourceByName (__name).unload ();
+    }
+    
     //------------------------------------------------------------------------------------------
     public registerType (__type:string, __class:any):void {
         this.m_typeMap.set (__type, __class);

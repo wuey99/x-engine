@@ -741,8 +741,23 @@ export class XApp {
     }
 
     //------------------------------------------------------------------------------------------
+    public getClass (__name:string):any {
+        return this.m_XProjectManager.getResourceByName (__name);
+    }
+
+    //------------------------------------------------------------------------------------------
     public getResourceByName (__name:string):any {
         return this.m_XProjectManager.getResourceByName (__name);
+    }
+
+    //------------------------------------------------------------------------------------------
+    public unloadClass (__name:string):void {
+        this.m_XProjectManager.unloadClass (__name);
+    }
+
+    //------------------------------------------------------------------------------------------
+    public unload (__name:string):void {
+        this.m_XProjectManager.unload (__name);
     }
 
 //------------------------------------------------------------------------------------------

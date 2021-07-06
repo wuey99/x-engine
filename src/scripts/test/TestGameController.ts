@@ -14,6 +14,7 @@ import { XType } from '../../engine/type/XType';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { XGameController } from '../../engine/state/XGameController';
 import { TestGame } from './TestGame';
+import { TestRenderTexture } from './TestRenderTexture';
 import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
 
 //------------------------------------------------------------------------------------------
@@ -36,6 +37,7 @@ export class TestGameController extends XGameController {
 		super.afterSetup (__params);
 
 		this.getGameInstance ().registerState ("TestGame", TestGame);
+		this.getGameInstance ().registerState ("TestRenderTexture", TestRenderTexture);
 
 		this.m_XApp.getXProjectManager ().pauseAllResourceManagers ();
 
@@ -58,7 +60,7 @@ export class TestGameController extends XGameController {
 				() => { 
 					this.m_XApp.getXProjectManager ().startAllResourceManagers ();
 
-					this.getGameInstance ().gotoState ("TestGame");
+					this.getGameInstance ().gotoState ("TestRenderTexture");
 				},
 
 			XTask.RETN,
