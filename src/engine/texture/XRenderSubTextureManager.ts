@@ -39,7 +39,7 @@
 	//------------------------------------------------------------------------------------------
 	// this class takes one or more PIXI.AnimatedSprite's and dynamically creates HaXe/OpenFl texture/atlases
 	//------------------------------------------------------------------------------------------
-	export class XRenderTextureSubTextureManager extends XSubTextureManager {
+	export class XRenderSubTextureManager extends XSubTextureManager {
 		private m_movieClips:Map<String, MovieClipMetadata>;
 		
 		private m_testers:Array<MaxRectPacker>;
@@ -159,7 +159,7 @@
 						
 						__index = __movieClipMetadata.getMasterRenderTextureIndex ();
 						__movieClip = __movieClipMetadata.getAnimatedSprite ();
-						__realBounds =		 __movieClipMetadata.getRealBounds ();
+						__realBounds = __movieClipMetadata.getRealBounds ();
 						
 						// trace (": index: ", __index);
 						// trace (": tileset: ", __tileset);

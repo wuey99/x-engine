@@ -39,18 +39,18 @@
 	//------------------------------------------------------------------------------------------
 	export class MovieClipMetadata {
 		
-		public m_renderTextureIndex:number;
-		public m_renderTexture:PIXI.RenderTexture;
+		public m_srcRenderTextureIndex:number;
+		public m_srcRenderTexture:PIXI.RenderTexture;
 		public m_animatedSprite:PIXI.AnimatedSprite;
 		public m_totalFrames:number;
 		public m_realBounds:PIXI.Rectangle;
 		
-		public m_tileIds:Array<number>;
-		public m_renderTextures:Array<PIXI.RenderTexture>;
-		public m_renderTextureIndexes:Array<number>;
-		public m_rects:Array<PIXI.Rectangle>;
+		public m_frameRenderTexture:Array<PIXI.RenderTexture>;
+		public m_srcRenderTextures:Array<PIXI.RenderTexture>;
+		public m_srcRenderTextureIndexes:Array<number>;
+		public m_srcRects:Array<PIXI.Rectangle>;
 
-		public m_tileIndex:number;
+		public m_frameIndex:number;
 		
 		//------------------------------------------------------------------------------------------
 		public constructor () {
@@ -58,24 +58,24 @@
 
 		//------------------------------------------------------------------------------------------
 		public setup (
-			__renderTextureIndex:number,
-			__renderTexture:PIXI.RenderTexture,
+			__srcRenderTextureIndex:number,
+			__srcRenderTexture:PIXI.RenderTexture,
 			__animatedSprite:PIXI.AnimatedSprite,
 			__totalFrames:number,
 			__realBounds:PIXI.Rectangle
 		) {
-			this.m_renderTextureIndex = __renderTextureIndex;
-			this.m_renderTexture = __renderTexture;
+			this.m_srcRenderTextureIndex = __srcRenderTextureIndex;
+			this.m_srcRenderTexture = __srcRenderTexture;
 			this.m_animatedSprite = __animatedSprite;
 			this.m_totalFrames = __totalFrames;
 			this.m_realBounds = __realBounds;
 			
-			this.m_tileIds = new Array<number> ();
-			this.m_renderTextures = new Array<PIXI.RenderTexture> (); 
-			this.m_renderTextureIndexes = new Array<number> ();
-			this.m_rects = new Array<PIXI.Rectangle> (); 
+			this.m_frameRenderTexture = new Array<PIXI.RenderTexture> ();
+			this.m_srcRenderTextures = new Array<PIXI.RenderTexture> (); 
+			this.m_srcRenderTextureIndexes = new Array<number> ();
+			this.m_srcRects = new Array<PIXI.Rectangle> (); 
 			
-			this.m_tileIndex = 0;
+			this.m_frameIndex = 0;
 		}
 		
 		//------------------------------------------------------------------------------------------
@@ -84,12 +84,12 @@
 
 		//------------------------------------------------------------------------------------------
 		public getMasterRenderTexture ():PIXI.RenderTexture {
-			return this.m_renderTexture;
+			return this.m_srcRenderTexture;
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public setMasterRenderTexture (__renderTexture:PIXI.RenderTexture):void {
-			this.m_renderTexture = __renderTexture;
+		public setMasterRenderTexture (__srcRenderTexture:PIXI.RenderTexture):void {
+			this.m_srcRenderTexture = __srcRenderTexture;
 		}
 
 		//------------------------------------------------------------------------------------------
@@ -104,7 +104,7 @@
 		
 		//------------------------------------------------------------------------------------------
 		public getMasterRenderTextureIndex ():number {
-			return this.m_renderTextureIndex;
+			return this.m_srcRenderTextureIndex;
 		}
 		
 		//------------------------------------------------------------------------------------------
@@ -118,47 +118,47 @@
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public addTile (__tileId:number, __renderTextureIndex:number, __rect:PIXI.Rectangle):void {	
-			this.m_tileIds[this.m_renderTextureIndex] = __tileId;
-			this.m_renderTextureIndexes[this.m_tileIndex] = __renderTextureIndex;
-			this.m_rects[this.m_tileIndex] = __rect;
+		public addFrameTexture (__frameTexture:PIXI.RenderTexture, __srcRenderTextureIndex:number, __rect:PIXI.Rectangle):void {	
+			this.m_frameRenderTexture[this.m_frameIndex] = __frameTexture;
+			this.m_srcRenderTextureIndexes[this.m_frameIndex] = __srcRenderTextureIndex;
+			this.m_srcRects[this.m_frameIndex] = __rect;
 			
-			this.m_tileIndex++;
+			this.m_frameIndex++;
 		}
 
 		//------------------------------------------------------------------------------------------
-		public setTileId (__tileIndex:number, __tileId:number):void {
-			this.m_tileIds[__tileIndex] = __tileId;	
+		public setFrameTexture (__frameIndex:number, __frameTexture:PIXI.RenderTexture):void {
+			this.m_frameRenderTexture[__frameIndex] = __frameTexture;	
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public getTileId (__tileIndex:number):number {
-			return this.m_tileIds[__tileIndex];	
+		public getFrameTexture (__frameIndex:number):PIXI.RenderTexture {
+			return this.m_frameRenderTexture[__frameIndex];	
 		}
 	
 		//------------------------------------------------------------------------------------------
-		public setRenderTexture (__tileIndex:number, __renderTexture:PIXI.RenderTexture):void {
-			this.m_renderTextures[__tileIndex] = __renderTexture;	
+		public setRenderTexture (__frameIndex:number, __srcRenderTexture:PIXI.RenderTexture):void {
+			this.m_srcRenderTextures[__frameIndex] = __srcRenderTexture;	
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public getRenderTexture (__tileIndex:number):PIXI.RenderTexture {
-			return this.m_renderTextures[__tileIndex];	
+		public getRenderTexture (__frameIndex:number):PIXI.RenderTexture {
+			return this.m_srcRenderTextures[__frameIndex];	
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public setRenderTextureIndex (__tileIndex:number, __renderTextureIndex:number):void {
-			this.m_renderTextureIndexes[__tileIndex] = __renderTextureIndex;	
+		public setRenderTextureIndex (__frameIndex:number, __srcRenderTextureIndex:number):void {
+			this.m_srcRenderTextureIndexes[__frameIndex] = __srcRenderTextureIndex;	
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public getRenderTextureIndex (__tileIndex:number):number {
-			return this.m_renderTextureIndexes[__tileIndex];	
+		public getRenderTextureIndex (__frameIndex:number):number {
+			return this.m_srcRenderTextureIndexes[__frameIndex];	
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public getRect (__tileIndex:number):PIXI.Rectangle {
-			return this.m_rects[__tileIndex];
+		public getRect (__frameIndex:number):PIXI.Rectangle {
+			return this.m_srcRects[__frameIndex];
 		}
 		
 	//------------------------------------------------------------------------------------------

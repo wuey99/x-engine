@@ -34,7 +34,7 @@
     import { XType } from '../type/XType';
     import { MaxRectPacker } from './MaxRectPacker';
 	import { XSubTextureManager } from './XSubTextureManager';
-    import { XRenderTextureSubTextureManager } from './XRenderTextureSubTextureManager';
+    import { XRenderSubTextureManager } from './XRenderSubTextureManager';
 
 	//------------------------------------------------------------------------------------------
 	// this class manages XSubMovieClipCacheManagers
@@ -61,7 +61,7 @@
 
 		//------------------------------------------------------------------------------------------
 		public createSubManager (__name:String, __width:number=2048, __height:number=2048):XSubTextureManager {
-			var __subManager:XSubTextureManager = new XRenderTextureSubTextureManager (this.m_XApp, __width, __height);
+			var __subManager:XSubTextureManager = new XRenderSubTextureManager (this.m_XApp, __width, __height);
 			this.m_subManagers.set (__name, __subManager);
 			
 			return __subManager;
