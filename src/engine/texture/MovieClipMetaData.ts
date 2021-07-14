@@ -42,7 +42,6 @@
 		public m_srcRenderTextureIndex:number;
 		public m_srcRenderTexture:PIXI.RenderTexture;
 		public m_spriteSheet:PIXI.Spritesheet;
-		public m_animatedSprite:PIXI.AnimatedSprite;
 		public m_totalFrames:number;
 		public m_realBounds:PIXI.Rectangle;
 		public m_anchorPoint:PIXI.Point;
@@ -63,7 +62,6 @@
 			__srcRenderTextureIndex:number,
 			__srcRenderTexture:PIXI.RenderTexture,
 			__spriteSheet:PIXI.Spritesheet,
-			__animatedSprite:PIXI.AnimatedSprite,
 			__totalFrames:number,
 			__realBounds:PIXI.Rectangle,
 			__anchorPoint:PIXI.Point
@@ -71,7 +69,6 @@
 			this.m_srcRenderTextureIndex = __srcRenderTextureIndex;
 			this.m_srcRenderTexture = __srcRenderTexture;
 			this.m_spriteSheet = __spriteSheet;
-			this.m_animatedSprite = __animatedSprite;
 			this.m_totalFrames = __totalFrames;
 			this.m_realBounds = __realBounds;
 			this.m_anchorPoint = __anchorPoint;
@@ -122,12 +119,6 @@
 		public getSpritesheet ():PIXI.Spritesheet{
 			return this.m_spriteSheet;
 		}
-
-		//------------------------------------------------------------------------------------------
-		public getAnimatedSprite ():PIXI.AnimatedSprite{
-			return this.m_animatedSprite;
-		}
-		
 		//------------------------------------------------------------------------------------------
 		public getTotalFrames ():number {
 			return this.m_totalFrames;

@@ -163,7 +163,6 @@
 						var __movieClipMetadata:MovieClipMetadata = this.m_movieClips.get (__className);
 						
 						__index = __movieClipMetadata.getMasterRenderTextureIndex ();
-						// __animatedSprite = __movieClipMetadata.getAnimatedSprite ();
 						__realBounds = __movieClipMetadata.getRealBounds ();
 						
 						if (__index == this.m_currentContainerIndex) {
@@ -258,7 +257,6 @@
 						var __movieClipMetadata:MovieClipMetadata = this.m_movieClips.get (__className);
 						
 						__index = __movieClipMetadata.getMasterRenderTextureIndex ();
-						// __animatedSprite = __movieClipMetadata.getAnimatedSprite ();
 						__realBounds = __movieClipMetadata.getRealBounds ();
 						
 						for (var i = 0; i < __movieClipMetadata.getTotalFrames (); i++ ) {
@@ -338,7 +336,7 @@
 		}
 
 		//------------------------------------------------------------------------------------------
-		private findFreeTexture (__movieClip:PIXI.AnimatedSprite):number {
+		private findFreeTexture (__animatedSprite:PIXI.AnimatedSprite):number {
 			var __scaleX:number = 1.0;
 			var __scaleY:number = 1.0;
 			var __padding:number = 2.0;
@@ -359,10 +357,10 @@
 				
 				var i:number = 0;
 				
-				while (i < __movieClip.totalFrames && __free) {
-					__movieClip.gotoAndStop (i);
+				while (i < __animatedSprite.totalFrames && __free) {
+					__animatedSprite.gotoAndStop (i);
 					
-					__realBounds = this.__getRealBounds (__movieClip);
+					__realBounds = this.__getRealBounds (__animatedSprite);
 					
 					__rect = __tester.quickInsert (
 						(__realBounds.width * __scaleX) + __padding * 2, (__realBounds.height * __scaleY) + __padding * 2
@@ -435,7 +433,6 @@
 				__index,					// TilesetIndex
 				null,						// Tileset
 				__spriteSheet,				// Spritesheet
-				__animatedSprite,				// MovieClip
 				__animatedSprite.totalFrames,	// totalFrames
 				__realBounds,				// realBounds
 				__anchorPoint				// anchorPoint
@@ -465,6 +462,8 @@
 			__movieClipMetadata.setRealBounds (__realBounds);
 			
 			this.m_movieClips.set (__className, __movieClipMetadata);
+
+			__animatedSprite.destroy ();
 		}	
 		
 		//------------------------------------------------------------------------------------------
@@ -493,7 +492,6 @@
 				__index,					// TilesetIndex
 				null,						// Tileset
 				__spriteSheet,				// Spritesheet
-				__animatedSprite,				// MovieClip
 				__animatedSprite.totalFrames,	// totalFrames
 				__realBounds,				// realBounds
 				__anchorPoint				// anchorPoint
@@ -537,6 +535,8 @@
 			__movieClipMetadata.setRealBounds (__realBounds);
 			
 			this.m_movieClips.set (__className, __movieClipMetadata);
+
+			__animatedSprite.destroy ();
 		}	
 		
 		//------------------------------------------------------------------------------------------
