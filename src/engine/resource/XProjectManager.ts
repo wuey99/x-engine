@@ -283,7 +283,7 @@ export class XProjectManager {
 
     //------------------------------------------------------------------------------------------
     public unload (__name:string):void {
-        this.getResourceByName (__name).unload ();
+        this.getResourceHandleByName (__name).unload ();
     }
     
     //------------------------------------------------------------------------------------------

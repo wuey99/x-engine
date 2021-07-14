@@ -17,6 +17,8 @@ import { GUID } from '../../engine/utils/GUID';
 import { FlockLeader } from './FlockLeader';
 import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
 import { G } from '../../engine/app/G';
+import { XTextureManager } from '../../engine/texture/XTextureManager';
+import { XSubTextureManager } from '../../engine/texture/XSubTextureManager';
 
 //------------------------------------------------------------------------------------------
 export class TestRenderTexture extends XState {
@@ -87,7 +89,37 @@ export class TestRenderTexture extends XState {
         __sprite2.gotoAndStop(0);
 
         console.log (": renderTextureToo: ", __renderTextureToo1);
+
+        //------------------------------------------------------------------------------------------
+        var __subManager:XSubTextureManager = this.m_XApp.getTextureManager ().createSubManager ("__global__");
+        __subManager.start ();
+        __subManager.add ("OctopusBug");
+        __subManager.finish ();
+
+        var __sprite3:PIXI.AnimatedSprite = __subManager.createAnimatedSprite ("OctopusBug");
+        this.addSortableChild (__sprite3, 0, 0.0, true);
+        __sprite3.x = 0;
+        __sprite3.y = 0;
+
+        console.log (": OctopusBug: ", __sprite3);
+
+        this.addTask ([
+            XTask.LABEL, "loop",
+                () => { __sprite3.gotoAndStop (0); }, XTask.WAIT, 0x0200,
+                () => { __sprite3.gotoAndStop (1); }, XTask.WAIT, 0x0200,
+                () => { __sprite3.gotoAndStop (2); }, XTask.WAIT, 0x0200,
+                () => { __sprite3.gotoAndStop (3); }, XTask.WAIT, 0x0200,
+                () => { __sprite3.gotoAndStop (4); }, XTask.WAIT, 0x0200,
+                () => { __sprite3.gotoAndStop (5); }, XTask.WAIT, 0x0200,
+                () => { __sprite3.gotoAndStop (6); }, XTask.WAIT, 0x0200,
+                () => { __sprite3.gotoAndStop (7); }, XTask.WAIT, 0x0200,
+                
+            XTask.GOTO, "loop",
+        ]);
+
+        console.log (": OctopusBug: ", sheet);
         
+        //------------------------------------------------------------------------------------------
 		return this;
 	}
 

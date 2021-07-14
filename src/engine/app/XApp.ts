@@ -47,6 +47,9 @@ import { XPauseManager } from '../state/XPauseManager';
 import { XSoundManager } from '../sound/XSoundManager';
 import { Main } from '../../scripts/app';
 import { Resource } from '../resource/Resource';
+import { XTextureManager } from '../texture/XTextureManager';
+import { XSubTextureManager } from '../texture/XSubTextureManager';
+import { XAnimatedSpriteSubTextureManager } from '../texture/XAnimatedSpriteSubTextureManager';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -71,8 +74,8 @@ export class XApp {
     
 	private m_XClassPoolManager:XClassPoolManager;
 	
-	// private m_XTextureManager:XTextureManager;
-	// private m_XSubTextureManager:XSubTextureManager;
+	private m_XTextureManager:XTextureManager;
+	private m_XSubTextureManager:XSubTextureManager;
     private m_XSignalPoolManager:XObjectPoolManager;
     private m_XRectPoolManager:XObjectPoolManager;
     private m_XPointPoolManager:XObjectPoolManager;
@@ -183,6 +186,7 @@ export class XApp {
         this.m_XSignalManager = new XSignalManager (this);
         this.m_XProjectManager = new XProjectManager (this);
         this.m_XSoundManager = new XSoundManager (this);
+        this.m_XTextureManager = new XTextureManager (this);
         this.m_XClassPoolManager = new XClassPoolManager ();
 
         this.m_frameRateScale = 1.0;
@@ -733,6 +737,11 @@ export class XApp {
     //------------------------------------------------------------------------------------------
     public getXSoundManager ():XSoundManager {
         return this.m_XSoundManager;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getTextureManager ():XTextureManager {
+        return this.m_XTextureManager;
     }
 
     //------------------------------------------------------------------------------------------

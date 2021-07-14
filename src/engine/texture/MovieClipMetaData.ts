@@ -41,11 +41,13 @@
 		
 		public m_srcRenderTextureIndex:number;
 		public m_srcRenderTexture:PIXI.RenderTexture;
+		public m_spriteSheet:PIXI.Spritesheet;
 		public m_animatedSprite:PIXI.AnimatedSprite;
 		public m_totalFrames:number;
 		public m_realBounds:PIXI.Rectangle;
+		public m_anchorPoint:PIXI.Point;
 		
-		public m_frameRenderTexture:Array<PIXI.RenderTexture>;
+		public m_frameRenderTextures:Array<PIXI.RenderTexture>;
 		public m_srcRenderTextures:Array<PIXI.RenderTexture>;
 		public m_srcRenderTextureIndexes:Array<number>;
 		public m_srcRects:Array<PIXI.Rectangle>;
@@ -60,17 +62,21 @@
 		public setup (
 			__srcRenderTextureIndex:number,
 			__srcRenderTexture:PIXI.RenderTexture,
+			__spriteSheet:PIXI.Spritesheet,
 			__animatedSprite:PIXI.AnimatedSprite,
 			__totalFrames:number,
-			__realBounds:PIXI.Rectangle
+			__realBounds:PIXI.Rectangle,
+			__anchorPoint:PIXI.Point
 		) {
 			this.m_srcRenderTextureIndex = __srcRenderTextureIndex;
 			this.m_srcRenderTexture = __srcRenderTexture;
+			this.m_spriteSheet = __spriteSheet;
 			this.m_animatedSprite = __animatedSprite;
 			this.m_totalFrames = __totalFrames;
 			this.m_realBounds = __realBounds;
+			this.m_anchorPoint = __anchorPoint;
 			
-			this.m_frameRenderTexture = new Array<PIXI.RenderTexture> ();
+			this.m_frameRenderTextures = new Array<PIXI.RenderTexture> ();
 			this.m_srcRenderTextures = new Array<PIXI.RenderTexture> (); 
 			this.m_srcRenderTextureIndexes = new Array<number> ();
 			this.m_srcRects = new Array<PIXI.Rectangle> (); 
@@ -103,10 +109,20 @@
 		}
 		
 		//------------------------------------------------------------------------------------------
+		public getAnchorPoint ():PIXI.Point {
+			return this.m_anchorPoint;
+		}
+
+		//------------------------------------------------------------------------------------------
 		public getMasterRenderTextureIndex ():number {
 			return this.m_srcRenderTextureIndex;
 		}
 		
+		//------------------------------------------------------------------------------------------
+		public getSpritesheet ():PIXI.Spritesheet{
+			return this.m_spriteSheet;
+		}
+
 		//------------------------------------------------------------------------------------------
 		public getAnimatedSprite ():PIXI.AnimatedSprite{
 			return this.m_animatedSprite;
@@ -119,7 +135,7 @@
 		
 		//------------------------------------------------------------------------------------------
 		public addFrameTexture (__frameTexture:PIXI.RenderTexture, __srcRenderTextureIndex:number, __rect:PIXI.Rectangle):void {	
-			this.m_frameRenderTexture[this.m_frameIndex] = __frameTexture;
+			this.m_frameRenderTextures[this.m_frameIndex] = __frameTexture;
 			this.m_srcRenderTextureIndexes[this.m_frameIndex] = __srcRenderTextureIndex;
 			this.m_srcRects[this.m_frameIndex] = __rect;
 			
@@ -128,12 +144,17 @@
 
 		//------------------------------------------------------------------------------------------
 		public setFrameTexture (__frameIndex:number, __frameTexture:PIXI.RenderTexture):void {
-			this.m_frameRenderTexture[__frameIndex] = __frameTexture;	
+			this.m_frameRenderTextures[__frameIndex] = __frameTexture;	
 		}
 		
 		//------------------------------------------------------------------------------------------
 		public getFrameTexture (__frameIndex:number):PIXI.RenderTexture {
-			return this.m_frameRenderTexture[__frameIndex];	
+			return this.m_frameRenderTextures[__frameIndex];	
+		}
+	
+		//------------------------------------------------------------------------------------------
+		public getFrameRenderTextures ():Array<PIXI.RenderTexture> {
+			return this.m_frameRenderTextures;
 		}
 	
 		//------------------------------------------------------------------------------------------

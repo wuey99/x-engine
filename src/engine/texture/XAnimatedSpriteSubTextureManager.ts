@@ -37,9 +37,9 @@
 	import { MovieClipMetadata } from './MovieClipMetaData';
 
 	//------------------------------------------------------------------------------------------
-	// this class takes one or more PIXI.AnimatedSprite's and dynamically creates HaXe/OpenFl texture/atlases
+	// this class takes one or more PIXI.AnimatedSprite's and dynamically creates combined RenderTextures
 	//------------------------------------------------------------------------------------------
-	export class XRenderSubTextureManager extends XSubTextureManager {
+	export class XAnimatedSpriteSubTextureManager extends XSubTextureManager {
 		private m_movieClips:Map<String, MovieClipMetadata>;
 		
 		private m_testers:Array<MaxRectPacker>;
@@ -48,8 +48,9 @@
 		
 		private m_currentTester:MaxRectPacker;
 		private m_currentPacker:MaxRectPacker;
-		private m_currentBitmap:PIXI.Container;
-		private m_currentBitmapIndex:number;
+
+		private m_currentContainer:PIXI.Container;
+		private m_currentContainerIndex:number;
 		
 		private wrapFlag:boolean;
 		
@@ -80,13 +81,21 @@
 		public finish ():void {
 			if (!this.wrapFlag) {
 				this.__finishFit ();
-			}
-			else
-			{
+			} else {
 				this.__finishWrap ();
 			}
 		}
-		
+
+
+		//------------------------------------------------------------------------------------------
+		private __destroyAnimatedSprites (__animatedSprites:Array<PIXI.AnimatedSprite>):void {
+			var __animatedSprite:PIXI.AnimatedSprite;
+
+			for (__animatedSprite of __animatedSprites) {
+				__animatedSprite.destroy ();
+			}
+		}
+
 		//------------------------------------------------------------------------------------------
 		private __finishFit ():void {
 			this.__end ();
@@ -100,57 +109,53 @@
 			var __realBounds:PIXI.Rectangle;
 			
 			var __index:number;
-			var __movieClip:PIXI.AnimatedSprite;
+			var __spriteSheet:PIXI.Spritesheet;
+			var __animatedSprite:PIXI.AnimatedSprite;
 			
 			//------------------------------------------------------------------------------------------
-			for (this.m_currentBitmapIndex = 0; this.m_currentBitmapIndex < this.m_count; this.m_currentBitmapIndex++) {
+			for (this.m_currentContainerIndex = 0; this.m_currentContainerIndex < this.m_count; this.m_currentContainerIndex++) {
 				__rect = new PIXI.Rectangle (0, 0, this.TEXTURE_WIDTH, this.TEXTURE_HEIGHT);
+				
+				this.m_currentContainer = new PIXI.Container ();
 
-				/* TODO
-				m_currentBitmap = new BitmapData (TEXTURE_WIDTH, TEXTURE_HEIGHT);
-				m_currentBitmap.fillRect (__rect, 0x00000000);
-				*/
+				var __animatedSprites:Array<PIXI.AnimatedSprite> = [];
 
 				//------------------------------------------------------------------------------------------
 				XType.forEach (this.m_movieClips, 
 					(x:any) => {
-						var __className:String = x as string;
+						var __className:string = x as string;
 						
 						var __movieClipMetadata:MovieClipMetadata = this.m_movieClips.get (__className);
 						
 						__index = __movieClipMetadata.getMasterRenderTextureIndex ();
-						__movieClip = __movieClipMetadata.getAnimatedSprite ();
+						__spriteSheet = __movieClipMetadata.getSpritesheet ();
 						__realBounds = __movieClipMetadata.getRealBounds ();
 						
-						if (__index == this.m_currentBitmapIndex) {
-							for (var i = 0; i < __movieClip.totalFrames; i++) {
-								__movieClip.gotoAndStop (i+1);
+						if (__index == this.m_currentContainerIndex) {
+							for (var i = 0; i < __movieClipMetadata.getTotalFrames (); i++) {
+								__animatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
+								__animatedSprites.push (__animatedSprite);
+								__animatedSprite.gotoAndStop (i);
 								__rect = __movieClipMetadata.getRect (i);
-								/* TODO
-								var __matrix:Matrix = new Matrix ();
-								__matrix.scale (__scaleX, __scaleY);
-								__matrix.translate (__rect.x - __realBounds.x, __rect.y - __realBounds.y);
-								m_currentBitmap.draw (__movieClip, __matrix);
-								*/
+								this.m_currentContainer.addChild (__animatedSprite);
+								__animatedSprite.x = __rect.x - __realBounds.x;
+								__animatedSprite.y = __rect.y - __realBounds.y;
 							}
 						}
 					}
 				);	
 				
 				//------------------------------------------------------------------------------------------
-				/* TODO
-				var __tileset:Tileset = new Tileset (m_currentBitmap);
-				var __tileId:Int;
-
+				var __tileset:PIXI.RenderTexture = PIXI.RenderTexture.create ({width: this.TEXTURE_WIDTH, height: this.TEXTURE_HEIGHT});
+				this.m_XApp.getRenderer ().render (this.m_currentContainer, __tileset);
 				this.m_renderTextures.push (__tileset);
-				*/
 
-				var __tileSet:PIXI.RenderTexture = null;
+				this.__destroyAnimatedSprites (__animatedSprites);
 
 				//------------------------------------------------------------------------------------------
 				XType.forEach (this.m_movieClips, 
 					(x:any) => {
-						var __className:String = x as string;
+						var __className:string = x as string;
 						
 						// trace (": ===================================================: ");
 						// trace (": finishing: ", __className);
@@ -158,35 +163,29 @@
 						var __movieClipMetadata:MovieClipMetadata = this.m_movieClips.get (__className);
 						
 						__index = __movieClipMetadata.getMasterRenderTextureIndex ();
-						__movieClip = __movieClipMetadata.getAnimatedSprite ();
+						// __animatedSprite = __movieClipMetadata.getAnimatedSprite ();
 						__realBounds = __movieClipMetadata.getRealBounds ();
 						
-						// trace (": index: ", __index);
-						// trace (": tileset: ", __tileset);
-						// trace (": movieClip: ", __movieClip);
-						// trace (": realBounds: ", __realBounds);
-						
-						if (__index == this.m_currentBitmapIndex) {
+						if (__index == this.m_currentContainerIndex) {
 							__movieClipMetadata.setMasterRenderTexture(__tileset);
 							
-							for (var i = 0; i < __movieClip.totalFrames; i++) {
+							for (var i = 0; i < __movieClipMetadata.getTotalFrames (); i++) {
 								__rect = __movieClipMetadata.getRect (i);
-								/* TODO
-								__tileId = __tileset.addRect (__rect);
-								__movieClipMetadata.setTileId (i, __tileId);
-								__movieClipMetadata.setTileset (i, __tileset);
-								*/
-								
-								// trace (":    frame: ", i);
-								// trace (":    tileId: ", __tileId);
-								// trace (":    rect: ", __rect);
+
+								var __renderTexture:PIXI.RenderTexture = new PIXI.RenderTexture (
+									__tileset.baseTexture as PIXI.BaseRenderTexture,
+									__rect
+								);
+
+								__movieClipMetadata.setFrameTexture (i, __renderTexture);
+								__movieClipMetadata.setRenderTexture (i, __tileset);
 							}
 						}
 					}
 				);	
 				
 				//------------------------------------------------------------------------------------------
-//				m_currentBitmap.dispose ();
+//				m_currentContainer.dispose ();
 			}
 		}
 		
@@ -203,58 +202,55 @@
 			var __realBounds:PIXI.Rectangle;
 			
 			var __index:number;
-			var __movieClip:PIXI.AnimatedSprite;
+			var __spriteSheet:PIXI.Spritesheet;
+			var __animatedSprite:PIXI.AnimatedSprite;
 			
 			//------------------------------------------------------------------------------------------
-			for (this.m_currentBitmapIndex = 0; this.m_currentBitmapIndex < this.m_count; this.m_currentBitmapIndex++) {
+			for (this.m_currentContainerIndex = 0; this.m_currentContainerIndex < this.m_count; this.m_currentContainerIndex++) {
 				__rect = new PIXI.Rectangle (0, 0, this.TEXTURE_WIDTH, this.TEXTURE_HEIGHT);
-				/* TODO
-				m_currentBitmap = new BitmapData (TEXTURE_WIDTH, TEXTURE_HEIGHT);
-				m_currentBitmap.fillRect (__rect, 0x00000000);
-				*/
+
+				this.m_currentContainer = new PIXI.Container ();
+
+				var __animatedSprites:Array<PIXI.AnimatedSprite> = [];
 
 				//------------------------------------------------------------------------------------------
 				XType.forEach (this.m_movieClips, 
 					(x:any) => {
-						var __className:String = x as string;
-						
+						var __className:string = x as string;
+
 						var __movieClipMetadata:MovieClipMetadata = this.m_movieClips.get (__className);
 						
 						__index = __movieClipMetadata.getMasterRenderTextureIndex ();
-						__movieClip = __movieClipMetadata.getAnimatedSprite ();
+						__spriteSheet = __movieClipMetadata.getSpritesheet ();
 						__realBounds = __movieClipMetadata.getRealBounds ();
 						
-						for (var i = 0; i < __movieClip.totalFrames; i++) {
+						for (var i = 0; i < __movieClipMetadata.getTotalFrames (); i++) {
 							__index = __movieClipMetadata.getRenderTextureIndex (i);
-							
-							if (__index == this.m_currentBitmapIndex) {
-								__movieClip.gotoAndStop (i+1);
+
+							if (__index == this.m_currentContainerIndex) {
+								__animatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
+								__animatedSprites.push (__animatedSprite);
+								__animatedSprite.gotoAndStop (i);
 								__rect = __movieClipMetadata.getRect (i);
-								/* TODO
-								var __matrix:Matrix = new Matrix ();
-								__matrix.scale (__scaleX, __scaleY);
-								__matrix.translate (__rect.x - __realBounds.x, __rect.y - __realBounds.y);
-								m_currentBitmap.draw (__movieClip, __matrix);
-								*/
+								this.m_currentContainer.addChild (__animatedSprite);
+								__animatedSprite.x = __rect.x - __realBounds.x;
+								__animatedSprite.y = __rect.y - __realBounds.y;
 							}
 						}
 					}
 				);	
 				
 				//------------------------------------------------------------------------------------------
-				/* TODO
-				var __tileset:Tileset = new Tileset (m_currentBitmap);
-				var __tileId:Int;
-				
-				m_tilesets.push (__tileset);
-				*/
+				var __tileset:PIXI.RenderTexture = PIXI.RenderTexture.create ({width: this.TEXTURE_WIDTH, height: this.TEXTURE_HEIGHT});
+				this.m_XApp.getRenderer ().render (this.m_currentContainer, __tileset);
+				this.m_renderTextures.push (__tileset);
 
-				var __tileset:PIXI.RenderTexture;
+				this.__destroyAnimatedSprites (__animatedSprites);
 
 				//------------------------------------------------------------------------------------------
 				XType.forEach (this.m_movieClips, 
 					(x:any) => {
-						var __className:String = x as string;
+						var __className:string = x as string;
 						
 						// trace (": ===================================================: ");
 						// trace (": finishing: ", __className);
@@ -262,35 +258,29 @@
 						var __movieClipMetadata:MovieClipMetadata = this.m_movieClips.get (__className);
 						
 						__index = __movieClipMetadata.getMasterRenderTextureIndex ();
-						__movieClip = __movieClipMetadata.getAnimatedSprite ();
+						// __animatedSprite = __movieClipMetadata.getAnimatedSprite ();
 						__realBounds = __movieClipMetadata.getRealBounds ();
 						
-						// trace (": index: ", __index);
-						// trace (": tileset: ", __tileset);
-						// trace (": movieClip: ", __movieClip);
-						// trace (": realBounds: ", __realBounds);
-						
-						for (var i = 0; i < __movieClip.totalFrames; i++ ) {
+						for (var i = 0; i < __movieClipMetadata.getTotalFrames (); i++ ) {
 							__index = __movieClipMetadata.getRenderTextureIndex (i);
 							
-							if (__index == this.m_currentBitmapIndex) {
+							if (__index == this.m_currentContainerIndex) {
 								__rect = __movieClipMetadata.getRect (i);
-								/* TODO
-								__tileId = __tileset.addRect (__rect);
-								__movieClipMetadata.setTileId (i, __tileId);
-								__movieClipMetadata.setTileset (i, __tileset);
-								*/
 
-								// trace (":    frame: ", i);
-								// trace (":    tileId: ", __tileId);
-								// trace (":    rect: ", __rect);
+								var __renderTexture:PIXI.RenderTexture = new PIXI.RenderTexture (
+									__tileset.baseTexture as PIXI.BaseRenderTexture,
+									__rect
+								);
+
+								__movieClipMetadata.setFrameTexture (i, __renderTexture);
+								__movieClipMetadata.setRenderTexture (i, __tileset);
 							}
 						}
 					}
 				);	
 				
 				//------------------------------------------------------------------------------------------
-				// m_currentBitmap.dispose ();
+				// m_currentContainer.dispose ();
 			}
 		}
 		
@@ -308,7 +298,7 @@
 			if (__class != null) {
 				this.createTexture (__className, __class);
 				
-				this.m_XApp.unloadClass (__className);
+				// this.m_XApp.unloadClass (__className);
 			}
 			else
 			{
@@ -339,52 +329,12 @@
 			}
 			
 			var __movieClipMetadata:MovieClipMetadata = this.m_movieClips.get (__className);
-			
-			/* TODO
-			var __tileset:Tileset = __movieClipMetadata.getMasterTileset ();
-			*/
-			var __tileSet:PIXI.RenderTexture = __movieClipMetadata.getMasterRenderTexture ();
-			var __frames:number = __movieClipMetadata.getTotalFrames ();
-			var __realBounds:PIXI.Rectangle = __movieClipMetadata.getRealBounds ();
-			
-			/* TODO
-			var __tilemap:Tilemap = new Tilemap (Std.int (__realBounds.width), Std.int (__realBounds.height));
-			if (!wrapFlag) {
-				__tilemap.tileset = __tileset;
-			}
-			
-			var i:Int;
-			
-			var __tileId:Int;
-			var __tile:Tile;
-			var __rect:Rectangle;
-			
-			for (i in 0 ... __frames) {
-				__tileset = __movieClipMetadata.getTileset (i);
-				__rect = __movieClipMetadata.getRect (i);
-				__tileId = __movieClipMetadata.getTileId (i);
-				
-//				__tile = new Tile (0, 0, 0, 1.0, 1.0, 0.0);				
-				__tile = cast m_XApp.getTilePoolManager ().borrowObject ();
-				__tile.id = __tileId;
-				
-				__tile.x = 0;
-				__tile.y = 0;
-				
-				if (wrapFlag) {
-					__tile.tileset = __tileset;
-				}
-				
-				__tilemap.addTileAt (__tile, i);
-			}
-			
-			__tilemap.x = __realBounds.x;
-			__tilemap.y = __realBounds.y;
-			
-			return __tilemap;
-			*/
+			var __anchorPoint:PIXI.Point = __movieClipMetadata.getAnchorPoint ();
 
-			return null;
+			var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (__movieClipMetadata.getFrameRenderTextures ());
+			__animatedSprite.anchor.set (__anchorPoint.x, __anchorPoint.y);
+
+			return __animatedSprite;
 		}
 
 		//------------------------------------------------------------------------------------------
@@ -410,7 +360,7 @@
 				var i:number = 0;
 				
 				while (i < __movieClip.totalFrames && __free) {
-					__movieClip.gotoAndStop (i+1);
+					__movieClip.gotoAndStop (i);
 					
 					__realBounds = this.__getRealBounds (__movieClip);
 					
@@ -436,21 +386,36 @@
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public createTexture (__className:String, __class:any):void {	
+		public createTexture (__className:string, __class:any):void {	
 			if (!this.wrapFlag) {
 				this.__createTextureFit (__className, __class);	
-			}
-			else
-			{
+			} else {
 				this.__createTextureWrap (__className, __class);
 			}
 		}
+
+		//------------------------------------------------------------------------------------------
+		private __parseAnchorPoint (__spriteSheet:PIXI.Spritesheet):PIXI.Point {
+			var __frames:any = __spriteSheet.data.frames;
+
+			for (var __frame in __frames) {
+				console.log (": frame: ", __frames[__frame].anchor);
+
+				var __anchor:any = __frames[__frame].anchor;
+
+				return new PIXI.Point (__anchor.x, __anchor.y);
+			}
+
+			return null;
+		}
 		
 		//------------------------------------------------------------------------------------------
-		private __createTextureFit (__className:String, __class:any):void {	
-			// TODO
-			var __movieClip:PIXI.AnimatedSprite = XType.createInstance (__class);
-			
+		private __createTextureFit (__className:string, __class:any):void {	
+			var __spriteSheet:PIXI.Spritesheet = __class as PIXI.Spritesheet;
+			var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
+
+			var __anchorPoint:PIXI.Point = this.__parseAnchorPoint (__spriteSheet);
+
 			var __scaleX:number = 1.0;
 			var __scaleY:number = 1.0;
 			var __padding:number = 2.0;
@@ -461,7 +426,7 @@
 			
 			// trace (": XTileSubTextureManager: totalFrames: ", __className, __movieClip.totalFrames);
 			
-			var __index:number = this.findFreeTexture (__movieClip);
+			var __index:number = this.findFreeTexture (__animatedSprite);
 			
 			this.m_currentPacker = this.m_packers[__index] as MaxRectPacker;
 			
@@ -469,17 +434,19 @@
 			__movieClipMetadata.setup (
 				__index,					// TilesetIndex
 				null,						// Tileset
-				__movieClip,				// MovieClip
-				__movieClip.totalFrames,	// totalFrames
-				__realBounds				// realBounds
+				__spriteSheet,				// Spritesheet
+				__animatedSprite,				// MovieClip
+				__animatedSprite.totalFrames,	// totalFrames
+				__realBounds,				// realBounds
+				__anchorPoint				// anchorPoint
 				);
 			
-			for (var i = 0; i < __movieClip.totalFrames; i++) {
-				__movieClip.gotoAndStop (i+1);
+			for (var i = 0; i < __animatedSprite.totalFrames; i++) {
+				__animatedSprite.gotoAndStop (i);
 				
 				// trace (": getBounds: ", __className, __getRealBounds (__movieClip));
 				
-				__realBounds = this.__getRealBounds (__movieClip);
+				__realBounds = this.__getRealBounds (__animatedSprite);
 				
 				__rect = this.m_currentPacker.quickInsert (
 					(__realBounds.width * __scaleX) + __padding * 2, (__realBounds.height * __scaleY) + __padding * 2
@@ -492,7 +459,7 @@
 				
 				// trace (": rect: ", __rect);
 				
-				__movieClipMetadata.addTile (0, __index, __rect);
+				__movieClipMetadata.addFrameTexture (null, __index, __rect);
 			}
 			
 			__movieClipMetadata.setRealBounds (__realBounds);
@@ -501,9 +468,11 @@
 		}	
 		
 		//------------------------------------------------------------------------------------------
-		private __createTextureWrap (__className:String, __class:any):void {	
-			// TODO
-			var __movieClip:PIXI.AnimatedSprite = XType.createInstance (__class);
+		private __createTextureWrap (__className:string, __class:any):void {	
+			var __spriteSheet:PIXI.Spritesheet = __class as PIXI.Spritesheet;
+			var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
+
+			var __anchorPoint:PIXI.Point = this.__parseAnchorPoint (__spriteSheet);
 			
 			var __scaleX:number = 1.0;
 			var __scaleY:number = 1.0;
@@ -523,17 +492,19 @@
 			__movieClipMetadata.setup (
 				__index,					// TilesetIndex
 				null,						// Tileset
-				__movieClip,				// MovieClip
-				__movieClip.totalFrames,	// totalFrames
-				__realBounds				// realBounds
+				__spriteSheet,				// Spritesheet
+				__animatedSprite,				// MovieClip
+				__animatedSprite.totalFrames,	// totalFrames
+				__realBounds,				// realBounds
+				__anchorPoint				// anchorPoint
 			);
 			
-			for (var i = 0; i < __movieClip.totalFrames; i++) {
-				__movieClip.gotoAndStop (i+1);
+			for (var i = 0; i < __animatedSprite.totalFrames; i++) {
+				__animatedSprite.gotoAndStop (i);
 				
 				// trace (": getBounds: ", __className, __getRealBounds (__movieClip));
 				
-				__realBounds = this.__getRealBounds (__movieClip);
+				__realBounds = this.__getRealBounds (__animatedSprite);
 				
 				__rect = this.m_currentPacker.quickInsert (
 					(__realBounds.width * __scaleX) + __padding * 2, (__realBounds.height * __scaleY) + __padding * 2
@@ -560,7 +531,7 @@
 				
 				// trace (": rect: ", __rect);
 				
-				__movieClipMetadata.addTile (0, __index, __rect);
+				__movieClipMetadata.addFrameTexture (null, __index, __rect);
 			}
 			
 			__movieClipMetadata.setRealBounds (__realBounds);

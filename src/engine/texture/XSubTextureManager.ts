@@ -73,7 +73,7 @@
 								
 									this.m_queue.delete (__className);
 								
-									this.m_XApp.unloadClass (__className);
+									// this.m_XApp.unloadClass (__className);
 								}
 							}
 						);
