@@ -93,7 +93,7 @@ export class TestRenderTexture extends XState {
         //------------------------------------------------------------------------------------------
         var __subManager:XSubTextureManager = this.m_XApp.getTextureManager ().createSubManager ("__global__");
         __subManager.start ();
-        __subManager.add ("OctopusBug");
+        __subManager.addFromSpritesheet ("OctopusBug");
         __subManager.finish ();
 
         var __sprite3:PIXI.AnimatedSprite = __subManager.createAnimatedSprite ("OctopusBug");

@@ -33,6 +33,7 @@
     import { XTask } from '../task/XTask';
     import { XType } from '../type/XType';
     import { MaxRectPacker } from './MaxRectPacker';
+	import { MovieClipMetadata } from './MovieClipMetaData';
 
 	//------------------------------------------------------------------------------------------
 	// this class takes one or more PIXI.AnimatedSprite's and dynamically creates texture/atlases
@@ -47,6 +48,20 @@
 		
 		public m_count:number;
 		
+		public m_movieClips:Map<String, MovieClipMetadata>;
+		
+		public m_testers:Array<MaxRectPacker>;
+		public m_packers:Array<MaxRectPacker>;
+		public m_renderTextures:Array<PIXI.RenderTexture>;
+		
+		public m_currentTester:MaxRectPacker;
+		public m_currentPacker:MaxRectPacker;
+
+		public m_currentContainer:PIXI.Container;
+		public m_currentContainerIndex:number;
+		
+		public wrapFlag:boolean;
+		
 		//------------------------------------------------------------------------------------------
 		public constructor (__XApp:XApp, __width:number=2048, __height:number=2048) {
 			this.m_XApp = __XApp;
@@ -58,6 +73,8 @@
 			
 			this.m_queue = new Map<string, number> ();
 			
+			this.wrapFlag = true;
+
 			this.m_XApp.getXTaskManager ().addTask ([
 				XTask.LABEL, "loop",
 					XTask.WAIT, 0x0100,
@@ -96,65 +113,146 @@
 		
 		//------------------------------------------------------------------------------------------
 		public start ():void {
+			this.reset ();
+			
+			this.m_movieClips = new Map<string, MovieClipMetadata> (); 
+			this.m_testers = new Array<MaxRectPacker> ();
+			this.m_packers = new Array<MaxRectPacker> ()
+			this.m_renderTextures = new Array<PIXI.RenderTexture> ();
+			
+			this.__begin ();
 		}
-		
+		 
 		//------------------------------------------------------------------------------------------
 		public finish ():void {
+			if (!this.wrapFlag) {
+				this.__finishFit ();
+			} else {
+				this.__finishWrap ();
+			}
 		}
 
 		//------------------------------------------------------------------------------------------
-		public isDynamic ():boolean {
-			return false;	
+		public __finishFit ():void {
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public add (__className:string):void {	
-		}	
+		public __finishWrap ():void {
+		}
 
 		//------------------------------------------------------------------------------------------
+		public addFromSpritesheet (__className:string):void {	
+		}	
+
+		//------------------------------------------------------------------------------------------		
 		public isQueued (__className:string):boolean {
-			return false;
+			return this.m_movieClips.has (__className);
 		}
 		
 		//------------------------------------------------------------------------------------------
 		public movieClipExists (__className:string):boolean {
-			return false;
+			if (this.m_movieClips.has (__className)) {
+				return true;
+			} else {
+				return false;
+			}
 		}
+
+		//------------------------------------------------------------------------------------------
+		public createTexture (__className:string, __class:any):void {	
+			if (!this.wrapFlag) {
+				this.__createTextureFit (__className, __class);	
+			} else {
+				this.__createTextureWrap (__className, __class);
+			}
+		}
+
+		//------------------------------------------------------------------------------------------
+		public createAnimatedSprite (__className:string):PIXI.AnimatedSprite {
+			if (!this.isQueued (__className)) {
+				return null;
+			}
+			
+			var __movieClipMetadata:MovieClipMetadata = this.m_movieClips.get (__className);
+			var __anchorPoint:PIXI.Point = __movieClipMetadata.getAnchorPoint ();
+
+			var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (__movieClipMetadata.getFrameRenderTextures ());
+			__animatedSprite.anchor.set (__anchorPoint.x, __anchorPoint.y);
+
+			return __animatedSprite;
+		}
+
+		//------------------------------------------------------------------------------------------
+		public findFreeTexture (__animatedSprite:PIXI.AnimatedSprite):number {
+			var __scaleX:number = 1.0;
+			var __scaleY:number = 1.0;
+			var __padding:number = 2.0;
+			var __rect:PIXI.Rectangle = null;
+			var __realBounds:PIXI.Rectangle = null;
+			
+			var __free:boolean;
+			
+			var __index:number;
+			
+			for (__index = 0; __index < this.m_count; __index++) {
+				var __tester:MaxRectPacker = this.m_testers[__index] as MaxRectPacker;
+				var __packer:MaxRectPacker = this.m_packers[__index] as MaxRectPacker;
+				
+				__tester.copyFrom (__packer.freeRectangles);
+			
+				__free = true;
+				
+				var i:number = 0;
+				
+				while (i < __animatedSprite.totalFrames && __free) {
+					__animatedSprite.gotoAndStop (i);
+					
+					__realBounds = this.__getRealBounds (__animatedSprite);
+					
+					__rect = __tester.quickInsert (
+						(__realBounds.width * __scaleX) + __padding * 2, (__realBounds.height * __scaleY) + __padding * 2
+					);
+					
+					if (__rect == null) {
+						__free = false;
+					}
+					
+					i++;
+				}
+				
+				if (__free) {
+					return __index;
+				}
+			}
+			
+			this.__end (); this.__begin ();
+			
+			return this.m_count - 1;
+		}
+
+		//------------------------------------------------------------------------------------------
+		public __createTextureFit (__className:string, __class:any):void {	
+		}	
 		
 		//------------------------------------------------------------------------------------------
-		public createTexture (__className:String, __class:any):void {	
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public createAnimatedSprite (__className:string):any {
-			return null;
+		public __createTextureWrap (__className:string, __class:any):void {	
 		}
 
 		//------------------------------------------------------------------------------------------
 		public __begin ():void {
+			var __tester:MaxRectPacker = new MaxRectPacker (this.TEXTURE_WIDTH, this.TEXTURE_HEIGHT);			
+			var __packer:MaxRectPacker = new MaxRectPacker (this.TEXTURE_WIDTH, this.TEXTURE_HEIGHT);
+
+			this.m_testers[this.m_count] = __tester;
+			this.m_packers[this.m_count] = __packer;
+			
+			this.m_count++;
+			
+			// trace (": XTileSubTextureManager: count: ", m_count);
 		}
 		
 		//------------------------------------------------------------------------------------------
 		public __end ():void {	
-		}
-
-		//------------------------------------------------------------------------------------------
-		public __generateIndex (__index:number):string {
-			var __indexString:string = "" + __index; // TODO
-			
-			switch (__indexString.length) {
-				case 1:
-					return "00" + __indexString;
-					// break;
-				case 2:
-					return "0" + __indexString;
-					// break;
-				case 3:
-					return __indexString;
-					// break;
-			}
-			
-			return __indexString;
 		}
 		
 		//------------------------------------------------------------------------------------------

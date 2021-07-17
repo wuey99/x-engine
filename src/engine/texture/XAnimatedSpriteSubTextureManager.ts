@@ -40,55 +40,14 @@
 	// this class takes one or more PIXI.AnimatedSprite's and dynamically creates combined RenderTextures
 	//------------------------------------------------------------------------------------------
 	export class XAnimatedSpriteSubTextureManager extends XSubTextureManager {
-		private m_movieClips:Map<String, MovieClipMetadata>;
-		
-		private m_testers:Array<MaxRectPacker>;
-		private m_packers:Array<MaxRectPacker>;
-		private m_renderTextures:Array<PIXI.RenderTexture>;
-		
-		private m_currentTester:MaxRectPacker;
-		private m_currentPacker:MaxRectPacker;
 
-		private m_currentContainer:PIXI.Container;
-		private m_currentContainerIndex:number;
-		
-		private wrapFlag:boolean;
-		
 		//------------------------------------------------------------------------------------------
 		public constructor (__XApp:XApp, __width:number=2048, __height:number=2048) {
 			super (__XApp, __width, __height);
-			
-			this.wrapFlag = true;
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public reset ():void {
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public start ():void {
-			this.reset ();
-			
-			this.m_movieClips = new Map<string, MovieClipMetadata> (); 
-			this.m_testers = new Array<MaxRectPacker> ();
-			this.m_packers = new Array<MaxRectPacker> ()
-			this.m_renderTextures = new Array<PIXI.RenderTexture> ();
-			
-			this.__begin ();
-		}
-		 
-		//------------------------------------------------------------------------------------------
-		public finish ():void {
-			if (!this.wrapFlag) {
-				this.__finishFit ();
-			} else {
-				this.__finishWrap ();
-			}
-		}
-
-
-		//------------------------------------------------------------------------------------------
-		private __destroyAnimatedSprites (__animatedSprites:Array<PIXI.AnimatedSprite>):void {
+		public __destroyAnimatedSprites (__animatedSprites:Array<PIXI.AnimatedSprite>):void {
 			var __animatedSprite:PIXI.AnimatedSprite;
 
 			for (__animatedSprite of __animatedSprites) {
@@ -97,7 +56,7 @@
 		}
 
 		//------------------------------------------------------------------------------------------
-		private __finishFit ():void {
+		public __finishFit ():void {
 			this.__end ();
 			
 			var i:number;
@@ -189,7 +148,7 @@
 		}
 		
 		//------------------------------------------------------------------------------------------
-		private __finishWrap ():void {
+		public __finishWrap ():void {
 			this.__end ();
 			
 			var i:number;
@@ -288,7 +247,7 @@
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public add (__className:string):void {
+		public addFromSpritesheet (__className:string):void {
 			var __class:any = this.m_XApp.getClass (__className);
 			
 			this.m_movieClips.set (__className, null);
@@ -297,103 +256,13 @@
 				this.createTexture (__className, __class);
 				
 				// this.m_XApp.unloadClass (__className);
-			}
-			else
-			{
+			} else {
 				this.m_queue.set (__className, 0);
 			}
 		}
-		
-		//------------------------------------------------------------------------------------------		
-		public isQueued (__className:string):boolean {
-			return this.m_movieClips.has (__className);
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public movieClipExists (__className:string):boolean {
-			if (this.m_movieClips.has (__className)) {
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public createAnimatedSprite (__className:string):PIXI.AnimatedSprite {
-			if (!this.isQueued (__className)) {
-				return null;
-			}
-			
-			var __movieClipMetadata:MovieClipMetadata = this.m_movieClips.get (__className);
-			var __anchorPoint:PIXI.Point = __movieClipMetadata.getAnchorPoint ();
-
-			var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (__movieClipMetadata.getFrameRenderTextures ());
-			__animatedSprite.anchor.set (__anchorPoint.x, __anchorPoint.y);
-
-			return __animatedSprite;
-		}
 
 		//------------------------------------------------------------------------------------------
-		private findFreeTexture (__animatedSprite:PIXI.AnimatedSprite):number {
-			var __scaleX:number = 1.0;
-			var __scaleY:number = 1.0;
-			var __padding:number = 2.0;
-			var __rect:PIXI.Rectangle = null;
-			var __realBounds:PIXI.Rectangle = null;
-			
-			var __free:boolean;
-			
-			var __index:number;
-			
-			for (__index = 0; __index < this.m_count; __index++) {
-				var __tester:MaxRectPacker = this.m_testers[__index] as MaxRectPacker;
-				var __packer:MaxRectPacker = this.m_packers[__index] as MaxRectPacker;
-				
-				__tester.copyFrom (__packer.freeRectangles);
-			
-				__free = true;
-				
-				var i:number = 0;
-				
-				while (i < __animatedSprite.totalFrames && __free) {
-					__animatedSprite.gotoAndStop (i);
-					
-					__realBounds = this.__getRealBounds (__animatedSprite);
-					
-					__rect = __tester.quickInsert (
-						(__realBounds.width * __scaleX) + __padding * 2, (__realBounds.height * __scaleY) + __padding * 2
-					);
-					
-					if (__rect == null) {
-						__free = false;
-					}
-					
-					i++;
-				}
-				
-				if (__free) {
-					return __index;
-				}
-			}
-			
-			this.__end (); this.__begin ();
-			
-			return this.m_count - 1;
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public createTexture (__className:string, __class:any):void {	
-			if (!this.wrapFlag) {
-				this.__createTextureFit (__className, __class);	
-			} else {
-				this.__createTextureWrap (__className, __class);
-			}
-		}
-
-		//------------------------------------------------------------------------------------------
-		private __parseAnchorPoint (__spriteSheet:PIXI.Spritesheet):PIXI.Point {
+		private __parseAnchorPointFromSpritesheet (__spriteSheet:PIXI.Spritesheet):PIXI.Point {
 			var __frames:any = __spriteSheet.data.frames;
 
 			for (var __frame in __frames) {
@@ -408,11 +277,10 @@
 		}
 		
 		//------------------------------------------------------------------------------------------
-		private __createTextureFit (__className:string, __class:any):void {	
+		public __createTextureFit (__className:string, __class:any):void {	
 			var __spriteSheet:PIXI.Spritesheet = __class as PIXI.Spritesheet;
 			var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
-
-			var __anchorPoint:PIXI.Point = this.__parseAnchorPoint (__spriteSheet);
+			var __anchorPoint:PIXI.Point = this.__parseAnchorPointFromSpritesheet (__spriteSheet);
 
 			var __scaleX:number = 1.0;
 			var __scaleY:number = 1.0;
@@ -467,11 +335,10 @@
 		}	
 		
 		//------------------------------------------------------------------------------------------
-		private __createTextureWrap (__className:string, __class:any):void {	
+		public __createTextureWrap (__className:string, __class:any):void {	
 			var __spriteSheet:PIXI.Spritesheet = __class as PIXI.Spritesheet;
 			var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
-
-			var __anchorPoint:PIXI.Point = this.__parseAnchorPoint (__spriteSheet);
+			var __anchorPoint:PIXI.Point = this.__parseAnchorPointFromSpritesheet (__spriteSheet);
 			
 			var __scaleX:number = 1.0;
 			var __scaleY:number = 1.0;
@@ -538,23 +405,6 @@
 
 			__animatedSprite.destroy ();
 		}	
-		
-		//------------------------------------------------------------------------------------------
-		public __begin ():void {
-			var __tester:MaxRectPacker = new MaxRectPacker (this.TEXTURE_WIDTH, this.TEXTURE_HEIGHT);			
-			var __packer:MaxRectPacker = new MaxRectPacker (this.TEXTURE_WIDTH, this.TEXTURE_HEIGHT);
-
-			this.m_testers[this.m_count] = __tester;
-			this.m_packers[this.m_count] = __packer;
-			
-			this.m_count++;
-			
-			// trace (": XTileSubTextureManager: count: ", m_count);
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public __end ():void {	
-		}
 		
 	//------------------------------------------------------------------------------------------
 	}
