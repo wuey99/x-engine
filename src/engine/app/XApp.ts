@@ -49,7 +49,6 @@ import { Main } from '../../scripts/app';
 import { Resource } from '../resource/Resource';
 import { XTextureManager } from '../texture/XTextureManager';
 import { XSubTextureManager } from '../texture/XSubTextureManager';
-import { XAnimatedSpriteSubTextureManager } from '../texture/XAnimatedSpriteSubTextureManager';
 import { MovieClipMetadata } from '../texture/MovieClipMetaData';
 
 //------------------------------------------------------------------------------------------

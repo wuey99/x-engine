@@ -145,27 +145,6 @@ import { XTextureManager } from './XTextureManager';
 		}
 
 		//------------------------------------------------------------------------------------------
-		/*
-		public getTextureArray (__imageList:Array<string>):Array<PIXI.Texture> {
-			var __textureArray:Array<PIXI.Texture> = new Array<PIXI.Texture> ();
-
-			var i:number = 0;
-
-			for (i = 0; i < __imageList.length; i++) {
-				if (MovieClipMetadata.getXApp ().getClass (__imageList[i]) == null) {
-					return __textureArray;
-				}
-			}
-
-			for (i = 0; i < __imageList.length; i++) {
-				__textureArray.push (MovieClipMetadata.getXApp ().getClass (__imageList[i]));
-			}
-
-			return __textureArray;
-		}
-		*/
-		
-		//------------------------------------------------------------------------------------------
 		public parseAnchorPointFromSpritesheet (__spriteSheet:PIXI.Spritesheet):PIXI.Point {
 			var __frames:any = __spriteSheet.data.frames;
 
@@ -182,16 +161,20 @@ import { XTextureManager } from './XTextureManager';
 		public createAnimatedSprite ():PIXI.AnimatedSprite {
 			switch (this.m_type) {
 				case XTextureManager.SPRITESHEET:
-						var __spriteSheet:PIXI.Spritesheet = this.getSrcData () as PIXI.Spritesheet;
+					var __spriteSheet:PIXI.Spritesheet = this.getSrcData () as PIXI.Spritesheet;
 
-						this.m_animatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
+					this.m_animatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
 
-						this.m_anchorPoint = this.parseAnchorPointFromSpritesheet (__spriteSheet);
+					this.m_anchorPoint = this.parseAnchorPointFromSpritesheet (__spriteSheet);
 
-						break;
+					break;
 
 				case XTextureManager.TEXTURELIST:
-						break;
+					var __textureArray:Array<PIXI.Texture> = this.getSrcData () as Array<PIXI.Texture>;
+
+					this.m_animatedSprite = new PIXI.AnimatedSprite (__textureArray);
+
+					break;
 			}
 
 			return this.m_animatedSprite;
