@@ -44,7 +44,7 @@
 		public TEXTURE_WIDTH:number = 2048;
 		public TEXTURE_HEIGHT:number = 2048;
 			
-		public m_queue:Map<string, number>;
+		public m_queue:Map<string, Array<any>>;
 		
 		public m_count:number;
 		
@@ -71,7 +71,7 @@
 			
 		    this.m_count = 0;
 			
-			this.m_queue = new Map<string, number> ();
+			this.m_queue = new Map<string, Array<any>> ();
 			
 			this.wrapFlag = true;
 
@@ -83,10 +83,20 @@
 						XType.forEach (this.m_queue, 
 							(x:any) => {
 								var __className:string = x as string;
-								var __class:any = this.m_XApp.getResourceByName (__className);
-							
-								if (__class != null) {
-									this.createTexture (__className, __class);
+								var __queuedData:Array<any> = this.m_queue.get (x);
+
+								var __type:string = __queuedData[0];
+								var __srcData:PIXI.Spritesheet | Array<PIXI.Texture> = null;
+								var __anchorPoint:PIXI.Point = __queuedData[2];
+								var __animatedSprite:PIXI.AnimatedSprite = null;
+
+								if (__queuedData != null) {
+									this.createTexture (
+										__className,		
+										__type,
+										__srcData,
+										__anchorPoint
+									);
 								
 									this.m_queue.delete (__className);
 								
@@ -105,6 +115,40 @@
 		//------------------------------------------------------------------------------------------
 		public cleanup ():void {
 			this.reset ();
+		}
+
+		//------------------------------------------------------------------------------------------
+		/*
+		public parseAnchorPointFromSpritesheet (__spriteSheet:PIXI.Spritesheet):PIXI.Point {
+			var __frames:any = __spriteSheet.data.frames;
+
+			for (var __frame in __frames) {
+				var __anchor:any = __frames[__frame].anchor;
+
+				return new PIXI.Point (__anchor.x, __anchor.y);
+			}
+
+			return null;
+		}
+		*/
+
+		//------------------------------------------------------------------------------------------
+		public getTextureArray (__imageList:Array<string>):Array<PIXI.Texture> {
+			var __textureArray:Array<PIXI.Texture> = new Array<PIXI.Texture> ();
+
+			var i:number = 0;
+
+			for (i = 0; i < __imageList.length; i++) {
+				if (this.m_XApp.getClass (__imageList[i]) == null) {
+					return __textureArray;
+				}
+			}
+
+			for (i = 0; i < __imageList.length; i++) {
+				__textureArray.push (this.m_XApp.getClass (__imageList[i]));
+			}
+
+			return __textureArray;
 		}
 
 		//------------------------------------------------------------------------------------------
@@ -144,6 +188,10 @@
 		public addFromSpritesheet (__className:string):void {	
 		}	
 
+		//------------------------------------------------------------------------------------------
+		public addFromImages (__className:string, __imageList:Array<string>, __anchorPoint:PIXI.Point):void {
+		}
+
 		//------------------------------------------------------------------------------------------		
 		public isQueued (__className:string):boolean {
 			return this.m_movieClips.has (__className);
@@ -159,11 +207,17 @@
 		}
 
 		//------------------------------------------------------------------------------------------
-		public createTexture (__className:string, __class:any):void {	
+		public createTexture (
+			__className:string,
+			__type:string,
+			__srcData:PIXI.Spritesheet | Array<PIXI.Texture>,
+			__anchorPoint:PIXI.Point
+			):void {
+
 			if (!this.wrapFlag) {
-				this.__createTextureFit (__className, __class);	
+				this.__createTextureFit (__className, __type, __srcData, __anchorPoint);	
 			} else {
-				this.__createTextureWrap (__className, __class);
+				this.__createTextureWrap (__className, __type, __srcData, __anchorPoint);
 			}
 		}
 
@@ -231,11 +285,21 @@
 		}
 
 		//------------------------------------------------------------------------------------------
-		public __createTextureFit (__className:string, __class:any):void {	
+		public __createTextureFit (
+			__className:string,
+			__type:string,
+			__srcData:PIXI.Spritesheet | Array<PIXI.Texture>,
+			__anchorPoint:PIXI.Point
+			):void {	
 		}	
 		
 		//------------------------------------------------------------------------------------------
-		public __createTextureWrap (__className:string, __class:any):void {	
+		public __createTextureWrap (
+			__className:string,
+			__type:string,
+			__srcData:PIXI.Spritesheet | Array<PIXI.Texture>,
+			__anchorPoint:PIXI.Point
+			):void {	
 		}
 
 		//------------------------------------------------------------------------------------------
@@ -247,8 +311,6 @@
 			this.m_packers[this.m_count] = __packer;
 			
 			this.m_count++;
-			
-			// trace (": XTileSubTextureManager: count: ", m_count);
 		}
 		
 		//------------------------------------------------------------------------------------------
@@ -256,7 +318,7 @@
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public __getRealBounds(clip:PIXI.AnimatedSprite):PIXI.Rectangle {
+		public __getRealBounds (clip:PIXI.AnimatedSprite):PIXI.Rectangle {
             return clip.getBounds ();
 		}
 		

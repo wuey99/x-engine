@@ -33,19 +33,22 @@
     import { XTask } from '../task/XTask';
     import { XType } from '../type/XType';
     import { MaxRectPacker } from './MaxRectPacker';
+import { XTextureManager } from './XTextureManager';
 	
 	//------------------------------------------------------------------------------------------
 	// MovieClipMetadata
 	//------------------------------------------------------------------------------------------
 	export class MovieClipMetadata {
 		
+		public m_type:string;
 		public m_srcRenderTextureIndex:number;
 		public m_srcRenderTexture:PIXI.RenderTexture;
-		public m_spriteSheet:PIXI.Spritesheet;
+		public m_srcData:PIXI.Spritesheet | Array<PIXI.Texture>;
 		public m_totalFrames:number;
 		public m_realBounds:PIXI.Rectangle;
 		public m_anchorPoint:PIXI.Point;
-		
+		public m_animatedSprite:PIXI.AnimatedSprite;
+
 		public m_frameRenderTextures:Array<PIXI.RenderTexture>;
 		public m_srcRenderTextures:Array<PIXI.RenderTexture>;
 		public m_srcRenderTextureIndexes:Array<number>;
@@ -53,6 +56,8 @@
 
 		public m_frameIndex:number;
 		
+		public static g_XApp:XApp;
+
 		//------------------------------------------------------------------------------------------
 		public constructor () {
 		}
@@ -61,15 +66,15 @@
 		public setup (
 			__srcRenderTextureIndex:number,
 			__srcRenderTexture:PIXI.RenderTexture,
-			__spriteSheet:PIXI.Spritesheet,
-			__totalFrames:number,
+			__type:string,
+			__srcData:PIXI.Spritesheet | Array<PIXI.Texture>,
 			__realBounds:PIXI.Rectangle,
 			__anchorPoint:PIXI.Point
 		) {
 			this.m_srcRenderTextureIndex = __srcRenderTextureIndex;
 			this.m_srcRenderTexture = __srcRenderTexture;
-			this.m_spriteSheet = __spriteSheet;
-			this.m_totalFrames = __totalFrames;
+			this.m_type = __type;
+			this.m_srcData = __srcData;
 			this.m_realBounds = __realBounds;
 			this.m_anchorPoint = __anchorPoint;
 			
@@ -79,10 +84,24 @@
 			this.m_srcRects = new Array<PIXI.Rectangle> (); 
 			
 			this.m_frameIndex = 0;
+
+			this.createAnimatedSprite ();
+
+			this.m_totalFrames = this.m_animatedSprite.totalFrames;
 		}
 		
 		//------------------------------------------------------------------------------------------
 		public cleanup () {	
+		}
+
+		//------------------------------------------------------------------------------------------
+		public static setXApp (__XApp:XApp):void {
+			MovieClipMetadata.g_XApp = __XApp;
+		}
+
+		//------------------------------------------------------------------------------------------
+		public static getXApp ():XApp {
+			return MovieClipMetadata.g_XApp;
 		}
 
 		//------------------------------------------------------------------------------------------
@@ -116,9 +135,82 @@
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public getSpritesheet ():PIXI.Spritesheet{
-			return this.m_spriteSheet;
+		public getType ():string {
+			return this.m_type;
 		}
+
+		//------------------------------------------------------------------------------------------
+		public getSrcData ():PIXI.Spritesheet | Array<PIXI.Texture> {
+			return this.m_srcData;
+		}
+
+		//------------------------------------------------------------------------------------------
+		/*
+		public getTextureArray (__imageList:Array<string>):Array<PIXI.Texture> {
+			var __textureArray:Array<PIXI.Texture> = new Array<PIXI.Texture> ();
+
+			var i:number = 0;
+
+			for (i = 0; i < __imageList.length; i++) {
+				if (MovieClipMetadata.getXApp ().getClass (__imageList[i]) == null) {
+					return __textureArray;
+				}
+			}
+
+			for (i = 0; i < __imageList.length; i++) {
+				__textureArray.push (MovieClipMetadata.getXApp ().getClass (__imageList[i]));
+			}
+
+			return __textureArray;
+		}
+		*/
+		
+		//------------------------------------------------------------------------------------------
+		public parseAnchorPointFromSpritesheet (__spriteSheet:PIXI.Spritesheet):PIXI.Point {
+			var __frames:any = __spriteSheet.data.frames;
+
+			for (var __frame in __frames) {
+				var __anchor:any = __frames[__frame].anchor;
+
+				return new PIXI.Point (__anchor.x, __anchor.y);
+			}
+
+			return null;
+		}
+		
+		//------------------------------------------------------------------------------------------
+		public createAnimatedSprite ():PIXI.AnimatedSprite {
+			switch (this.m_type) {
+				case XTextureManager.SPRITESHEET:
+						var __spriteSheet:PIXI.Spritesheet = this.getSrcData () as PIXI.Spritesheet;
+
+						this.m_animatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
+
+						this.m_anchorPoint = this.parseAnchorPointFromSpritesheet (__spriteSheet);
+
+						break;
+
+				case XTextureManager.TEXTURELIST:
+						break;
+			}
+
+			return this.m_animatedSprite;
+		}
+
+		//------------------------------------------------------------------------------------------
+		public getAnimatedSprite ():PIXI.AnimatedSprite {
+			return this.m_animatedSprite;
+		}
+
+		//------------------------------------------------------------------------------------------
+		public destroyAnimatedSprite ():void {
+			if (this.m_animatedSprite != null) {
+				this.m_animatedSprite.destroy ();
+
+				this.m_animatedSprite = null;
+			}
+		}
+
 		//------------------------------------------------------------------------------------------
 		public getTotalFrames ():number {
 			return this.m_totalFrames;

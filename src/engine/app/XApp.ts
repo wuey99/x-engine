@@ -50,6 +50,7 @@ import { Resource } from '../resource/Resource';
 import { XTextureManager } from '../texture/XTextureManager';
 import { XSubTextureManager } from '../texture/XSubTextureManager';
 import { XAnimatedSpriteSubTextureManager } from '../texture/XAnimatedSpriteSubTextureManager';
+import { MovieClipMetadata } from '../texture/MovieClipMetaData';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -177,6 +178,7 @@ export class XApp {
 		// TODO XTileSubTextureManager.setXApp (this);
         // TODO XSubTextureManager.setXApp (this);
         XGameInstance.setXApp (this);
+        MovieClipMetadata.setXApp (this);
         G.XApp = this;
         
         this.__initPoolManagers (this.getDefaultPoolSettings ());

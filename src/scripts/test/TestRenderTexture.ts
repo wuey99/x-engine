@@ -98,8 +98,8 @@ export class TestRenderTexture extends XState {
 
         var __sprite3:PIXI.AnimatedSprite = __subManager.createAnimatedSprite ("OctopusBug");
         this.addSortableChild (__sprite3, 0, 0.0, true);
-        __sprite3.x = 0;
-        __sprite3.y = 0;
+        __sprite3.x = 128;
+        __sprite3.y = 128;
 
         console.log (": OctopusBug: ", __sprite3);
 

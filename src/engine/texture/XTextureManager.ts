@@ -44,6 +44,9 @@
 		
 		private m_subManagers:Map<String, XSubTextureManager>;
 			
+		public static SPRITESHEET:string = "spritesheet";
+		public static TEXTURELIST:string = "texturelist";
+
 		//------------------------------------------------------------------------------------------
 		public constructor (__XApp:XApp) {
 			this.m_XApp = __XApp;

@@ -35,6 +35,7 @@
     import { MaxRectPacker } from './MaxRectPacker';
 	import { XSubTextureManager } from './XSubTextureManager';
 	import { MovieClipMetadata } from './MovieClipMetaData';
+	import { XTextureManager } from './XTextureManager';
 
 	//------------------------------------------------------------------------------------------
 	// this class takes one or more PIXI.AnimatedSprite's and dynamically creates combined RenderTextures
@@ -47,7 +48,7 @@
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public __destroyAnimatedSprites (__animatedSprites:Array<PIXI.AnimatedSprite>):void {
+		public destroyAnimatedSprites (__animatedSprites:Array<PIXI.AnimatedSprite>):void {
 			var __animatedSprite:PIXI.AnimatedSprite;
 
 			for (__animatedSprite of __animatedSprites) {
@@ -87,12 +88,11 @@
 						var __movieClipMetadata:MovieClipMetadata = this.m_movieClips.get (__className);
 						
 						__index = __movieClipMetadata.getMasterRenderTextureIndex ();
-						__spriteSheet = __movieClipMetadata.getSpritesheet ();
 						__realBounds = __movieClipMetadata.getRealBounds ();
 						
 						if (__index == this.m_currentContainerIndex) {
 							for (var i = 0; i < __movieClipMetadata.getTotalFrames (); i++) {
-								__animatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
+								__animatedSprite = __movieClipMetadata.createAnimatedSprite ();
 								__animatedSprites.push (__animatedSprite);
 								__animatedSprite.gotoAndStop (i);
 								__rect = __movieClipMetadata.getRect (i);
@@ -109,7 +109,7 @@
 				this.m_XApp.getRenderer ().render (this.m_currentContainer, __tileset);
 				this.m_renderTextures.push (__tileset);
 
-				this.__destroyAnimatedSprites (__animatedSprites);
+				this.destroyAnimatedSprites (__animatedSprites);
 
 				//------------------------------------------------------------------------------------------
 				XType.forEach (this.m_movieClips, 
@@ -179,14 +179,13 @@
 						var __movieClipMetadata:MovieClipMetadata = this.m_movieClips.get (__className);
 						
 						__index = __movieClipMetadata.getMasterRenderTextureIndex ();
-						__spriteSheet = __movieClipMetadata.getSpritesheet ();
 						__realBounds = __movieClipMetadata.getRealBounds ();
 						
 						for (var i = 0; i < __movieClipMetadata.getTotalFrames (); i++) {
 							__index = __movieClipMetadata.getRenderTextureIndex (i);
 
 							if (__index == this.m_currentContainerIndex) {
-								__animatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
+								__animatedSprite = __movieClipMetadata.createAnimatedSprite ();
 								__animatedSprites.push (__animatedSprite);
 								__animatedSprite.gotoAndStop (i);
 								__rect = __movieClipMetadata.getRect (i);
@@ -203,7 +202,7 @@
 				this.m_XApp.getRenderer ().render (this.m_currentContainer, __tileset);
 				this.m_renderTextures.push (__tileset);
 
-				this.__destroyAnimatedSprites (__animatedSprites);
+				this.destroyAnimatedSprites (__animatedSprites);
 
 				//------------------------------------------------------------------------------------------
 				XType.forEach (this.m_movieClips, 
@@ -248,39 +247,45 @@
 		
 		//------------------------------------------------------------------------------------------
 		public addFromSpritesheet (__className:string):void {
-			var __class:any = this.m_XApp.getClass (__className);
+			var __spriteSheet:PIXI.Spritesheet = this.m_XApp.getClass (__className);
 			
 			this.m_movieClips.set (__className, null);
 			
-			if (__class != null) {
-				this.createTexture (__className, __class);
+			var __type:string = XTextureManager.SPRITESHEET;
+
+			if (__spriteSheet != null) {
+				this.createTexture (__className, __type, __spriteSheet, null);
 				
 				// this.m_XApp.unloadClass (__className);
 			} else {
-				this.m_queue.set (__className, 0);
+				this.m_queue.set (__className, [__type, __spriteSheet, null]);
 			}
 		}
 
 		//------------------------------------------------------------------------------------------
-		private __parseAnchorPointFromSpritesheet (__spriteSheet:PIXI.Spritesheet):PIXI.Point {
-			var __frames:any = __spriteSheet.data.frames;
+		public addFromImages (__className:string, __imageList:Array<string>, __anchorPoint:PIXI.Point):void {
+			var __textureArray:Array<PIXI.Texture> = this.getTextureArray (__imageList);
 
-			for (var __frame in __frames) {
-				console.log (": frame: ", __frames[__frame].anchor);
+			this.m_movieClips.set (__className, null);
 
-				var __anchor:any = __frames[__frame].anchor;
+			var __type:string = XTextureManager.TEXTURELIST;
 
-				return new PIXI.Point (__anchor.x, __anchor.y);
+			if (__textureArray.length > 0) {
+				this.createTexture (__className, __type, __textureArray, __anchorPoint);
+				
+				// this.m_XApp.unloadClass (__className);
+			} else {
+				this.m_queue.set (__className, [__type, __imageList, __anchorPoint]);
 			}
-
-			return null;
 		}
-		
+
 		//------------------------------------------------------------------------------------------
-		public __createTextureFit (__className:string, __class:any):void {	
-			var __spriteSheet:PIXI.Spritesheet = __class as PIXI.Spritesheet;
-			var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
-			var __anchorPoint:PIXI.Point = this.__parseAnchorPointFromSpritesheet (__spriteSheet);
+		public __createTextureFit (
+			__className:string,
+			__type:string,
+			__srcData:PIXI.Spritesheet | Array<PIXI.Texture>,
+			__anchorPoint:PIXI.Point
+			):void {
 
 			var __scaleX:number = 1.0;
 			var __scaleY:number = 1.0;
@@ -292,7 +297,7 @@
 			
 			// trace (": XTileSubTextureManager: totalFrames: ", __className, __movieClip.totalFrames);
 			
-			var __index:number = this.findFreeTexture (__animatedSprite);
+			var __index:number = this.findFreeTexture ( __movieClipMetadata.getAnimatedSprite ());
 			
 			this.m_currentPacker = this.m_packers[__index] as MaxRectPacker;
 			
@@ -300,18 +305,18 @@
 			__movieClipMetadata.setup (
 				__index,					// TilesetIndex
 				null,						// Tileset
-				__spriteSheet,				// Spritesheet
-				__animatedSprite.totalFrames,	// totalFrames
+				__type,						// type
+				__srcData,					// PIXI.Spritesheet | Array<PIXI.Texture>
 				__realBounds,				// realBounds
 				__anchorPoint				// anchorPoint
 				);
 			
-			for (var i = 0; i < __animatedSprite.totalFrames; i++) {
-				__animatedSprite.gotoAndStop (i);
+			for (var i = 0; i <  __movieClipMetadata.getAnimatedSprite ().totalFrames; i++) {
+				__movieClipMetadata.getAnimatedSprite ().gotoAndStop (i);
 				
 				// trace (": getBounds: ", __className, __getRealBounds (__movieClip));
 				
-				__realBounds = this.__getRealBounds (__animatedSprite);
+				__realBounds = this.__getRealBounds (__movieClipMetadata.getAnimatedSprite ());
 				
 				__rect = this.m_currentPacker.quickInsert (
 					(__realBounds.width * __scaleX) + __padding * 2, (__realBounds.height * __scaleY) + __padding * 2
@@ -331,15 +336,17 @@
 			
 			this.m_movieClips.set (__className, __movieClipMetadata);
 
-			__animatedSprite.destroy ();
+			__movieClipMetadata.destroyAnimatedSprite ();
 		}	
 		
 		//------------------------------------------------------------------------------------------
-		public __createTextureWrap (__className:string, __class:any):void {	
-			var __spriteSheet:PIXI.Spritesheet = __class as PIXI.Spritesheet;
-			var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (__spriteSheet.animations["root"]);
-			var __anchorPoint:PIXI.Point = this.__parseAnchorPointFromSpritesheet (__spriteSheet);
-			
+		public __createTextureWrap (
+			__className:string,
+			__type:string,
+			__srcData:PIXI.Spritesheet | Array<PIXI.Texture>,
+			__anchorPoint:PIXI.Point
+			):void {
+
 			var __scaleX:number = 1.0;
 			var __scaleY:number = 1.0;
 			var __padding:number = 2.0;
@@ -358,18 +365,18 @@
 			__movieClipMetadata.setup (
 				__index,					// TilesetIndex
 				null,						// Tileset
-				__spriteSheet,				// Spritesheet
-				__animatedSprite.totalFrames,	// totalFrames
+				__type,						// type
+				__srcData,					// PIXI.Spritesheet | Array<PIXI.Texture>
 				__realBounds,				// realBounds
 				__anchorPoint				// anchorPoint
 			);
 			
-			for (var i = 0; i < __animatedSprite.totalFrames; i++) {
-				__animatedSprite.gotoAndStop (i);
+			for (var i = 0; i < __movieClipMetadata.getAnimatedSprite ().totalFrames; i++) {
+				__movieClipMetadata.getAnimatedSprite ().gotoAndStop (i);
 				
 				// trace (": getBounds: ", __className, __getRealBounds (__movieClip));
 				
-				__realBounds = this.__getRealBounds (__animatedSprite);
+				__realBounds = this.__getRealBounds (__movieClipMetadata.getAnimatedSprite ());
 				
 				__rect = this.m_currentPacker.quickInsert (
 					(__realBounds.width * __scaleX) + __padding * 2, (__realBounds.height * __scaleY) + __padding * 2
@@ -403,7 +410,7 @@
 			
 			this.m_movieClips.set (__className, __movieClipMetadata);
 
-			__animatedSprite.destroy ();
+			__movieClipMetadata.destroyAnimatedSprite ();
 		}	
 		
 	//------------------------------------------------------------------------------------------
