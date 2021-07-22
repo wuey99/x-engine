@@ -240,7 +240,7 @@
 						__realBounds = __movieClipMetadata.getRealBounds ();
 						
 						if (__index == this.m_currentContainerIndex) {
-							__movieClipMetadata.setMasterRenderTexture(__tileset);
+							__movieClipMetadata.setMasterRenderTexture (__tileset);
 							
 							for (var i = 0; i < __movieClipMetadata.getTotalFrames (); i++) {
 								__rect = __movieClipMetadata.getRect (i);

@@ -41,59 +41,11 @@ export class TestRenderTexture extends XState {
 
         console.log (": guid: ", GUID.create ());
         
-        var __renderTexture:PIXI.RenderTexture = PIXI.RenderTexture.create ({width: 4096, height: 4096});
-        console.log (": renderTexture: ", __renderTexture);
-        console.log (": baseRenderTexture: ", __renderTexture.baseTexture);
-
-        var sheet:PIXI.Spritesheet = this.m_XApp.getResourceByName ("OctopusBug");
-
-        var __renderContainer:PIXI.Sprite = new PIXI.Sprite ();
-
-        var __animatedSprite1:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (sheet.animations["root"]);
-        __animatedSprite1.gotoAndStop (0);
-        __animatedSprite1.x = 0;
-        __animatedSprite1.y = 0;
-
-        var __animatedSprite2:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (sheet.animations["root"]);
-        __animatedSprite2.gotoAndStop (8);
-        __animatedSprite2.x = 256;
-        __animatedSprite2.y = 0;
-
-        __renderContainer.addChild (__animatedSprite1);
-        __renderContainer.addChild (__animatedSprite2);
-
-        this.m_XApp.getRenderer ().render (__renderContainer, __renderTexture);
-
-        //------------------------------------------------------------------------------------------
-        var __renderTextureToo1:PIXI.RenderTexture = new PIXI.RenderTexture (
-            __renderTexture.baseTexture as PIXI.BaseRenderTexture,
-            new PIXI.Rectangle (0, 0, 128, 128)
-        );
-
-        /*
-        var __sprite1:PIXI.AnimatedSprite = new PIXI.AnimatedSprite ([__renderTextureToo1]);
-        this.addSortableChild (__sprite1, 0, 0.0, true);
-        __sprite1.x = G.SCREEN_WIDTH/2;
-        __sprite1.y = G.SCREEN_HEIGHT/2;
-        */
-
-        var __renderTextureToo2:PIXI.RenderTexture = new PIXI.RenderTexture (
-            __renderTexture.baseTexture as PIXI.BaseRenderTexture,
-            new PIXI.Rectangle (256, 0, 128, 128)
-        );
-
-        var __sprite2:PIXI.AnimatedSprite = new PIXI.AnimatedSprite ([__renderTextureToo1, __renderTextureToo2]);
-        this.addSortableChild (__sprite2, 0, 0.0, true);
-        __sprite2.x = G.SCREEN_WIDTH/2 + 256;
-        __sprite2.y = G.SCREEN_HEIGHT/2;
-        __sprite2.gotoAndStop(0);
-
-        console.log (": renderTextureToo: ", __renderTextureToo1);
-
         //------------------------------------------------------------------------------------------
         var __subManager:XSubTextureManager = this.m_XApp.getTextureManager ().createSubManager ("__global__");
         __subManager.start ();
         __subManager.addFromSpritesheet ("OctopusBug");
+        __subManager.addFromImageList ("bg", ["bg"], new PIXI.Point (0, 0));
         __subManager.finish ();
 
         var __sprite3:PIXI.AnimatedSprite = __subManager.createAnimatedSprite ("OctopusBug");
@@ -102,6 +54,17 @@ export class TestRenderTexture extends XState {
         __sprite3.y = 128;
 
         console.log (": OctopusBug: ", __sprite3);
+
+        var __octopusBug2:PIXI.AnimatedSprite = this.createAnimatedSprite ("OctopusBug");
+        this.addSortableChild (__octopusBug2, 0, 0.0, false);
+        __octopusBug2.x = 256;
+        __octopusBug2.y = 256;
+
+        // var __bg:PIXI.Sprite = this.createSprite ("bg");
+        var __bg:PIXI.AnimatedSprite = __subManager.createAnimatedSprite ("bg");
+        this.addSortableChild (__bg, 0, 0.0, false);
+        __bg.x = 256;
+        __bg.y = 256;
 
         this.addTask ([
             XTask.LABEL, "loop",
@@ -116,8 +79,6 @@ export class TestRenderTexture extends XState {
                 
             XTask.GOTO, "loop",
         ]);
-
-        console.log (": OctopusBug: ", sheet);
         
         //------------------------------------------------------------------------------------------
 		return this;

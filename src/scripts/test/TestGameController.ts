@@ -45,7 +45,7 @@ export class TestGameController extends XGameController {
 				XTask.WAIT, 0x0100,
 
 				() => {
-					this.m_XApp.getXProjectManager ().startResourceManagersByName (["default", "Common"]);
+					this.m_XApp.getXProjectManager ().startResourceManagersByName (["default", "Common", "Preload", "Test"]);
 				},
 
 				XTask.LABEL, "loopAssets",
@@ -53,7 +53,7 @@ export class TestGameController extends XGameController {
 
 					XTask.FLAGS, (__task:XTask) => {
 						__task.ifTrue (
-							this.m_XApp.getXProjectManager ().getLoadCompleteByGroups (["Common"])
+							this.m_XApp.getXProjectManager ().getLoadCompleteByGroups (["Common", "Preload", "Test"])
 						);
 					}, XTask.BNE, "loopAssets",
 
