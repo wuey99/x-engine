@@ -33,7 +33,7 @@
     import { XTask } from '../task/XTask';
     import { XType } from '../type/XType';
     import { MaxRectPacker } from './MaxRectPacker';
-import { XTextureManager } from './XTextureManager';
+	import { XTextureManager } from './XTextureManager';
 	
 	//------------------------------------------------------------------------------------------
 	// MovieClipMetadata
