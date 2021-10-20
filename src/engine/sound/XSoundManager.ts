@@ -136,7 +136,7 @@ export class XSoundManager {
         __sound.on ("end", __end = () => {
             var __soundHandle:SoundHandle = this.m_sounds.get (__guid);
 
-            if (__soundHandle.loops > 0) {
+            if (__soundHandle != null && __soundHandle.loops > 0) {
                 __sound.play (__soundHandle.id);
                 __sound.loop (__soundHandle.loops > 0, __soundHandle.id);
                 __sound.volume (__soundHandle.volume, __soundHandle.id)

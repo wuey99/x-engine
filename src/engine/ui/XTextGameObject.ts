@@ -115,11 +115,13 @@ export class XTextGameObject extends XGameObject {
 	}
 
 //------------------------------------------------------------------------------------------
+	// @ts-ignore
 	public get width ():number {
 		return this.m_textSprite.bitmapText.width;
 	}
 
 //------------------------------------------------------------------------------------------
+	// @ts-ignore
 	public get height ():number {
 		return this.m_textSprite.bitmapText.height;
 	}

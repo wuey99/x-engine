@@ -65,6 +65,7 @@ export class XGameController extends XGameObject {
 
 		G.appX = this.m_gameInstance = XType.createInstance (this.getGameInstanceClass ());
 		this.m_gameInstance.setup (this.world);
+		this.m_gameInstance.setController (this);
 		
 		return this;
 	}

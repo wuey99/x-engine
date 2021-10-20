@@ -121,11 +121,13 @@ export class XTextBox extends XTextGameObject {
 	}
 
 //------------------------------------------------------------------------------------------
+	// @ts-ignore
 	public get width ():number {
 		return this.m_9width;
 	}
 
 //------------------------------------------------------------------------------------------
+	// @ts-ignore
 	public get height ():number {
 		return this.m_9height;
 	}

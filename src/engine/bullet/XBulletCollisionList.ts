@@ -45,6 +45,13 @@ import { XGameObject} from '../gameobject/XGameObject';
 import { XSubObjectPoolManager } from '../pool/XSubObjectPoolManager';
 
 //------------------------------------------------------------------------------------------
+	export interface CollisionData {
+		logicObject:XGameObject;
+		srcRect:XRect;
+		dstRect:XRect;
+	}
+
+//------------------------------------------------------------------------------------------
 	export class XBulletCollisionList {
 		private world:XWorld;
 		private m_rects:Array<Map<XGameObject, XRect>>; 
@@ -127,6 +134,42 @@ import { XSubObjectPoolManager } from '../pool/XSubObjectPoolManager';
 			return __logicObject;
 		}
 		
+//------------------------------------------------------------------------------------------
+		public findCollisionX (
+			__layer:number,
+			__srcPoint:XPoint,
+			__srcRect:XRect,
+			__handler:any = null
+		):CollisionData {
+			
+			var __collisionData:CollisionData = {} as CollisionData;
+
+			var __rect:XRect = new XRect ();
+			__srcRect.copy2 (__rect); __rect.offsetPoint (__srcPoint);
+			
+			XType.forEach (this.m_rects[__layer], 
+				(x:XGameObject) => {
+					var __dstRect:XRect =  this.m_rects[__layer].get (x);
+					
+					if (__handler == null) {
+						if (__dstRect.intersects (__rect)) {
+							__collisionData.logicObject = x;
+							__collisionData.srcRect = __rect;
+							__collisionData.dstRect = __dstRect;
+						}
+					} else {
+						__handler (__collisionData, x, __rect, __dstRect);
+					}
+				}
+			);
+
+			if (__collisionData.logicObject != null) {
+				return __collisionData;
+			} else {
+				return null;
+			}
+		}
+
 //------------------------------------------------------------------------------------------
 		public findCollisions (
 			__layer:number,

@@ -95,11 +95,13 @@ import { XType } from '../type/XType';
 		}
 		
 //------------------------------------------------------------------------------------------
+		// @ts-ignore
 		public get width ():number {
 			return this.m_bitmapText.width;
 		}
 
 //------------------------------------------------------------------------------------------
+		// @ts-ignore
 		public get height ():number {
 			return this.m_bitmapText.height;
 		}

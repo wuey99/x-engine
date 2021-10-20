@@ -42,8 +42,8 @@
 	export class XSubTextureManager {
 		public m_XApp:XApp;
 		
-		public TEXTURE_WIDTH:number = 2048;
-		public TEXTURE_HEIGHT:number = 2048;
+		public TEXTURE_WIDTH:number = 4096;
+		public TEXTURE_HEIGHT:number = 4096;
 			
 		public m_queue:Map<string, Array<any>>;
 		
@@ -64,7 +64,7 @@
 		public wrapFlag:boolean;
 		
 		//------------------------------------------------------------------------------------------
-		public constructor (__XApp:XApp, __width:number=2048, __height:number=2048) {
+		public constructor (__XApp:XApp, __width:number=4096, __height:number=4096) {
 			this.m_XApp = __XApp;
 			
 			this.TEXTURE_WIDTH = __width;

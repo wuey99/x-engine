@@ -62,7 +62,7 @@
 		}
 
 		//------------------------------------------------------------------------------------------
-		public createSubManager (__name:String, __width:number=2048, __height:number=2048):XSubTextureManager {
+		public createSubManager (__name:String, __width:number=4096, __height:number=4096):XSubTextureManager {
 			var __subManager:XSubTextureManager = new XSubTextureManager (this.m_XApp, __width, __height);
 			this.m_subManagers.set (__name, __subManager);
 			

@@ -60,7 +60,7 @@ export class TestGameController extends XGameController {
 				() => { 
 					this.m_XApp.getXProjectManager ().startAllResourceManagers ();
 
-					this.getGameInstance ().gotoState ("TestRenderTexture");
+					this.getGameInstance ().gotoState ("TestGame");
 				},
 
 			XTask.RETN,

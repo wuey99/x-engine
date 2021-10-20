@@ -98,11 +98,13 @@ export class Box extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
+	// @ts-ignore
     public get width ():number {
         return this.m_width;
     }
 
 //------------------------------------------------------------------------------------------
+	// @ts-ignore
     public get height ():number {
         return this.m_height;
     }

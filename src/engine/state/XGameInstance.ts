@@ -41,6 +41,7 @@ import { XWorld} from '../sprite/XWorld';
 import { XType } from '../type/XType';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XState } from './XState';
+import { XGameController } from './XGameController';
 import { XSoundManager } from '../sound/XSoundManager';
 import { XSoundSubManager } from '../sound/XSoundSubManager';
 import { G } from '../app/G';
@@ -49,6 +50,7 @@ import { G } from '../app/G';
 export class XGameInstance {
     public m_states:Map<string, any>;
     public m_gameStateObject:XState;
+	public m_controller:XGameController;
 
     public world:XWorld;
 
@@ -107,6 +109,16 @@ export class XGameInstance {
 	public getGameStateObject ():XState {
 		return this.m_gameStateObject;
 	} 
+
+	//------------------------------------------------------------------------------------------
+	public setController (__controller:XGameController):void {
+		this.m_controller = __controller;
+	}
+
+	//------------------------------------------------------------------------------------------
+	public getController ():XGameController {
+		return this.m_controller;
+	}
 
 	//------------------------------------------------------------------------------------------
 	public gotoState (__name:string, __params:Array<any> = null, __layer:number = 0, __depth:number = 0.0):XGameObject {

@@ -49,6 +49,8 @@ import { XState } from '../state/XState';
 import { PausableListener} from '../events/PausableListener';
 import { XTextSprite } from '../sprite/XTextSprite';
 import { TextInput } from 'pixi-textinput-v5';
+import { XTextureManager } from '../../engine/texture/XTextureManager';
+import { XSubTextureManager } from '../../engine/texture/XSubTextureManager';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Sprite {
@@ -58,7 +60,7 @@ export class XGameObject extends PIXI.Sprite {
 	public m_selfSprites:Map<PIXI.DisplayObject, number>;
 	public m_childSprites:Map<PIXI.DisplayObject, number>;
 	public m_worldSprites:Map<PIXI.DisplayObject, number>;	
-	public m_animatedSprites:Map<string, PIXI.AnimatedSprite>;
+	public m_animatedSprites:Map<PIXI.AnimatedSprite, string>;
 	public m_textSprites:Map<string, XTextSprite>;
 	public m_sprites:Map<string, PIXI.Sprite>;
 	public m_signals:Map<XSignal, number>;
@@ -125,7 +127,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_selfSprites = new Map<PIXI.DisplayObject, number> ();
 		this.m_childSprites = new Map<PIXI.DisplayObject, number> ();
 		this.m_worldSprites = new Map<PIXI.DisplayObject, number> ();
-		this.m_animatedSprites = new Map<string, PIXI.AnimatedSprite> ();
+		this.m_animatedSprites = new Map<PIXI.AnimatedSprite, string> ();
 		this.m_textSprites  = new Map<string, XTextSprite> ();
 		this.m_sprites = new Map<string, PIXI.Sprite> ();	
 		this.m_signals = new Map<XSignal, number> ();
@@ -234,6 +236,8 @@ export class XGameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public cleanup():void {
+		this.fireKillSignal();
+		
 		this.removeAllTasks0 ();
 		this.removeAllTasks ();
 		this.removeAllSelfObjects ();
@@ -258,8 +262,6 @@ export class XGameObject extends PIXI.Sprite {
 		}
 			
 		this.detachMatterBody ();
-
-		this.fireKillSignal();
 		
 		if (this.m_poolClass != null) {
 			this.world.getXLogicObjectPoolManager ().returnObject (this.m_poolClass, this);
@@ -736,22 +738,48 @@ export class XGameObject extends PIXI.Sprite {
 
 		var __animatedSprite:PIXI.AnimatedSprite = new PIXI.AnimatedSprite (sheet.animations["root"]);
 		__animatedSprite.visible = false;
-		this.m_animatedSprites.set (__name, __animatedSprite);
+		this.m_animatedSprites.set (__animatedSprite, __name);
 			
 		return __animatedSprite;
 	}
 
 //------------------------------------------------------------------------------------------
+	public createAnimatedSpriteFromTextureManager (__name:string):PIXI.AnimatedSprite {	
+		return this.createAnimatedSpriteX (__name);
+	}
+
+//------------------------------------------------------------------------------------------
+	public createAnimatedSpriteX (__name:string):PIXI.AnimatedSprite {	
+		var __animatedSprite:PIXI.AnimatedSprite = this.getDefaultSubTextureManager ().createAnimatedSprite (__name);
+		__animatedSprite.visible = false;
+		this.m_animatedSprites.set (__animatedSprite, __name);
+			
+		return __animatedSprite;
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeAnimatedSprite (__animatedSprite:PIXI.AnimatedSprite):void {
+		if (this.m_animatedSprites.has (__animatedSprite)) {
+			this.m_animatedSprites.delete (__animatedSprite);
+
+			__animatedSprite.destroy ();
+		}
+	}
+
+//------------------------------------------------------------------------------------------
 	public removeAllAnimatedSprites ():void {
-		var __name:string;
+		var __animatedSprite:PIXI.AnimatedSprite
 
-		for (__name of this.m_animatedSprites.keys ()) {
-			var __animatedSprite:PIXI.AnimatedSprite = this.m_animatedSprites.get (__name);
-
+		for (__animatedSprite of this.m_animatedSprites.keys ()) {
 			__animatedSprite.destroy ();
 		}
 
 		this.m_animatedSprites.clear ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public getDefaultSubTextureManager ():XSubTextureManager {
+		return this.m_XApp.getDefaultSubTextureManager ()
 	}
 
 //------------------------------------------------------------------------------------------

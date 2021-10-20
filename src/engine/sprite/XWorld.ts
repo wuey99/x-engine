@@ -82,7 +82,7 @@ export class XWorld extends XSprite {
 
         // TODO (i needed a add background to allow events to be captured.  figure out if there's a better solution)
         var graphics = new PIXI.Graphics ();
-        graphics.beginFill (0x000000, 1.0);
+        graphics.beginFill (0x000000, 0.0);
         graphics.drawRect (0, 0, G.SCREEN_WIDTH/4, G.SCREEN_HEIGHT/4);
         graphics.endFill ();
         graphics.alpha = 1.0;

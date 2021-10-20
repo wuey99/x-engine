@@ -102,11 +102,13 @@ export class XTextButton extends XButton {
     }
 
 //------------------------------------------------------------------------------------------
+	// @ts-ignore
     public get width ():number {
         return this.m_sprite.width;
     }
 
 //------------------------------------------------------------------------------------------
+	// @ts-ignore
     public get height ():number {
         return this.m_sprite.height;
     }

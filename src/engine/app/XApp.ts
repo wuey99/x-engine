@@ -123,7 +123,8 @@ export class XApp {
 
     private m_firstClick:boolean;
 
-    public static DISABLE_PAUSE:boolean = true;
+    public static DISABLE_PAUSE:boolean = false;
+    public static FULL_SCREEN:boolean = false;
 
     //------------------------------------------------------------------------------------------
     constructor (__main:Main, params: XAppParams, __container:HTMLElement = null) {
@@ -503,7 +504,9 @@ export class XApp {
 
 			this.getXTaskManager ().updateTasks ();
 			
-			this.m_currentTimer += __deltaTime;
+			// this.m_currentTimer += __deltaTime;
+
+            this.m_currentTimer += 1000.0 / this.fpsMax;
 		}
 		
 		this.m_previousTimer = XType.getNowDate ().getTime ();
@@ -572,25 +575,27 @@ export class XApp {
 
     //------------------------------------------------------------------------------------------
     public getWindowWidth ():number {
-        return window.innerWidth;
+        if (XApp.FULL_SCREEN) {
+            return window.innerWidth;
+        }
 
         var __gameElement:HTMLElement = document.getElementById ("game");
         var __rect:DOMRect = __gameElement.getBoundingClientRect ();
 
         // console.log (": domRect: ", __rect, window.innerWidth, window.innerHeight);
 
-        // return window.innerWidth;
         return Math.min (__rect.width, window.innerWidth - __rect.x);
     }
 
     //------------------------------------------------------------------------------------------
     public getWindowHeight ():number {
-        return window.innerHeight;
-        
+        if (XApp.FULL_SCREEN) {
+            return window.innerHeight;
+        }
+
         var __gameElement:HTMLElement = document.getElementById ("game");
         var __rect:DOMRect = __gameElement.getBoundingClientRect ();
 
-        // return window.innerHeight;
         return Math.min (__rect.height, window.innerHeight - __rect.y) - 0;
     }
 
@@ -743,6 +748,11 @@ export class XApp {
     //------------------------------------------------------------------------------------------
     public getTextureManager ():XTextureManager {
         return this.m_XTextureManager;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getDefaultSubTextureManager ():XSubTextureManager {
+        return this.m_XTextureManager.getSubManager ("__global__");
     }
 
     //------------------------------------------------------------------------------------------

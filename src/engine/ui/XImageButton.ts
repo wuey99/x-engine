@@ -111,11 +111,13 @@ export class XImageButton extends XButton {
 	}
 
 //------------------------------------------------------------------------------------------
+	// @ts-ignore
     public get width ():number {
         return this.m_9slice ? this.m_9width : this.m_sprite.width;
     }
 
 //------------------------------------------------------------------------------------------
+	// @ts-ignore
     public get height ():number {
         return this.m_9slice ? this.m_9height : this.m_sprite.height;
     }
