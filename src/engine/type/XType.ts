@@ -61,6 +61,24 @@ export class XType {
     }
 
 	//------------------------------------------------------------------------------------------
+	public static min (__value1:number, __value2:number):number {
+		if (__value1 < __value2) {
+			return __value1;
+		} else {
+			return __value2;
+		}
+	}
+		
+	//------------------------------------------------------------------------------------------
+	public static max (__value1:number, __value2:number):number {
+		if (__value1 > __value2) {
+			return __value1;
+		} else {
+			return __value2;
+		}
+	}
+		
+	//------------------------------------------------------------------------------------------
 	public static removeAllKeys (__map:Map<any, any>):void {
         __map.clear ();
     }
@@ -99,6 +117,11 @@ export class XType {
 		__array.length = 0;
     }
      
+	//------------------------------------------------------------------------------------------
+	public static copyArray (__array:Array<any>):Array<any> {
+		return Object.assign ({}, __array);
+	}
+	
     //------------------------------------------------------------------------------------------
 	public static ofEach (__array:Array<any>, __callback:any):void {
         var __key:any;

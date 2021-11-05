@@ -83,6 +83,12 @@ import { XPoint } from './XPoint';
         }
 
 //------------------------------------------------------------------------------------------
+		public offset (__x:number, __y:number):void {
+			this.x += __x;
+			this.y += __y;
+		}
+
+//------------------------------------------------------------------------------------------
         public offsetPoint (__point:XPoint):void {
             this.x += __point.x;
             this.y += __point.y;

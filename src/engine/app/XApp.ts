@@ -50,6 +50,7 @@ import { Resource } from '../resource/Resource';
 import { XTextureManager } from '../texture/XTextureManager';
 import { XSubTextureManager } from '../texture/XSubTextureManager';
 import { MovieClipMetadata } from '../texture/MovieClipMetaData';
+import { XMapItemModel } from '../xmap/XMapItemModel';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -86,6 +87,7 @@ export class XApp {
     private m_XBitmapPoolManager:XObjectPoolManager;
     private m_XProjectManager:XProjectManager;
     private m_XSoundManager:XSoundManager;
+    private m_XMapItemModelPoolManager:XObjectPoolManager;
 
     private m_frameRateScale:number;
 	private m_currentTimer:number;
@@ -279,6 +281,7 @@ export class XApp {
             XBitmap: {init: 4000, overflow: 1000},
             Tile: {init: 4000, overflow: 1000},
             XDepthSprite: {init: 4000, overflow: 1000},
+            XMapItemModel: {init: 12288, overflow: 2048}
         };
     }
 
@@ -292,6 +295,7 @@ export class XApp {
             XBitmap: {init: 4000, overflow: 1000},
             Tile: {init: 4000, overflow: 1000},
             XDepthSprite: {init: 2000, overflow: 1000},
+            XMapItemModel: {init: 12288, overflow: 2048}
         };
     }
 
@@ -431,6 +435,23 @@ export class XApp {
             },
             
             __poolSettings.XDepthSprite.init, __poolSettings.XDepthSprite.overflow
+        );
+    
+    //------------------------------------------------------------------------------------------
+    // XMapItemModel
+    //------------------------------------------------------------------------------------------
+        this.m_XMapItemModelPoolManager = new XObjectPoolManager (
+           ():any => {
+                var __xmapItem:XMapItemModel = new XMapItemModel ();
+                
+                return __xmapItem;
+            },
+            
+            (__src:any, __dst:any):any => {
+                return null;
+            },
+            
+            __poolSettings.XMapItemModel.init, __poolSettings.XMapItemModel.overflow
         );
     }
 
@@ -728,6 +749,11 @@ export class XApp {
     //------------------------------------------------------------------------------------------
     public getXDepthSpritePoolManager ():XObjectPoolManager {
         return this.m_XDepthSpritePoolManager;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getXMapItemModelPoolManager ():XObjectPoolManager {
+        return this.m_XMapItemModelPoolManager;
     }
 
     //------------------------------------------------------------------------------------------
