@@ -30,11 +30,16 @@
 import * as PIXI from 'pixi.js-legacy'
 import { XWorld } from './XWorld';
 import { XApp } from '../app/XApp';
+import { XRect } from '../geom/XRect';
 
 //------------------------------------------------------------------------------------------
 export class XSprite extends PIXI.Sprite {
 
     public m_world:XWorld;
+    
+    public m_scale:number;
+    public m_rect:XRect;
+
     public static g_XApp:XApp;
 
     //------------------------------------------------------------------------------------------
@@ -44,10 +49,14 @@ export class XSprite extends PIXI.Sprite {
 
 	//------------------------------------------------------------------------------------------
 	public setup ():void {
+        this.m_rect = XSprite.g_XApp.getXRectPoolManager ().borrowObject (); /* as XRect */
+
+        this.m_scale = 1.0;
 	}
 		
 	//------------------------------------------------------------------------------------------
 	public cleanup ():void {
+        XSprite.g_XApp.getXPointPoolManager ().returnObject (this.m_rect);
     }
         
 	//------------------------------------------------------------------------------------------
@@ -63,6 +72,16 @@ export class XSprite extends PIXI.Sprite {
     //------------------------------------------------------------------------------------------
     public set world (__XWorld:XWorld) {
         this.m_world = __XWorld;		
+    }
+
+//------------------------------------------------------------------------------------------
+    public viewPort (__canvasWidth:number, __canvasHeight:number):XRect {
+        this.m_rect.x = -this.x/this.m_scale;
+        this.m_rect.y = -this.y/this.m_scale;
+        this.m_rect.width = __canvasWidth/this.m_scale;
+        this.m_rect.height = __canvasHeight/this.m_scale;
+        
+        return this.m_rect;
     }
 
 //------------------------------------------------------------------------------------------    

@@ -46,6 +46,7 @@ import { XSoundSubManager } from '../sound/XSoundSubManager';
 import { XBulletCollisionManager } from '../bullet/XBulletCollisionManager';
 import { XClassPoolManager } from '../pool/XClassPoolManager';
 import { XSoundManager } from '../sound/XSoundManager';
+import { XRect } from '../geom/XRect';
 
 //------------------------------------------------------------------------------------------
 export class XWorld extends XSprite {
@@ -71,6 +72,8 @@ export class XWorld extends XSprite {
 
     private m_matterEngine:Engine;
 
+    private m_viewRect:XRect;
+    
     public static readonly SPRITE_LAYER:number = 0;
     public static readonly SPRITE_XDEPTHSPRITE:number = 1;
 
@@ -267,6 +270,19 @@ export class XWorld extends XSprite {
     }	
 
     //------------------------------------------------------------------------------------------
+    public addChildObject0 (__gameObject:XGameObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+        __gameObject.setup(this, __layer, __depth);
+        
+        var __depthSprite:XDepthSprite;
+        
+        __depthSprite = this.m_layers[__layer].addSprite (__gameObject, __depth, __visible);
+
+        this.m_childObjects.set (__gameObject, __depthSprite);
+        
+        return __gameObject;
+    }	
+
+    //------------------------------------------------------------------------------------------
     public addPooledChildObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
         var __gameObject:XGameObject = this.getXLogicObjectPoolManager ().borrowObject (__class) as XGameObject;
         __gameObject.setup(this, __layer, __depth);
@@ -428,6 +444,24 @@ export class XWorld extends XSprite {
     //------------------------------------------------------------------------------------------
     public getLayer (__layer:number):XSpriteLayer {
         return this.m_layers[__layer];
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getXWorldLayer (__layer:number):XSpriteLayer {
+        return this.m_layers[__layer];
+    }
+
+//------------------------------------------------------------------------------------------
+    public setViewRect (
+        __width:number, __height:number
+        ):void {
+            
+        this.m_viewRect = new XRect (0, 0, __width, __height);
+    }
+
+//------------------------------------------------------------------------------------------	
+    public getViewRect ():XRect {
+        return this.m_viewRect;
     }
 
     //------------------------------------------------------------------------------------------

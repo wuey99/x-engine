@@ -232,12 +232,12 @@ import { XSubmapModel } from './XSubmapModel';
 		}
 
 //------------------------------------------------------------------------------------------
-		public override serializeAll ():XSimpleXMLNode {
+		public serializeAll ():XSimpleXMLNode {
 			return this.serialize ();
 		}
 		
 //------------------------------------------------------------------------------------------
-		public override deserializeAll (__xml:XSimpleXMLNode):void {
+		public deserializeAll (__xml:XSimpleXMLNode):void {
 			console.log (": [XMap] deserializeAll: ");
 			
 			this.deserialize (__xml, false);

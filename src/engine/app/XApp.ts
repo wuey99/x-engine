@@ -51,6 +51,7 @@ import { XTextureManager } from '../texture/XTextureManager';
 import { XSubTextureManager } from '../texture/XSubTextureManager';
 import { MovieClipMetadata } from '../texture/MovieClipMetaData';
 import { XMapItemModel } from '../xmap/XMapItemModel';
+import { XSpriteLayer } from '../sprite/XSpriteLayer';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {

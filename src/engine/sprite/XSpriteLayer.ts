@@ -31,6 +31,8 @@ import * as PIXI from 'pixi.js-legacy';
 import { XSprite } from './XSprite';
 import { XDepthSprite } from './XDepthSprite';
 import { XType } from '../type/XType';
+import { XRect } from '../geom/XRect';
+import { XApp } from '../app/XApp';
 
 //------------------------------------------------------------------------------------------
 export class XSpriteLayer extends XSprite {
@@ -70,7 +72,7 @@ export class XSpriteLayer extends XSprite {
 	public cleanup ():void {
         super.cleanup ();
     }
-        
+
     //------------------------------------------------------------------------------------------
     public addSprite (__sprite:PIXI.DisplayObject, __depth:number, __visible:boolean = true):XDepthSprite {
         var __depthSprite:XDepthSprite = this.world.getXDepthSpritePoolManager ().borrowObject () as XDepthSprite;

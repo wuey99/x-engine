@@ -51,6 +51,11 @@ import { XTextSprite } from '../sprite/XTextSprite';
 import { TextInput } from 'pixi-textinput-v5';
 import { XTextureManager } from '../../engine/texture/XTextureManager';
 import { XSubTextureManager } from '../../engine/texture/XSubTextureManager';
+import { XSubmapModel } from '../xmap/XSubmapModel';
+import { XMapModel } from '../xmap/XMapModel';
+import { XMapItemModel } from '../xmap/XMapItemModel';
+import { XMapLayerModel } from '../xmap/XMapLayerModel';
+import { XMapView } from '../xmap/XMapView';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Sprite {
@@ -82,10 +87,7 @@ export class XGameObject extends PIXI.Sprite {
 	public m_flipY:number;
 	public m_masterFlipX:number;
 	public m_masterFlipY:number;
-	public m_cx:XRect;
-	public m_namedCX:Map<string, XRect>;
 	public m_pos:XPoint;
-	public m_vel:XPoint;
 	public m_pivot:XPoint;
 	public m_propagateCount:number;
 
@@ -116,6 +118,36 @@ export class XGameObject extends PIXI.Sprite {
 	public m_poolClass:any;
 
 	public m_paramIndex:number;
+
+	public m_vel:XPoint;
+	public m_oldPos:XPoint;
+	
+	public m_cx:XRect;
+	public m_namedCX:Map<string, XRect>;
+
+	/*
+	public m_XMapModel:XMapModel;
+	public m_XMapView:XMapView;
+	public m_XMapLayerModel:XMapLayerModel;
+	public m_XSubmaps:Array<Array<XSubmapModel>>;
+	public m_submapWidth:number;
+	public m_submapHeight:number;
+	public m_submapWidthMask:number;
+	public m_submapHeightMask:number;
+	public m_cols:number;
+	public m_rows:number;
+
+	private m_CX_Collide_Flag:number;
+	
+	private m_objectCollisionList:Map<XGameObject, XRect>;
+
+	public CX_COLLIDE_LF:number = 0x0001;
+	public CX_COLLIDE_RT:number = 0x0002;
+	public CX_COLLIDE_HORZ:number = 0x0001 | 0x0002; 
+	public CX_COLLIDE_UP:number = 0x0004;
+	public CX_COLLIDE_DN:number = 0x0008;
+	public CX_COLLIDE_VERT:number = 0x0004 | 0x0008;
+	*/
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -235,7 +267,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup():void {
+	public cleanup ():void {
 		this.fireKillSignal();
 		
 		this.removeAllTasks0 ();
@@ -271,6 +303,50 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_cleanedUp = true;
 	}
 	
+//------------------------------------------------------------------------------------------
+// cull this object if it strays outside the current viewPort
+//------------------------------------------------------------------------------------------	
+	public cullObject ():void {
+		/* TODO
+		if (this.m_disableCulling) {
+			return;
+		}
+		
+		if (this.autoCulling) {
+			this.autoCullObject ();
+			
+			return;
+		}
+	// if this object wasn't ever spawned from a level, don't perform any culling
+		if (m_item == null) {
+			return;
+		}
+		
+	// determine whether this object is outside the current viewPort
+		var v:XRect = xxx.getViewRect();
+		
+		xxx.getXWorldLayer (m_layer).viewPort (v.width, v.height).copy2 (m_viewPortRect);
+		m_viewPortRect.inflate (cullWidth (), cullHeight ());
+		
+		if (m_viewPortRect.intersects (m_itemRect)) {
+			return;
+		}
+		
+		m_boundingRect.copy2 (m_selfRect);
+		m_selfRect.offsetPoint (getPos ());
+		
+		if (m_viewPortRect.intersects (m_selfRect)) {
+			return;
+		}
+			
+	// yep, kill it
+	//			trace (": ---------------------------------------: ");
+	//			trace (": cull: ", this);
+		
+		killLater ();
+		*/
+	}
+
 //------------------------------------------------------------------------------------------
 // kill this object and remove it from the World (delayed)
 //------------------------------------------------------------------------------------------
@@ -733,6 +809,11 @@ export class XGameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
+	public getXGameObjects ():Map<XGameObject, number> {
+		return this.m_worldObjects;
+	}
+
+//------------------------------------------------------------------------------------------
 	public createAnimatedSprite (__name:string):PIXI.AnimatedSprite {	
 		var sheet:PIXI.Spritesheet = world.getResourceByName (__name);
 
@@ -889,6 +970,20 @@ export class XGameObject extends PIXI.Sprite {
 	public addGameObjectAsChild (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
 		if (this.world != null) {
 			var __gameObject = this.world.addChildObject (__class, __layer, __depth, __visible);
+			__gameObject.setParentObject (this);
+
+			this.m_childObjects.set (__gameObject, 0);
+			
+			return __gameObject;
+		}
+		
+		return null;
+	}
+
+//------------------------------------------------------------------------------------------
+	public addGameObjectAsChild0 (__gameObject:XGameObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+		if (this.world != null) {
+			this.world.addChildObject0 (__gameObject, __layer, __depth, __visible);
 			__gameObject.setParentObject (this);
 
 			this.m_childObjects.set (__gameObject, 0);

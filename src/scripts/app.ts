@@ -69,6 +69,9 @@ export class Main {
         
         world = new XWorld (g_XApp.stage, g_XApp, 8);
         world.setup ();
+
+        world.setViewRect (G.CANVAS_WIDTH, G.CANVAS_HEIGHT);
+
         g_XApp.stage.addChild (world);
 
         this.m_debugMessage = "";
