@@ -898,9 +898,7 @@
 							
 							if (this.useArrayItems) {
 								this.m_arrayItems[this.m_arrayItemIndex++] = __item;
-							}
-							else
-							{
+							} else {
 								this.addItem (__item);
 							}
 							
@@ -1017,17 +1015,15 @@
 					__xml.child ("params")[0].toXMLString (),
 // args
 					[]
-					);
+				);
 
-					if (this.useArrayItems) {
-						this.m_arrayItems[this.m_arrayItemIndex++] = __item;
-					}
-					else
-					{
-						this.addItem (__item);
-					}
+				if (this.useArrayItems) {
+					this.m_arrayItems[this.m_arrayItemIndex++] = __item;
+				} else {
+					this.addItem (__item);
+				}
 	
-					this.m_XMapLayer.trackItem (__item);
+				this.m_XMapLayer.trackItem (__item);
 			}
 		}
 		

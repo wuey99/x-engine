@@ -55,9 +55,9 @@
 // removed from the XMapModel.
 //------------------------------------------------------------------------------------------
 	export class XMapLayerView extends XGameObject {
-		private m_XMapView:XMapView;
-		private m_XMapModel:XMapModel;
-		private m_currLayer:number;
+		public m_XMapView:XMapView;
+		public m_XMapModel:XMapModel;
+		public m_currLayer:number;
 		
 		private m_XMapItemToXLogicObject:Map<XMapItemModel, XGameObject>;
 		private m_XMapLayerModel:XMapLayerModel;
@@ -112,7 +112,7 @@
 			}
 			
 //------------------------------------------------------------------------------------------		
-			var __items:Array<XMapItemModel>; // <XMapItemModel>
+			var __items:Array<XMapItemModel>;
 			
 			if (this.m_XMapModel.useArrayItems) {
 				__items = this.m_XMapModel.getArrayItemsAt (
@@ -120,9 +120,7 @@
 					__view.left, __view.top,
 					__view.right, __view.bottom
 				);
-			}
-			else
-			{
+			} else {
 				__items = this.m_XMapModel.getItemsAt (
 					this.m_currLayer,
 					__view.left, __view.top,
@@ -150,9 +148,7 @@
 					// depth
 					__item.depth
 				);
-			}
-			else
-			{
+			} else {
 				if (this.m_XMapItemToXLogicObject.has (__item)) {
 					var gameObject:XGameObject = this.m_XMapItemToXLogicObject.get (__item);
 					
@@ -175,55 +171,48 @@
 					console.log (": (error) logicClassName: ", __item.logicClassName);
 					
 					__logicObject = null;
+				} else {
+                    __logicObject = this.m_XMapView.addPooledGameObjectAsChild (
+                        __object,
+                        this.m_currLayer,
+                        __depth,
+                        false
+                    ) as XGameObjectCX;
+                    
+                    __logicObject.afterSetup ([
+                        // TODO
+                        // __item.imageClassName
+                        // __item.frame
+                    ]);
+
+                    __logicObject.x = __item.x;
+                    __logicObject.y = __item.y;
+                    __logicObject.scale.x = __logicObject.scale.y = __item.scale;
+                    __logicObject.angle = __item.rotation;
 				}
-				else {
-					/*
-					__logicObject = this.world.getXLogicManager ().initXLogicObjectFromPool (
-						// parent
-						this.m_XMapView,
-						// class
-						__object as any , 
-						// item, layer, depth
-						__item, this.m_currLayer, __depth,
-						// x, y, z
-						__item.x, __item.y, 0,
-						// scale, rotation
-						__item.scale, __item.rotation,
-						[
-							// imageClassName
-							__item.imageClassName,
-							// frame
-							__item.frame
-						]
-					); */
-				}
-			}
-			else
-			{
+			} else {
 				if (__item.logicClassName == "XLogicObjectXMap:XLogicObjectXMap") {
 					__logicObject = null;
-				}
-				else
-				{
-					/*
-					__logicObject = this.world.getXLogicManager ().createXLogicObjectFromClassName (
-						// parent
-							this.m_XMapView,
-						// logicClassName
-							__item.logicClassName,
-						// item, layer, depth
-							__item, this.m_currLayer, __depth,
-						// x, y, z
-							__item.x, __item.y, 0,
-						// scale, rotation
-							__item.scale, __item.rotation,
-						[
-							// imageClassName
-								__item.imageClassName,
-							// frame
-								__item.frame
-						]
-						); */
+				} else {
+                    var __class:any = this.m_XApp.getClass (__item.logicClassName);
+
+                    __logicObject = this.m_XMapView.addGameObjectAsChild (
+                        __class, 
+                        this.m_currLayer,
+                        __depth,
+                        false
+                    ) as XGameObjectCX;
+                    
+                    __logicObject.afterSetup ([
+                        // TODO
+                        // __item.imageClassName
+                        // __item.frame
+                    ]);
+
+                    __logicObject.x = __item.x;
+                    __logicObject.y = __item.y;
+                    __logicObject.scale.x = __logicObject.scale.y = __item.scale;
+                    __logicObject.angle = __item.rotation;
 				}
 			}
 
@@ -232,9 +221,6 @@
 			if (__logicObject == null) {
 				return null;
 			}
-			
-            // TODO
-			this.m_XMapView.addGameObjectAsChild0 (__logicObject);
 			
 			this.m_XMapItemToXLogicObject.set (__item, __logicObject);
 

@@ -216,7 +216,7 @@ import { XSubmapModel } from './XSubmapModel';
 			__layer:number,
 			__x1:number, __y1:number,
 			__x2:number, __y2:number
-		):Array<XMapItemModel> {
+			):Array<XMapItemModel> {
 			
 			return this.m_layers[__layer].getArrayItemsAt (__x1, __y1, __x2, __y2);
 		}
@@ -306,7 +306,6 @@ import { XSubmapModel } from './XSubmapModel';
 				this.m_layers[i].deserialize (__xmlList[i], __readOnly);
 			}
 		}
-		
 		
 //------------------------------------------------------------------------------------------
 		public createXMapLayerModel ():XMapLayerModel {

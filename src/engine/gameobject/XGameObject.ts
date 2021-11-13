@@ -53,6 +53,7 @@ import { XTextureManager } from '../../engine/texture/XTextureManager';
 import { XSubTextureManager } from '../../engine/texture/XSubTextureManager';
 import { XMapItemModel } from '../xmap/XMapItemModel';
 import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
+import { XModelBase } from '../model/XModelBase';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Sprite {
@@ -262,7 +263,9 @@ export class XGameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public cleanup ():void {
-		this.fireKillSignal ();
+		this.returnBorrowedObjects ();
+
+		this.fireKillSignal (this.m_item);
 		
 		if (this.m_item != null) {
 			//	fireKillSignal (m_item);
@@ -272,22 +275,7 @@ export class XGameObject extends PIXI.Sprite {
 			this.m_item = null;
 		}
 
-		this.removeAllTasks0 ();
-		this.removeAllTasks ();
-		this.removeAllSelfObjects ();
-		this.removeAllWorldObjects ();
-		this.removeAllChildObjects ();
-		this.removeAllSelfSprites ();
-		this.removeAllChildSprites ();
-		this.removeAllWorldSprites ();
-		this.removeAllXSignals ();
-		this.removeAllAnimatedSprites ();
-		this.removeAllXTextSprites ();
-		this.removeAllSprites ();
-		this.removeAllStageEvents ();
-		this.removeAllStageEventsX ();
-		this.removeAllPausableEvents ();
-		this.removeAllBitmapFonts ();
+		this.removeAll ();
 
 		if (this.getParentObject () != null) { 
 			this.getParentObject ().removeSelfObject0 (this);
@@ -305,6 +293,39 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_cleanedUp = true;
 	}
 	
+//------------------------------------------------------------------------------------------
+	public removeAll ():void {
+		this.removeAllTasks0 ();
+		this.removeAllTasks ();
+		this.removeAllSelfObjects ();
+		this.removeAllWorldObjects ();
+		this.removeAllChildObjects ();
+		this.removeAllSelfSprites ();
+		this.removeAllChildSprites ();
+		this.removeAllWorldSprites ();
+		this.removeAllXSignals ();
+		this.removeAllAnimatedSprites ();
+		this.removeAllXTextSprites ();
+		this.removeAllSprites ();
+		this.removeAllStageEvents ();
+		this.removeAllStageEventsX ();
+		this.removeAllPausableEvents ();
+		this.removeAllBitmapFonts ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public returnBorrowedObjects ():void {
+		/*
+		xxx.getXPointPoolManager ().returnObject (m_pos);
+		xxx.getXPointPoolManager ().returnObject (rp);
+		*/
+
+		this.world.getXRectPoolManager ().returnObject (this.m_viewPortRect);
+		this.world.getXRectPoolManager ().returnObject (this.m_selfRect);
+		this.world.getXRectPoolManager ().returnObject (this.m_itemRect);
+		this.world.getXPointPoolManager ().returnObject (this.m_itemPos);		
+	}
+
 //------------------------------------------------------------------------------------------
 // cull this object if it strays outside the current viewPort
 //------------------------------------------------------------------------------------------	
@@ -456,8 +477,8 @@ export class XGameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public fireKillSignal ():void {
-		this.m_killSignal.fireSignal ();
+	public fireKillSignal (__model:XModelBase = null):void {
+		this.m_killSignal.fireSignal (__model);
 	}
 
 //------------------------------------------------------------------------------------------
@@ -2024,7 +2045,7 @@ export class XGameObject extends PIXI.Sprite {
 		return this.m_cleanedUp;
 	}
 		
-	public set_cleanedUp (__val:boolean) {
+	public set cleanedUp (__val:boolean) {
 		this.m_cleanedUp = __val;			
 	}
 	
@@ -2120,7 +2141,7 @@ export class XGameObject extends PIXI.Sprite {
 		}
 
 //------------------------------------------------------------------------------------------		
-		public setMasterFlipX(__value:number):void {
+		public setMasterFlipX (__value:number):void {
 			this.m_masterFlipX = __value;
 		}
 		

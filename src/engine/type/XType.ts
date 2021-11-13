@@ -108,7 +108,7 @@ export class XType {
     }
     
 	//------------------------------------------------------------------------------------------
-	public static  Number_MAX_VALUE ():number {
+	public static Number_MAX_VALUE ():number {
         return 179 * Math.pow(10, 306);
     }
   
