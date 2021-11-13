@@ -37,6 +37,7 @@
     import { XSubTextureManager } from '../texture/XSubTextureManager';
     import { XMapModel } from './XMapModel';
     import { XGameObject } from '../gameobject/XGameObject';
+    import { XGameObjectCX } from '../gameobject/XGameObjectCX';
     import { XWorld } from '../sprite/XWorld';
 	import { XMapView } from './XMapView';
     import { XRect } from '../geom/XRect';
@@ -162,12 +163,12 @@
 		
 //------------------------------------------------------------------------------------------
 		public addXMapItem (__item:XMapItemModel, __depth:number):XGameObject {
-			var __logicObject:XGameObject;
+			var __logicObject:XGameObjectCX;
 			
 			var __object:any = this.m_logicClassNameToClass (__item.logicClassName);
 				
 			if (XType.isFunction (__object)) {
-				__logicObject = __object () as XGameObject;
+				__logicObject = __object () as XGameObjectCX;
 			}
 			else if (__item.logicClassName.charAt (0) == "$") {
 				if (__object == null) {
@@ -237,8 +238,7 @@
 			
 			this.m_XMapItemToXLogicObject.set (__item, __logicObject);
 
-			// TODO
-			// __logicObject.setXMapModel (this.m_currLayer + 1, this.m_XMapModel, this.m_XMapView);
+			__logicObject.setXMapModel (this.m_currLayer + 1, this.m_XMapModel, this.m_XMapView);
 			
 			__logicObject.addKillListener (this.removeXMapItem);
 

@@ -51,11 +51,8 @@ import { XTextSprite } from '../sprite/XTextSprite';
 import { TextInput } from 'pixi-textinput-v5';
 import { XTextureManager } from '../../engine/texture/XTextureManager';
 import { XSubTextureManager } from '../../engine/texture/XSubTextureManager';
-import { XSubmapModel } from '../xmap/XSubmapModel';
-import { XMapModel } from '../xmap/XMapModel';
 import { XMapItemModel } from '../xmap/XMapItemModel';
-import { XMapLayerModel } from '../xmap/XMapLayerModel';
-import { XMapView } from '../xmap/XMapView';
+import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Sprite {
@@ -125,33 +122,25 @@ export class XGameObject extends PIXI.Sprite {
 	public m_cx:XRect;
 	public m_namedCX:Map<string, XRect>;
 
-	/*
-	public m_XMapModel:XMapModel;
-	public m_XMapView:XMapView;
-	public m_XMapLayerModel:XMapLayerModel;
-	public m_XSubmaps:Array<Array<XSubmapModel>>;
-	public m_submapWidth:number;
-	public m_submapHeight:number;
-	public m_submapWidthMask:number;
-	public m_submapHeightMask:number;
-	public m_cols:number;
-	public m_rows:number;
+	public m_item:XMapItemModel;
+	public m_xml:XSimpleXMLNode;
 
-	private m_CX_Collide_Flag:number;
-	
-	private m_objectCollisionList:Map<XGameObject, XRect>;
-
-	public CX_COLLIDE_LF:number = 0x0001;
-	public CX_COLLIDE_RT:number = 0x0002;
-	public CX_COLLIDE_HORZ:number = 0x0001 | 0x0002; 
-	public CX_COLLIDE_UP:number = 0x0004;
-	public CX_COLLIDE_DN:number = 0x0008;
-	public CX_COLLIDE_VERT:number = 0x0004 | 0x0008;
-	*/
+	public m_autoCulling:boolean;
+	public m_viewPortRect:XRect;
+	public m_selfRect:XRect;
+	public m_itemRect:XRect;
+	public m_itemPos:XPoint;
+	public m_disableCulling:boolean;
+	public m_boundingRect:XRect;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
+
+		this.m_item = null;
+		this.m_autoCulling = false;
+		this.m_disableCulling = false;
+		this.m_boundingRect = null;
 
 		this.m_worldObjects = new Map<XGameObject, number> ();
 		this.m_childObjects = new Map<XGameObject, number> ();
@@ -170,10 +159,10 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_XApp = XGameObject.g_XApp;
 		this.m_killSignal = this.createXSignal ();
 		this.m_cx = new XRect ();
-		this.m_pos = new XPoint ();
 		this.m_vel = new XPoint ();
 		this.m_pivot = new XPoint ();
 		this.m_mousePoint = new XPoint ();
+		this.m_pos = new XPoint ();
 	}
 	
 //------------------------------------------------------------------------------------------
@@ -258,6 +247,11 @@ export class XGameObject extends PIXI.Sprite {
 
 		this.m_paramIndex = 0;
 	
+		this.m_viewPortRect = this.m_XApp.getXRectPoolManager ().borrowObject () as XRect;
+		this.m_selfRect = this.m_XApp.getXRectPoolManager ().borrowObject () as XRect;
+		this.m_itemRect = this.m_XApp.getXRectPoolManager ().borrowObject () as XRect;
+		this.m_itemPos = this.m_XApp.getXPointPoolManager ().borrowObject () as XPoint;
+
 		return this;
 	}
 	
@@ -268,8 +262,16 @@ export class XGameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public cleanup ():void {
-		this.fireKillSignal();
+		this.fireKillSignal ();
 		
+		if (this.m_item != null) {
+			//	fireKillSignal (m_item);
+										
+			this.m_item.inuse--;
+							
+			this.m_item = null;
+		}
+
 		this.removeAllTasks0 ();
 		this.removeAllTasks ();
 		this.removeAllSelfObjects ();
@@ -307,44 +309,114 @@ export class XGameObject extends PIXI.Sprite {
 // cull this object if it strays outside the current viewPort
 //------------------------------------------------------------------------------------------	
 	public cullObject ():void {
-		/* TODO
 		if (this.m_disableCulling) {
 			return;
 		}
 		
-		if (this.autoCulling) {
+		if (this.m_autoCulling) {
 			this.autoCullObject ();
 			
 			return;
 		}
+
 	// if this object wasn't ever spawned from a level, don't perform any culling
-		if (m_item == null) {
+		if (this.m_item == null) {
 			return;
 		}
 		
 	// determine whether this object is outside the current viewPort
-		var v:XRect = xxx.getViewRect();
+		var v:XRect = this.world.getViewRect();
 		
-		xxx.getXWorldLayer (m_layer).viewPort (v.width, v.height).copy2 (m_viewPortRect);
-		m_viewPortRect.inflate (cullWidth (), cullHeight ());
+		this.world.getXWorldLayer (this.m_layer).viewPort (v.width, v.height).copy2 (this.m_viewPortRect);
+		this.m_viewPortRect.inflate (this.cullWidth (), this.cullHeight ());
 		
-		if (m_viewPortRect.intersects (m_itemRect)) {
+		if (this.m_viewPortRect.intersects (this.m_itemRect)) {
 			return;
 		}
 		
-		m_boundingRect.copy2 (m_selfRect);
-		m_selfRect.offsetPoint (getPos ());
+		this.m_boundingRect.copy2 (this.m_selfRect);
+		this.m_selfRect.offsetPoint (this.getPos ());
 		
-		if (m_viewPortRect.intersects (m_selfRect)) {
+		if (this.m_viewPortRect.intersects (this.m_selfRect)) {
 			return;
 		}
 			
 	// yep, kill it
-	//			trace (": ---------------------------------------: ");
-	//			trace (": cull: ", this);
+	//    trace (": ---------------------------------------: ");
+	//    trace (": cull: ", this);
 		
-		killLater ();
-		*/
+		this.killLater ();
+	}
+
+	//------------------------------------------------------------------------------------------
+	public setDisableCulling (__flag:boolean):void {
+		this.m_disableCulling = __flag;
+	}
+		
+	//------------------------------------------------------------------------------------------
+	// auto-cull this object if it strays outside the current viewPort
+	//
+	// auto-culled objects aren't spawned from a level so there's no
+	// item object to retrieve a boundingRect from.  we're going to have
+	// to provide a reasonable default for the boundingRect
+	//------------------------------------------------------------------------------------------	
+	public autoCullObject ():void {
+		// determine whether this object is outside the current viewPort
+		var v:XRect = this.world.getViewRect();
+			
+		var r:XRect = this.m_XApp.getXRectPoolManager ().borrowObject () as XRect;
+		var i:XRect = this.m_XApp.getXRectPoolManager ().borrowObject () as XRect;
+
+		this.world.getXWorldLayer (this.m_layer).viewPort (v.width, v.height).copy2 (r);
+		r.inflate (this.autoCullWidth (), this.autoCullHeight ());
+			
+		this.m_boundingRect.copy2 (i);
+		i.offsetPoint (this.getPos ());
+	
+		if (r.intersects (i)) {
+			this.m_XApp.getXRectPoolManager ().returnObject (r);
+			this.m_XApp.getXRectPoolManager ().returnObject (i);
+				
+			return;
+		}
+			
+		this.m_XApp.getXRectPoolManager ().returnObject (r);
+		this.m_XApp.getXRectPoolManager ().returnObject (i);
+			
+		// yep, kill it
+		console.log (": ---------------------------------------: ");
+		console.log (": cull: ", this);
+			
+		this.killLater ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public cullWidth ():number {
+		return 256;
+	}
+		
+//------------------------------------------------------------------------------------------
+	public cullHeight ():number {
+		return 256;
+	}
+		
+//------------------------------------------------------------------------------------------
+	public autoCullWidth ():number {
+		return 512;
+	}
+		
+//------------------------------------------------------------------------------------------
+	public autoCullHeight ():number {
+		return 512;
+	}
+		
+//------------------------------------------------------------------------------------------
+	public nukeLater ():void {
+		if (this.m_item != null) {
+			this.m_item.inuse++;
+		}
+		
+		this.killLater ();
 	}
 
 //------------------------------------------------------------------------------------------
@@ -368,21 +440,14 @@ export class XGameObject extends PIXI.Sprite {
 			this.world.killLater (this);
 		}
 	}
-		
-//------------------------------------------------------------------------------------------
-// kill this object and remove it from the World (now)
-//------------------------------------------------------------------------------------------
-	public nukeLater ():void {
-		this.nuke ();
-	}
 
 //------------------------------------------------------------------------------------------
 	public nuke ():void {
-		this.m_isDead = true;
-		
-		if (this.world != null) {
-			this.world.killLater (this);
+		if (this.m_item != null) {
+			this.m_item.inuse++;
 		}
+			
+		this.kill ();
 	}
 	
 //------------------------------------------------------------------------------------------
@@ -688,8 +753,7 @@ export class XGameObject extends PIXI.Sprite {
 
         return this.m_touchPoint;
 	}
-	
-	
+
 //------------------------------------------------------------------------------------------
 	public getPivot ():XPoint {
 		return this.m_pivot;
@@ -756,11 +820,47 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
+	public get pos ():PIXI.ObservablePoint {
+		return this.position;
+	}
+			
+	public set pos (__pos:PIXI.ObservablePoint) {
+		this.position.x = __pos.x;
+		this.position.y = __pos.y;
+	}
+
+//------------------------------------------------------------------------------------------
+	public get oX ():number {
+		return this.position.x;
+	}
+	public set oX (__val:number) {
+		this.position.x = __val;
+	}
+
+//------------------------------------------------------------------------------------------
+	public get oY ():number {
+		return this.position.y;
+	}		
+
+	public set oY (__val:number) {
+		this.position.y = __val;
+	}
+
+//------------------------------------------------------------------------------------------
 	public getPos ():XPoint {
 		this.m_pos.x = this.x;
 		this.m_pos.y = this.y;
-
+		
 		return this.m_pos;
+	}
+
+//------------------------------------------------------------------------------------------
+	public get boundingRect ():XRect {
+		return this.m_boundingRect;
+	}
+
+	public set boundingRect (__val:XRect) {
+		this.m_boundingRect = __val;		
 	}
 
 //------------------------------------------------------------------------------------------
@@ -797,6 +897,97 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 	public getNamedCX (__name:string):XRect {
 		return this.m_namedCX.get (__name).cloneX ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public getAdjustedNamedCX (__name:string):XRect {
+		var __rect:XRect = this.m_namedCX.get (__name).cloneX ();	
+		__rect.offset (this.x, this.y);
+		return __rect;
+	}
+
+//------------------------------------------------------------------------------------------		
+	public get autoCulling ():boolean {
+		return this.m_autoCulling;
+	}
+
+	public set autoCulling (__val:boolean) {
+		this.m_autoCulling = __val;
+		
+		if (this.autoCulling) {
+			this.boundingRect = new XRect (-32, -32, 64, 64);
+		}
+	}
+
+//------------------------------------------------------------------------------------------
+	public setItem (__item:XMapItemModel):void {
+		this.m_item = __item;
+		
+		if (this.m_item != null) {
+			this.m_boundingRect = __item.boundingRect.cloneX ();
+			
+			this.m_item.boundingRect.copy2 (this.m_itemRect);
+			this.m_itemPos.x = this.m_item.x;
+			this.m_itemPos.y = this.m_item.y;
+			this.m_itemRect.offsetPoint (this.m_itemPos);
+		}
+	}
+
+//------------------------------------------------------------------------------------------
+	public get item ():XMapItemModel {
+		return this.m_item;
+	}
+
+	public set item (__val:XMapItemModel) {	
+	}
+
+//------------------------------------------------------------------------------------------
+	public setupItemParamsXML ():void {
+		this.m_xml = new XSimpleXMLNode ();
+		
+		if (this.item != null && this.item.params != null && this.item.params != "") {
+			this.m_xml.setupWithXMLString (this.item.params);
+		}
+	}
+
+//------------------------------------------------------------------------------------------
+	public setXML (__xml:XSimpleXMLNode):void {
+		this.m_xml = __xml;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getXML ():XSimpleXMLNode {
+		return this.m_xml;
+	}
+
+//------------------------------------------------------------------------------------------
+	public itemHasAttribute (__attr:string):boolean {
+		return this.m_xml.hasAttribute (__attr);	
+	}
+
+//------------------------------------------------------------------------------------------
+	public itemGetAttribute (__attr:string):any {
+		return this.m_xml.getAttribute (__attr);
+	}
+
+//------------------------------------------------------------------------------------------
+	public itemGetAttributeString (__attr:string):string {
+		return this.m_xml.getAttributeString (__attr);
+	}
+
+//------------------------------------------------------------------------------------------
+	public itemGetAttributeFloat (__attr:string):number {
+		return this.m_xml.getAttributeFloat (__attr);
+	}
+
+//------------------------------------------------------------------------------------------
+	public itemGetAttributeInt (__attr:string):number {
+		return this.m_xml.getAttributeInt (__attr);
+	}
+
+//------------------------------------------------------------------------------------------
+	public itemGetAttributeBoolean (__attr:string):boolean {
+		return this.m_xml.getAttributeBoolean (__attr);
 	}
 
 //------------------------------------------------------------------------------------------

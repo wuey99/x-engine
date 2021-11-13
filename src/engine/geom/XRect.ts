@@ -82,6 +82,16 @@ import { XPoint } from './XPoint';
             return true;
         }
 
+
+//------------------------------------------------------------------------------------------
+		public inflate (__dx:number, __dy:number):void {
+			this.x -= __dx;
+			this.width += 2 * __dx;
+
+			this.y -= __dy;
+			this.height += 2 * __dy;
+		}
+
 //------------------------------------------------------------------------------------------
 		public offset (__x:number, __y:number):void {
 			this.x += __x;
