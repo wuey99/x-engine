@@ -47,6 +47,8 @@ import { XBulletCollisionManager } from '../bullet/XBulletCollisionManager';
 import { XClassPoolManager } from '../pool/XClassPoolManager';
 import { XSoundManager } from '../sound/XSoundManager';
 import { XRect } from '../geom/XRect';
+import { XObjectCollisionList } from '../collision/XObjectCollisionList';
+import { XObjectCollisionManager } from '../collision/XObjectCollisionManager';
 
 //------------------------------------------------------------------------------------------
 export class XWorld extends XSprite {
@@ -69,6 +71,8 @@ export class XWorld extends XSprite {
     public m_XLogicObjectPoolManager:XClassPoolManager;
 
     private m_XBulletCollisionManager:XBulletCollisionManager;
+    private m_XObjectCollisionManager:XObjectCollisionManager;
+    private m_objectCollisionList:XObjectCollisionList;
 
     private m_matterEngine:Engine;
 
@@ -120,6 +124,8 @@ export class XWorld extends XSprite {
 
         this.m_XBulletCollisionManager = new XBulletCollisionManager (this);
         this.m_XLogicObjectPoolManager = new XClassPoolManager ();
+        this.m_XObjectCollisionManager = new XObjectCollisionManager (this);
+        this.m_objectCollisionList = this.m_XObjectCollisionManager.addCollisionList ();
 
         this.m_streamingSoundManager = new XSoundSubManager (this.m_XApp.getXSoundManager ());
         this.m_musicSoundManager = new XSoundSubManager (this.m_XApp.getXSoundManager ());
@@ -369,7 +375,6 @@ export class XWorld extends XSprite {
         return this.m_XApp.getStage ();
     }
 
-
     //------------------------------------------------------------------------------------------
     public getXLogicObjectPoolManager ():XClassPoolManager {
         return this.m_XLogicObjectPoolManager;
@@ -409,6 +414,16 @@ export class XWorld extends XSprite {
     //------------------------------------------------------------------------------------------
     public getXBulletCollisionManager ():XBulletCollisionManager {
         return this.m_XBulletCollisionManager;
+    }
+
+//------------------------------------------------------------------------------------------
+    public getXObjectCollisionManager ():XObjectCollisionManager {
+        return this.m_XObjectCollisionManager;
+    }
+
+//------------------------------------------------------------------------------------------
+    public getObjectCollisionList ():XObjectCollisionList {
+        return this.m_objectCollisionList;
     }
 
     //------------------------------------------------------------------------------------------
