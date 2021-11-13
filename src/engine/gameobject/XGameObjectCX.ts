@@ -2432,17 +2432,17 @@ export class XGameObjectCX extends XGameObject {
         
         var __collided:boolean = false;
         
-        function __collisionCallback (__logicObject:XGameObjectCX, __rect:XRect):void {
+        var __collisionCallback = (__logicObject:XGameObjectCX, __rect:XRect) => {
             if (__logicObject.allowLFCollisions) {
                 this.oX = __rect.right - this.m_cx.left + 1;
                 
-                __logicObject.objectCollisionCallback (self);
+                __logicObject.objectCollisionCallback (this);
                 
                 this.m_CX_Collide_Flag |= XGameObjectCX.CX_COLLIDE_LF;
             }
         }
         
-        XType.doWhile (__objectCollisionList,  /* @:castkey */
+        XType.doWhile (__objectCollisionList,
             function (__logicObject:XGameObjectCX):boolean {
                 var __rect:XRect = __objectCollisionList.get (__logicObject) as XRect;
                 
@@ -2472,17 +2472,17 @@ export class XGameObjectCX extends XGameObject {
         
         var __collided:boolean = false;
         
-        function __collisionCallback (__logicObject:XGameObjectCX, __rect:XRect):void {
+        var __collisionCallback = (__logicObject:XGameObjectCX, __rect:XRect) => {
             if (__logicObject.allowRTCollisions) {
                 this.oX = __rect.left - this.m_cx.right - 1;
                 
-                __logicObject.objectCollisionCallback (self);
+                __logicObject.objectCollisionCallback (this);
                 
                 this.m_CX_Collide_Flag |= XGameObjectCX.CX_COLLIDE_RT;
             }
         }
         
-        XType.doWhile (__objectCollisionList,  /* @:castkey */
+        XType.doWhile (__objectCollisionList,
             function (__logicObject:XGameObjectCX):boolean {
                 var __rect:XRect = __objectCollisionList.get (__logicObject) as XRect;
                 
@@ -2512,17 +2512,17 @@ export class XGameObjectCX extends XGameObject {
         
         var __collided:boolean = false;
 
-        function __collisionCallback (__logicObject:XGameObjectCX, __rect:XRect):void {
+        var __collisionCallback = (__logicObject:XGameObjectCX, __rect:XRect) => {
             if (__logicObject.allowUPCollisions) {
                 this.oY = __rect.bottom - this.m_cx.top + 1;
                 
-                __logicObject.objectCollisionCallback (self);
+                __logicObject.objectCollisionCallback (this);
                 
                 this.m_CX_Collide_Flag |= XGameObjectCX.CX_COLLIDE_UP;
             }
         }
         
-        XType.doWhile (__objectCollisionList,  /* @:castkey */
+        XType.doWhile (__objectCollisionList,
             function (__logicObject:XGameObjectCX):boolean {
                 var __rect:XRect = __objectCollisionList.get (__logicObject) as XRect;
                 
@@ -2552,17 +2552,17 @@ export class XGameObjectCX extends XGameObject {
         
         var __collided:boolean = false;
         
-        function __collisionCallback (__logicObject:XGameObjectCX, __rect:XRect):void {
+        var __collisionCallback = (__logicObject:XGameObjectCX, __rect:XRect) => {
             if (__logicObject.allowDNCollisions) {
                 this.oY = __rect.top - this.m_cx.bottom - 1;
                 
-                __logicObject.objectCollisionCallback (self);
+                __logicObject.objectCollisionCallback (this);
                 
                 this.m_CX_Collide_Flag |= XGameObjectCX.CX_COLLIDE_DN;
             }
         }
         
-        XType.doWhile (__objectCollisionList,  /* @:castkey */
+        XType.doWhile (__objectCollisionList,
             function (__logicObject:XGameObjectCX):boolean {
                 var __rect:XRect = __objectCollisionList.get (__logicObject) as XRect;
                 

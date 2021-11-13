@@ -4,7 +4,7 @@
 //
 // The "X-Engine"
 //
-// Copyright (c) 2014 Jimmy Huey (wuey99@gmail.com)
+// Copyright (c) 2014-2021 Jimmy Huey (wuey99@gmail.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -64,7 +64,7 @@
 			
 			var i:number;
 			
-			for (i = 0; i < this.world.getMaxLayers ()) {
+			for (i = 0; i < this.world.getMaxLayers (); i++) {
 				this.m_rects[i] = new Map<XGameObject, XRect> ();
 			}
 			
@@ -82,7 +82,7 @@
 		public clear ():void {
 			var i:number;
 
-			for (i = 0; i < this.world.getMaxLayers ()) {
+			for (i = 0; i < this.world.getMaxLayers (); i++) {
 				XType.removeAllKeys (this.m_rects[i]);
 			}
 			
