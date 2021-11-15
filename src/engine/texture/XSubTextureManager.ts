@@ -139,6 +139,15 @@
 
 		//------------------------------------------------------------------------------------------
 		public reset ():void {
+			var __renderTexture:PIXI.RenderTexture;
+
+			if (this.m_renderTextures != null) {
+				for (__renderTexture of this.m_renderTextures) {
+					__renderTexture.destroy (true);
+				}
+			}
+			
+			this.m_renderTextures.length = 0;
 		}
 		
 		//------------------------------------------------------------------------------------------

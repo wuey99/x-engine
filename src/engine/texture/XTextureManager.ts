@@ -59,6 +59,10 @@
 		
 		//------------------------------------------------------------------------------------------
 		public cleanup ():void {
+			XType.forEach (this.m_subManagers, (__name:string) => {
+				var __subManager:XSubTextureManager = this.m_subManagers.get (__name);
+				__subManager.cleanup ();
+			});
 		}
 
 		//------------------------------------------------------------------------------------------

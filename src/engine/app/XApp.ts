@@ -261,6 +261,8 @@ export class XApp {
         document.removeEventListener ("visibilitychange", this.m_visibilityChangedHandle);
         window.removeEventListener ("resize", this.m_resizerHandle);
 
+        this.getTextureManager ().cleanup ();
+        
         console.log (": XProjectManager.cleanup (): ");
 
         this.m_XProjectManager.cleanup ();
