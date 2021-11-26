@@ -1,0 +1,18 @@
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\247D496F-3712-26F6-7752-5F0EA2696DFB-Tileset003.fla"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\247D496F-3712-26F6-7752-5F0EA2696DFB-Tileset003.swf"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\34C44F19-5D2F-9794-AF6B-C5642F6E5E6F-Tileset003.json" --f
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\34C44F19-5D2F-9794-AF6B-C5642F6E5E6F-Tileset003.pmp"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\34C44F19-5D2F-9794-AF6B-C5642F6E5E6F-Tileset003.png" --f
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\355E4557-3416-D6C9-C9D5-C05F0E73842A-Tileset003.fla"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\355E4557-3416-D6C9-C9D5-C05F0E73842A-Tileset003.swf"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\566C3F6D-D23F-75E5-B83E-D9B1C4160E3C-X001.xmap"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\8B197937-767F-94B6-D3DE-4A262EB31DEC-Tileset003.fla"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\8B197937-767F-94B6-D3DE-4A262EB31DEC-Tileset003.swf"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.pmp"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\A8303412-E92E-7922-F235-DEE68D0CF526-Tileset002.pmp"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\B5032545-B9A0-B176-E705-8BB8CD87ACFE-Tileset003.fla"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\B5032545-B9A0-B176-E705-8BB8CD87ACFE-Tileset003.swf"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\E2144E8F-9CDC-3117-90E8-32D99E6B7F5D-Tileset003.fla"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\E2144E8F-9CDC-3117-90E8-32D99E6B7F5D-Tileset003.swf"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\FF361D80-FD2F-5EAE-820A-9BAE19E94BE3-Tileset001.fla"
+git rm "C:\Users\Jimmy Huey\git\pixi-engine\src\assets\Cows\Project\Common\FF361D80-FD2F-5EAE-820A-9BAE19E94BE3-Tileset001.swf"

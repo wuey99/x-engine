@@ -96,13 +96,8 @@
       <resource name="Tileset001" type=".fla" embed="false" path="common" src="FF361D80-FD2F-5EAE-820A-9BAE19E94BE3-Tileset001.fla" dst="FF361D80-FD2F-5EAE-820A-9BAE19E94BE3-Tileset001.swf">
         <classX name="Tileset001" regX="0" regY="0" width="32" height="32"/>
       </resource>
-      <resource name="#Tileset003" type=".pmp" embed="false" path="common" src="34C44F19-5D2F-9794-AF6B-C5642F6E5E6F-Tileset003.pmp" dst="34C44F19-5D2F-9794-AF6B-C5642F6E5E6F-Tileset003.pmp" tileXML="PGZsYT4NCTxtb3ZpZUNsaXAgY2xhc3NOYW1lPSJUaWxlc2V0MDAzIiB4PSIxMTY4IiB5PSI3NTIiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZHg9IjAiIGR5PSIwIiBjb2xzPSIxMiIgcm93cz0iMjgiIHJlZ1g9IjAiIHJlZ1k9IjAiLz4NPC9mbGE+"/>
-      <resource name="png_Tileset003" type=".png" embed="false" path="Common" src="34C44F19-5D2F-9794-AF6B-C5642F6E5E6F-Tileset003.png" dst="34C44F19-5D2F-9794-AF6B-C5642F6E5E6F-Tileset003.png"/>
-      <resource name="$Tileset003" type=".json" embed="false" path="Common" src="34C44F19-5D2F-9794-AF6B-C5642F6E5E6F-Tileset003.json" dst="34C44F19-5D2F-9794-AF6B-C5642F6E5E6F-Tileset003.json"/>
-      <resource name="Tileset003" type=".fla" embed="false" path="Common" src="8B197937-767F-94B6-D3DE-4A262EB31DEC-Tileset003.fla" dst="8B197937-767F-94B6-D3DE-4A262EB31DEC-Tileset003.swf">
-        <classX name="Tileset003" regX="0" regY="0" width="32" height="32"/>
-      </resource>
     </folder>
     <folder name="Levels"/>
+    <folder name="Tiles"/>
   </folder>
 </manifest>

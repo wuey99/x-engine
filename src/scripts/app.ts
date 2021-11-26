@@ -8,6 +8,7 @@ import { StreamingResource } from '../engine/resource/StreamingResource';
 import { MusicResource } from '../engine/resource/MusicResource';
 import { SoundResource } from '../engine/resource/SoundResource';
 import { SpriteSheetResource } from '../engine/resource/SpriteSheetResource';
+import { BlobResource } from '../engine/resource/BlobResource';
 import { ResourceSpec } from '../engine/resource/XResourceManager';
 import { XWorld } from '../engine/sprite/XWorld';
 import { XGameController } from '../engine/state/XGameController';
@@ -218,6 +219,7 @@ export class Main {
         g_XApp.getXProjectManager ().registerType ("SoundResource", SoundResource);
         g_XApp.getXProjectManager ().registerType ("StreamingResource", StreamingResource);
         g_XApp.getXProjectManager ().registerType ("MusicResource", MusicResource);
+        g_XApp.getXProjectManager ().registerType ("BlobResource", BlobResource);
 
         g_XApp.getXProjectManager ().setup (
             "assets/Common.xml",
