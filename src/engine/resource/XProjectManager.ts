@@ -183,7 +183,7 @@ export class XProjectManager {
                 if (__xml.attribute ("type") == ".as") {
                     __resources.push ({
                         name: __xml.attribute ("name"),
-                        type: "BlobResource",
+                        type: "XMapResource",
                         path: "assets/" + __xml.attribute ("path") + "/" + __xml.attribute ("dst").replace (".swf", ".zlib")
                     });
                 }
