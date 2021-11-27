@@ -1,0 +1,111 @@
+<XMap>
+	<XLayers>
+		<XLayer vy="389.48822087385463" currID="21" submapWidth="512" vh="1092.0402599441882" submapCols="64" submapRows="64" grid="false" scale="0.5430202729250174" vx="289.123643863807" regX="574.55" layer="0" visible="true" name="obj0" regY="2928.15" submapHeight="512" vw="1390.371663166715">
+			<imageClassNames/>
+			<classNames>
+				<className index="0" name="" count="0"/>
+				<className index="1" name="" count="0"/>
+			</classNames>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+		<XLayer vy="389.48822087385463" currID="2596" submapWidth="512" vh="1092.0402599441882" submapCols="64" submapRows="64" grid="true" scale="0.5430202729250174" vx="289.123643863807" regX="574.55" layer="1" visible="true" name="layer0" regY="2928.15" submapHeight="512" vw="1390.371663166715">
+			<imageClassNames>
+				<imageClassName name="Tileset001:Tileset001"/>
+			</imageClassNames>
+			<classNames>
+				<className index="0" name="" count="0"/>
+				<className index="1" name="Tileset001:Tileset001" count="472"/>
+			</classNames>
+			<items/>
+			<XSubmaps>
+				<XSubmap col="1" row="1">
+					<Tiles>
+						b021b002b003b004b005b006XXXXb008b017b018b019b020XXXXb022XXXXb024b033b034b035b036b037b038XXXXb040b049b050b051b052b053XXXXXXXXXXXXb065b066b067b068b069XXXXXXXXb072b081b082b083b084XXXXb086b087XXXXb097b098b099b100b101b102b103b104b113b114b115b116XXXXXXXXXXXXb120
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="2" row="1">
+					<Tiles>
+						b009b010XXXXb012b013b014XXXXXXXXXXXXb026XXXXb028XXXXb030XXXXXXXXb041b042XXXXb044b045b046XXXXXXXXb057XXXXXXXXXXXXb061XXXXXXXXXXXXXXXXb074XXXXb076b077b078XXXXXXXXb089XXXXb091XXXXb093XXXXXXXXXXXXb105XXXXb107XXXXXXXXXXXXXXXXXXXXb121XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="1" row="2">
+					<Tiles>
+						b129b130b131b132b133b134b135b136b145b146b147b148b149b150b151b152b161b162b163b164b165b166b167b168b177b178XXXXb180b181b182b183b184b193b194XXXXXXXXb197b198b199b200b209b210XXXXXXXXb213b214b215b216b225b226b227b228b229b230b231b232b241b242b243b244b245b246b247b248
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="2" row="2">
+					<Tiles>
+						b137b138b139b140XXXXb142b143b144XXXXb154b155b156XXXXb158b159b160XXXXb170b171b172XXXXb174b175b176XXXXXXXXXXXXXXXXXXXXb190b191XXXXXXXXXXXXXXXXXXXXXXXXb206b207XXXXb217b218b219b220b221b222b223b224XXXXb234b235b236b237b238b239b240XXXXb250b251b252b253b254b255b256
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="1" row="3">
+					<Tiles>
+						b257b258b259b260b261b262b263b264b273b274b275b276b277b278b279b280XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXb305b306b307b308b309b310XXXXb312b321b322b323b324b325b326XXXXb328b337b338b339b340b341b342XXXXb344b353b354b355b356b357XXXXXXXXXXXXb369b370b371b372b373XXXXXXXXb376
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="2" row="3">
+					<Tiles>
+						XXXXXXXXXXXXXXXXb269b270b271b272XXXXb282b283b284b285XXXXb287b288XXXXXXXXXXXXXXXXXXXXXXXXb303b304b313b314XXXXb316b317b318b319b320b329b330XXXXb332b333b334b335b336b345b346XXXXb348b349b350b351b352b361XXXXXXXXXXXXb365XXXXb367b368XXXXb378XXXXb380b381b382b383b384
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="1" row="4">
+					<Tiles>
+						b385b386b387b388XXXXb390b391XXXXb401b402b403b404b405b406b407b408b417b418b419b420XXXXXXXXXXXXb424b433b434b435b436b437b438b439b440b449b450b451b452b453b454b455b456b465b466b467b468b469b470b471b472b481b482XXXXb484b485b486b487b488b497b498XXXXXXXXb501b502b503b504
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="2" row="4">
+					<Tiles>
+						b393XXXXb395XXXXb397XXXXb399b400b409b410b411b412XXXXXXXXb415b416b425b426b427b428XXXXXXXXb431b432b441b442b443b444XXXXb446b447b447XXXXb458b459b460XXXXb462b463b464XXXXb474b475b476XXXXb478b479b480XXXXb490b491b492XXXXb494b495XXXXXXXXb506b507b508XXXXb510b511XXXX
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="1" row="5">
+					<Tiles>
+						b513b514XXXXXXXXb517b518b519b520b529b530b531b532b533b534b535b536b545b546b547b548b549b550b551b552b561b562b563b564b565b566b567b568b577b578b579b580b581b582b583b584b593b594b595b596b597b598b599b600b609b610b611b612b613b614b615b616XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="2" row="5">
+					<Tiles>
+						b521b522b523b524b525b526b527b528XXXXb538b539b540b541b542b543b544XXXXb554b555b556b557b558b559b560XXXXXXXXXXXXXXXXb573b574b575b576XXXXb586b587b588b589XXXXXXXXXXXXb601b602b603b604b605b606b607b608b617b618b619b620b621b622b623b624XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+					</Tiles>
+				</XSubmap>
+			</XSubmaps>
+		</XLayer>
+		<XLayer vy="389.48822087385463" currID="0" submapWidth="512" vh="1092.0402599441882" submapCols="64" submapRows="64" grid="false" scale="0.5430202729250174" vx="289.123643863807" regX="574.55" layer="2" visible="true" name="obj1" regY="2928.15" submapHeight="512" vw="1390.371663166715">
+			<imageClassNames/>
+			<classNames/>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+		<XLayer vy="389.48822087385463" currID="0" submapWidth="512" vh="1092.0402599441882" submapCols="64" submapRows="64" grid="true" scale="0.5430202729250174" vx="289.123643863807" regX="574.55" layer="3" visible="true" name="layer1" regY="2928.15" submapHeight="512" vw="1390.371663166715">
+			<imageClassNames/>
+			<classNames/>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+		<XLayer vy="389.48822087385463" currID="0" submapWidth="512" vh="1092.0402599441882" submapCols="64" submapRows="64" grid="false" scale="0.5430202729250174" vx="289.123643863807" regX="574.55" layer="4" visible="true" name="obj2" regY="2928.15" submapHeight="512" vw="1390.371663166715">
+			<imageClassNames/>
+			<classNames/>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+		<XLayer vy="389.48822087385463" currID="0" submapWidth="512" vh="1092.0402599441882" submapCols="64" submapRows="64" grid="true" scale="0.5430202729250174" vx="289.123643863807" regX="574.55" layer="5" visible="true" name="layer2" regY="2928.15" submapHeight="512" vw="1390.371663166715">
+			<imageClassNames/>
+			<classNames/>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+		<XLayer vy="389.48822087385463" currID="0" submapWidth="512" vh="1092.0402599441882" submapCols="64" submapRows="64" grid="false" scale="0.5430202729250174" vx="289.123643863807" regX="574.55" layer="6" visible="true" name="obj3" regY="2928.15" submapHeight="512" vw="1390.371663166715">
+			<imageClassNames/>
+			<classNames/>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+		<XLayer vy="389.48822087385463" currID="0" submapWidth="512" vh="1092.0402599441882" submapCols="64" submapRows="64" grid="true" scale="0.5430202729250174" vx="289.123643863807" regX="574.55" layer="7" visible="true" name="layer3" regY="2928.15" submapHeight="512" vw="1390.371663166715">
+			<imageClassNames/>
+			<classNames/>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+	</XLayers>
+</XMap>

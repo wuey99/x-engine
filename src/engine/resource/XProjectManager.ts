@@ -180,6 +180,14 @@ export class XProjectManager {
 
                 console.log (": ", __xml.attribute ("name").startsWith ("$"));
 
+                if (__xml.attribute ("type") == ".as") {
+                    __resources.push ({
+                        name: __xml.attribute ("name"),
+                        type: "BlobResource",
+                        path: "assets/" + __xml.attribute ("path") + "/" + __xml.attribute ("dst").replace (".swf", ".zlib")
+                    });
+                }
+
                 if (__xml.attribute ("name").startsWith ("$")) {
                     __resources.push ({
                         name: __xml.attribute ("name").substr (1),

@@ -93,11 +93,20 @@
     </folder>
     <folder name="tilesets">
       <resource name="#Tileset001" type=".pmp" embed="false" path="common" src="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.pmp" dst="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.pmp" tileXML="PGZsYT4NCTxtb3ZpZUNsaXAgY2xhc3NOYW1lPSJUaWxlc2V0MDAxIiB4PSI2NCIgeT0iNjQiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZHg9IjAiIGR5PSIwIiBjb2xzPSIxNiIgcm93cz0iMzkiIHJlZ1g9IjAiIHJlZ1k9IjAiLz4NPC9mbGE+"/>
-      <resource name="Tileset001" type=".fla" embed="false" path="common" src="FF361D80-FD2F-5EAE-820A-9BAE19E94BE3-Tileset001.fla" dst="FF361D80-FD2F-5EAE-820A-9BAE19E94BE3-Tileset001.swf">
+      <resource name="png_Tileset001" type=".png" embed="false" path="Common" src="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.png" dst="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.png"/>
+      <resource name="$Tileset001" type=".json" embed="false" path="Common" src="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.json" dst="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.json"/>
+      <resource name="Tileset001" type=".fla" embed="false" path="Common" src="FF361D80-FD2F-5EAE-820A-9BAE19E94BE3-Tileset001.fla" dst="FF361D80-FD2F-5EAE-820A-9BAE19E94BE3-Tileset001.swf">
         <classX name="Tileset001" regX="0" regY="0" width="32" height="32"/>
       </resource>
     </folder>
-    <folder name="Levels"/>
-    <folder name="Tiles"/>
+    <folder name="Levels">
+      <resource name="@Test001" type=".xmap" path="Common" src="2F37B559-F935-9AE0-FAD2-574DD88E84FA-Test001.xmap" dst="2F37B559-F935-9AE0-FAD2-574DD88E84FA-Test001.swf" embed="false"/>
+      <resource name="Test001" type=".as" embed="false" path="Common" src="398A30F2-E1D7-A465-5CAD-BC7DB4E44085-Test001.as" dst="398A30F2-E1D7-A465-5CAD-BC7DB4E44085-Test001.swf">
+        <classX name="Test001" regX="0" regY="0" width="32" height="32"/>
+      </resource>
+    </folder>
+    <folder name="Tiles">
+      <resource name="@AllTiles" type=".xmap" path="common" src="17C7F31E-09B6-9DCA-F349-EFA1C4A1E6E6-AllTiles.xmap" dst="17C7F31E-09B6-9DCA-F349-EFA1C4A1E6E6-AllTiles.swf" embed="false"/>
+    </folder>
   </folder>
 </manifest>

@@ -82,6 +82,8 @@ export class TestGame extends XState {
 				XTask.RETN,
 			]);
 
+		console.log (": Test001: ", this.m_XApp.getResourceByName ("Test001"));
+
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
 		__leader.afterSetup ([]);
 
