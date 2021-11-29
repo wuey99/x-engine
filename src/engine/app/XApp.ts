@@ -52,6 +52,7 @@ import { XSubTextureManager } from '../texture/XSubTextureManager';
 import { MovieClipMetadata } from '../texture/MovieClipMetaData';
 import { XMapItemModel } from '../xmap/XMapItemModel';
 import { XSpriteLayer } from '../sprite/XSpriteLayer';
+import { XMapModel } from '../xmap/XMapModel';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -177,11 +178,13 @@ export class XApp {
 		XTask.setXApp (this);
 		// TODO XTilemap.setXApp (this);
 		XSprite.setXApp (this);
+        XMapModel.setXApp (this);
 		// TODO XTextureManager.setXApp (this);
 		// TODO XTileSubTextureManager.setXApp (this);
         // TODO XSubTextureManager.setXApp (this);
         XGameInstance.setXApp (this);
         MovieClipMetadata.setXApp (this);
+
         G.XApp = this;
         
         this.__initPoolManagers (this.getDefaultPoolSettings ());

@@ -93,7 +93,7 @@ export class XState extends XGameObject {
 
 		var i:number;
 
-		for (i=0; i<XWorld.MAX_LAYERS; i++) {
+		for (i=0; i < this.world.MAX_LAYERS; i++) {
 			var __x:number = 0;
 			var __y:number = 0;
 

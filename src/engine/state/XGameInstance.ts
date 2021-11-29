@@ -92,6 +92,18 @@ export class XGameInstance {
 	}
             
 	//------------------------------------------------------------------------------------------
+	public getMaskAlpha ():number {
+		return 1.0;
+		
+		// return 1.0 - m_mask.alpha;
+	}
+		
+	//------------------------------------------------------------------------------------------
+	public setMaskAlpha (__alpha:number):void {
+		// m_mask.alpha = 1.0 - Math.min (1.0, __alpha);
+	}
+
+	//------------------------------------------------------------------------------------------
 	public registerState (__name:string, __class:any):void {
 		if (!this.m_states.has (__name)) {
 			this.m_states.set (__name, __class);

@@ -49,11 +49,11 @@ import { XSoundManager } from '../sound/XSoundManager';
 import { XRect } from '../geom/XRect';
 import { XObjectCollisionList } from '../collision/XObjectCollisionList';
 import { XObjectCollisionManager } from '../collision/XObjectCollisionManager';
+import { XMapModel } from '../xmap/XMapModel';
 
 //------------------------------------------------------------------------------------------
 export class XWorld extends XSprite {
  
-    public static MAX_LAYERS:number;
     public m_layers:Array<XSpriteLayer>;
     public m_XApp:XApp;
 
@@ -81,6 +81,9 @@ export class XWorld extends XSprite {
     public static readonly SPRITE_LAYER:number = 0;
     public static readonly SPRITE_XDEPTHSPRITE:number = 1;
 
+    public m_XMapModel:XMapModel;
+    public MAX_LAYERS:number;
+
     //------------------------------------------------------------------------------------------
     constructor (__parent:any, __XApp:XApp, __layers:number = 8, __timerInterval:number = 32) {
         super ();
@@ -97,17 +100,17 @@ export class XWorld extends XSprite {
         graphics.scale.y = 4.0;
         this.addChild (graphics);
        
-        XWorld.MAX_LAYERS = __layers;
+        this.MAX_LAYERS = __layers;
 
         this.m_layers = new Array<XSpriteLayer> ();
 
         var i:number;
 
-        for (i = 0; i < XWorld.MAX_LAYERS; i++ ) {
+        for (i = 0; i < this.MAX_LAYERS; i++ ) {
             this.m_layers.push (null);
         }
     
-        for (i = 0; i < XWorld.MAX_LAYERS; i++) {
+        for (i = 0; i < this.MAX_LAYERS; i++) {
             this.__createLayer (i);
         }
     
@@ -160,7 +163,7 @@ export class XWorld extends XSprite {
         
         var i:number;
 
-        for (i = 0; i < XWorld.MAX_LAYERS; i++) {
+        for (i = 0; i < this.MAX_LAYERS; i++) {
             this.m_layers[i].cleanup ();
             this.removeChild (this.m_layers[i]);
         }
@@ -187,7 +190,7 @@ export class XWorld extends XSprite {
     public resetLayers ():void {
         var i:number;
 
-        for (i=0; i < XWorld.MAX_LAYERS; i++) {
+        for (i=0; i < this.MAX_LAYERS; i++) {
             var __layer:XSpriteLayer = this.getLayer (i);
             __layer.x = 0;
             __layer.y = 0;
@@ -200,7 +203,7 @@ export class XWorld extends XSprite {
     public update ():void {
         var i:number;
 
-        for (i = 0; i < XWorld.MAX_LAYERS; i++) {
+        for (i = 0; i < this.MAX_LAYERS; i++) {
             this.m_layers[i].depthSort ();
         }
         
@@ -453,7 +456,17 @@ export class XWorld extends XSprite {
 
     //------------------------------------------------------------------------------------------
     public getMaxLayers ():number {
-        return XWorld.MAX_LAYERS;
+        return this.MAX_LAYERS;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public setXMapModel (__XMapModel:XMapModel):void {
+        this.m_XMapModel = __XMapModel;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getXMapModel ():XMapModel {
+        return this.m_XMapModel;
     }
 
     //------------------------------------------------------------------------------------------

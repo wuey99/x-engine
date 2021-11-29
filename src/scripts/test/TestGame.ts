@@ -23,6 +23,7 @@ import { XTextButton } from '../../engine/ui/XTextButton';
 import { XTextSpriteButton } from '../../engine/ui/XTextSpriteButton';
 import { XTextSprite } from '../../engine/sprite/XTextSprite';
 import { TextInput } from 'pixi-textinput-v5';
+import { XLevel } from '../../engine/level/XLevel';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
@@ -83,6 +84,10 @@ export class TestGame extends XState {
 			]);
 
 		console.log (": Test001: ", this.m_XApp.getResourceByName ("Test001"));
+
+		var __level:XLevel = this.addGameObjectAsChild (XLevel, 0, 0.0, false) as XLevel;
+		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test001"));
+		__level.afterSetup ([__levelXML]);
 
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
 		__leader.afterSetup ([]);
