@@ -95,10 +95,9 @@
             super.afterSetup (__params);
 
 			this.m_poolManager = __params[0];
-	
 			this.m_scaleFactor = __params[1];
 			
-			// TODO this.createSprites ();
+			this.createSprites ();
 			
 			this.tempRect = this.world.getXRectPoolManager ().borrowObject () as XRect;
 			this.tempPoint = this.world.getXPointPoolManager ().borrowObject () as XPoint;

@@ -66,11 +66,9 @@
     public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 
-        /* TODO
         this.m_XMapView = __params[0];
         this.m_XMapModel = __params[1];
         this.m_currLayer = __params[2];
-        */
 
         this.m_XSubmapToXLogicObject = new Map<XSubmapModel, XGameObject> ();
         
@@ -168,26 +166,27 @@
 						]
 					) */ /* as XSubmapViewCache */;
 
-                __logicObject = this.addPooledGameObjectAsChild (
-                    null, // TODO
+                __logicObject = this.m_XMapView.addPooledGameObjectAsChild (
+                    XSubmapViewCache, // TODO
                     this.m_currLayer,
                     __depth,
                     true
                 ) as XSubmapViewCache;
 
                 __logicObject.afterSetup ([
-                    this.m_XMapView.getSubmapBitmapPoolManager () // TODO
+                    this.m_XMapView.getSubmapBitmapPoolManager (), // TODO
+					1.0
                 ]);
 
                 __logicObject.x = __submap.x;
                 __logicObject.y = __submap.y;
-                __logicObject.scale.x = 1.0;
+                __logicObject.scale.x = __logicObject.scale.y = 1.0;
                 __logicObject.angle = 0;
 		}
 			
 		__submap.inuse++;
 			
-		// this.m_XMapView.addXLogicObject (__logicObject);
+		// TODO this.m_XMapView.addXLogicObject (__logicObject);
 			
 		this.m_XSubmapToXLogicObject.set (__submap, __logicObject);
 			

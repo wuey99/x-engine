@@ -60,6 +60,8 @@ export class XGameInstance {
 	public m_triggerXSignal:XSignal;
 	public m_pingSignal:XSignal;
 
+	public m_logicClassNameToClass:Map<string, any>;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
         this.m_states = new Map<string, any> ();
@@ -72,6 +74,8 @@ export class XGameInstance {
 		this.m_triggerSignal = new XSignal ();
 		this.m_triggerXSignal = new XSignal ();
 		this.m_pingSignal = new XSignal ();
+
+		this.m_logicClassNameToClass = new Map<string, any> ();
 	}
 	
 //------------------------------------------------------------------------------------------
@@ -117,6 +121,16 @@ export class XGameInstance {
 		}
 	}
 		
+	//------------------------------------------------------------------------------------------
+	public initLogicClassNames (__array:Array<any>):void {
+		this.m_logicClassNameToClass = XType.array2XDict (__array);	
+	}
+		
+	//------------------------------------------------------------------------------------------
+	public logicClassNameToClass (__logicClassName:string):any {
+		return this.m_logicClassNameToClass.get (__logicClassName.replace ("$", "__"));
+	}
+
 	//------------------------------------------------------------------------------------------
 	public getGameStateObject ():XState {
 		return this.m_gameStateObject;

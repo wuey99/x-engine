@@ -2021,6 +2021,10 @@ export class XGameObject extends PIXI.Sprite {
 		return this.m_attachedMatterBody;
 	}
 	
+//------------------------------------------------------------------------------------------	
+	public createSprites ():void {
+	}
+
 //------------------------------------------------------------------------------------------
 	public show ():void {
 		this.visible = true;

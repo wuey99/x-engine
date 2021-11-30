@@ -175,6 +175,7 @@ export class XWorld extends XSprite {
     //------------------------------------------------------------------------------------------
     public clearCollisions ():void {
         this.m_XBulletCollisionManager.clearCollisions ();
+        this.m_XObjectCollisionManager.clearCollisions ();
     }
     
     //------------------------------------------------------------------------------------------

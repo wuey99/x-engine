@@ -41,8 +41,6 @@ import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { XState } from '../../engine/state/XState';
 import { GUID } from '../../engine/utils/GUID';
 import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
-import * as SFS2X from "sfs2x-api";
-import { SFSManager } from '../../engine/sfs/SFSManager';
 import { XButton } from '../../engine/ui/XButton';
 import { XSpriteButton } from '../../engine/ui/XSpriteButton';
 import { XTextButton } from '../../engine/ui/XTextButton';

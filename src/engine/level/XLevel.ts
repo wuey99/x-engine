@@ -40,6 +40,7 @@
     import { XWorld } from '../sprite/XWorld';
     import { XMapView } from '../xmap/XMapView';
     import { XMapLayerView } from '../xmap/XMapLayerView';
+    import { XMapLayerCachedView } from '../xmap/XMapLayerCachedView';
     import { XTask } from '../task/XTask';
     import { XPoint } from '../geom/XPoint';
     import { XRect } from '../geom/XRect';
@@ -157,7 +158,26 @@
 				);
 				
 				addXLogicObject (m_layerView[i+0]);
-				
+			*/
+
+			this.m_layerView[i+0] = this.addGameObjectAsChild (
+				XMapLayerView,
+				0, 1000.0,
+				false
+			) as XMapLayerView;
+
+			this.m_layerView[i+0].afterSetup ([
+					// XMapView
+					this,
+					// XMapModel
+					this.m_XMapModel,
+					// layer
+					i + 0,
+					// logicClassNameToClass
+					G.appX.logicClassNameToClass
+			]);
+
+			/* TODO
 				m_layerView[i+1] = cast xxx.getXLogicManager ().initXLogicObject (
 					// parent
 					this,
@@ -180,7 +200,22 @@
 				);
 				
 				addXLogicObject (m_layerView[i+1]);	
-            */				
+            */
+				this.m_layerView[i+1] = this.addGameObjectAsChild (
+					XMapLayerCachedView,
+					0, 1000.0 - 1,
+					false
+				) as XMapLayerCachedView;
+				
+				this.m_layerView[i+1].afterSetup ([
+					// XMapView
+					this,
+					// XMapModel
+					this.m_XMapModel,
+					// layer
+					i + 1
+				]);
+
 				i += 2;
 			}
 			

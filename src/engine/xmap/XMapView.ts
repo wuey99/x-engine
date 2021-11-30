@@ -41,11 +41,11 @@
 
 //------------------------------------------------------------------------------------------	
 	export class XMapView extends XGameObject {
-		private m_XMapModel:XMapModel;
-		private m_submapBitmapPoolManager:XObjectPoolManager;
-		private m_subTextureManager:XSubTextureManager;
-		private m_textureManagerName:String;
-		private m_imageNamesCached:boolean;
+		public m_XMapModel:XMapModel;
+		public m_submapBitmapPoolManager:XObjectPoolManager;
+		public m_subTextureManager:XSubTextureManager;
+		public m_textureManagerName:String;
+		public m_imageNamesCached:boolean;
 				
 //------------------------------------------------------------------------------------------
 		public constructor () {

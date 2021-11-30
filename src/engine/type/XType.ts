@@ -96,7 +96,22 @@ export class XType {
 	public static parseFloat (__val:string):number {
 		return parseFloat (__val);
     }
-        
+       
+	//------------------------------------------------------------------------------------------
+	public static array2XDict (__array:Array<any> ):Map<string, any> {
+			var __dict:Map<string, any> = new Map<string, any> ();
+			
+			var i:number = 0;
+			
+			while (i < __array.length) {
+				__dict.set (__array[i+0], __array[i+1]);
+				
+				i += 2;
+			}		
+			
+			return __dict;
+	}
+
 	//------------------------------------------------------------------------------------------
 	public static trim (__string:string):string {
         return __string.trim ();

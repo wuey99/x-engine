@@ -180,9 +180,8 @@
                     ) as XGameObjectCX;
 
                     __logicObject.afterSetup ([
-                        // TODO
-                        // __item.imageClassName
-                        // __item.frame
+                        __item.imageClassName,
+                        __item.frame
                     ]);
 
                     __logicObject.x = __item.x;
@@ -204,9 +203,8 @@
                     ) as XGameObjectCX;
                     
                     __logicObject.afterSetup ([
-                        // TODO
-                        // __item.imageClassName
-                        // __item.frame
+                        __item.imageClassName,
+                        __item.frame
                     ]);
 
                     __logicObject.x = __item.x;
