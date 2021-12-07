@@ -25,6 +25,7 @@
 // SOFTWARE.
 // <$end$/>
 //------------------------------------------------------------------------------------------
+	import * as PIXI from 'pixi.js-legacy';
     import { XApp } from '../app/XApp';
     import { XMapLayerModel } from '../xmap/XMapLayerModel';
     import { XSubObjectPoolManager } from '../pool/XSubObjectPoolManager';
@@ -133,40 +134,40 @@
 			var i:number = 0;
 			
 			while (i < this.m_maxLayers) {
-            /* TODO
-				this.m_layerView[i+0] = cast xxx.getXLogicManager ().initXLogicObject (
-					// parent
-					this,
-					// logicObject
-					cast new XMapLayerView (),
-					// item, layer, depth
-					null, 0, 1000,
-					// x, y, z
-					0, 0, 0,
-					// scale, rotation
-					1.0, 0,
-					[
-						// XMapView
+				/* TODO
+					this.m_layerView[i+0] = cast xxx.getXLogicManager ().initXLogicObject (
+						// parent
 						this,
-						// XMapModel
-						m_XMapModel,
-						// layer
-						i + 0,
-						// logicClassNameToClass
-						GX.appX.logicClassNameToClass
-					]
-				);
-				
-				addXLogicObject (m_layerView[i+0]);
-			*/
+						// logicObject
+						cast new XMapLayerView (),
+						// item, layer, depth
+						null, 0, 1000,
+						// x, y, z
+						0, 0, 0,
+						// scale, rotation
+						1.0, 0,
+						[
+							// XMapView
+							this,
+							// XMapModel
+							m_XMapModel,
+							// layer
+							i + 0,
+							// logicClassNameToClass
+							GX.appX.logicClassNameToClass
+						]
+					);
+					
+					addXLogicObject (m_layerView[i+0]);
+				*/
 
-			this.m_layerView[i+0] = this.addGameObjectAsChild (
-				XMapLayerView,
-				0, 1000.0,
-				false
-			) as XMapLayerView;
+				this.m_layerView[i+0] = this.addGameObjectAsChild (
+					XMapLayerView,
+					0, 1000.0,
+					false
+				) as XMapLayerView;
 
-			this.m_layerView[i+0].afterSetup ([
+				this.m_layerView[i+0].afterSetup ([
 					// XMapView
 					this,
 					// XMapModel
@@ -175,38 +176,39 @@
 					i + 0,
 					// logicClassNameToClass
 					G.appX.logicClassNameToClass
-			]);
+				]);
 
-			/* TODO
-				m_layerView[i+1] = cast xxx.getXLogicManager ().initXLogicObject (
-					// parent
-					this,
-					// logicObject
-					cast new XMapLayerCachedView (),
-					// item, layer, depth
-					null, 0, 1000,
-					// x, y, z
-					0, 0, 0,
-					// scale, rotation
-					1.0, 0,
-					[
-						// XMapView
+				/* TODO
+					m_layerView[i+1] = cast xxx.getXLogicManager ().initXLogicObject (
+						// parent
 						this,
-						// XMapModel
-						m_XMapModel,
-						// layer
-						i + 1
-					]
-				);
-				
-				addXLogicObject (m_layerView[i+1]);	
-            */
+						// logicObject
+						cast new XMapLayerCachedView (),
+						// item, layer, depth
+						null, 0, 1000,
+						// x, y, z
+						0, 0, 0,
+						// scale, rotation
+						1.0, 0,
+						[
+							// XMapView
+							this,
+							// XMapModel
+							m_XMapModel,
+							// layer
+							i + 1
+						]
+					);
+					
+					addXLogicObject (m_layerView[i+1]);	
+				*/
+
 				this.m_layerView[i+1] = this.addGameObjectAsChild (
 					XMapLayerCachedView,
 					0, 1000.0 - 1,
 					false
 				) as XMapLayerCachedView;
-				
+					
 				this.m_layerView[i+1].afterSetup ([
 					// XMapView
 					this,
@@ -219,6 +221,13 @@
 				i += 2;
 			}
 			
+			var __graphics:PIXI.Graphics = new PIXI.Graphics ();
+			__graphics.beginFill (0xffa0a0);
+			__graphics.drawRect (0, 0, this.world.getViewRect ().width, this.world.getViewRect ().height);
+			__graphics.endFill ()
+
+			this.addSpriteAsChild (__graphics, 0, 0, 0, 0.0, true);
+
 			this.show ();
 		}
 
@@ -234,8 +243,8 @@
 		
 //------------------------------------------------------------------------------------------
 		public scrollTo (__layer:number, __x:number, __y:number):void {
-			this.m_layerPos[__layer].x = __x;
-			this.m_layerPos[__layer].y = __y;
+			this.m_layerPos[__layer].x = __x / 2;
+			this.m_layerPos[__layer].y = __y / 2;
 		}
 
 //------------------------------------------------------------------------------------------
@@ -246,7 +255,7 @@
 				this.m_layerPos[i].copy2 (this.m_layerScroll[i]);
 				
 				this.m_layerScroll[i].x += this.m_layerShake[i].x;
-				this.m_layerScroll[i].y +=this. m_layerShake[i].y;
+				this.m_layerScroll[i].y += this. m_layerShake[i].y;
 				
 				this.world.getXWorldLayer (i).setPos (this.m_layerScroll[i]);
 			}

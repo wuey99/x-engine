@@ -83,6 +83,8 @@ export class XState extends XGameObject {
 
 //------------------------------------------------------------------------------------------
 	public resize ():void {
+		return;
+		
 		this.m_XApp.getRenderer ().resize (this.m_XApp.getWindowWidth (), this.m_XApp.getWindowHeight ());
 
 		//------------------------------------------------------------------------------------------

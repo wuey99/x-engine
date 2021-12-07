@@ -231,7 +231,7 @@ export class EnemyX extends XGameObject {
         __ticks:number
         ):void {
         
-        console.log (": startSplineMovement: ");
+        // console.log (": startSplineMovement: ");
         
         this.m_startPos.x = __startX;
         this.m_startPos.y = __startY;

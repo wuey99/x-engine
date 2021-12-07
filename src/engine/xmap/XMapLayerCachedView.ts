@@ -44,6 +44,7 @@
     import { XPoint } from '../geom/XPoint';
     import { XMapLayerView } from './XMapLayerView';
     import { XSubmapViewCache } from './XSubmapViewCache';
+    import { XSubmapViewTilemapCache } from './XSubmapViewTilemapCache';
 
 //------------------------------------------------------------------------------------------
 	export class XMapLayerCachedView extends XMapLayerView {
@@ -83,11 +84,11 @@
     }
 
 //------------------------------------------------------------------------------------------
-	public updateFromXMapModel ():void {		
+	public updateFromXMapModel ():void {
 		var __view:XRect = this.world.getXWorldLayer (this.m_currLayer).viewPort (
 			this.world.getViewRect ().width, this.world.getViewRect ().height
 		);
-
+		
 		this.updateFromXMapModelAtRect (__view);
 	}
 		
@@ -99,7 +100,7 @@
 			
 		if (this.m_delay > 0) {
 			this.m_delay--;
-				
+
 			return;
 		}
 
@@ -112,6 +113,8 @@
 			__view.right, __view.bottom
 		);
 			
+		console.log (": XMapLayerCachedView: updateFromXMapModel: ", __view, this.m_currLayer);
+
 //------------------------------------------------------------------------------------------
 		var __submap:XSubmapModel;
 			
@@ -120,6 +123,8 @@
 		for (i = 0; i < __submaps.length; i++) {
 			__submap = __submaps[i] as XSubmapModel;
 				
+			console.log (": XSubmap: ", i, __submap.x, __submap.y);
+
 			this.updateXSubmapModel (__submap);
 		}
 	}
@@ -142,7 +147,7 @@
 		
 //------------------------------------------------------------------------------------------
 	public addXSubmap (__submap:XSubmapModel, __depth:number):void {
-//		trace (": addXSubmap: ", __submap.x, __submap.y);
+		console.log (": addXSubmap: ", __submap.x, __submap.y);
 			
 		var __logicObject:XSubmapViewCache;
 			
@@ -167,11 +172,11 @@
 					) */ /* as XSubmapViewCache */;
 
                 __logicObject = this.m_XMapView.addPooledGameObjectAsChild (
-                    XSubmapViewCache, // TODO
+                    XSubmapViewTilemapCache,
                     this.m_currLayer,
                     __depth,
                     true
-                ) as XSubmapViewCache;
+                ) as XSubmapViewTilemapCache;
 
                 __logicObject.afterSetup ([
                     this.m_XMapView.getSubmapBitmapPoolManager (), // TODO
@@ -185,9 +190,7 @@
 		}
 			
 		__submap.inuse++;
-			
-		// TODO this.m_XMapView.addXLogicObject (__logicObject);
-			
+				
 		this.m_XSubmapToXLogicObject.set (__submap, __logicObject);
 			
 		__logicObject.setModel (__submap);

@@ -64,17 +64,17 @@
 // 3) possibly large set-up times (each Submap is 512 x 512 pixels by default)
 //------------------------------------------------------------------------------------------
 	export class XSubmapViewCache extends XGameObject {
-		private m_poolManager:XObjectPoolManager;
-		private m_submapModel:XSubmapModel;
+		public m_poolManager:XObjectPoolManager;
+		public m_submapModel:XSubmapModel;
 		
-		private x_sprite:XDepthSprite;
+		public x_sprite:XDepthSprite;
 	
-		private tempRect:XRect;
-		private tempPoint:XPoint;
+		public tempRect:XRect;
+		public tempPoint:XPoint;
 
-		private m_delay:number;
+		public m_delay:number;
 		
-		private m_scaleFactor:number;
+		public m_scaleFactor:number;
 		
 //------------------------------------------------------------------------------------------	
 		public constructor () {

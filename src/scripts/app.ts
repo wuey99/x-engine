@@ -200,7 +200,7 @@ export class Main {
 
 //------------------------------------------------------------------------------------------
     public render () {
-        console.log (": render: ");
+        // console.log (": render: ");
 
         if (g_XApp.renderer == null) {
             return;

@@ -142,7 +142,7 @@ export class XWorld extends XSprite {
         this.m_layers[i] = new XSpriteLayer ();
         this.m_layers[i].setup ();
         this.m_layers[i].world = this;
-        this.addChild (this .m_layers[i]);
+        this.addChild (this.m_layers[i]);
     }
     
 	//------------------------------------------------------------------------------------------

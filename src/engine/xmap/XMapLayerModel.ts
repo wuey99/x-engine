@@ -498,7 +498,7 @@
 			var __c:number;
 			
 			for (__r = __r1; __r < __r2+1; __r++) {
-						for (__c = __c1; __c < __c2+1; __c++) {
+				for (__c = __c1; __c < __c2+1; __c++) {
 					this.m_XSubmaps[__r][__c].removeItem (__item);
 				}
 			}
@@ -516,9 +516,9 @@
 		
 //------------------------------------------------------------------------------------------
 		public getSubmapsAt (
-				__x1:number, __y1:number,
-				__x2:number, __y2:number
-				):Array<XSubmapModel> {
+			__x1:number, __y1:number,
+			__x2:number, __y2:number
+			):Array<XSubmapModel> {
 					
 			var __c1:number, __r1:number, __c2:number, __r2:number;
 	
@@ -553,9 +553,9 @@
 		
 //------------------------------------------------------------------------------------------
 		public getItemsAt (
-				__x1:number, __y1:number,
-				__x2:number, __y2:number
-				):Array<XMapItemModel> /* <XMapItemModel> */ {
+			__x1:number, __y1:number,
+			__x2:number, __y2:number
+			):Array<XMapItemModel> /* <XMapItemModel> */ {
 			
 			if (this.useArrayItems) {
 				return this.getArrayItemsAt (__x1, __y1, __x2, __y2);
@@ -653,9 +653,9 @@
 		
 //------------------------------------------------------------------------------------------
 		public getItemsAtCX (
-				__x1:number, __y1:number,
-				__x2:number, __y2:number
-				):Array<XMapItemModel> {
+			__x1:number, __y1:number,
+			__x2:number, __y2:number
+			):Array<XMapItemModel> {
 			
 			if (this.useArrayItems) {
 				return this.getArrayItemsAtCX (__x1, __y1, __x2, __y2);

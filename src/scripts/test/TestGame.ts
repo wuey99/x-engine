@@ -89,6 +89,31 @@ export class TestGame extends XState {
 		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test001"));
 		__level.afterSetup ([__levelXML]);
 
+		__level.x = 64;
+		__level.y = 64;
+
+		var __x:number = 0;
+		var __y:number = 0;
+		
+		this.addTask ([
+			XTask.LABEL, "loop",
+				XTask.WAIT, 0x0100,
+				
+				XTask.FLAGS, (__task:XTask) => {
+					__level.scrollTo (1, -__x, -__y);
+					__level.updateScroll ();
+					__level.updateFromXMapModel ();
+					__x += 1;
+					__y += 1;
+
+					__task.ifTrue (__x == 1536);
+				}, XTask.BNE, "loop",
+
+				// XTask.GOTO, "loop",
+
+			XTask.RETN,
+		]);
+
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
 		__leader.afterSetup ([]);
 
