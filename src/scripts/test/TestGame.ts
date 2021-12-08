@@ -169,7 +169,7 @@ export class TestGame extends XState {
 			false,
 			"center", "center"
 		]);
-		__testButton3.x = 1924;
+		__testButton3.x = 2732 - 260;
 		__testButton3.y = 512;
 
 		var __textSprite:XTextSprite = this.createXTextSprite (
