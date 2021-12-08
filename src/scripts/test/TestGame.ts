@@ -89,8 +89,8 @@ export class TestGame extends XState {
 		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test001"));
 		__level.afterSetup ([__levelXML]);
 
-		__level.x = 64;
-		__level.y = 64;
+		__level.x = 0;
+		__level.y = 0;
 
 		var __x:number = 0;
 		var __y:number = 0;

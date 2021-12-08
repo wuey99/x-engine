@@ -55,6 +55,7 @@ import { XMapModel } from '../xmap/XMapModel';
 export class XWorld extends XSprite {
  
     public m_layers:Array<XSpriteLayer>;
+    public m_layerContainers:Array<PIXI.Sprite>;
     public m_XApp:XApp;
 
     public m_hudLayer:XSpriteLayer;
@@ -103,11 +104,13 @@ export class XWorld extends XSprite {
         this.MAX_LAYERS = __layers;
 
         this.m_layers = new Array<XSpriteLayer> ();
+        this.m_layerContainers = new Array<PIXI.Sprite> ();
 
         var i:number;
 
         for (i = 0; i < this.MAX_LAYERS; i++ ) {
             this.m_layers.push (null);
+            this.m_layerContainers.push (null);
         }
     
         for (i = 0; i < this.MAX_LAYERS; i++) {
@@ -139,10 +142,12 @@ export class XWorld extends XSprite {
 
 	//------------------------------------------------------------------------------------------
      __createLayer (i:number):void {
+        this.m_layerContainers[i] = new PIXI.Sprite ();
         this.m_layers[i] = new XSpriteLayer ();
         this.m_layers[i].setup ();
         this.m_layers[i].world = this;
-        this.addChild (this.m_layers[i]);
+        this.m_layerContainers[i].addChild (this.m_layers[i]);
+        this.addChild (this.m_layerContainers[i]);
     }
     
 	//------------------------------------------------------------------------------------------
@@ -478,6 +483,11 @@ export class XWorld extends XSprite {
     //------------------------------------------------------------------------------------------
     public getXWorldLayer (__layer:number):XSpriteLayer {
         return this.m_layers[__layer];
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getLayerContainer (__layer:number):PIXI.Sprite {
+        return this.m_layerContainers[__layer];
     }
 
 //------------------------------------------------------------------------------------------

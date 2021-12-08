@@ -83,8 +83,6 @@ export class XState extends XGameObject {
 
 //------------------------------------------------------------------------------------------
 	public resize ():void {
-		return;
-		
 		this.m_XApp.getRenderer ().resize (this.m_XApp.getWindowWidth (), this.m_XApp.getWindowHeight ());
 
 		//------------------------------------------------------------------------------------------
@@ -116,7 +114,7 @@ export class XState extends XGameObject {
 
 //------------------------------------------------------------------------------------------
 	public scaleLayer (__layerNum:number, __x:number, __scaleX:number, __y:number, __scaleY:number):void {
-		var __layer:XSpriteLayer = this.world.getLayer (__layerNum);
+		var __layer:PIXI.Sprite = this.world.getLayerContainer (__layerNum);
 
 		__layer.x = __x;
 		__layer.y = __y;
