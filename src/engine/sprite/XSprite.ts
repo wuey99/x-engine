@@ -32,6 +32,7 @@ import { XWorld } from './XWorld';
 import { XApp } from '../app/XApp';
 import { XRect } from '../geom/XRect';
 import { XPoint } from '../geom/XPoint';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
 export class XSprite extends PIXI.Sprite {
@@ -104,7 +105,7 @@ export class XSprite extends PIXI.Sprite {
 
 //------------------------------------------------------------------------------------------
     public viewPort (__canvasWidth:number, __canvasHeight:number):XRect {
-        this.m_rect.x = -this.x/this.m_scale;
+        this.m_rect.x = -this.x/this.m_scale
         this.m_rect.y = -this.y/this.m_scale;
         this.m_rect.width = __canvasWidth/this.m_scale;
         this.m_rect.height = __canvasHeight/this.m_scale;

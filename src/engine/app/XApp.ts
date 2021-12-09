@@ -149,7 +149,7 @@ export class XApp {
 
         switch (Math.round (params.devicePixelRatio)) {
             case 1:
-                G.scaleRatio = 2;
+                G.scaleRatio = 1; // 2;
                 break;
             case 2:
                 G.scaleRatio = 1;

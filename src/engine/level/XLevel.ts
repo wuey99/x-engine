@@ -243,8 +243,8 @@
 		
 //------------------------------------------------------------------------------------------
 		public scrollTo (__layer:number, __x:number, __y:number):void {
-			this.m_layerPos[__layer].x = __x / 2;
-			this.m_layerPos[__layer].y = __y / 2;
+			this.m_layerPos[__layer].x = __x / G.scaleRatio;
+			this.m_layerPos[__layer].y = __y / G.scaleRatio;
 		}
 
 //------------------------------------------------------------------------------------------
