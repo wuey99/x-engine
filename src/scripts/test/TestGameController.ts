@@ -16,6 +16,7 @@ import { XGameController } from '../../engine/state/XGameController';
 import { TestGame } from './TestGame';
 import { TestRenderTexture } from './TestRenderTexture';
 import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
+import { TestGameInstance } from './TestGameInstance';
 
 //------------------------------------------------------------------------------------------
 export class TestGameController extends XGameController {
@@ -75,11 +76,9 @@ export class TestGameController extends XGameController {
 	}
 
 //------------------------------------------------------------------------------------------
-/*
 	public getGameInstanceClass ():any {
-		return GolfGameInstance;
+		return TestGameInstance;
 	}
-*/
 
 //------------------------------------------------------------------------------------------
 }

@@ -610,7 +610,7 @@
 		):Array<XMapItemModel> /* <XMapItemModel> */ {
 			
 			var submaps:Array<XSubmapModel> /* <XSubmapModel> */ = this.getSubmapsAt (__x1, __y1, __x2, __y2);
-			
+
 			var i:number;
 			var src_items:Array<XMapItemModel>;
 //			var dst_items:Array = new Array ();
@@ -623,19 +623,23 @@
 			var b:XRect;
 			
 			var push:number = 0;
-			
-			for (i = 0; i < this.submaps.length; i++) {
+
+			for (i = 0; i < submaps.length; i++) {
 				src_items = submaps[i].arrayItems ();
-				
+
 				__length = src_items.length;
-				
+		
                 var x:number;
 
 				for (x = 0; x < __length; x++) {
 					item = src_items[x];
 						
+					console.log (": item: ", item);
+					
 					b = item.boundingRect; __x = item.x; __y = item.y;
-						
+		
+					console.log (": getArrayItemsAt: ", __x1, __y1, __x2, __y2, __x, __y);
+
 					if (
 						!(__x2 < b.left + __x || __x1 > b.right + __x ||
 						__y2 < b.top + __y || __y1 > b.bottom + __y)
@@ -648,6 +652,8 @@
 				}
 			}
 			
+			// console.log (": getArrayItemsAt: ", this.m_retrievedItems);
+
 			return this.m_retrievedItems;		
 		}
 		

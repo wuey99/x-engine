@@ -112,8 +112,6 @@
 			__view.left, __view.top,
 			__view.right, __view.bottom
 		);
-			
-		console.log (": XMapLayerCachedView: updateFromXMapModel: ", __view, this.m_currLayer);
 
 //------------------------------------------------------------------------------------------
 		var __submap:XSubmapModel;
@@ -123,8 +121,6 @@
 		for (i = 0; i < __submaps.length; i++) {
 			__submap = __submaps[i] as XSubmapModel;
 				
-			console.log (": XSubmap: ", i, __submap.x, __submap.y);
-
 			this.updateXSubmapModel (__submap);
 		}
 	}

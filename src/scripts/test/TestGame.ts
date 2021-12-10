@@ -28,6 +28,8 @@ import { XLevel } from '../../engine/level/XLevel';
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
 
+	public static HUD_LAYER:number = 7;
+
 //------------------------------------------------------------------------------------------	
 	constructor () {
 		super ();
@@ -85,7 +87,7 @@ export class TestGame extends XState {
 
 		console.log (": Test001: ", this.m_XApp.getResourceByName ("Test001"));
 
-		var __level:XLevel = this.addGameObjectAsChild (XLevel, 0, 0.0, false) as XLevel;
+		var __level:XLevel = this.addGameObjectAsChild (XLevel, TestGame.HUD_LAYER, 0.0, false) as XLevel;
 		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test001"));
 		__level.afterSetup ([__levelXML]);
 
@@ -100,6 +102,7 @@ export class TestGame extends XState {
 				XTask.WAIT, 0x0100,
 				
 				XTask.FLAGS, (__task:XTask) => {
+					__level.scrollTo (0, -__x, -__y);
 					__level.scrollTo (1, -__x, -__y);
 					__level.updateScroll ();
 					__level.updateFromXMapModel ();
@@ -114,10 +117,10 @@ export class TestGame extends XState {
 			XTask.RETN,
 		]);
 
-		var __leader:FlockLeader = world.addGameObject (FlockLeader, 0, 0.0, false) as FlockLeader;
+		var __leader:FlockLeader = world.addGameObject (FlockLeader, TestGame.HUD_LAYER, 0.0, false) as FlockLeader;
 		__leader.afterSetup ([]);
 
-		var __testButton:XSpriteButton = this.addGameObjectAsChild (XSpriteButton, 0, 0.0, false) as XSpriteButton;
+		var __testButton:XSpriteButton = this.addGameObjectAsChild (XSpriteButton, TestGame.HUD_LAYER, 0.0, false) as XSpriteButton;
 		__testButton.afterSetup ([
 			"TestButton",
 			true, 10, 250, 50
@@ -136,7 +139,7 @@ export class TestGame extends XState {
             {chars: this.getBitmapFontChars ()}
 		);
 
-		var __testButton2:XTextButton = this.addGameObjectAsChild (XTextButton, 0, 0.0, false) as XTextButton;
+		var __testButton2:XTextButton = this.addGameObjectAsChild (XTextButton, TestGame.HUD_LAYER, 0.0, false) as XTextButton;
 		__testButton2.afterSetup ([
 			120,
 			64,
@@ -154,7 +157,7 @@ export class TestGame extends XState {
 		__testButton2.x = 512;
 		__testButton2.y = 512;
 		
-		var __testButton3:XTextSpriteButton = this.addGameObjectAsChild (XTextSpriteButton, 0, 0.0, false) as XTextSpriteButton;
+		var __testButton3:XTextSpriteButton = this.addGameObjectAsChild (XTextSpriteButton, TestGame.HUD_LAYER, 0.0, false) as XTextSpriteButton;
 		__testButton3.afterSetup ([
 			"TestButtonToo",
 			true, 10, 300, 100,
@@ -182,7 +185,7 @@ export class TestGame extends XState {
 			true,
 			"center", "center"
 		);
-		this.addSortableChild (__textSprite, 0, 0.0, true);
+		this.addSortableChild (__textSprite, TestGame.HUD_LAYER, 0.0, true);
 		__textSprite.x = 256;
 		__textSprite.y = 256;
 
@@ -192,7 +195,7 @@ export class TestGame extends XState {
 				box: {fill: 0xEEEEEE}
 			}
 		);
-		this.addSortableChild (__textInput, 0, 0.0, true);
+		this.addSortableChild (__textInput, TestGame.HUD_LAYER, 0.0, true);
 		__textInput.x = 1024;
 		__textInput.y = 768;
 	

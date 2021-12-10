@@ -134,33 +134,6 @@
 			var i:number = 0;
 			
 			while (i < this.m_maxLayers) {
-				/* TODO
-					this.m_layerView[i+0] = cast xxx.getXLogicManager ().initXLogicObject (
-						// parent
-						this,
-						// logicObject
-						cast new XMapLayerView (),
-						// item, layer, depth
-						null, 0, 1000,
-						// x, y, z
-						0, 0, 0,
-						// scale, rotation
-						1.0, 0,
-						[
-							// XMapView
-							this,
-							// XMapModel
-							m_XMapModel,
-							// layer
-							i + 0,
-							// logicClassNameToClass
-							GX.appX.logicClassNameToClass
-						]
-					);
-					
-					addXLogicObject (m_layerView[i+0]);
-				*/
-
 				this.m_layerView[i+0] = this.addGameObjectAsChild (
 					XMapLayerView,
 					0, 1000.0,
@@ -175,33 +148,8 @@
 					// layer
 					i + 0,
 					// logicClassNameToClass
-					G.appX.logicClassNameToClass
+					G.appX.logicClassNameToClass.bind (G.appX)
 				]);
-
-				/* TODO
-					m_layerView[i+1] = cast xxx.getXLogicManager ().initXLogicObject (
-						// parent
-						this,
-						// logicObject
-						cast new XMapLayerCachedView (),
-						// item, layer, depth
-						null, 0, 1000,
-						// x, y, z
-						0, 0, 0,
-						// scale, rotation
-						1.0, 0,
-						[
-							// XMapView
-							this,
-							// XMapModel
-							m_XMapModel,
-							// layer
-							i + 1
-						]
-					);
-					
-					addXLogicObject (m_layerView[i+1]);	
-				*/
 
 				this.m_layerView[i+1] = this.addGameObjectAsChild (
 					XMapLayerCachedView,
@@ -225,8 +173,9 @@
 			__graphics.beginFill (0xffa0a0);
 			__graphics.drawRect (0, 0, this.world.getViewRect ().width, this.world.getViewRect ().height);
 			__graphics.endFill ()
+			__graphics.alpha = 0.66;
 
-			this.addSpriteAsChild (__graphics, 0, 0, 0, 0.0, true);
+			this.addSpriteAsChild (__graphics, 0, 0, 7, 0.0, true);
 
 			this.show ();
 		}

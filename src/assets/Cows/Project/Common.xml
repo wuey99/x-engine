@@ -108,5 +108,12 @@
     <folder name="Tiles">
       <resource name="@AllTiles" type=".xmap" path="common" src="17C7F31E-09B6-9DCA-F349-EFA1C4A1E6E6-AllTiles.xmap" dst="17C7F31E-09B6-9DCA-F349-EFA1C4A1E6E6-AllTiles.swf" embed="false"/>
     </folder>
+    <folder name="Items">
+      <resource name="OctopusBug_Item" type=".item" embed="false" path="" src="" dst="">
+        <XMapItem logicClassName="$OctopusBug" hasLogic="true" imageClassName="OctopusBug:OctopusBug" boundingRect="">
+          <params/>
+        </XMapItem>
+      </resource>
+    </folder>
   </folder>
 </manifest>

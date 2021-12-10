@@ -19,15 +19,29 @@ return null;
 		public function getXML ():XML {
 return <XMap>
 	<XLayers>
-		<XLayer regY="1696.9" vh="4531.220887741935" grid="false" submapRows="64" submapHeight="512" layer="0" name="obj0" submapWidth="512" submapCols="64" scale="0.1308698063261958" vy="-374.41791483870963" visible="true" vx="269.3516632258064" currID="0" regX="2805.8" vw="5769.092361290322">
-			<imageClassNames/>
+		<XLayer vy="921.2834129032256" vh="1029.822929032258" vw="1311.1573548387094" currID="4" submapCols="64" submapRows="64" grid="false" layer="0" name="obj0" visible="true" scale="0.5758271478352616" vx="700.3837896774193" submapWidth="512" submapHeight="512" regY="1857.35" regX="1782.45">
+			<imageClassNames>
+				<imageClassName name="OctopusBug:OctopusBug"/>
+			</imageClassNames>
 			<classNames>
-				<className index="0" name="" count="0"/>
+				<className index="0" name="$OctopusBug" count="2"/>
+				<className index="1" name="OctopusBug:OctopusBug" count="2"/>
 			</classNames>
 			<items/>
-			<XSubmaps/>
+			<XSubmaps>
+				<XSubmap col="2" row="2">
+					<XMapItem imageClassIndex="1" x="1190.15" depth="0" hasLogic="true" frame="0" cy="-16" bw="144" rotation="0" by="-72" cx="-16" y="1253" name="" XMapItem="OctopusBug_Item" scale="1" bx="-65" cw="32" logicClassIndex="0" bh="138" ch="32" id="1">
+						<params/>
+					</XMapItem>
+				</XSubmap>
+				<XSubmap col="3" row="3">
+					<XMapItem imageClassIndex="1" x="1758" depth="0" hasLogic="true" frame="0" cy="-16" bw="144" rotation="0" by="-72" cx="-16" y="1659.4" name="" XMapItem="OctopusBug_Item" scale="1" bx="-65" cw="32" logicClassIndex="0" bh="138" ch="32" id="3">
+						<params/>
+					</XMapItem>
+				</XSubmap>
+			</XSubmaps>
 		</XLayer>
-		<XLayer regY="1696.9" vh="4531.220887741935" grid="true" submapRows="64" submapHeight="512" layer="1" name="layer0" submapWidth="512" submapCols="64" scale="0.1308698063261958" vy="-374.41791483870963" visible="true" vx="269.3516632258064" currID="0" regX="2805.8" vw="5769.092361290322">
+		<XLayer vy="921.2834129032256" vh="1029.822929032258" vw="1311.1573548387094" currID="0" submapCols="64" submapRows="64" grid="true" layer="1" name="layer0" visible="true" scale="0.5758271478352616" vx="700.3837896774193" submapWidth="512" submapHeight="512" regY="1857.35" regX="1782.45">
 			<imageClassNames>
 				<imageClassName name="Tileset001:Tileset001"/>
 			</imageClassNames>
@@ -68,37 +82,37 @@ return <XMap>
 				</XSubmap>
 			</XSubmaps>
 		</XLayer>
-		<XLayer regY="1696.9" vh="4531.220887741935" grid="false" submapRows="64" submapHeight="512" layer="2" name="obj1" submapWidth="512" submapCols="64" scale="0.1308698063261958" vy="-374.41791483870963" visible="true" vx="269.3516632258064" currID="0" regX="2805.8" vw="5769.092361290322">
+		<XLayer vy="921.2834129032256" vh="1029.822929032258" vw="1311.1573548387094" currID="0" submapCols="64" submapRows="64" grid="false" layer="2" name="obj1" visible="true" scale="0.5758271478352616" vx="700.3837896774193" submapWidth="512" submapHeight="512" regY="1857.35" regX="1782.45">
 			<imageClassNames/>
 			<classNames/>
 			<items/>
 			<XSubmaps/>
 		</XLayer>
-		<XLayer regY="1696.9" vh="4531.220887741935" grid="true" submapRows="64" submapHeight="512" layer="3" name="layer1" submapWidth="512" submapCols="64" scale="0.1308698063261958" vy="-374.41791483870963" visible="true" vx="269.3516632258064" currID="0" regX="2805.8" vw="5769.092361290322">
+		<XLayer vy="921.2834129032256" vh="1029.822929032258" vw="1311.1573548387094" currID="0" submapCols="64" submapRows="64" grid="true" layer="3" name="layer1" visible="true" scale="0.5758271478352616" vx="700.3837896774193" submapWidth="512" submapHeight="512" regY="1857.35" regX="1782.45">
 			<imageClassNames/>
 			<classNames/>
 			<items/>
 			<XSubmaps/>
 		</XLayer>
-		<XLayer regY="1696.9" vh="4531.220887741935" grid="false" submapRows="64" submapHeight="512" layer="4" name="obj2" submapWidth="512" submapCols="64" scale="0.1308698063261958" vy="-374.41791483870963" visible="true" vx="269.3516632258064" currID="0" regX="2805.8" vw="5769.092361290322">
+		<XLayer vy="921.2834129032256" vh="1029.822929032258" vw="1311.1573548387094" currID="0" submapCols="64" submapRows="64" grid="false" layer="4" name="obj2" visible="true" scale="0.5758271478352616" vx="700.3837896774193" submapWidth="512" submapHeight="512" regY="1857.35" regX="1782.45">
 			<imageClassNames/>
 			<classNames/>
 			<items/>
 			<XSubmaps/>
 		</XLayer>
-		<XLayer regY="1696.9" vh="4531.220887741935" grid="true" submapRows="64" submapHeight="512" layer="5" name="layer2" submapWidth="512" submapCols="64" scale="0.1308698063261958" vy="-374.41791483870963" visible="true" vx="269.3516632258064" currID="0" regX="2805.8" vw="5769.092361290322">
+		<XLayer vy="921.2834129032256" vh="1029.822929032258" vw="1311.1573548387094" currID="0" submapCols="64" submapRows="64" grid="true" layer="5" name="layer2" visible="true" scale="0.5758271478352616" vx="700.3837896774193" submapWidth="512" submapHeight="512" regY="1857.35" regX="1782.45">
 			<imageClassNames/>
 			<classNames/>
 			<items/>
 			<XSubmaps/>
 		</XLayer>
-		<XLayer regY="1696.9" vh="4531.220887741935" grid="false" submapRows="64" submapHeight="512" layer="6" name="obj3" submapWidth="512" submapCols="64" scale="0.1308698063261958" vy="-374.41791483870963" visible="true" vx="269.3516632258064" currID="0" regX="2805.8" vw="5769.092361290322">
+		<XLayer vy="921.2834129032256" vh="1029.822929032258" vw="1311.1573548387094" currID="0" submapCols="64" submapRows="64" grid="false" layer="6" name="obj3" visible="true" scale="0.5758271478352616" vx="700.3837896774193" submapWidth="512" submapHeight="512" regY="1857.35" regX="1782.45">
 			<imageClassNames/>
 			<classNames/>
 			<items/>
 			<XSubmaps/>
 		</XLayer>
-		<XLayer regY="1696.9" vh="4531.220887741935" grid="true" submapRows="64" submapHeight="512" layer="7" name="layer3" submapWidth="512" submapCols="64" scale="0.1308698063261958" vy="-374.41791483870963" visible="true" vx="269.3516632258064" currID="0" regX="2805.8" vw="5769.092361290322">
+		<XLayer vy="921.2834129032256" vh="1029.822929032258" vw="1311.1573548387094" currID="0" submapCols="64" submapRows="64" grid="true" layer="7" name="layer3" visible="true" scale="0.5758271478352616" vx="700.3837896774193" submapWidth="512" submapHeight="512" regY="1857.35" regX="1782.45">
 			<imageClassNames/>
 			<classNames/>
 			<items/>

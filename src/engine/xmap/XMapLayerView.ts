@@ -42,6 +42,8 @@
 	import { XMapView } from './XMapView';
     import { XRect } from '../geom/XRect';
     import { XPoint } from '../geom/XPoint';
+	
+	import { OctopusBugX } from '../../scripts/test/OctopusBugX';
 
 //------------------------------------------------------------------------------------------
 // represents the view for all Items in a XMap.
@@ -98,6 +100,8 @@
 		
 //------------------------------------------------------------------------------------------
 		public updateFromXMapModel ():void {
+			console.log (": XMapLayerView: updateFromXMapModel: ");
+
 			var __view:XRect = this.world.getXWorldLayer (this.m_currLayer).viewPort (
 				this.world.getViewRect ().width, this.world.getViewRect ().height
 			);
@@ -129,6 +133,8 @@
 			}
 			
 //------------------------------------------------------------------------------------------
+			console.log (": XMapLayerView: updateFromXMapModelAtRect: ", this.m_currLayer, __view, __items, this.m_XMapModel.useArrayItems);
+
 			var __item:XMapItemModel;
 			var i:number, __length:number = __items.length;
 									
@@ -159,6 +165,8 @@
 		
 //------------------------------------------------------------------------------------------
 		public addXMapItem (__item:XMapItemModel, __depth:number):XGameObject {
+			console.log (": addXMapItem: ", __item);
+
 			var __logicObject:XGameObjectCX;
 			
 			var __object:any = this.m_logicClassNameToClass (__item.logicClassName);
@@ -172,8 +180,19 @@
 					
 					__logicObject = null;
 				} else {
+					console.log (": object: ", __object);
+
+					/*
                     __logicObject = this.m_XMapView.addPooledGameObjectAsChild (
                         __object,
+                        this.m_currLayer,
+                        __depth,
+                        false
+                    ) as XGameObjectCX;
+					*/
+
+                    __logicObject = this.m_XMapView.addGameObjectAsChild (
+                        OctopusBugX,
                         this.m_currLayer,
                         __depth,
                         false
