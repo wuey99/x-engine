@@ -13,6 +13,7 @@ import { XWorld} from '../../engine/sprite/XWorld';
 import { XGameObject} from '../../engine/gameobject/XGameObject';
 import { XState } from '../../engine/state/XState';
 import { OctopusBug } from './OctopusBug';
+import { OctopusBugX } from './OctopusBugX';
 import { GUID } from '../../engine/utils/GUID';
 import { FlockLeader } from './FlockLeader';
 import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
@@ -27,7 +28,6 @@ import { XLevel } from '../../engine/level/XLevel';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
-
 	public static HUD_LAYER:number = 7;
 
 //------------------------------------------------------------------------------------------	
@@ -87,7 +87,7 @@ export class TestGame extends XState {
 
 		console.log (": Test001: ", this.m_XApp.getResourceByName ("Test001"));
 
-		var __level:XLevel = this.addGameObjectAsChild (XLevel, TestGame.HUD_LAYER, 0.0, false) as XLevel;
+		var __level:XLevel = this.addGameObjectAsChild (XLevel, 0, 0.0, false) as XLevel;
 		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test001"));
 		__level.afterSetup ([__levelXML]);
 
@@ -102,7 +102,7 @@ export class TestGame extends XState {
 				XTask.WAIT, 0x0100,
 				
 				XTask.FLAGS, (__task:XTask) => {
-					__level.scrollTo (0, -__x, -__y);
+					// __level.scrollTo (0, -__x, -__y);
 					__level.scrollTo (1, -__x, -__y);
 					__level.updateScroll ();
 					__level.updateFromXMapModel ();
@@ -199,6 +199,11 @@ export class TestGame extends XState {
 		__textInput.x = 1024;
 		__textInput.y = 768;
 	
+		var __octopusBugX:OctopusBugX = this.addGameObjectAsChild (OctopusBugX, TestGame.HUD_LAYER, 999999.0, false) as OctopusBugX;
+		__octopusBugX.afterSetup ([]);
+		__octopusBugX.x = 512;
+		__octopusBugX.y = 512;
+
 		return this;
 	}
 
