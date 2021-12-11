@@ -53,7 +53,7 @@ export class OctopusBug extends EnemyX {
 //------------------------------------------------------------------------------------------
     public createSprites ():void {
         this.m_sprite = this.createAnimatedSprite ("OctopusBug");
-        this.addSortableChild (this.m_sprite, 0, 0.0, false);
+        this.addSortableChild (this.m_sprite, this.getLayer (), this.getDepth (), false);
 
         this.show ();
     }

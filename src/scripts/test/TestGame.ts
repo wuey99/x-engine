@@ -102,7 +102,7 @@ export class TestGame extends XState {
 				XTask.WAIT, 0x0100,
 				
 				XTask.FLAGS, (__task:XTask) => {
-					// __level.scrollTo (0, -__x, -__y);
+					__level.scrollTo (0, -__x, -__y);
 					__level.scrollTo (1, -__x, -__y);
 					__level.updateScroll ();
 					__level.updateFromXMapModel ();

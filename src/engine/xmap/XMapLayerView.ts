@@ -42,6 +42,7 @@
 	import { XMapView } from './XMapView';
     import { XRect } from '../geom/XRect';
     import { XPoint } from '../geom/XPoint';
+	import { G } from '../../engine/app/G';
 	
 	import { OctopusBugX } from '../../scripts/test/OctopusBugX';
 
