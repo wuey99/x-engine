@@ -145,9 +145,9 @@
 				for (__renderTexture of this.m_renderTextures) {
 					__renderTexture.destroy (true);
 				}
-			}
 			
-			this.m_renderTextures.length = 0;
+				this.m_renderTextures.length = 0;
+			}
 		}
 		
 		//------------------------------------------------------------------------------------------

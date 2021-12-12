@@ -180,7 +180,7 @@ export class XProjectManager {
 
                 console.log (": ", __xml.attribute ("name").startsWith ("$"));
 
-                if (__xml.attribute ("type") == ".as") {
+                if (__xml.attribute ("type") == ".as" && __xml.hasAttribute ("embed")) {   
                     __resources.push ({
                         name: __xml.attribute ("name"),
                         type: "XMapResource",
