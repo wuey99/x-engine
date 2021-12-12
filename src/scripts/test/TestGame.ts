@@ -199,11 +199,13 @@ export class TestGame extends XState {
 		__textInput.x = 1024;
 		__textInput.y = 768;
 	
+		/*
 		var __octopusBugX:OctopusBugX = this.addGameObjectAsChild (OctopusBugX, TestGame.HUD_LAYER, 999999.0, false) as OctopusBugX;
 		__octopusBugX.afterSetup ([]);
 		__octopusBugX.x = 512;
 		__octopusBugX.y = 512;
-
+		*/
+		
 		return this;
 	}
 

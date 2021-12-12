@@ -113,7 +113,7 @@ export class XWorld extends XSprite {
             this.m_layerContainers.push (null);
         }
     
-        for (i = 0; i < this.MAX_LAYERS; i++) {
+        for (i = this.MAX_LAYERS - 1; i >= 0; i--) {
             this.__createLayer (i);
         }
     

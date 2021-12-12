@@ -172,7 +172,7 @@
 			
 			var __object:any = this.m_logicClassNameToClass (__item.logicClassName);
 				
-			if (XType.isFunction (__object)) {
+			if (false && XType.isFunction (__object)) { // TODO
 				__logicObject = __object () as XGameObjectCX;
 			}
 			else if (__item.logicClassName.charAt (0) == "$") {
@@ -183,17 +183,8 @@
 				} else {
 					console.log (": object: ", __object);
 
-					/*
                     __logicObject = this.m_XMapView.addPooledGameObjectAsChild (
                         __object,
-                        this.m_currLayer,
-                        __depth,
-                        false
-                    ) as XGameObjectCX;
-					*/
-
-                    __logicObject = this.m_XMapView.addGameObjectAsChild (
-                        OctopusBugX,
                         this.m_currLayer,
                         __depth,
                         false

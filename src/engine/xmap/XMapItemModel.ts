@@ -283,7 +283,7 @@
 		}
 
 //------------------------------------------------------------------------------------------
-		public get_rotation ():number {
+		public get rotation ():number {
 			return this.m_rotation;
 		}
 	
