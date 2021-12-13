@@ -180,6 +180,8 @@ export class XProjectManager {
 
                 console.log (": ", __xml.attribute ("name").startsWith ("$"));
 
+                // determine if it's a .zlib by checking attribute "type" == ".as" and attribute "embed"
+                // works for now, but I need a better method
                 if (__xml.attribute ("type") == ".as" && __xml.hasAttribute ("embed")) {   
                     __resources.push ({
                         name: __xml.attribute ("name"),
