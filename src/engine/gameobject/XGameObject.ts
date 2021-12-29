@@ -49,8 +49,8 @@ import { XState } from '../state/XState';
 import { PausableListener} from '../events/PausableListener';
 import { XTextSprite } from '../sprite/XTextSprite';
 import { TextInput } from 'pixi-textinput-v5';
-import { XTextureManager } from '../../engine/texture/XTextureManager';
-import { XSubTextureManager } from '../../engine/texture/XSubTextureManager';
+import { XTextureManager } from '../texture/XTextureManager';
+import { XSubTextureManager } from '../texture/XSubTextureManager';
 import { XMapItemModel } from '../xmap/XMapItemModel';
 import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 import { XModelBase } from '../model/XModelBase';
@@ -1021,8 +1021,13 @@ export class XGameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public getXGameObjects ():Map<XGameObject, number> {
+	public getWorldXGameObjects ():Map<XGameObject, number> {
 		return this.m_worldObjects;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getChildXGameObjects ():Map<XGameObject, number> {
+		return this.m_childObjects;
 	}
 
 //------------------------------------------------------------------------------------------
@@ -1153,9 +1158,9 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public addGameObjectToWorld (__class:any, __layer:number = 0, __depth:number = 0.0):XGameObject {
+	public addGameObjectToWorld (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
 		if (this.world != null) {
-			var __gameObject = this.world.addGameObject (__class, __layer, __depth);
+			var __gameObject = this.world.addGameObject (__class, __layer, __depth, __visible);
 			
 			this.m_worldObjects.set (__gameObject, 0);
 			
@@ -1166,9 +1171,9 @@ export class XGameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public addPooledGameObjectToWorld (__class:any, __layer:number = 0, __depth:number = 0.0):XGameObject {
+	public addPooledGameObjectToWorld (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
 		if (this.world != null) {
-			var __gameObject = this.world.addPooledGameObject (__class, __layer, __depth);
+			var __gameObject = this.world.addPooledGameObject (__class, __layer, __depth, __visible);
 			
 			this.m_worldObjects.set (__gameObject, 0);
 			
@@ -1888,6 +1893,11 @@ export class XGameObject extends PIXI.Sprite {
 					__parent.alpha = __alpha;
 				}
 			}
+
+//------------------------------------------------------------------------------------------
+// cull object (if outside world bounding rectangle)
+//------------------------------------------------------------------------------------------
+			this.cullObject ();
 	}
 	
 //------------------------------------------------------------------------------------------

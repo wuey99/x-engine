@@ -164,6 +164,12 @@
 			this.m_XMap = __XMap;
 		}
 
+
+//------------------------------------------------------------------------------------------
+		public getLayerNumber ():number {
+			return this.m_layer;
+		}
+
 //------------------------------------------------------------------------------------------
 		public getXMapModel ():XMapModel {
 			return this.m_XMap;
@@ -540,11 +546,17 @@
 			__r1 = XType.max (__r1, 0);
 			__r2 = XType.min (__r2, this.m_submapRows-1);
 									
+			var __submap:XSubmapModel;
+
 			var push:number = 0;
 			
 			for (__row = __r1; __row < __r2+1; __row++) {
 				for (__col = __c1; __col < __c2+1; __col++) {
-					this.m_retrievedSubmaps[push++] = ( this.m_XSubmaps[__row][__col] );
+					__submap =  this.m_XSubmaps[__row][__col];
+
+					if (__submap.x >= 0) {
+						this.m_retrievedSubmaps[push++] = __submap;
+					}
 				}
 			}
 												
@@ -634,12 +646,8 @@
 				for (x = 0; x < __length; x++) {
 					item = src_items[x];
 						
-					console.log (": item: ", item);
-					
 					b = item.boundingRect; __x = item.x; __y = item.y;
 		
-					console.log (": getArrayItemsAt: ", __x1, __y1, __x2, __y2, __x, __y);
-
 					if (
 						!(__x2 < b.left + __x || __x1 > b.right + __x ||
 						__y2 < b.top + __y || __y1 > b.bottom + __y)
@@ -1265,7 +1273,7 @@
 		}
 
 //------------------------------------------------------------------------------------------
-		public deserialize (__xml:XSimpleXMLNode, __readOnly:boolean=false):void {
+		public deserialize (__xml:XSimpleXMLNode, __readOnly:boolean=false, __layerRemapper:Array<number> = null):void {
 			console.log (": [XMapLayer]: deserialize: ", this.m_submapRows, this.m_submapCols);
 			
 			this.m_viewPort = this.m_startingViewPort = new XRect (
@@ -1275,7 +1283,11 @@
 				__xml.getAttributeFloat ("vh")
 			);
 			
-			this.m_layer = __xml.getAttributeInt ("layer");
+			if (__layerRemapper == null) {
+				this.m_layer = __xml.getAttributeInt ("layer");
+			} else {
+				this.m_layer = __layerRemapper[__xml.getAttributeInt ("layer")];
+			}
 			this.m_submapRows = XType.max (this.m_submapRows, __xml.getAttributeInt ("submapRows"));
 			this.m_submapCols = XType.max (this.m_submapCols, __xml.getAttributeInt ("submapCols"));
 			this.m_submapWidth = __xml.getAttributeInt ("submapWidth");
@@ -1356,7 +1368,7 @@
 			var __col:number;
 			
 			if (__readOnly) {
-				var __empty:XSubmapModel = new XSubmapModel (this, 0, 0, this.m_submapWidth, this.m_submapHeight);
+				var __empty:XSubmapModel = new XSubmapModel (this, -1, -1, this.m_submapWidth, this.m_submapHeight);
 
 				for (__row = 0; __row < this.m_submapRows; __row++) {
 					this.m_XSubmaps[__row] = new Array<XSubmapModel> ();

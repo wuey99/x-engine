@@ -237,24 +237,24 @@ import { XSubmapModel } from './XSubmapModel';
 		}
 		
 //------------------------------------------------------------------------------------------
-		public deserializeAll (__xml:XSimpleXMLNode):void {
+		public deserializeAll (__xml:XSimpleXMLNode, __layerRemapper:Array<number> = null):void {
 			console.log (": [XMap] deserializeAll: ");
 			
-			this.deserialize (__xml, false);
+			this.deserialize (__xml, false, false, __layerRemapper);
 		}
 		
 //------------------------------------------------------------------------------------------
-		public deserializeAllNormal (__xml:XSimpleXMLNode, __useArrayItems:boolean=false):void {
+		public deserializeAllNormal (__xml:XSimpleXMLNode, __useArrayItems:boolean=false, __layerRemapper:Array<number> = null):void {
 			console.log (": [XMap] deserializeAll: ");
 			
-			this.deserialize (__xml, false, __useArrayItems);
+			this.deserialize (__xml, false, __useArrayItems, __layerRemapper);
 		}
 		
 //------------------------------------------------------------------------------------------
-		public deserializeAllReadOnly (__xml:XSimpleXMLNode, __useArrayItems:boolean=false):void {
+		public deserializeAllReadOnly (__xml:XSimpleXMLNode, __useArrayItems:boolean=false, __layerRemapper:Array<number> = null):void {
 			console.log (": [XMap] deserializeAll: ");
 			
-			this.deserialize (__xml, true, __useArrayItems);
+			this.deserialize (__xml, true, __useArrayItems, __layerRemapper);
 		}
 		
 //------------------------------------------------------------------------------------------
@@ -284,7 +284,7 @@ import { XSubmapModel } from './XSubmapModel';
 		}
 
 //------------------------------------------------------------------------------------------
-		private deserialize (__xml:XSimpleXMLNode, __readOnly:boolean=false, __useArrayItems:boolean=false):void {
+		private deserialize (__xml:XSimpleXMLNode, __readOnly:boolean=false, __useArrayItems:boolean=false, __layerRemapper:Array<number> = null):void {
 			console.log (": [XMap] deserialize: ");
 			
 			var i:number;
@@ -300,10 +300,19 @@ import { XSubmapModel } from './XSubmapModel';
 			this.m_XSubXMapItemModelPoolManager = new XSubObjectPoolManager (this.m_XApp.getXMapItemModelPoolManager ());
 			this.m_XSubXRectPoolManager = new XSubObjectPoolManager (this.m_XApp.getXRectPoolManager ());
 				
+			if (__layerRemapper == null) {
+				__layerRemapper = new Array<number> ();
+
+				for (i = 0; i < this.m_numLayers; i++) {
+					__layerRemapper.push (i);
+				}				
+			}
+
 			for (i = 0; i < __xmlList.length; i++) {
-				this.m_layers[i] = this.createXMapLayerModel ();
-				this.m_layers[i].setParent (this);
-				this.m_layers[i].deserialize (__xmlList[i], __readOnly);
+				var j:number = __layerRemapper[i];
+				this.m_layers[j] = this.createXMapLayerModel ();
+				this.m_layers[j].setParent (this);
+				this.m_layers[j].deserialize (__xmlList[i], __readOnly, __layerRemapper);
 			}
 		}
 		

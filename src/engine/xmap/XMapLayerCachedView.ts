@@ -148,25 +148,6 @@
 		var __logicObject:XSubmapViewCache;
 			
 		if (true) {
-                /*
-				__logicObject =
-					cast xxx.getXLogicManager ().initXLogicObjectFromPool (
-						// parent
-						m_XMapView,
-						// class
-						XSubmapViewTilemapCache,
-						// item, layer, depth
-						null, m_currLayer, __depth,
-						// x, y, z
-						__submap.x, __submap.y, 0,
-						// scale, rotation
-						1.0, 0,
-						[
-							// XMapView
-							m_XMapView.getSubmapBitmapPoolManager ()
-						]
-					) */ /* as XSubmapViewCache */;
-
                 __logicObject = this.m_XMapView.addPooledGameObjectAsChild (
                     XSubmapViewTilemapCache,
                     this.m_currLayer,
@@ -191,7 +172,7 @@
 			
 		__logicObject.setModel (__submap);
 			
-		__logicObject.addKillListener (this.removeXSubmap);
+		__logicObject.addKillListener (this.removeXSubmap.bind (this));
 			
 		__logicObject.show ();
 	}

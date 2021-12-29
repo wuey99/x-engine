@@ -42,7 +42,7 @@
 	import { XMapView } from './XMapView';
     import { XRect } from '../geom/XRect';
     import { XPoint } from '../geom/XPoint';
-	import { G } from '../../engine/app/G';
+	import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
 // represents the view for all Items in a XMap.
@@ -99,7 +99,7 @@
 		
 //------------------------------------------------------------------------------------------
 		public updateFromXMapModel ():void {
-			console.log (": XMapLayerView: updateFromXMapModel: ");
+			// console.log (": XMapLayerView: updateFromXMapModel: ");
 
 			var __view:XRect = this.world.getXWorldLayer (this.m_currLayer).viewPort (
 				this.world.getViewRect ().width, this.world.getViewRect ().height
@@ -132,7 +132,7 @@
 			}
 			
 //------------------------------------------------------------------------------------------
-			console.log (": XMapLayerView: updateFromXMapModelAtRect: ", this.m_currLayer, __view, __items, this.m_XMapModel.useArrayItems);
+			// console.log (": XMapLayerView: updateFromXMapModelAtRect: ", this.m_currLayer, __view, __items, this.m_XMapModel.useArrayItems);
 
 			var __item:XMapItemModel;
 			var i:number, __length:number = __items.length;
@@ -164,7 +164,7 @@
 		
 //------------------------------------------------------------------------------------------
 		public addXMapItem (__item:XMapItemModel, __depth:number):XGameObject {
-			console.log (": addXMapItem: ", __item);
+			// console.log (": addXMapItem: ", __item);
 
 			var __logicObject:XGameObjectCX;
 			
@@ -179,9 +179,9 @@
 					
 					__logicObject = null;
 				} else {
-					console.log (": object: ", __object);
+					// console.log (": object: ", __object);
 
-                    __logicObject = this.m_XMapView.addPooledGameObjectAsChild (
+                    __logicObject = this.m_XMapView.addPooledGameObjectToWorld (
                         __object,
                         this.m_currLayer,
                         __depth,
@@ -204,7 +204,7 @@
 				} else {
                     var __class:any = this.m_XApp.getClass (__item.logicClassName);
 
-                    __logicObject = this.m_XMapView.addGameObjectAsChild (
+                    __logicObject = this.m_XMapView.addGameObjectToWorld (
                         __class, 
                         this.m_currLayer,
                         __depth,
@@ -229,11 +229,13 @@
 				return null;
 			}
 			
+			__logicObject.setItem (__item);
+
 			this.m_XMapItemToXLogicObject.set (__item, __logicObject);
 
 			__logicObject.setXMapModel (this.m_currLayer + 1, this.m_XMapModel, this.m_XMapView);
 			
-			__logicObject.addKillListener (this.removeXMapItem);
+			__logicObject.addKillListener (this.removeXMapItem.bind (this));
 
 			return __logicObject;
 		}

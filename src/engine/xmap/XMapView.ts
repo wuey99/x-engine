@@ -85,13 +85,15 @@
 		
 //------------------------------------------------------------------------------------------
 		public cullObject ():void {
-			XType.forEach (this.getXGameObjects (), 
+			/*
+			XType.forEach (this.getWorldXGameObjects (), 
 				(x:any) => {
 					var __gameObject:XGameObject = x as XGameObject;
 					
 					__gameObject.cullObject ();
 				}
 			);
+			*/
 			
 			super.cullObject ();
 		}
@@ -251,19 +253,19 @@
 		}
 		
 //------------------------------------------------------------------------------------------
-		public createModelFromXML (__xml:XSimpleXMLNode, __useArrayItems:boolean=false):void {
+		public createModelFromXML (__xml:XSimpleXMLNode, __useArrayItems:boolean=false, __layerRemapper:Array<number> = null):void {
 			var __model:XMapModel = new XMapModel ();
 			
-			__model.deserializeAllNormal (__xml, __useArrayItems);	
+			__model.deserializeAllNormal (__xml, __useArrayItems, __layerRemapper);	
 			
 			this.setModel (__model);		
 		}
 
 //------------------------------------------------------------------------------------------
-		public createModelFromXMLReadOnly (__xml:XSimpleXMLNode, __useArrayItems:boolean=false):void {
+		public createModelFromXMLReadOnly (__xml:XSimpleXMLNode, __useArrayItems:boolean=false, __layerRemapper:Array<number> = null):void {
 			var __model:XMapModel = new XMapModel ();
 			
-			__model.deserializeAllReadOnly (__xml, __useArrayItems);	
+			__model.deserializeAllReadOnly (__xml, __useArrayItems, __layerRemapper);	
 			
 			this.setModel (__model);		
 		}

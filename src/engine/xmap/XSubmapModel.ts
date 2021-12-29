@@ -233,6 +233,11 @@
 		}
 		
 //------------------------------------------------------------------------------------------
+		public getLayerModel ():XMapLayerModel {
+			return this.m_XMapLayer;
+		}
+		
+//------------------------------------------------------------------------------------------
 		public get useArrayItems ():boolean {
 			return this.m_XMapLayer.getXMapModel ().useArrayItems;
 		}
