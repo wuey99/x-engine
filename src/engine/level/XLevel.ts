@@ -313,340 +313,340 @@
 	}
 
 //------------------------------------------------------------------------------------------
-		public scrollTo (__layer:number, __x:number, __y:number):void {
-			this.m_layerPos[__layer].x = __x / G.scaleRatio;
-			this.m_layerPos[__layer].y = __y / G.scaleRatio;
-		}
+	public scrollTo (__layer:number, __x:number, __y:number):void {
+		this.m_layerPos[__layer].x = __x / G.scaleRatio;
+		this.m_layerPos[__layer].y = __y / G.scaleRatio;
+	}
 
 //------------------------------------------------------------------------------------------
-		public updateScroll ():void {
-			var i:number;
+	public updateScroll ():void {
+		var i:number;
 			
-			for (i = 0; i < this.m_maxLayers; i++) {
-				this.m_layerPos[i].copy2 (this.m_layerScroll[i]);
+		for (i = 0; i < this.m_maxLayers; i++) {
+			this.m_layerPos[i].copy2 (this.m_layerScroll[i]);
 				
-				this.m_layerScroll[i].x += this.m_layerShake[i].x;
-				this.m_layerScroll[i].y += this.m_layerShake[i].y;
+			this.m_layerScroll[i].x += this.m_layerShake[i].x;
+			this.m_layerScroll[i].y += this.m_layerShake[i].y;
 				
-				this.world.getXWorldLayer (i).setPos (this.m_layerScroll[i]);
-			}
+			this.world.getXWorldLayer (i).setPos (this.m_layerScroll[i]);
 		}
+	}
 		
 //------------------------------------------------------------------------------------------
-		public updateFromXMapModel ():void {
-			var i:number;
+	public updateFromXMapModel ():void {
+		var i:number;
 			
-			for (i = 0; i < this.m_maxLayers; i++) {
-				if ((i & 1) == 0  || !this.skipBG ()) {
-					this.m_layerView[i].updateFromXMapModel ();
-				}
+		for (i = 0; i < this.m_maxLayers; i++) {
+			if ((i & 1) == 0  || !this.skipBG ()) {
+				this.m_layerView[i].updateFromXMapModel ();
 			}
 		}
+	}
 		
 //------------------------------------------------------------------------------------------
-		public prepareUpdateScroll ():void {
-			var i:number;
+	public prepareUpdateScroll ():void {
+		var i:number;
 			
-			for (i = 0; i < this.m_maxLayers; i++) {
-				this.m_layerPos[i].copy2 (this.m_layerScroll[i]);
+		for (i = 0; i < this.m_maxLayers; i++) {
+			this.m_layerPos[i].copy2 (this.m_layerScroll[i]);
 				
-				this.m_layerScroll[i].x += this.m_layerShake[i].x;
-				this.m_layerScroll[i].y += this.m_layerShake[i].y;
-			}
+			this.m_layerScroll[i].x += this.m_layerShake[i].x;
+			this.m_layerScroll[i].y += this.m_layerShake[i].y;
+		}
 
-			for (i = 0; i < this.m_maxLayers; i++) {
-				this.m_viewRect.x = -this.m_layerScroll[i].x;
-				this.m_viewRect.y = -this.m_layerScroll[i].y;
-				this.m_viewRect.width = this.world.getViewRect ().width;
-				this.m_viewRect.height = this.world.getViewRect ().height;
+		for (i = 0; i < this.m_maxLayers; i++) {
+			this.m_viewRect.x = -this.m_layerScroll[i].x;
+			this.m_viewRect.y = -this.m_layerScroll[i].y;
+			this.m_viewRect.width = this.world.getViewRect ().width;
+			this.m_viewRect.height = this.world.getViewRect ().height;
 				
-				if ((i & 1) == 0 || !this.skipBG ()) {
-					this.m_layerView[i].updateFromXMapModelAtRect (this.m_viewRect);
-				}
+			if ((i & 1) == 0 || !this.skipBG ()) {
+				this.m_layerView[i].updateFromXMapModelAtRect (this.m_viewRect);
 			}
 		}
+	}
 		
 //------------------------------------------------------------------------------------------
-		public finishUpdateScroll ():void {
-			var i:number;
+	public finishUpdateScroll ():void {
+		var i:number;
 			
-			for (i = 0; i < this.m_maxLayers; i++) {
-				this.world.getXWorldLayer (i).setPos (this.m_layerScroll[i]);
-			}			
-		}
+		for (i = 0; i < this.m_maxLayers; i++) {
+			this.world.getXWorldLayer (i).setPos (this.m_layerScroll[i]);
+		}			
+	}
 
 //------------------------------------------------------------------------------------------
-		public onEntry ():void {
-			this.FadeIn_Script ();
-		}
+	public onEntry ():void {
+		this.FadeIn_Script ();
+	}
 		
 //------------------------------------------------------------------------------------------
-		public onExit ():void {
-		}
+	public onExit ():void {
+	}
 		
 //------------------------------------------------------------------------------------------
-		public setLevelAlpha (__alpha:number):void {
-			G.appX.setMaskAlpha (__alpha);
-		}
+	public setLevelAlpha (__alpha:number):void {
+		G.appX.setMaskAlpha (__alpha);
+	}
 
 //------------------------------------------------------------------------------------------
-		public isShaking ():boolean {
-			var __isShaking:boolean = false;
+	public isShaking ():boolean {
+		var __isShaking:boolean = false;
 
+		var i:number;
+				
+		for (i = 0; i < this.m_maxLayers; i++) {
+			if (this.m_layerShake[i].x != 0) {
+				__isShaking = true;
+			}
+
+			if (this.m_layerShake[i].y != 0) {
+				__isShaking = true;
+			}
+		}
+
+		return __isShaking;
+	}
+
+//------------------------------------------------------------------------------------------
+	public addXShake (__count:number=15, __delayValue:number=0x0100):void {
+		var __setX =  (__dy:number) => {
 			var i:number;
 				
 			for (i = 0; i < this.m_maxLayers; i++) {
-				if (this.m_layerShake[i].x != 0) {
-					__isShaking = true;
-				}
-
-				if (this.m_layerShake[i].y != 0) {
-					__isShaking = true;
-				}
+				this.m_layerShake[i].x = __dy;
+				// this.m_layerShake[i].y = __dy;
 			}
-
-			return __isShaking;
+				
+			this.updateScroll ();
 		}
-
+			
+		var __delay:XNumber = new XNumber (0);
+		__delay.value = __delayValue;
+			
+		this.addTask ([
+			XTask.LABEL, "loop",
+				() => {__setX (-__count); }, XTask.WAIT, __delay,
+				() => {__setX ( __count); }, XTask.WAIT, __delay,
+				
+			XTask.FLAGS, (__task:XTask) => {
+				__count--;
+					
+				__task.ifTrue (__count == 0);
+			}, XTask.BNE, "loop",
+				
+			() => {
+				__setX (0);
+			},
+				
+			XTask.RETN,
+		]);
+	}
+		
 //------------------------------------------------------------------------------------------
-		public addXShake (__count:number=15, __delayValue:number=0x0100):void {
-			var __setX =  (__dy:number) => {
-				var i:number;
+	public addYShake (__count:number=15, __delayValue:number=0x0100):void {
+		var __setY = (__dy:number) => {
+			var i:number;
 				
-				for (i = 0; i < this.m_maxLayers; i++) {
-					this.m_layerShake[i].x = __dy;
-					// this.m_layerShake[i].y = __dy;
-				}
-				
-				this.updateScroll ();
+			for (i = 0; i < this.m_maxLayers; i++) {
+				// this.m_layerShake[i].x = __dy;
+				this.m_layerShake[i].y = __dy;
 			}
+				
+			this.updateScroll ();
+		}
 			
-			var __delay:XNumber = new XNumber (0);
-			__delay.value = __delayValue;
+		var __delay:XNumber = new XNumber (0);
+		__delay.value = __delayValue;
 			
-			this.addTask ([
-				XTask.LABEL, "loop",
-				    () => {__setX (-__count); }, XTask.WAIT, __delay,
-				    () => {__setX ( __count); }, XTask.WAIT, __delay,
+		this.addTask ([
+			XTask.LABEL, "loop",
+				() => {__setY (-__count); }, XTask.WAIT, __delay,
+				() => {__setY ( __count); }, XTask.WAIT, __delay,
 				
 				XTask.FLAGS, (__task:XTask) => {
 					__count--;
-					
+						
 					__task.ifTrue (__count == 0);
 				}, XTask.BNE, "loop",
-				
+					
 				() => {
-					__setX (0);
+					__setY (0);
 				},
-				
-				XTask.RETN,
-			]);
-		}
+					
+			XTask.RETN,
+		]);
+	}
 		
 //------------------------------------------------------------------------------------------
-		public addYShake (__count:number=15, __delayValue:number=0x0100):void {
-			var __setY = (__dy:number) => {
-				var i:number;
-				
-				for (i = 0; i < this.m_maxLayers; i++) {
-					// this.m_layerShake[i].x = __dy;
-					this.m_layerShake[i].y = __dy;
-				}
-				
-				this.updateScroll ();
-			}
+	public FadeOut_Script (__levelId:string=""):void {
 			
-			var __delay:XNumber = new XNumber (0);
-			__delay.value = __delayValue;
-			
-			this.addTask ([
-				XTask.LABEL, "loop",
-					() => {__setY (-__count); }, XTask.WAIT, __delay,
-					() => {__setY ( __count); }, XTask.WAIT, __delay,
+		this.script.gotoTask ([
 				
-					XTask.FLAGS, (__task:XTask) => {
-						__count--;
-						
-						__task.ifTrue (__count == 0);
-					}, XTask.BNE, "loop",
-					
-					() => {
-						__setY (0);
-					},
-					
-				XTask.RETN,
-			]);
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public FadeOut_Script (__levelId:string=""):void {
-			
-			this.script.gotoTask ([
-				
-				//------------------------------------------------------------------------------------------
-				// control
-				//------------------------------------------------------------------------------------------
-				() => {
-					this.script.addTask ([
-						XTask.LABEL, "loop",
-							XTask.WAIT, 0x0100,
-							
-							XTask.FLAGS, (__task:XTask) => {
-								this.setLevelAlpha (Math.max (0.0, G.appX.getMaskAlpha () - 0.025));
-								
-								__task.ifTrue (G.appX.getMaskAlpha () == 0.0 && __levelId != "");
-							}, XTask.BNE, "loop",
-							
-							() => {
-								this.fireLevelSelectSignal (__levelId);
-								
-								this.nukeLater ();
-							},
-							
-							XTask.GOTO, "loop",
-						
-						XTask.RETN,
-					]);
-				},
-				
-				//------------------------------------------------------------------------------------------
-				// animation
-				//------------------------------------------------------------------------------------------	
-				XTask.LABEL, "loop",	
-					XTask.WAIT, 0x0100,	
-					
-					XTask.GOTO, "loop",
-				
-				XTask.RETN,
-				
-				//------------------------------------------------------------------------------------------			
-			]);
-			
 			//------------------------------------------------------------------------------------------
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public FadeOutAlpha_Script (__levelId:string=""):void {
-			
-			this.script.gotoTask ([
-				
-				//------------------------------------------------------------------------------------------
-				// control
-				//------------------------------------------------------------------------------------------
-				() => {
-					this.script.addTask ([
-						XTask.LABEL, "loop",
-							XTask.WAIT, 0x0100,
-							
-							XTask.FLAGS, (__task:XTask) => {
-								this.alpha = Math.max (0.0, this.alpha - 0.025);
-							},
-							
-							XTask.GOTO, "loop",
-						
-						XTask.RETN,
-					]);
-					
-				},
-				
-				//------------------------------------------------------------------------------------------
-				// animation
-				//------------------------------------------------------------------------------------------	
-				XTask.LABEL, "loop",	
-					XTask.WAIT, 0x0100,	
-					
-					XTask.GOTO, "loop",
-				
-				XTask.RETN,
-				
-				//------------------------------------------------------------------------------------------			
-			]);
-			
+			// control
 			//------------------------------------------------------------------------------------------
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public FadeIn_Script ():void {
-			
-			this.script.gotoTask ([
-				
-				//------------------------------------------------------------------------------------------
-				// control
-				//------------------------------------------------------------------------------------------
-				() => {
-					this.script.addTask ([
-						XTask.LABEL, "loop",
-							XTask.WAIT, 0x0100,
+			() => {
+				this.script.addTask ([
+					XTask.LABEL, "loop",
+						XTask.WAIT, 0x0100,
 							
-							() => {
-								this.setLevelAlpha (Math.min (1.0, G.appX.getMaskAlpha () + 0.05));
-							},
+						XTask.FLAGS, (__task:XTask) => {
+							this.setLevelAlpha (Math.max (0.0, G.appX.getMaskAlpha () - 0.025));
+								
+							__task.ifTrue (G.appX.getMaskAlpha () == 0.0 && __levelId != "");
+						}, XTask.BNE, "loop",
 							
-							XTask.GOTO, "loop",
+						() => {
+							this.fireLevelSelectSignal (__levelId);
+								
+							this.nukeLater ();
+						},
+							
+						XTask.GOTO, "loop",
 						
-						XTask.RETN,
-					]);
+					XTask.RETN,
+				]);
+			},
+				
+			//------------------------------------------------------------------------------------------
+			// animation
+			//------------------------------------------------------------------------------------------	
+			XTask.LABEL, "loop",	
+				XTask.WAIT, 0x0100,	
 					
-				},
+				XTask.GOTO, "loop",
 				
-				//------------------------------------------------------------------------------------------
-				// animation
-				//------------------------------------------------------------------------------------------	
-				XTask.LABEL, "loop",	
-					XTask.WAIT, 0x0100,	
-					
-					XTask.GOTO, "loop",
+			XTask.RETN,
 				
-				XTask.RETN,
-				
-				//------------------------------------------------------------------------------------------			
-			]);
+			//------------------------------------------------------------------------------------------			
+		]);
 			
 		//------------------------------------------------------------------------------------------
-		}
-	
-		//------------------------------------------------------------------------------------------
-		public getLevelProps ():any {
-			return this.m_levelProps;
-		}
+	}
 		
+//------------------------------------------------------------------------------------------
+	public FadeOutAlpha_Script (__levelId:string=""):void {
+			
+		this.script.gotoTask ([
+				
+			//------------------------------------------------------------------------------------------
+			// control
+			//------------------------------------------------------------------------------------------
+			() => {
+				this.script.addTask ([
+					XTask.LABEL, "loop",
+						XTask.WAIT, 0x0100,
+							
+						XTask.FLAGS, (__task:XTask) => {
+							this.alpha = Math.max (0.0, this.alpha - 0.025);
+						},
+							
+						XTask.GOTO, "loop",
+						
+					XTask.RETN,
+				]);
+					
+			},
+				
+			//------------------------------------------------------------------------------------------
+			// animation
+			//------------------------------------------------------------------------------------------	
+			XTask.LABEL, "loop",	
+				XTask.WAIT, 0x0100,	
+					
+				XTask.GOTO, "loop",
+				
+			XTask.RETN,
+				
+			//------------------------------------------------------------------------------------------			
+		]);
+			
 		//------------------------------------------------------------------------------------------
-		public setLevelProps (__levelProps:any):void {
-			this.m_levelProps = __levelProps;
-		}
+	}
 		
-		//------------------------------------------------------------------------------------------
-		public addLevelSelectListener (__listener:any):number {
-			return this.m_levelSelectSignal.addListener (__listener);
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public fireLevelSelectSignal (__levelId:string):void {
-			this.m_levelSelectSignal.fireSignal (__levelId);
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public addGameStateChangedListener (__listener:any):number {
-			return this.m_gameStateChangedSignal.addListener (__listener);
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public fireGameStateChangedSignal (__gameState:number):void {
-			this.m_gameStateChangedSignal.fireSignal (__gameState);
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public addLeveCompleteListener (__listener:any):number {
-			return this.m_levelCompleteSignal.addListener (__listener);
-		}
-		
-		//------------------------------------------------------------------------------------------
-		public fireLevelCompleteSignal (__status:string = null):void {
-			this.m_levelCompleteSignal.fireSignal (__status);
-		}
-		
+//------------------------------------------------------------------------------------------
+	public FadeIn_Script ():void {
+			
+		this.script.gotoTask ([
+				
+			//------------------------------------------------------------------------------------------
+			// control
+			//------------------------------------------------------------------------------------------
+			() => {
+				this.script.addTask ([
+					XTask.LABEL, "loop",
+						XTask.WAIT, 0x0100,
+							
+						() => {
+							this.setLevelAlpha (Math.min (1.0, G.appX.getMaskAlpha () + 0.05));
+						},
+							
+						XTask.GOTO, "loop",
+						
+					XTask.RETN,
+				]);
+					
+			},
+				
+			//------------------------------------------------------------------------------------------
+			// animation
+			//------------------------------------------------------------------------------------------	
+			XTask.LABEL, "loop",	
+				XTask.WAIT, 0x0100,	
+					
+				XTask.GOTO, "loop",
+				
+			XTask.RETN,
+				
+			//------------------------------------------------------------------------------------------			
+		]);
+			
 	//------------------------------------------------------------------------------------------
 	}
+	
+	//------------------------------------------------------------------------------------------
+	public getLevelProps ():any {
+		return this.m_levelProps;
+	}
+		
+	//------------------------------------------------------------------------------------------
+	public setLevelProps (__levelProps:any):void {
+		this.m_levelProps = __levelProps;
+	}
+		
+	//------------------------------------------------------------------------------------------
+	public addLevelSelectListener (__listener:any):number {
+		return this.m_levelSelectSignal.addListener (__listener);
+	}
+		
+	//------------------------------------------------------------------------------------------
+	public fireLevelSelectSignal (__levelId:string):void {
+		this.m_levelSelectSignal.fireSignal (__levelId);
+	}
+		
+	//------------------------------------------------------------------------------------------
+	public addGameStateChangedListener (__listener:any):number {
+		return this.m_gameStateChangedSignal.addListener (__listener);
+	}
+		
+	//------------------------------------------------------------------------------------------
+	public fireGameStateChangedSignal (__gameState:number):void {
+		this.m_gameStateChangedSignal.fireSignal (__gameState);
+	}
+		
+	//------------------------------------------------------------------------------------------
+	public addLeveCompleteListener (__listener:any):number {
+		return this.m_levelCompleteSignal.addListener (__listener);
+	}
+		
+	//------------------------------------------------------------------------------------------
+	public fireLevelCompleteSignal (__status:string = null):void {
+		this.m_levelCompleteSignal.fireSignal (__status);
+	}
+		
+//------------------------------------------------------------------------------------------
+}
 
 //------------------------------------------------------------------------------------------
 // }
