@@ -685,9 +685,9 @@
 			var x:any;
 			var item:XMapItemModel;
 
-			console.log (": ---------------------: ");	
-			console.log (": getItemsAt: submaps: ", submaps.length);
-			console.log (": ---------------------: ");
+			// console.log (": ---------------------: ");	
+			// console.log (": getItemsAt: submaps: ", submaps.length);
+			// console.log (": ---------------------: ");
 				
 			for (i = 0; i < submaps.length; i++) {
 				src_items = submaps[i].items ();
@@ -696,12 +696,26 @@
 					(x:any) => {
 						item = x as XMapItemModel;
 				
+						/*
 						var cx:XRect = item.collisionRect.cloneX ();
 						cx.offset (item.x, item.y);
 						
 						if (
 							!(__x2 < cx.left || __x1 > cx.right - 1 ||
 							  __y2 < cx.top || __y1 > cx.bottom - 1)
+							) {
+								
+							if (dst_items.indexOf (item) == -1) {
+								dst_items.push (item);
+							}
+						}
+						*/
+
+						var cx:XRect = item.collisionRect;
+
+						if (
+							!(__x2 < cx.left + item.x || __x1 > cx.right + item.x - 1 ||
+							  __y2 < cx.top + item.y || __y1 > cx.bottom + item.y - 1)
 							) {
 								
 							if (dst_items.indexOf (item) == -1) {
@@ -732,9 +746,9 @@
 
 			var __length:number;
 			
-			console.log (": ---------------------: ");	
-			console.log (": getItemsAt: submaps: ", submaps.length);
-			console.log (": ---------------------: ");
+			// console.log (": ---------------------: ");	
+			// console.log (": getItemsAt: submaps: ", submaps.length);
+			// console.log (": ---------------------: ");
 			
 			for (i = 0; i < submaps.length; i++) {
 				src_items = submaps[i].arrayItems ();
@@ -746,12 +760,26 @@
 				for (x = 0; x < __length; x++) {
 					item = src_items[x];
 					
+					/*
 					var cx:XRect = item.collisionRect.cloneX ();
 					cx.offset (item.x, item.y);
 						
 					if (
 						!(__x2 < cx.left || __x1 > cx.right - 1 ||
 						__y2 < cx.top || __y1 > cx.bottom - 1)
+					) {
+							
+						if (dst_items.indexOf (item) == -1) {
+							dst_items.push (item);
+						}
+					}
+					*/
+
+					var cx:XRect = item.collisionRect;
+						
+					if (
+						!(__x2 < cx.left + item.x || __x1 > cx.right + item.x - 1 ||
+						__y2 < cx.top + item.y || __y1 > cx.bottom + item.y - 1)
 					) {
 							
 						if (dst_items.indexOf (item) == -1) {

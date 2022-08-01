@@ -180,8 +180,11 @@ export class XProjectManager {
 
                 console.log (": ", __xml.attribute ("name").startsWith ("$"));
 
-                // determine if it's a .zlib by checking attribute "type" == ".as" and attribute "embed"
-                // works for now, but I need a better method
+                // determine if it's an .xmap ().zlib) by checking attribute "type" == ".as" and attribute "embed"
+                // works for now, but we will eventually need a .zlib and .xmap type for level resources
+
+                console.log (": ->: ", __xml.attribute ("name"), __xml.attribute ("type"), __xml.hasAttribute ("embed"));
+
                 if (__xml.attribute ("type") == ".as" && __xml.hasAttribute ("embed")) {   
                     __resources.push ({
                         name: __xml.attribute ("name"),

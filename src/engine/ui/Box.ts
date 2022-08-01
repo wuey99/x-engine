@@ -36,7 +36,7 @@ import { XSignal } from '../signals/XSignal';
 import { XApp } from '../app/XApp';
 import { XType } from '../type/XType';
 import { TextInput } from 'pixi-textinput-v5';
-import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
+import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 
 //------------------------------------------------------------------------------------------
 export class Box extends XGameObject {

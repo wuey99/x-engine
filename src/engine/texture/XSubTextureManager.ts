@@ -138,6 +138,11 @@
 		}
 
 		//------------------------------------------------------------------------------------------
+		public getNumRenderTextures ():number {
+			return this.m_renderTextures.length;
+		}
+
+		//------------------------------------------------------------------------------------------
 		public reset ():void {
 			var __renderTexture:PIXI.RenderTexture;
 

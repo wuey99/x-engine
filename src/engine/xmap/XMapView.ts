@@ -81,6 +81,8 @@
 			if (this.m_submapBitmapPoolManager != null) {
 				this.m_submapBitmapPoolManager.cleanup ();
 			}
+
+			this.m_XMapModel.cleanup ();
 		}
 		
 //------------------------------------------------------------------------------------------
@@ -282,6 +284,10 @@
 			this.cacheImageClassNames ();
 		}
 		
+//------------------------------------------------------------------------------------------
+		public addAdjustableGameObject (__gameObject:XGameObject, __callback:any = null):void {
+		}
+
 //------------------------------------------------------------------------------------------
 		public scrollTo (__layer:number, __x:number, __y:number):void {
 		}

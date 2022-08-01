@@ -111,6 +111,7 @@ export class XDepthSprite extends XSprite {
     public setDepth (__depth:number):void {
         this.m_depth = __depth;
         this.depth2 = __depth;
+        this.zIndex = __depth;
     }		
 
     //------------------------------------------------------------------------------------------	
@@ -158,7 +159,7 @@ export class XDepthSprite extends XSprite {
     public set depth2 (__depth:number) {
         if (__depth != this.m_depth2) {
             this.m_depth2 = __depth;
-            this.x_layer.forceSort = true;
+
         }			
     }
 

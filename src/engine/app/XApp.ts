@@ -52,6 +52,7 @@ import { XSubTextureManager } from '../texture/XSubTextureManager';
 import { MovieClipMetadata } from '../texture/MovieClipMetaData';
 import { XMapItemModel } from '../xmap/XMapItemModel';
 import { XSpriteLayer } from '../sprite/XSpriteLayer';
+import { XSpriteLayer9 } from '../sprite/XSpriteLayer9';
 import { XMapModel } from '../xmap/XMapModel';
 
 //------------------------------------------------------------------------------------------
@@ -442,10 +443,10 @@ export class XApp {
             
             __poolSettings.XDepthSprite.init, __poolSettings.XDepthSprite.overflow
         );
-    
-    //------------------------------------------------------------------------------------------
-    // XMapItemModel
-    //------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------
+// XMapItemModel
+//------------------------------------------------------------------------------------------
         this.m_XMapItemModelPoolManager = new XObjectPoolManager (
            ():any => {
                 var __xmapItem:XMapItemModel = new XMapItemModel ();
@@ -713,6 +714,11 @@ export class XApp {
     }
 
     //------------------------------------------------------------------------------------------
+    public setFrameRateScale (__scale:number):void {
+        this.m_frameRateScale = __scale;
+    }
+
+    //------------------------------------------------------------------------------------------
     public getFrameRateScale ():number {
         return this.m_frameRateScale;
     }
@@ -787,6 +793,11 @@ export class XApp {
         return this.m_XTextureManager.getSubManager ("__global__");
     }
 
+    //------------------------------------------------------------------------------------------
+    public getSubTextureManager (__name:string):XSubTextureManager {
+        return this.m_XTextureManager.getSubManager (__name);
+    }
+    
     //------------------------------------------------------------------------------------------
     public getResourceHandleByName (__name:string):Resource {
         return this.m_XProjectManager.getResourceHandleByName (__name);

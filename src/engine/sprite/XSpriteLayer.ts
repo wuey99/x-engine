@@ -37,10 +37,6 @@ import { XApp } from '../app/XApp';
 //------------------------------------------------------------------------------------------
 export class XSpriteLayer extends XSprite {
     private m_XDepthSpriteMap:Map<XDepthSprite, number>; 
-		
-    public forceSort:boolean;
-    
-    // public list:Array<XDepthSprite>;
 
     //------------------------------------------------------------------------------------------
     constructor () {
@@ -49,18 +45,6 @@ export class XSpriteLayer extends XSprite {
         this.m_XDepthSpriteMap = new Map<XDepthSprite, number> ();
 
         this.sortableChildren = true;
-        
-        /*
-        this.list = new Array<XDepthSprite> ();
-
-        var i:number;
-
-        for (i=0; i<2000; i++) {
-            this.list.push (null);
-        }
-        */
-
-        this.forceSort = true;
     }
 
 	//------------------------------------------------------------------------------------------
@@ -71,6 +55,14 @@ export class XSpriteLayer extends XSprite {
 	//------------------------------------------------------------------------------------------
 	public cleanup ():void {
         super.cleanup ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public addChildToContainer (__sprite:PIXI.DisplayObject):void {
+    }
+
+    //------------------------------------------------------------------------------------------
+    public removeChildFromContainer (__sprite:PIXI.DisplayObject):void {
     }
 
     //------------------------------------------------------------------------------------------
@@ -88,11 +80,22 @@ export class XSpriteLayer extends XSprite {
 
         __sprite.visible = true;
         
-        this.addChild (__depthSprite);
+        this.addChildToContainer (__depthSprite);
             
         this.m_XDepthSpriteMap.set (__depthSprite, 0);
         
         return __depthSprite;
+    }	
+
+    //------------------------------------------------------------------------------------------
+    public addSprite0 (__sprite:PIXI.DisplayObject, __depth:number, __visible:boolean = true):PIXI.DisplayObject {
+        __sprite.zIndex = __depth;
+
+        __sprite.visible = true;
+        
+        this.addChildToContainer (__sprite);
+
+        return __sprite;
     }	
 
     //------------------------------------------------------------------------------------------
@@ -109,12 +112,17 @@ export class XSpriteLayer extends XSprite {
         if (this.m_XDepthSpriteMap.has (__depthSprite)) {
             __depthSprite.cleanup ();
             
-            this.removeChild (__depthSprite);
+            this.removeChildFromContainer (__depthSprite);
             
             this.world.getXDepthSpritePoolManager ().returnObject (__depthSprite);
 
             this.m_XDepthSpriteMap.delete (__depthSprite);
         }
+    }
+
+    //------------------------------------------------------------------------------------------
+    public removeSprite0 (__sprite:PIXI.DisplayObject):void {
+        this.removeChildFromContainer (__sprite);
     }
 
     //------------------------------------------------------------------------------------------
@@ -125,32 +133,9 @@ export class XSpriteLayer extends XSprite {
             this.m_XDepthSpriteMap.delete (__depthSprite);
         }
     }
-        
+
     //------------------------------------------------------------------------------------------	
     public depthSort ():void {
-        /*
-        var length:number = 0;
-        
-        XType.clearArray (this.list);
-
-        var __XDepthSprite:XDepthSprite;
-
-        for (__XDepthSprite of this.m_XDepthSpriteMap.keys ()) {
-            this.list[length++] = __XDepthSprite;
-        }
-
-        this.list.sort (
-            (a:XDepthSprite, b:XDepthSprite):number => {
-                return a.depth2 - b.depth2;
-            }
-        );				
-        
-        var i:number;
-
-        for (i = 0; i < length; i++) {
-            this.setChildIndex (this.list[i], i);
-        }
-        */
     }
 
 //------------------------------------------------------------------------------------------    

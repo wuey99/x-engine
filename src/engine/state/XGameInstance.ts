@@ -45,6 +45,9 @@ import { XGameController } from './XGameController';
 import { XSoundManager } from '../sound/XSoundManager';
 import { XSoundSubManager } from '../sound/XSoundSubManager';
 import { G } from '../app/G';
+import { XLevel } from '../level/XLevel';
+import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
+import { XMickey } from "../level/XMickey";
 
 //------------------------------------------------------------------------------------------
 export class XGameInstance {
@@ -61,6 +64,8 @@ export class XGameInstance {
 	public m_pingSignal:XSignal;
 
 	public m_logicClassNameToClass:Map<string, any>;
+
+	public m_mickeyObject:XMickey;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -132,6 +137,16 @@ export class XGameInstance {
 	}
 
 	//------------------------------------------------------------------------------------------
+	public setMickeyObject (__mickeyObject:XMickey):void {
+		this.m_mickeyObject = __mickeyObject;
+	}
+
+	//------------------------------------------------------------------------------------------
+	public getMickeyObject ():XMickey {
+		return this.m_mickeyObject;
+	}
+
+	//------------------------------------------------------------------------------------------
 	public getGameStateObject ():XState {
 		return this.m_gameStateObject;
 	} 
@@ -162,9 +177,8 @@ export class XGameInstance {
 					
 				() => {
 					this.m_gameStateObject = this.world.addGameObject (__class, __layer, __depth) as XState;
-                    this.m_gameStateObject.afterSetup (__params);
-
 					this.m_gameStateObject.setGameInstance (this);
+                    this.m_gameStateObject.afterSetup (__params);
 
 					this.m_gameStateObject.addKillListener (() => {
 						this.m_gameStateObject = null;

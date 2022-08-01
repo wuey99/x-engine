@@ -31,7 +31,7 @@ import { Howl } from 'howler';
 import * as PIXI from 'pixi.js-legacy';
 import { XApp } from "../app/XApp";
 import { Resource } from './Resource';
-import { G } from '../../engine/app/G';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
 export class SoundResource extends Resource {

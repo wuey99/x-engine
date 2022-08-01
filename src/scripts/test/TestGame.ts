@@ -3,6 +3,8 @@ import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
+import { XSpriteLayer0 } from '../../engine/sprite/XSpriteLayer0';
+import { XSpriteLayer9 } from '../../engine/sprite/XSpriteLayer9';
 import { XSignal } from '../../engine/signals/XSignal';
 import { XSignalManager } from '../../engine/signals/XSignalManager';
 import { world } from '../app';
@@ -90,6 +92,8 @@ export class TestGame extends XState {
 		var __level:XLevel = this.addGameObjectAsChild (XLevel, 0, 0.0, false) as XLevel;
 		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test001"));
 		__level.afterSetup ([__levelXML]);
+
+		this.world.replaceLayer (1, new XSpriteLayer0 ());
 
 		__level.x = 0;
 		__level.y = 0;

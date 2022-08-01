@@ -28,32 +28,32 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js-legacy'
-import { XApp } from '../../engine/app/XApp';
-import { XSprite } from '../../engine/sprite/XSprite';
-import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
-import { XSignal } from '../../engine/signals/XSignal';
-import { XSignalManager } from '../../engine/signals/XSignalManager';
-import { XTask } from '../../engine/task/XTask';
-import { XTaskManager} from '../../engine/task/XTaskManager';
-import { XTaskSubManager} from '../../engine/task/XTaskSubManager';
-import { XWorld} from '../../engine/sprite/XWorld';
-import { XGameObject} from '../../engine/gameobject/XGameObject';
-import { XState } from '../../engine/state/XState';
-import { GUID } from '../../engine/utils/GUID';
-import { XSimpleXMLNode } from '../../engine/xml/XSimpleXMLNode';
-import { XButton } from '../../engine/ui/XButton';
-import { XSpriteButton } from '../../engine/ui/XSpriteButton';
-import { XTextButton } from '../../engine/ui/XTextButton';
-import { XTextSpriteButton } from '../../engine/ui/XTextSpriteButton';
-import { XTextGameObject } from '../../engine/ui/XTextGameObject';
-import { XTextSprite } from '../../engine/sprite/XTextSprite';
-import { Box } from '../ui/Box';
-import { HBox } from '../ui/HBox';
-import { VBox } from '../../engine/ui/VBox';
-import { XJustify } from '../ui/XJustify';
-import { Spacer } from '../ui/Spacer';
-import { XType } from '../../engine/type/XType';
-import { G } from '../../engine/app/G';
+import { XApp } from '../app/XApp';
+import { XSprite } from '../sprite/XSprite';
+import { XSpriteLayer } from '../sprite/XSpriteLayer';
+import { XSignal } from '../signals/XSignal';
+import { XSignalManager } from '../signals/XSignalManager';
+import { XTask } from '../task/XTask';
+import { XTaskManager} from '../task/XTaskManager';
+import { XTaskSubManager} from '../task/XTaskSubManager';
+import { XWorld} from '../sprite/XWorld';
+import { XGameObject} from '../gameobject/XGameObject';
+import { XState } from '../state/XState';
+import { GUID } from '../utils/GUID';
+import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
+import { XButton } from './XButton';
+import { XSpriteButton } from './XSpriteButton';
+import { XTextButton } from './XTextButton';
+import { XTextSpriteButton } from './XTextSpriteButton';
+import { XTextGameObject } from './XTextGameObject';
+import { XTextSprite } from '../sprite/XTextSprite';
+import { Box } from './Box';
+import { HBox } from './HBox';
+import { VBox } from './VBox';
+import { XJustify } from './XJustify';
+import { Spacer } from './Spacer';
+import { XType } from '../type/XType';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
 export class XMLSprite extends XGameObject {

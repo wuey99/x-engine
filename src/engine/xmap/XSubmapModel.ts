@@ -467,10 +467,14 @@
 			__item:XMapItemModel
 			):XMapItemModel {
 							
-			console.log (": XSubmapModel: additem: ",  this.m_col, this.m_row, __item.getID (), this.m_items.has (__item));
+			// console.log (": XSubmapModel: additem: ",  this.m_col, this.m_row, __item.getID (), this.m_items.has (__item));
 			
-			if (!this.m_items.has (__item)) {
-				this.m_items.set (__item, __item.id);
+			if (!this.useArrayItems) {
+				if (!this.m_items.has (__item)) {
+					this.m_items.set (__item, __item.id);
+				}
+			} else {
+				this.m_arrayItems[this.m_arrayItemIndex++] = __item;
 			}
 					
 			return __item;

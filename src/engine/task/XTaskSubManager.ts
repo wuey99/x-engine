@@ -66,7 +66,7 @@
 //------------------------------------------------------------------------------------------
 		public addTask (
 			__taskList:Array<any> ,
-			__findLabelsFlag:boolean = true
+			__findLabelsFlag:boolean = false
 			):XTask {
 				
 			var __task:XTask = this.m_manager.addTask (__taskList, __findLabelsFlag);

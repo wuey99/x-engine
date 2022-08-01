@@ -52,7 +52,7 @@ export class XType {
 
     //------------------------------------------------------------------------------------------
     public static isFunction (__value:any):boolean {
-        return __value instanceof Function;
+        return typeof __value == "function"; // __value instanceof Function;
     }
 
     //------------------------------------------------------------------------------------------

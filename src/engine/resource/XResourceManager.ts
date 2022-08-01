@@ -195,6 +195,8 @@ export class XResourceManager {
             if (this.m_resourceMap.get (__resourceSpec.name) == null) {
                 var __resource:Resource;
 
+                console.log (": loadResources: ", __resourceSpec, this.m_projectManager.getTypeMap ().get (__resourceSpec.type));
+
                 __resource = XType.createInstance (this.m_projectManager.getTypeMap ().get (__resourceSpec.type));
                 __resource.setup (this.m_projectManager.translateAlias (__resourceSpec.path), this.loaders[__queueIndex]);
 

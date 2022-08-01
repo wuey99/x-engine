@@ -181,7 +181,7 @@
 				} else {
 					// console.log (": object: ", __object);
 
-                    __logicObject = this.m_XMapView.addPooledGameObjectToWorld (
+                    __logicObject = this.m_XMapView.addPooledGameObjectAsDetachedChild (
                         __object,
                         this.m_currLayer,
                         __depth,
@@ -195,7 +195,7 @@
 
                     __logicObject.x = __item.x;
                     __logicObject.y = __item.y;
-                    __logicObject.scale.x = __logicObject.scale.y = __item.scale;
+                    __logicObject.scale.x = /* __logicObject.scale.y = */ __item.scale;
                     __logicObject.angle = __item.rotation;
 				}
 			} else {
@@ -218,7 +218,7 @@
 
                     __logicObject.x = __item.x;
                     __logicObject.y = __item.y;
-                    __logicObject.scale.x = __logicObject.scale.y = __item.scale;
+                    __logicObject.scale.x = /* __logicObject.scale.y = */ __item.scale;
                     __logicObject.angle = __item.rotation;
 				}
 			}
@@ -228,6 +228,8 @@
 			if (__logicObject == null) {
 				return null;
 			}
+			
+			this.m_XMapView.addAdjustableGameObject (__logicObject);
 			
 			__logicObject.setItem (__item);
 

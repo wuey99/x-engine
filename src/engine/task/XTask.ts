@@ -243,34 +243,22 @@
 		//------------------------------------------------------------------------------------------
 		// execute the XTask, usually called by the XTaskManager.
         //------------------------------------------------------------------------------------------
-        private __retn ():boolean {
-            if (this.m_stackPtr < 0) {
-                if (this.m_parent != null && this.m_parent != this.m_manager) {
-                    this.m_parent.removeTask (this.self);
-                }
-                else
-                {
-                    this.m_manager.removeTask (this.self);
-                }
-                
-                return true;
-            }		
-            else
-            {
-                return false;
-            }
-        }
-
 		public run ():void {
 			// done execution?
 			if (this.m_isDead) {
 				return;
 			}
 
-			if (this.__retn ()) {
-				return;
-			}
-			
+            if (this.m_stackPtr < 0) {
+                if (this.m_parent != null && this.m_parent != this.m_manager) {
+                    this.m_parent.removeTask (this.self);
+                } else {
+                    this.m_manager.removeTask (this.self);
+                }
+                
+                return;
+            }	
+
 			// suspended?
 			this.m_ticks -= 0x0100;
 			
@@ -282,7 +270,13 @@
 			var __cont:boolean = true;
 			
 			while (__cont && !this.m_isDead) {
-				__cont = this.__evalInstructions ();
+				var value:any = this.m_taskList[this.m_taskIndex++];
+
+				if (typeof value == "function") {
+					value ();
+				} else {
+					__cont = this.__evalInstructions (value);
+				}
 			}
 		}
 		
@@ -430,20 +424,10 @@
 		//------------------------------------------------------------------------------------------		
 		// evaluate instructions
 		//------------------------------------------------------------------------------------------	
-		private __evalInstructions ():boolean {
-			
-			var value:any = this.m_taskList[this.m_taskIndex++];
+		private __evalInstructions (value:number):boolean {
 			
 			//------------------------------------------------------------------------------------------
-			if (XType.isFunction (value)) {
-				value ();
-				
-				return true;
-			}
-			
-			//------------------------------------------------------------------------------------------
-			switch (value as number) {
-				//------------------------------------------------------------------------------------------
+			switch (value) {
 				
 				//------------------------------------------------------------------------------------------
 				case XTask.LABEL:
@@ -459,7 +443,7 @@
 				//------------------------------------------------------------------------------------------					
 				case XTask.WAIT:
 				//------------------------------------------------------------------------------------------
-					var __ticks:number = this.__evalNumber () * this.getXApp ().getFrameRateScale ();
+					var __ticks:number = this.__evalNumber () /  this.getXApp ().getFrameRateScale ();
 					
 					this.m_ticks += __ticks;
 					
@@ -488,7 +472,7 @@
 					if (!this.m_WAIT1000) {
 						this.m_time = this.m_XTaskSubManager.getManager ().getXApp ().getTime ();
 						
-						this.m_ticks += 0x0100;
+						this.m_ticks += 0x0100 * this.getXApp ().getFrameRateScale ();
 						this.m_taskIndex--;
 						
 						this.m_WAIT1000 = true;
@@ -498,7 +482,7 @@
 						var __time:number = this.__evalNumber ();
 						
 						if (this.m_XTaskSubManager.getManager ().getXApp ().getTime () < this.m_time + __time) {
-							this.m_ticks += 0x0100;
+							this.m_ticks += 0x0100 * this.getXApp ().getFrameRateScale ();
 							this.m_taskIndex -= 2;
 						}
 						else
@@ -566,7 +550,7 @@
 						throw (XType.createError ("goto: unable to find label: " + __gotoLabel));
 					}
 					
-					this.m_taskIndex = this.m_labels.get(__gotoLabel);
+					this.m_taskIndex = this.m_labels.get (__gotoLabel);
 					
 					break;
 				
@@ -629,7 +613,7 @@
 					}
 					
 					if ((this.m_flags & XTask._FLAGS_EQ) != 0) {
-						this.m_taskIndex = this.m_labels.get(__beqLabel);
+						this.m_taskIndex = this.m_labels.get (__beqLabel);
 					}
 					
 					break;
@@ -842,7 +826,7 @@
 		//------------------------------------------------------------------------------------------
 		public addTask (
 			__taskList:Array<any>,
-			__findLabelsFlag:boolean = true
+			__findLabelsFlag:boolean = false
 		):XTask {
 			
 			return this.m_XTaskSubManager.addTask (__taskList, __findLabelsFlag);
@@ -852,7 +836,7 @@
 		public changeTask (
 			__task:XTask,
 			__taskList:Array<any>,
-			__findLabelsFlag:boolean = true
+			__findLabelsFlag:boolean = false
 		):XTask {
 			
 			return this.m_XTaskSubManager.changeTask (__task, __taskList, __findLabelsFlag);

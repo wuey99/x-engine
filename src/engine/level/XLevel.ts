@@ -68,7 +68,11 @@
 		private m_levelProps:any;
 		
 		private m_viewRect:XRect;
-		
+	
+		public m_adjustableGameObjects:Map<XGameObject, number>;
+		public m_playfieldAdjustmentScaleX:number;
+		public m_playfieldAdjustmentScaleY:number;
+
 //------------------------------------------------------------------------------------------
 		public constructor () {
 			super ();
@@ -85,10 +89,16 @@
     public afterSetup (__params:Array<any> = null):XGameObject {
         super.afterSetup (__params);
 			
-		var __xml:XSimpleXMLNode = __params[0]
-			
-		this.createModelFromXMLReadOnly (__xml, true);
-			
+		var __xml:XSimpleXMLNode = __params[this.m_paramIndex++];
+		
+		var __layerRemapper:Array<number> = null;
+		if (__params.length > 1) {
+			__layerRemapper = __params[this.m_paramIndex++];
+		}
+
+		// this.createModelFromXMLReadOnly (__xml, true, __layerRemapper);
+		this.createModelFromXML (__xml, true, __layerRemapper);		
+		
 		this.world.setXMapModel (this.getModel ());
 			
 		this.initSubmapPoolManager ();
@@ -118,6 +128,8 @@
 		this.m_levelCompleteSignal = this.createXSignal ();
 
 		this.script = this.addEmptyTask ();
+
+		this.adjustableGameObjectsScript ();
 
         return this;
     }
@@ -151,24 +163,27 @@
 					G.appX.logicClassNameToClass.bind (G.appX)
 				]);
 
-				this.m_layerView[i+1] = this.addGameObjectAsChild (
-					XMapLayerCachedView,
-					0, 1000.0 - 1,
-					false
-				) as XMapLayerCachedView;
-					
-				this.m_layerView[i+1].afterSetup ([
-					// XMapView
-					this,
-					// XMapModel
-					this.m_XMapModel,
-					// layer
-					i + 1
-				]);
+				if (!this.skipBG ()) {
+					this.m_layerView[i+1] = this.addGameObjectAsChild (
+						XMapLayerCachedView,
+						0, 1000.0 - 1,
+						false
+					) as XMapLayerCachedView;
+						
+					this.m_layerView[i+1].afterSetup ([
+						// XMapView
+						this,
+						// XMapModel
+						this.m_XMapModel,
+						// layer
+						i + 1
+					]);
+				}
 
 				i += 2;
 			}
 			
+			/*
 			var __graphics:PIXI.Graphics = new PIXI.Graphics ();
 			__graphics.beginFill (0xffa0a0);
 			__graphics.drawRect (0, 0, this.world.getViewRect ().width, this.world.getViewRect ().height);
@@ -176,8 +191,14 @@
 			__graphics.alpha = 0.66;
 
 			this.addSpriteAsChild (__graphics, 0, 0, 7, 0.0, true);
+			*/
 
 			this.show ();
+		}
+
+//------------------------------------------------------------------------------------------
+		public skipBG ():boolean {
+			return false;
 		}
 
 //------------------------------------------------------------------------------------------
@@ -190,6 +211,107 @@
 			return this.m_layerView[0].getXGameObject (__item);
 		}
 		
+//------------------------------------------------------------------------------------------
+		public addXMapItemModelToMap (
+			__logicClassName:string, __imageClassName:string,
+			__layerNum:number,
+			__x:number, __y:number, __scale:number, __depth:number = 0.0,
+			__frame:number = 0
+			):void {
+
+			var sheet:PIXI.Spritesheet = this.world.getResourceByName (__imageClassName);
+			var __frames:Array<any> = Object.values (sheet["_frames"]);
+			var __width:number =  __frames[0].frame.w;
+			var __height:number =  __frames[0].frame.h;
+			var __dx:number = __frames[0].anchor.x * __width;
+			var __dy:number = __frames[0].anchor.y * __height;
+
+			var __layerModel:XMapLayerModel = this.getModel ().getLayer (__layerNum);
+
+			var __id:number = __layerModel.generateID ();
+
+			var __item:XMapItemModel = new XMapItemModel ();
+
+			__item.setup (
+			// __layerMModel
+				__layerModel,
+			// __logicClassName
+				__logicClassName,
+			// __hasLogic
+				true,
+			// __name, __id
+				"", __id,
+			// __imageClassName, __frame
+				__imageClassName, __frame,
+			// __XMapItem
+				"",
+			// __x, __y,
+				__x, __y,
+			// __scale, __rotation, __depth
+				__scale, 0, __depth,
+			// __collisionRect,
+				new XRect (-16, -16, 32, 32),
+			// __boundingRect,
+				new XRect (__scale < 0 ? __width - __dx : -__dx, -__dy, __width, __height),
+			// __params
+				"<params/>",
+				[]
+			);
+
+			__layerModel.addItem (__item);
+		}
+
+//------------------------------------------------------------------------------------------
+	public adjustableGameObjectsScript ():void {
+		this.m_adjustableGameObjects = new Map<XGameObject, number> ();
+
+		this.m_playfieldAdjustmentScaleX = 1.0;
+		this.m_playfieldAdjustmentScaleY = 1.0;
+
+		this.addTask ([
+			XTask.LABEL, "loop",
+				XTask.WAIT, 0x0100,
+
+				() => {
+					XType.forEach (this.m_adjustableGameObjects,
+						(__gameObject:XGameObject) => {
+							var __callback:any = this.m_adjustableGameObjects.get (__gameObject);
+
+							if (__callback == null) {	
+								__gameObject.scale.x = this.m_playfieldAdjustmentScaleX * 1.0;
+								__gameObject.scale.y = this.m_playfieldAdjustmentScaleY * 1.0;
+							} else {
+								__callback (__gameObject);
+							}
+						}
+					)
+				},
+
+				XTask.GOTO, "loop",
+
+			XTask.RETN,
+		]);
+	}
+
+//------------------------------------------------------------------------------------------
+	public setPlayfieldAdjustmentScale (__scaleX:number, __scaleY:number):void {
+		this.m_playfieldAdjustmentScaleX = __scaleX;
+		this.m_playfieldAdjustmentScaleY = __scaleY;
+	}
+
+//------------------------------------------------------------------------------------------
+	public addAdjustableGameObject (__gameObject:XGameObject, __callback:any = null):void {
+	}
+
+//------------------------------------------------------------------------------------------
+	public addAdjustableGameObjectX (__gameObject:XGameObject, __callback:any = null):void {
+		this.m_adjustableGameObjects.set (__gameObject, __callback);
+
+		__gameObject.addKillListener (() => {
+			this.m_adjustableGameObjects.delete (__gameObject);
+		});
+	}
+
 //------------------------------------------------------------------------------------------
 		public scrollTo (__layer:number, __x:number, __y:number):void {
 			this.m_layerPos[__layer].x = __x / G.scaleRatio;
@@ -204,7 +326,7 @@
 				this.m_layerPos[i].copy2 (this.m_layerScroll[i]);
 				
 				this.m_layerScroll[i].x += this.m_layerShake[i].x;
-				this.m_layerScroll[i].y += this. m_layerShake[i].y;
+				this.m_layerScroll[i].y += this.m_layerShake[i].y;
 				
 				this.world.getXWorldLayer (i).setPos (this.m_layerScroll[i]);
 			}
@@ -215,7 +337,9 @@
 			var i:number;
 			
 			for (i = 0; i < this.m_maxLayers; i++) {
-				this.m_layerView[i].updateFromXMapModel ();
+				if ((i & 1) == 0  || !this.skipBG ()) {
+					this.m_layerView[i].updateFromXMapModel ();
+				}
 			}
 		}
 		
@@ -236,7 +360,9 @@
 				this.m_viewRect.width = this.world.getViewRect ().width;
 				this.m_viewRect.height = this.world.getViewRect ().height;
 				
-				this.m_layerView[i].updateFromXMapModelAtRect (this.m_viewRect);
+				if ((i & 1) == 0 || !this.skipBG ()) {
+					this.m_layerView[i].updateFromXMapModelAtRect (this.m_viewRect);
+				}
 			}
 		}
 		
@@ -264,13 +390,32 @@
 		}
 
 //------------------------------------------------------------------------------------------
+		public isShaking ():boolean {
+			var __isShaking:boolean = false;
+
+			var i:number;
+				
+			for (i = 0; i < this.m_maxLayers; i++) {
+				if (this.m_layerShake[i].x != 0) {
+					__isShaking = true;
+				}
+
+				if (this.m_layerShake[i].y != 0) {
+					__isShaking = true;
+				}
+			}
+
+			return __isShaking;
+		}
+
+//------------------------------------------------------------------------------------------
 		public addXShake (__count:number=15, __delayValue:number=0x0100):void {
 			var __setX =  (__dy:number) => {
 				var i:number;
 				
 				for (i = 0; i < this.m_maxLayers; i++) {
 					this.m_layerShake[i].x = __dy;
-					this.m_layerShake[i].y = __dy;
+					// this.m_layerShake[i].y = __dy;
 				}
 				
 				this.updateScroll ();
@@ -304,7 +449,7 @@
 				var i:number;
 				
 				for (i = 0; i < this.m_maxLayers; i++) {
-					this.m_layerShake[i].x = __dy;
+					// this.m_layerShake[i].x = __dy;
 					this.m_layerShake[i].y = __dy;
 				}
 				

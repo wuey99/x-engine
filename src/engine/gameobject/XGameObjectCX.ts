@@ -49,8 +49,8 @@ import { XState } from '../state/XState';
 import { PausableListener} from '../events/PausableListener';
 import { XTextSprite } from '../sprite/XTextSprite';
 import { TextInput } from 'pixi-textinput-v5';
-import { XTextureManager } from '../../engine/texture/XTextureManager';
-import { XSubTextureManager } from '../../engine/texture/XSubTextureManager';
+import { XTextureManager } from '../texture/XTextureManager';
+import { XSubTextureManager } from '../texture/XSubTextureManager';
 import { XGameObject } from './XGameObject';
 import { XSubmapModel } from '../xmap/XSubmapModel';
 import { XMapModel } from '../xmap/XMapModel';
@@ -72,9 +72,9 @@ export class XGameObjectCX extends XGameObject {
 	public m_cols:number;
 	public m_rows:number;
 
-	private m_CX_Collide_Flag:number;
+	public m_CX_Collide_Flag:number;
 	
-	private m_objectCollisionList:Map<XGameObject, XRect>;
+	public m_objectCollisionList:Map<XGameObject, XRect>;
 
 	public static CX_COLLIDE_LF:number = 0x0001;
 	public static CX_COLLIDE_RT:number = 0x0002;
@@ -224,6 +224,16 @@ export class XGameObjectCX extends XGameObject {
         this.m_vel.y = __val;		
     }
 
+    //------------------------------------------------------------------------------------------
+    public get oDXScaled ():number {
+        return this.m_vel.x * this.m_XApp.getFrameRateScale ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public get oDYScaled ():number {
+        return this.m_vel.y * this.m_XApp.getFrameRateScale ();
+    }
+
 //------------------------------------------------------------------------------------------
     public getOld ():XPoint {
         return this.m_oldPos;
@@ -317,7 +327,7 @@ export class XGameObjectCX extends XGameObject {
         this.m_CX_Collide_Flag = 0;
 
 //------------------------------------------------------------------------------------------			
-        this.oX += this.oDX;
+        this.oX += this.oDXScaled;
         
         // if (int (oX) != int (oldX)) {
         {
@@ -334,7 +344,7 @@ export class XGameObjectCX extends XGameObject {
         }
         
 //------------------------------------------------------------------------------------------
-        this.oY += this.oDY;
+        this.oY += this.oDYScaled;
         
         // if (int (oY) != int (oldY)) {
         {

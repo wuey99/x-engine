@@ -31,10 +31,11 @@ import * as PIXI from 'pixi.js-legacy'
 import { XApp } from '../app/XApp';
 import { XSprite } from './XSprite';
 import { XSpriteLayer } from './XSpriteLayer';
+import { XSpriteLayer9 } from './XSpriteLayer9';
 import { XSignal } from '../signals/XSignal';
 import { XSignalManager } from '../signals/XSignalManager';
 import { XTask } from '../task/XTask';
-import { XDepthSprite} from './XDepthSprite';
+import { XDepthSprite } from './XDepthSprite';
 import { XGameObject } from '../gameobject/XGameObject';
 import { XType } from '../type/XType';
 import { XObjectPoolManager } from '../pool/XObjectPoolManager';
@@ -64,6 +65,7 @@ export class XWorld extends XSprite {
     private m_gameObjects:Map<XGameObject, XDepthSprite>;
     private m_childObjects:Map<XGameObject, XDepthSprite>;	
     private m_children:Map<PIXI.DisplayObject, any>;
+    private m_children0:Map<PIXI.DisplayObject, any>;
 
     private m_streamingSoundManager:XSoundSubManager;
     private m_musicSoundManager:XSoundSubManager;
@@ -77,7 +79,7 @@ export class XWorld extends XSprite {
 
     private m_matterEngine:Engine;
 
-    private m_viewRect:XRect;
+    public m_viewRect:XRect;
     
     public static readonly SPRITE_LAYER:number = 0;
     public static readonly SPRITE_XDEPTHSPRITE:number = 1;
@@ -114,10 +116,11 @@ export class XWorld extends XSprite {
         }
     
         for (i = this.MAX_LAYERS - 1; i >= 0; i--) {
-            this.__createLayer (i);
+        // for (i = 0; i < this.MAX_LAYERS; i++) {
+            this.createLayer (i);
         }
     
-        this.m_hudLayer = new XSpriteLayer ();
+        this.m_hudLayer = new XSpriteLayer9 ();
         this.m_hudLayer.setup ();
         this.m_hudLayer.world = this;
         this.addChild (this.m_hudLayer);
@@ -127,6 +130,7 @@ export class XWorld extends XSprite {
         this.m_gameObjects = new Map<XGameObject, XDepthSprite> ();
         this.m_childObjects = new Map<XGameObject, XDepthSprite> ();
         this.m_children = new Map<PIXI.DisplayObject, any> ();
+        this.m_children0 = new Map<PIXI.DisplayObject, any> ();
 
         this.m_XBulletCollisionManager = new XBulletCollisionManager (this);
         this.m_XLogicObjectPoolManager = new XClassPoolManager ();
@@ -141,15 +145,26 @@ export class XWorld extends XSprite {
     }
 
 	//------------------------------------------------------------------------------------------
-     __createLayer (i:number):void {
+     public createLayer (i:number):void {
         this.m_layerContainers[i] = new PIXI.Sprite ();
-        this.m_layers[i] = new XSpriteLayer ();
+        this.m_layers[i] = new XSpriteLayer9 ();
         this.m_layers[i].setup ();
         this.m_layers[i].world = this;
         this.m_layerContainers[i].addChild (this.m_layers[i]);
         this.addChild (this.m_layerContainers[i]);
     }
     
+	//------------------------------------------------------------------------------------------
+    public replaceLayer (i:number, __spriteLayer:XSpriteLayer):void {
+        while (this.m_layerContainers[i].children.length > 0) {
+            this.m_layerContainers[i].removeChildAt (0);
+        }
+        this.m_layers[i] = __spriteLayer;
+        this.m_layers[i].setup ();
+        this.m_layers[i].world = this;
+        this.m_layerContainers[i].addChild (this.m_layers[i]);
+    }
+
 	//------------------------------------------------------------------------------------------
 	public setup ():void {
         super.setup ();
@@ -224,17 +239,16 @@ export class XWorld extends XSprite {
         var __gameObject:XGameObject;
 
         for (__gameObject of this.m_gameObjects.keys ()) {
-            __gameObject.setMasterX (__gameObject.x);
-            __gameObject.setMasterY (__gameObject.y);
-            __gameObject.setMasterAlpha (__gameObject.alpha);
-            __gameObject.setMasterDepth (__gameObject.getDepth ());
-            __gameObject.setMasterVisible (__gameObject.visible);
-            __gameObject.setMasterScaleX (__gameObject.scale.x);
-            __gameObject.setMasterScaleY (__gameObject.scale.y);
-            __gameObject.setMasterFlipX (__gameObject.getFlipX ());
-            __gameObject.setMasterFlipY (__gameObject.getFlipY ());
-            __gameObject.setMasterRotation (__gameObject.angle);
-            __gameObject.setMasterMouseEnabled (__gameObject.m_mouseEnabled);
+            __gameObject.m_masterX = __gameObject.x;
+            __gameObject.m_masterY = __gameObject.y;
+            __gameObject.m_masterAlpha = __gameObject.alpha;
+            __gameObject.m_masterDepth = __gameObject.m_depth;
+            __gameObject.m_masterScaleX = __gameObject.scale.x;
+            __gameObject.m_masterScaleY = __gameObject.scale.y;
+            __gameObject.m_masterFlipX = __gameObject.m_flipX;
+            __gameObject.m_masterFlipY = __gameObject.m_flipY;
+            __gameObject.m_masterRotation = __gameObject.angle;
+            __gameObject.m_masterMouseEnabled = __gameObject.m_mouseEnabled;
                     
             __gameObject.update ();
         }
@@ -255,6 +269,16 @@ export class XWorld extends XSprite {
     }			
 
     //------------------------------------------------------------------------------------------
+    public addDetachedGameObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+        var __gameObject:XGameObject = XType.createInstance (__class) as XGameObject;
+        __gameObject.setup (this, __layer, __depth);
+        
+        this.m_gameObjects.set (__gameObject, null);
+        
+        return __gameObject;
+    }	
+
+    //------------------------------------------------------------------------------------------
     public addPooledGameObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
         var __gameObject:XGameObject = this.getXLogicObjectPoolManager ().borrowObject (__class) as XGameObject;
         __gameObject.setup (this, __layer, __depth);
@@ -271,7 +295,19 @@ export class XWorld extends XSprite {
     }			
 
     //------------------------------------------------------------------------------------------
-    public addChildObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+    public addPooledDetachedGameObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+        var __gameObject:XGameObject = this.getXLogicObjectPoolManager ().borrowObject (__class) as XGameObject;
+        __gameObject.setup (this, __layer, __depth);
+        
+        __gameObject.setPoolClass (__class);
+        
+        this.m_gameObjects.set (__gameObject, null);
+        
+        return __gameObject;
+    }	
+
+    //------------------------------------------------------------------------------------------
+    public addGameObjectAsChild (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
         var __gameObject:XGameObject = XType.createInstance (__class) as XGameObject;
         __gameObject.setup(this, __layer, __depth);
         
@@ -285,7 +321,17 @@ export class XWorld extends XSprite {
     }	
 
     //------------------------------------------------------------------------------------------
-    public addChildObject0 (__gameObject:XGameObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+    public addGameObjectAsDetachedChild (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+        var __gameObject:XGameObject = XType.createInstance (__class) as XGameObject;
+        __gameObject.setup(this, __layer, __depth);
+
+        this.m_childObjects.set (__gameObject, null);
+        
+        return __gameObject;
+    }	
+
+    //------------------------------------------------------------------------------------------
+    public addGameObjectAsChild0 (__gameObject:XGameObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
         __gameObject.setup(this, __layer, __depth);
         
         var __depthSprite:XDepthSprite;
@@ -298,7 +344,16 @@ export class XWorld extends XSprite {
     }	
 
     //------------------------------------------------------------------------------------------
-    public addPooledChildObject (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+    public addGamedObjectAsDetachedChild0 (__gameObject:XGameObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+        __gameObject.setup(this, __layer, __depth);
+        
+        this.m_childObjects.set (__gameObject, null);
+        
+        return __gameObject;
+    }	
+
+    //------------------------------------------------------------------------------------------
+    public addPooledGameObjectAsChild (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
         var __gameObject:XGameObject = this.getXLogicObjectPoolManager ().borrowObject (__class) as XGameObject;
         __gameObject.setup(this, __layer, __depth);
         
@@ -311,6 +366,18 @@ export class XWorld extends XSprite {
         this.m_childObjects.set (__gameObject, __depthSprite);
         
         return __gameObject;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public addPooledGameObjectAsDetachedChild (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+        var __gameObject:XGameObject = this.getXLogicObjectPoolManager ().borrowObject (__class) as XGameObject;
+        __gameObject.setup(this, __layer, __depth);
+        
+        __gameObject.setPoolClass (__class);
+
+        this.m_childObjects.set (__gameObject, null);
+        
+        return __gameObject;
     }	
 
     //------------------------------------------------------------------------------------------
@@ -318,16 +385,20 @@ export class XWorld extends XSprite {
         if (this.m_gameObjects.has (__gameObject)) {
             var __depthSprite:XDepthSprite = this.m_gameObjects.get (__gameObject);
             
-            this.m_layers[__gameObject.getLayer()].removeSprite (__depthSprite);
-            
+            if (__depthSprite != null) {
+                this.m_layers[__gameObject.getLayer()].removeSprite (__depthSprite);
+            }
+
             this.m_gameObjects.delete (__gameObject);
         }
         
         if (this.m_childObjects.has (__gameObject)) {
             var __depthSprite:XDepthSprite = this.m_childObjects.get (__gameObject);
             
-            this.m_layers[__gameObject.getLayer()].removeSprite (__depthSprite);
-            
+            if (__depthSprite != null) {
+                this.m_layers[__gameObject.getLayer()].removeSprite (__depthSprite);
+            }
+
             this.m_childObjects.delete (__gameObject);
         }	
     }
@@ -342,6 +413,13 @@ export class XWorld extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
+    public addSortableChild0 (__sprite:PIXI.DisplayObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):void {
+        this.m_layers[__layer].addSprite0 (__sprite, __depth, __visible);
+
+        this.m_children0.set (__sprite, [__layer, __sprite]);
+    }
+    
+    //------------------------------------------------------------------------------------------
     public getChildDepthSprite (__sprite:PIXI.DisplayObject):XDepthSprite {
         return this.m_children.get (__sprite)[XWorld.SPRITE_XDEPTHSPRITE];
     }
@@ -354,6 +432,14 @@ export class XWorld extends XSprite {
             this.m_layers[x[XWorld.SPRITE_LAYER]].removeSprite (x[XWorld.SPRITE_XDEPTHSPRITE]);
             
             this.m_children.delete (__sprite);				
+        }
+
+        if (this.m_children0.has (__sprite)) {
+            var x:any  = this.m_children0.get (__sprite);
+            
+            this.m_layers[x[XWorld.SPRITE_LAYER]].removeSprite0 (x[XWorld.SPRITE_XDEPTHSPRITE]);
+            
+            this.m_children0.delete (__sprite);				
         }
     }
 
@@ -503,9 +589,51 @@ export class XWorld extends XSprite {
         return this.m_viewRect;
     }
 
-    //------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
     public getResourceByName (__name:string):any {
         return this.m_XApp.getXProjectManager ().getResourceByName (__name);
+    }
+
+//------------------------------------------------------------------------------------------
+// http://www.flipcode.com/archives/Fast_Approximate_Distance_Functions.shtml
+//------------------------------------------------------------------------------------------
+    public approxDistance (dx:number, dy:number):number {
+        var min:number, max:number, approx:number;
+        
+        if ( dx < 0 ) dx = -dx;
+        if ( dy < 0 ) dy = -dy;
+        
+        if ( dx < dy ) {
+            min = dx;
+            max = dy;
+        } else {
+            min = dy;
+            max = dx;
+        }
+        
+        approx = ( max * 1007 ) + ( min * 441 );
+    //	if ( max < ( min << 4 ))
+        if ( max < ( min * 16 ))
+            approx -= ( max * 40 );
+        
+    // add 512 for proper rounding
+    //	return (( approx + 512 ) >> 10 );
+        return (( approx + 512 ) / 1024 );	
+    }
+
+//------------------------------------------------------------------------------------------
+    public approxDistanceToGameObject (__sourceObject:XGameObject, __targetObject:XGameObject):number {
+        return this.approxDistance	(__sourceObject.x - __targetObject.x, __sourceObject.y - __targetObject.y)
+    }
+
+//------------------------------------------------------------------------------------------
+    public realDistance (dx:number, dy:number):number {
+        return Math.sqrt (dx*dx + dy*dy);		
+    }
+
+//------------------------------------------------------------------------------------------
+    public realDistanceToGameObject (__sourceObject:XGameObject, __targetObject:XGameObject):number {
+        return this.realDistance	(__sourceObject.x - __targetObject.x, __sourceObject.y - __targetObject.y)
     }
 
 //------------------------------------------------------------------------------------------

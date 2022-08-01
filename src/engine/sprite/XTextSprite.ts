@@ -28,8 +28,8 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js-legacy';
-import { XSprite } from '../sprite/XSprite';
-import { XWorld } from '../sprite/XWorld';
+import { XSprite } from './XSprite';
+import { XWorld } from './XWorld';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XTask } from "../task/XTask";
 import { XSignal } from '../signals/XSignal';

@@ -42,11 +42,13 @@ import { XType } from '../type/XType';
 import { XGameObject} from '../gameobject/XGameObject';
 import { XGameInstance } from './XGameInstance';
 import { G } from '../app/G';
+import { XLevel } from '../level/XLevel';
 
 //------------------------------------------------------------------------------------------
 export class XState extends XGameObject {
     public m_gameInstance:XGameInstance;
 	public m_resizeListenerID:number;
+    public m_levelObject:XLevel;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -71,7 +73,7 @@ export class XState extends XGameObject {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public cleanup():void {
+	public cleanup ():void {
 		super.cleanup ();
 
 		this.m_XApp.removeWindowResizeListener (this.m_resizeListenerID);
@@ -120,6 +122,16 @@ export class XState extends XGameObject {
 		__layer.y = __y;
 		__layer.scale.x = __scaleX * G.scaleRatio;
 		__layer.scale.y = __scaleY * G.scaleRatio;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getLevelObject ():XLevel {
+		return this.m_levelObject;
+	}
+
+//------------------------------------------------------------------------------------------
+	public setLevelObject ():XLevel {
+		return this.m_levelObject;
 	}
 
 //------------------------------------------------------------------------------------------

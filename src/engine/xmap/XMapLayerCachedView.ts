@@ -45,11 +45,16 @@
     import { XMapLayerView } from './XMapLayerView';
     import { XSubmapViewCache } from './XSubmapViewCache';
     import { XSubmapViewTilemapCache } from './XSubmapViewTilemapCache';
+	import { XSubmapViewTilemapCacheX } from './XSubmapViewTilemapCacheX';
+	import { G } from '../../engine/app/G';
+	import { GUID } from '../../engine/utils/GUID';
 
 //------------------------------------------------------------------------------------------
 	export class XMapLayerCachedView extends XMapLayerView {
 		private m_XSubmapToXLogicObject:Map<XSubmapModel, XGameObject>;
 		private m_delay:number;
+		private m_subManager:XSubTextureManager;
+		private m_subManagerName:string;
 				
 //------------------------------------------------------------------------------------------
 		public constructor () {
@@ -75,12 +80,26 @@
         
         this.m_delay = 1;
 
+		this.m_subManagerName = GUID.create ();
+		this.m_subManager = G.XApp.getTextureManager ().createSubManager (this.m_subManagerName);
+		this.m_subManager.start ();
+
+		XType.forEach (this.m_XMapModel.getLayer (this.m_currLayer).getImageClassNames (),
+			(__imageClassName:string) => {
+				this.m_subManager.addFromSpritesheet (__imageClassName.split (":")[0]);
+			}
+		);
+
+		this.m_subManager.finish ();
+
         return this;
     }
 
 //------------------------------------------------------------------------------------------
     public cleanup ():void {
         super.cleanup ();
+
+		this.m_subManager.cleanup ();
     }
 
 //------------------------------------------------------------------------------------------
@@ -148,16 +167,15 @@
 		var __logicObject:XSubmapViewCache;
 			
 		if (true) {
-                __logicObject = this.m_XMapView.addPooledGameObjectAsChild (
-                    XSubmapViewTilemapCache,
+                __logicObject = this.m_XMapView.addPooledGameObjectAsDetachedChild (
+                    XSubmapViewTilemapCacheX,
                     this.m_currLayer,
                     __depth,
                     true
-                ) as XSubmapViewTilemapCache;
+                ) as XSubmapViewTilemapCacheX;
 
                 __logicObject.afterSetup ([
-                    this.m_XMapView.getSubmapBitmapPoolManager (), // TODO
-					1.0
+					this.m_subManager
                 ]);
 
                 __logicObject.x = __submap.x;
