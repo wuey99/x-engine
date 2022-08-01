@@ -1,4 +1,4 @@
-# pixi-engine
+# x-engine
 
-minimal pixi-js engine based on boiler-plate code from https://github.com/yahiko00/PixiProject
+pixi-js based engine
 
