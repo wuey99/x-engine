@@ -37,6 +37,9 @@ import { world } from '../../scripts/app';
 import { XTask } from '../task/XTask';
 import { XTaskManager} from '../task/XTaskManager';
 import { XTaskSubManager} from '../task/XTaskSubManager';
+import { XProcess} from '../process/XProcess';
+import { XProcessManager} from '../process/XProcessManager';
+import { XProcessSubManager} from '../process/XProcessSubManager';
 import { XWorld} from '../sprite/XWorld';
 import { XDepthSprite} from '../sprite/XDepthSprite';
 import { XType } from '../type/XType';
@@ -74,6 +77,8 @@ export class XGameObject extends PIXI.Sprite {
 	public m_bitmapFonts:Map<string, number>;
 	public m_XTaskSubManager0:XTaskSubManager;
 	public m_XTaskSubManager:XTaskSubManager;
+	public m_XProcessSubManager0:XProcessSubManager;
+	public m_XProcessSubManager:XProcessSubManager;
 	public m_killSignal:XSignal;
 	public m_parent:XGameObject;
 	public m_XApp:XApp;
@@ -163,6 +168,8 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_bitmapFonts = new Map<string, number> ();
 		this.m_XTaskSubManager0 = new XTaskSubManager (XGameObject.getXApp ().getXTaskManager0 ());
 		this.m_XTaskSubManager = new XTaskSubManager (XGameObject.getXApp ().getXTaskManager ());
+		this.m_XProcessSubManager0 = new XProcessSubManager (XGameObject.getXApp ().getXProcessManager0 ());
+		this.m_XProcessSubManager = new XProcessSubManager (XGameObject.getXApp ().getXProcessManager ());
 		this.m_parent = null;
 		this.m_XApp = XGameObject.g_XApp;
 		this.m_killSignal = this.createXSignal ();
@@ -1883,7 +1890,99 @@ export class XGameObject extends PIXI.Sprite {
 	public gotoLogic (__logic:any):void {
 		this.m_XTaskSubManager.gotoLogic (__logic);
 	}
+
+//------------------------------------------------------------------------------------------
+	public getXProcessManager0 ():XProcessManager {
+		return XGameObject.getXApp ().getXProcessManager0 ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public addProcess0 (
+		__generatorFunc:any
+		):XProcess {
+
+		var __process:XProcess = this.m_XProcessSubManager0.addProcess (__generatorFunc);
+			
+		__process.setParent (this);
+			
+		return __process;
+	}
+
+//------------------------------------------------------------------------------------------
+	public changeProcess0 (
+		__process:XProcess,
+		__generatorFunc:any
+		):XProcess {
+				
+		return this.m_XProcessSubManager0.changeProcess (__process, __generatorFunc);
+	}
+
+//------------------------------------------------------------------------------------------
+	public isProcess0 (__process:XProcess):boolean {
+		return this.m_XProcessSubManager0.isProcess (__process);
+	}		
+
+//------------------------------------------------------------------------------------------
+	public removeProcess0 (__process:XProcess):void {
+		this.m_XProcessSubManager0.removeProcess (__process);	
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeAllProcesses0 ():void {
+		this.m_XProcessSubManager0.removeAllProcesses ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public addEmptyProcess0 ():XProcess {
+		return this.m_XProcessSubManager0.addEmptyProcess ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public getXProcessManager ():XProcessManager {
+		return XGameObject.getXApp ().getXProcessManager ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public addProcess (
+		__generatorFunc:any
+		):XProcess {
+
+		var __process:XProcess = this.m_XProcessSubManager.addProcess (__generatorFunc);
+			
+		__process.setParent (this);
+			
+		return __process;
+	}
+
+//------------------------------------------------------------------------------------------
+	public changeProcess (
+		__process:XProcess,
+		__generatorFunc:any
+		):XProcess {
+				
+		return this.m_XProcessSubManager.changeProcess (__process, __generatorFunc);
+	}
+
+//------------------------------------------------------------------------------------------
+	public isProcess (__process:XProcess):boolean {
+		return this.m_XProcessSubManager.isProcess (__process);
+	}		
 	
+//------------------------------------------------------------------------------------------
+	public removeProcess (__process:XProcess):void {
+		this.m_XProcessSubManager.removeProcess (__process);	
+	}
+
+//------------------------------------------------------------------------------------------
+	public removeAllProcesses ():void {
+		this.m_XProcessSubManager.removeAllProcesses ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public addEmptyProcess ():XProcess {
+		return this.m_XProcessSubManager.addEmptyProcess ();
+	}
+
 //------------------------------------------------------------------------------------------
 	public setDepth (__depth:number):XGameObject {
 		this.m_depth = __depth;

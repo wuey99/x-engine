@@ -31,6 +31,8 @@ import * as PIXI from 'pixi.js-legacy'
 import { XType } from '../type/XType';
 import { XTask } from '../task/XTask';
 import { XTaskManager} from '../task/XTaskManager';
+import { XProcess} from '../process/XProcess';
+import { XProcessManager} from '../process/XProcessManager';
 import { XSignal } from '../signals/XSignal';
 import { XSignalManager} from '../signals/XSignalManager';
 import { XSprite } from '../sprite/XSprite';
@@ -74,6 +76,8 @@ export class XApp {
 
 	private m_XTaskManager0:XTaskManager;
 	private m_XTaskManager:XTaskManager;
+	private m_XProcessManager0:XProcessManager;
+	private m_XProcessManager:XProcessManager;
     private m_XSignalManager:XSignalManager;
     
 	private m_XClassPoolManager:XClassPoolManager;
@@ -177,6 +181,7 @@ export class XApp {
 
 		XGameObject.setXApp (this);
 		XTask.setXApp (this);
+        XProcess.setXApp (this);
 		// TODO XTilemap.setXApp (this);
 		XSprite.setXApp (this);
         XMapModel.setXApp (this);
@@ -192,6 +197,8 @@ export class XApp {
 
         this.m_XTaskManager0 = new XTaskManager (this);	
 		this.m_XTaskManager = new XTaskManager (this);	
+        this.m_XProcessManager0 = new XProcessManager (this);	
+		this.m_XProcessManager = new XProcessManager (this);	
         this.m_XSignalManager = new XSignalManager (this);
         this.m_XProjectManager = new XProjectManager (this);
         this.m_XSoundManager = new XSoundManager (this);
@@ -257,6 +264,8 @@ export class XApp {
     public cleanup ():void {
         this.m_XTaskManager0.removeAllTasks ();
         this.m_XTaskManager.removeAllTasks ();
+        this.m_XProcessManager0.removeAllProcesses ();
+        this.m_XProcessManager.removeAllProcesses ();
         this.m_XSignalManager.removeAllXSignals ();
         
         this.getStage ().off ("pointerdown", this.m_pointerDownHandle);
@@ -736,6 +745,16 @@ export class XApp {
     //------------------------------------------------------------------------------------------
     public getXTaskManager ():XTaskManager {
         return this.m_XTaskManager;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getXProcessManager0 ():XProcessManager {
+        return this.m_XProcessManager0;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getXProcessManager ():XProcessManager {
+        return this.m_XProcessManager;
     }
 
     //------------------------------------------------------------------------------------------
