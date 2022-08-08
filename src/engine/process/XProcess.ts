@@ -7,16 +7,19 @@ import { XObjectPoolManager } from '../pool/XObjectPoolManager';
 
 //------------------------------------------------------------------------------------------
 export class XProcess {
+    private m_id:string;
     private m_parent:any;
     private m_manager:XProcessManager;
 	private m_ticks:number;
     private m_generator:any;
     private m_isDead:boolean;
+    private m_subProcess:XProcess;
 
     private m_XProcessSubManager:XProcessSubManager;
    
     public static readonly WAIT:number = 1;
     public static readonly WAIT1000:number = 2;
+    public static readonly EXEC:number = 3;
 
     public static g_XApp:XApp;
 
@@ -36,6 +39,8 @@ export class XProcess {
 		this.m_ticks = 0x0100 + 0x0080;
 		this.m_isDead = false;
 		this.m_parent = null;
+        this.m_subProcess = null;
+        this.m_id = "";
 	}
 
 	//------------------------------------------------------------------------------------------
@@ -70,6 +75,11 @@ export class XProcess {
 	    return XProcess.g_XApp;
 	}
 
+    //------------------------------------------------------------------------------------------
+    public setID (__id:string):void {
+        this.m_id = __id;
+    }
+
 	//------------------------------------------------------------------------------------------
 	public kill ():void {
         this.m_generator.return ();
@@ -87,28 +97,51 @@ export class XProcess {
             return;
         }
 
-		// suspended?
-		this.m_ticks -= 0x0100;
+        if (this.m_subProcess != null) {
+            if (this.m_XProcessSubManager.isProcess (this.m_subProcess)) {
+                return;
+            } else {
+                this.m_subProcess = null;
+            }
+        }
+
+    	this.m_ticks -= 0x0100;
 
         while (this.m_ticks <= 0x0080) {
             var cont = this.m_generator.next ();
 
             if (!cont.done) {
-                var value:Array<number> = cont.value as Array<number>;
+                var value:Array<any> = cont.value as Array<any>;
 
                 switch (value[0]) {
                     case XProcess.WAIT:
-                        this.m_ticks += value[1] / this.getXApp ().getFrameRateScale ();
+                        this.m_ticks += (value[1] as number) / this.getXApp ().getFrameRateScale ();
 
                         break;
 
                     case XProcess.WAIT1000:
-                        this.m_ticks += Math.floor (value[1] / 16.67 / this.getXApp ().getFrameRateScale ()) << 8;
+                        this.m_ticks += Math.floor ((value[1] as number) / 16.67 / this.getXApp ().getFrameRateScale ()) << 8;
+
+                        break;
+
+                    case XProcess.EXEC:
+                        this.m_subProcess = this.addProcess (value[1]);
+                        this.m_subProcess.setManager (this.m_manager);
+                        this.m_subProcess.setParent (this);
+                        this.m_subProcess.run ();
+                        
+                        if (this.m_XProcessSubManager.isProcess (this.m_subProcess)) {
+                            return;
+                        }
 
                         break;
                 }            
             } else {
-                this.m_isDead = true;
+                if (this.m_parent != null && this.m_parent != this.m_manager) {
+                    this.m_parent.removeProcess (this);
+                } else {
+                    this.m_manager.removeProcess (this);
+                }
 
                 return;
             }

@@ -27,6 +27,7 @@ import { XTextSpriteButton } from '../../engine/ui/XTextSpriteButton';
 import { XTextSprite } from '../../engine/sprite/XTextSprite';
 import { TextInput } from 'pixi-textinput-v5';
 import { XLevel } from '../../engine/level/XLevel';
+import { XProcess } from '../../engine/process/XProcess';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
@@ -101,6 +102,8 @@ export class TestGame extends XState {
 		var __x:number = 0;
 		var __y:number = 0;
 		
+		var __process:XProcess = this.addProcess (this.tick.bind (this));
+
 		this.addTask ([
 			XTask.LABEL, "loop",
 				XTask.WAIT, 0x0100,
@@ -211,6 +214,24 @@ export class TestGame extends XState {
 		*/
 		
 		return this;
+	}
+
+//------------------------------------------------------------------------------------------
+	public *tick () {
+		while (true) {
+			console.log (": tick: ", this);
+
+			yield [XProcess.EXEC, this.subTick.bind (this)];
+
+			yield [XProcess.WAIT1000, 1 * 1000];
+		}
+	}
+
+//------------------------------------------------------------------------------------------
+	public *subTick () {
+		console.log (": subTick: ", this);
+
+		yield [XProcess.WAIT, 0x0800];
 	}
 
 //------------------------------------------------------------------------------------------

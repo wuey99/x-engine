@@ -181,7 +181,7 @@ export class XApp {
 
 		XGameObject.setXApp (this);
 		XTask.setXApp (this);
-        XProcess.setXApp (this);
+        XProcess.setXApp (this)
 		// TODO XTilemap.setXApp (this);
 		XSprite.setXApp (this);
         XMapModel.setXApp (this);
@@ -535,12 +535,14 @@ export class XApp {
 		var __deltaTime:number = XType.getNowDate ().getTime () - this.m_previousTimer;
 		
         this.getXTaskManager0 ().updateTasks ();
-        
+        this.getXProcessManager0 ().updateProcesses ();
+
         if (!this.m_paused) {
             // console.log (": XApp: update: ");
 
 			this.getXTaskManager ().updateTasks ();
-			
+			this.getXProcessManager ().updateProcesses ();
+
 			// this.m_currentTimer += __deltaTime;
 
             this.m_currentTimer += 1000.0 / this.fpsMax;
