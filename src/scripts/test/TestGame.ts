@@ -104,6 +104,7 @@ export class TestGame extends XState {
 		
 		var __process:XProcess = this.addProcess (this.tick.bind (this));
 
+		/*
 		this.addTask ([
 			XTask.LABEL, "loop",
 				XTask.WAIT, 0x0100,
@@ -123,6 +124,22 @@ export class TestGame extends XState {
 
 			XTask.RETN,
 		]);
+		*/
+
+		this.addProcess (
+			function * () {
+				do {
+					yield [XProcess.WAIT, 0x0100];
+
+					__level.scrollTo (0, -__x, -__y);
+					__level.scrollTo (1, -__x, -__y);
+					__level.updateScroll ();
+					__level.updateFromXMapModel ();
+					__x += 1;
+					__y += 1;
+				} while (__x !== 1536);
+			}.bind (this)
+		);
 
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, TestGame.HUD_LAYER, 0.0, false) as FlockLeader;
 		__leader.afterSetup ([]);
