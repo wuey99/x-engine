@@ -41,7 +41,7 @@
 			var dt:Date = XType.getNowDate();
 			var id1:number = dt.getTime();
 			var id2:number = Math.random()*XType.Number_MAX_VALUE();
-			var id3:string = "whatsis"; // Capabilities.serverString;
+			var id3:string = GUID.randomId(); // Capabilities.serverString;
 			var rawID:string = GUID.calculate(id1+id3+id2+GUID.counter++).toUpperCase();
 			var finalString:string = rawID.substring(0, 8) + "-" + rawID.substring(8, 12) + "-" + rawID.substring(12, 16) + "-" + rawID.substring(16, 20) + "-" + rawID.substring(20, 32);
 			return finalString;
@@ -137,6 +137,15 @@
 				str += tab.charAt((binarray[i >> 2] >> ((3-i%4)*8+4)) & 0xF) + tab.charAt((binarray[i >> 2] >> ((3-i%4)*8)) & 0xF);
 			}
 			return str;
+		}
+
+		private static randomId():string {
+			if (window != null && window.crypto != null) {
+				const uint32 = window.crypto.getRandomValues(new Uint32Array(1))[0];
+				return uint32.toString(16);
+			} else {
+				return "xyzzy";
+			}
 		}
 	}
 // }
