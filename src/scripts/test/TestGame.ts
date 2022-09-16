@@ -137,7 +137,7 @@ export class TestGame extends XState {
 					__level.updateFromXMapModel ();
 					__x += 1;
 					__y += 1;
-				} while (__x !== 1536);
+				} while (__x != 1536);
 			}.bind (this)
 		);
 
