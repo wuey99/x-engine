@@ -27,7 +27,7 @@
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js-legacy';
+import * as PIXI from 'pixi.js';
 import { XSprite } from './XSprite';
 import { XDepthSprite } from './XDepthSprite';
 import { XType } from '../type/XType';

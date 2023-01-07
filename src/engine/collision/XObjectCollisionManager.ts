@@ -27,7 +27,7 @@
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-    import * as PIXI from 'pixi.js-legacy'
+    import * as PIXI from 'pixi.js'
     import { XPoint } from '../geom/XPoint';
     import { XRect } from '../geom/XRect';
     import { XWorld} from '../sprite/XWorld';

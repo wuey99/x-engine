@@ -28,7 +28,7 @@
 
 //------------------------------------------------------------------------------------------
 import { Howl } from 'howler';
-import * as PIXI from 'pixi.js-legacy';
+import * as PIXI from 'pixi.js';
 import { XApp } from "../app/XApp";
 import { Resource } from './Resource';
 import { G } from '../app/G';

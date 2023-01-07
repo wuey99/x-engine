@@ -27,7 +27,7 @@
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js-legacy'
+import * as PIXI from 'pixi.js'
 import { XApp } from '../app/XApp';
 import { XSprite } from './XSprite';
 import { XSpriteLayer } from './XSpriteLayer';

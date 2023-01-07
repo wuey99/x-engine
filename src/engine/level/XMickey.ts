@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js-legacy'
+import * as PIXI from 'pixi.js'
 import { XApp } from '../app/XApp';
 import { XSprite } from '../sprite/XSprite';
 import { XSpriteLayer } from '../sprite/XSpriteLayer';

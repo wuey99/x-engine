@@ -27,7 +27,7 @@
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js-legacy'
+import * as PIXI from 'pixi.js'
 import { XType } from '../type/XType';
 import { XTask } from '../task/XTask';
 import { XTaskManager} from '../task/XTaskManager';
@@ -70,7 +70,7 @@ export interface XAppParams {
 export class XApp {
     public container: HTMLElement;
     public loader: PIXI.Loader;
-    public renderer: PIXI.Renderer | PIXI.CanvasRenderer;
+    public renderer: PIXI.Renderer;
     public stage: PIXI.Container;
     public fpsMax: number;
 
@@ -700,7 +700,7 @@ export class XApp {
 	}
 
     //------------------------------------------------------------------------------------------
-    public getRenderer ():PIXI.Renderer | PIXI.CanvasRenderer {
+    public getRenderer ():PIXI.Renderer {
         return this.renderer;
     }
 

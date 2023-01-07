@@ -25,7 +25,7 @@
 // SOFTWARE.
 // <$end$/>
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js-legacy';
+import * as PIXI from 'pixi.js';
 import { XApp } from '../app/XApp';
 import { XMapLayerModel } from './XMapLayerModel';
 import { XSubObjectPoolManager } from '../pool/XSubObjectPoolManager';

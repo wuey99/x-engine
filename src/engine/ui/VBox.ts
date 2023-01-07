@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js-legacy';
+import * as PIXI from 'pixi.js';
 import { XSprite } from '../sprite/XSprite';
 import { XWorld } from '../sprite/XWorld';
 import { XGameObject} from '../gameobject/XGameObject';

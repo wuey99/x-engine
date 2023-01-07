@@ -27,7 +27,7 @@
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js-legacy'
+import * as PIXI from 'pixi.js'
 import * as SFS2X from "sfs2x-api";
 import { SFSManager } from '../../engine/sfs/SFSManager';
 import { XApp } from '../../engine/app/XApp';
