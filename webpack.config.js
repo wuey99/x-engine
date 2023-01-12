@@ -16,6 +16,11 @@ const config = {
     module: {
         rules: [
             {
+                test: /\.mjs$/,
+                include: /node_modules/,
+                type: 'javascript/auto'
+            },
+            {
                 test: /\.tsx?$/,
                 loader: 'ts-loader',
                 exclude: /node_modules/,

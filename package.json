@@ -34,6 +34,7 @@
     "matter-js": "^0.14.2",
     "pako": "^2.0.4",
     "pixi-textinput-v5": "^4.0.0-beta.10",
+    "core-js": "^3.26.0",
     "pixi.js": "^5.3.3",
     "poly-decomp": "^0.3.0",
     "polygon-clipping": "^0.15.1",

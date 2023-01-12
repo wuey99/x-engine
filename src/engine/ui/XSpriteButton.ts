@@ -165,7 +165,7 @@ export class XSpriteButton extends XButton {
         var __sprite:PIXI.AnimatedSprite = (this.m_sprite as PIXI.AnimatedSprite);
         var __size:number = this.m_9size;
 
-        var __textures:Array<PIXI.Texture> = __sprite.textures;
+        var __textures:Array<PIXI.Texture> = __sprite.textures as any; // TODO PixiJS 6
 
         this.m_normal9 = new PIXI.NineSlicePlane(__textures[XButton.NORMAL_STATE], __size, __size, __size, __size);
         this.addSortableChild (this.m_normal9, this.getLayer (), this.getDepth (), false);
