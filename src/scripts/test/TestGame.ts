@@ -88,6 +88,8 @@ export class TestGame extends XState {
 				XTask.RETN,
 			]);
 
+		console.log (": OctopusBug: ", this.m_XApp.getResourceByName ("OctopusBug"));
+
 		console.log (": Test001: ", this.m_XApp.getResourceByName ("Test001"));
 
 		var __level:XLevel = this.addGameObjectAsChild (XLevel, 0, 0.0, false) as XLevel;
@@ -101,9 +103,9 @@ export class TestGame extends XState {
 
 		var __x:number = 0;
 		var __y:number = 0;
-		
-		var __process:XProcess = this.addProcess (this.tick.bind (this));
 
+		var __process:XProcess = this.addProcess (this.tick.bind (this));
+	
 		/*
 		this.addTask ([
 			XTask.LABEL, "loop",

@@ -68,6 +68,7 @@ export class XSpriteLayer0 extends XSpriteLayer {
         super.cleanup ();
     }
 
+    /*
     //------------------------------------------------------------------------------------------
     public addChildToContainer (__sprite:PIXI.DisplayObject):void {
         this.m_container.addChild (__sprite);
@@ -75,6 +76,17 @@ export class XSpriteLayer0 extends XSpriteLayer {
 
     //------------------------------------------------------------------------------------------
     public removeChildFromContainer (__sprite:PIXI.DisplayObject):void {
+        this.m_container.removeChild (__sprite);
+    }
+    */
+
+    //------------------------------------------------------------------------------------------
+    public addChildToContainer (__sprite:PIXI.Sprite):void {
+        this.m_container.addChild (__sprite);
+    }
+
+    //------------------------------------------------------------------------------------------
+    public removeChildFromContainer (__sprite:PIXI.Sprite):void {
         this.m_container.removeChild (__sprite);
     }
 

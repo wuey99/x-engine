@@ -35,7 +35,7 @@ import { XTask } from "../task/XTask";
 import { XSignal } from '../signals/XSignal';
 import { XApp } from '../app/XApp';
 import { XType } from '../type/XType';
-	
+
 //------------------------------------------------------------------------------------------
 	export class XTextSprite extends XSprite {
 		public m_bitmapText:PIXI.BitmapText;
@@ -71,7 +71,7 @@ import { XType } from '../type/XType';
                     fontName: __fontName,
                     fontSize: __fontSize,
                     tint: __color,
-                    align: __horzAlign,
+                    // align: __horzAlign,
                     maxWidth: __width
                 }
             );		
@@ -191,7 +191,7 @@ import { XType } from '../type/XType';
 		}
 		
 		public set align (__val:string) {
-			this.m_bitmapText.align = __val; this.format ();		
+			// this.m_bitmapText.align = __val; this.format ();		
 		}
 		
 //------------------------------------------------------------------------------------------

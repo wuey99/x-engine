@@ -1,4 +1,4 @@
 # x-engine
 
-pixi-js based engine
+pixi-js based game engine
 

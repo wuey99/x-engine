@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------------------
 // app.ts
 //------------------------------------------------------------------------------------------
+import * as PIXI from 'pixi.js';
 import { G } from '../engine/app/G';
 import { XApp } from '../engine/app/XApp';
 import { ImageResource } from '../engine/resource/ImageResource';
@@ -26,16 +27,23 @@ export var world:XWorld;
 
 let fpsMeter: FpsMeter;
 
+const gameWidth = 800;
+const gameHeight = 600;
+
 //------------------------------------------------------------------------------------------
 window.onload = () => {
+    const __game = document.createElement("div");
+    __game.id = "game";
+    document.body.appendChild (__game);
+
     var __main:Main = new Main (
         {
             onStateChange: () => {}
         }
     );
 
-    __main.setup ();
-} 
+    __main.setup (__game);
+}
 
 //------------------------------------------------------------------------------------------
 export class Main {

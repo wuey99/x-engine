@@ -143,7 +143,7 @@ export class XApp {
             width: this.getWindowWidth (), // params.canvasW,
             height: this.getWindowHeight (), // params.canvasH,
             antialias: true
-        });
+        }) as any; // TODO PixiJS 6
 
         this.m_main = __main;
         this.stage = new PIXI.Container ();
