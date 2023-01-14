@@ -139,11 +139,11 @@ export class XApp {
     constructor (__main:Main, params: XAppParams, __container:HTMLElement = null) {
         this.loader = PIXI.Loader.shared;
         this.renderer = PIXI.autoDetectRenderer ({
-            transparent: true,
+            backgroundAlpha: 0.0,
             width: this.getWindowWidth (), // params.canvasW,
             height: this.getWindowHeight (), // params.canvasH,
             antialias: true
-        }) as any; // TODO PixiJS 6
+        });
 
         this.m_main = __main;
         this.stage = new PIXI.Container ();
