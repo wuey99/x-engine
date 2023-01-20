@@ -5,15 +5,13 @@ import * as PIXI from 'pixi.js';
 import { EventSystem } from '@pixi/events';
 import { G } from '../engine/app/G';
 import { XApp } from '../engine/app/XApp';
-import { ImageResource } from '../engine/resource/ImageResource';
+import { ImageResourceX } from '../engine/resource/ImageResourceX';
 import { StreamingResource } from '../engine/resource/StreamingResource';
 import { MusicResource } from '../engine/resource/MusicResource';
 import { SoundResource } from '../engine/resource/SoundResource';
-import { SpriteSheetResource } from '../engine/resource/SpriteSheetResource';
 import { SpriteSheetResourceX } from '../engine/resource/SpriteSheetResourceX';
 import { XMapResourceX } from '../engine/resource/XMapResourceX';
-import { BlobResource } from '../engine/resource/BlobResource';
-import { XMapResource } from '../engine/resource/XMapResource';
+import { BlobResourceX } from '../engine/resource/BlobResourceX';
 import { ResourceSpec } from '../engine/resource/XResourceManager';
 import { XWorld } from '../engine/sprite/XWorld';
 import { XGameController } from '../engine/state/XGameController';
@@ -29,9 +27,6 @@ export var g_XApp:XApp;
 export var world:XWorld;
 
 let fpsMeter: FpsMeter;
-
-const gameWidth = 800;
-const gameHeight = 600;
 
 //------------------------------------------------------------------------------------------
 window.onload = () => {
@@ -82,7 +77,7 @@ export class Main {
 
         // return;
          
-        g_XApp.renderer.addSystem (EventSystem, 'events');
+         g_XApp.renderer.addSystem (EventSystem, 'events');
 
         world = new XWorld (g_XApp.stage, g_XApp, 8);
         world.setup ();
@@ -231,11 +226,11 @@ export class Main {
 //------------------------------------------------------------------------------------------
     public configureAndLoadAssets ():void {
         g_XApp.getXProjectManager ().registerType ("SpriteSheet", SpriteSheetResourceX);
-        g_XApp.getXProjectManager ().registerType ("ImageResource", ImageResource);
+        g_XApp.getXProjectManager ().registerType ("ImageResource", ImageResourceX);
         g_XApp.getXProjectManager ().registerType ("SoundResource", SoundResource);
         g_XApp.getXProjectManager ().registerType ("StreamingResource", StreamingResource);
         g_XApp.getXProjectManager ().registerType ("MusicResource", MusicResource);
-        g_XApp.getXProjectManager ().registerType ("BlobResource", BlobResource);
+        g_XApp.getXProjectManager ().registerType ("BlobResource", BlobResourceX);
         g_XApp.getXProjectManager ().registerType ("XMapResource", XMapResourceX);
 
         g_XApp.getXProjectManager ().setup (

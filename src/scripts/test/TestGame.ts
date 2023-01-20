@@ -143,6 +143,13 @@ export class TestGame extends XState {
 		var __leader:FlockLeader = world.addGameObject (FlockLeader, TestGame.HUD_LAYER, 0.0, false) as FlockLeader;
 		__leader.afterSetup ([]);
 
+		Assets.load ("assets/Common.xml").then ((__data:any) => {
+			var __xml:XSimpleXMLNode = new XSimpleXMLNode ();
+            __xml.setupWithXMLString (JSON.stringify (__data));
+
+			console.log (": xml: ", __xml);
+		});
+
 		var __testButton:XSpriteButton = this.addGameObjectAsChild (XSpriteButton, TestGame.HUD_LAYER, 0.0, false) as XSpriteButton;
 		__testButton.afterSetup ([
 			"TestButton",

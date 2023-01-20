@@ -33,7 +33,6 @@ import { XApp } from "../app/XApp";
 //------------------------------------------------------------------------------------------
 export class Resource {
     public m_path:string;
-    public loader:PIXI.Loader;
     public m_loadComplete:boolean;
     public m_isDead:boolean;
 
@@ -44,9 +43,8 @@ export class Resource {
     }
 
     //------------------------------------------------------------------------------------------
-    public setup (__path:string, __loader:PIXI.Loader):void {
+    public setup (__path:string):void {
         this.m_path = __path;
-        this.loader = __loader;
     }
 
     //------------------------------------------------------------------------------------------

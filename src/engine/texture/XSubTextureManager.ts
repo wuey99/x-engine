@@ -235,7 +235,7 @@
 				
 				//------------------------------------------------------------------------------------------
 				var __tileset:PIXI.RenderTexture = PIXI.RenderTexture.create ({width: this.TEXTURE_WIDTH, height: this.TEXTURE_HEIGHT});
-				this.m_XApp.getRenderer ().render (this.m_currentContainer, __tileset);
+				this.m_XApp.getRenderer ().render (this.m_currentContainer, {renderTexture: __tileset});
 				this.m_renderTextures.push (__tileset);
 
 				this.destroyAnimatedSprites (__animatedSprites);
@@ -328,7 +328,7 @@
 				
 				//------------------------------------------------------------------------------------------
 				var __tileset:PIXI.RenderTexture = PIXI.RenderTexture.create ({width: this.TEXTURE_WIDTH, height: this.TEXTURE_HEIGHT});
-				this.m_XApp.getRenderer ().render (this.m_currentContainer, __tileset);
+				this.m_XApp.getRenderer ().render (this.m_currentContainer, {renderTexture: __tileset});
 				this.m_renderTextures.push (__tileset);
 
 				this.destroyAnimatedSprites (__animatedSprites);

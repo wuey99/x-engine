@@ -70,7 +70,6 @@ export interface XAppParams {
 //------------------------------------------------------------------------------------------
 export class XApp {
     public container: HTMLElement;
-    public loader: PIXI.Loader;
     public renderer: PIXI.Renderer;
     public stage: PIXI.Container;
     public fpsMax: number;
@@ -138,13 +137,12 @@ export class XApp {
 
     //------------------------------------------------------------------------------------------
     constructor (__main:Main, params: XAppParams, __container:HTMLElement = null) {
-        this.loader = PIXI.Loader.shared;
         this.renderer = PIXI.autoDetectRenderer ({
             backgroundAlpha: 0.0,
             width: this.getWindowWidth (), // params.canvasW,
             height: this.getWindowHeight (), // params.canvasH,
             antialias: true
-        }) as any;
+        }) as PIXI.Renderer;
 
         this.m_main = __main;
         this.stage = new PIXI.Container ();
@@ -231,7 +229,7 @@ export class XApp {
             this.m_mousePoint.y = __mousePos.y;
     
             console.log (": XApp: pointermove: ", this.m_mousePoint);
-            
+
             // this.m_main.setDebugMessage ("" + __mousePos.x + ", " + __mousePos.y);
         });
 

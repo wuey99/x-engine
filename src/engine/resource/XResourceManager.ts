@@ -30,7 +30,6 @@
 import * as PIXI from 'pixi.js';
 import { XApp } from "../app/XApp";
 import { Resource} from './Resource';
-import { SpriteSheetResource } from './SpriteSheetResource';
 import { XTask } from '../task/XTask';
 import { XType } from '../type/XType';
 import { XProjectManager } from './XProjectManager';
@@ -48,7 +47,6 @@ export class XResourceManager {
     public m_projectManager:XProjectManager;
     public m_resourceMap:Map<string, Resource>;
     public m_queues:Array<Array<Resource>>;
-    public loaders:Array<PIXI.Loader>;
     public m_paused:boolean;
     public m_loadedFiles:number;
     public m_totalFiles:number;
@@ -64,7 +62,6 @@ export class XResourceManager {
 
         this.m_resourceMap = new Map<string, Resource> ();
         this.m_queues = new Array<Array<Resource>> ();
-        this.loaders = new Array<PIXI.Loader> ();
 
         this.m_paused = false;
 
@@ -75,7 +72,6 @@ export class XResourceManager {
 
         for (i = 0; i < XResourceManager.NUM_QUEUES; i++) {
             this.m_queues.push (new Array<Resource> ());
-            this.loaders.push (new PIXI.Loader ());
 
             this.checkQueueTask (i);
         }
@@ -94,11 +90,13 @@ export class XResourceManager {
             this.m_resourceMap.delete (__name);
         }
 
+        /* TODO PixiJS 6 clean up resources
         var __loader:PIXI.Loader;
 
         for (__loader of this.loaders) {
             __loader.destroy ();
         }
+        */
     }
 
     //------------------------------------------------------------------------------------------
@@ -198,7 +196,7 @@ export class XResourceManager {
                 console.log (": loadResources: ", __resourceSpec, this.m_projectManager.getTypeMap ().get (__resourceSpec.type));
 
                 __resource = XType.createInstance (this.m_projectManager.getTypeMap ().get (__resourceSpec.type));
-                __resource.setup (this.m_projectManager.translateAlias (__resourceSpec.path), this.loaders[__queueIndex]);
+                __resource.setup (this.m_projectManager.translateAlias (__resourceSpec.path));
 
                 this.m_queues[__queueIndex].push (__resource);
 

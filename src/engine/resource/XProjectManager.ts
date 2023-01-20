@@ -28,6 +28,7 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js';
+import { Assets, LoaderParser } from '@pixi/assets';
 import { XApp } from "../app/XApp";
 import { XType } from '../type/XType';
 import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
@@ -37,10 +38,32 @@ import { ResourceSpec } from './XResourceManager';
 export * from './XMapResourceX';
 
 //------------------------------------------------------------------------------------------
+const loadXML = {
+    extension: {
+        type: PIXI.ExtensionType.LoadParser,
+        priority: 0
+    },
+
+    test (url: string):boolean {
+        return (PIXI.utils.path.extname(url).toLowerCase() === '.xml');
+    },
+
+    async load<T> (url: string):Promise<T> {
+        const response = await PIXI.settings.ADAPTER.fetch(url);
+  
+        const data = await response.text();
+  
+        return data as T;
+    },
+} as LoaderParser;
+
+//------------------------------------------------------------------------------------------
+PIXI.extensions.add (loadXML);
+
+//------------------------------------------------------------------------------------------
 export class XProjectManager {
     public m_XApp:XApp;
     public m_resourceManagers:Map<string, XResourceManager>;
-    public loader:PIXI.Loader;
     public m_manifest:XSimpleXMLNode;
     public m_loadComplete:boolean;
     public m_aliases:any;
@@ -62,23 +85,19 @@ export class XProjectManager {
     public setup (__manifestPath:string, __aliases:any, __callback:any):void {
         this.m_aliases = __aliases;
 
-        this.loader = new PIXI.Loader ();
-
         this.m_loadComplete = false;
 
         __manifestPath = this.translateAlias (__manifestPath);
 
-        this.loader.add(__manifestPath).load ((loader, resources) => {
+        Assets.load (__manifestPath).then ((__response:string) => {
             this.m_loadComplete = true;
-
-            var __response:string = resources[__manifestPath].xhr.response;
 
             console.log (": XProjectManager: ", __response);
 
             this.m_manifest = new XSimpleXMLNode ();
             this.m_manifest.setupWithXMLString (__response);
 
-            this.m_cowResourceList =  new Array<ResourceSpec> ();
+            this.m_cowResourceList = new Array<ResourceSpec> ();
 
             this.parseCowResources (0, this.m_manifest, this.m_cowResourceList);  
 
@@ -122,9 +141,7 @@ export class XProjectManager {
     //------------------------------------------------------------------------------------------
     public setup0 (__manifestPath:string, __aliases:any):void {
         this.m_aliases = __aliases;
-
-        this.loader = new PIXI.Loader ();
-
+        
         this.m_loadComplete = false;
     }
 
