@@ -28,50 +28,79 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js';
+import { Assets, LoaderParser } from '@pixi/assets';
 import { XApp } from "../app/XApp";
+import { Resource } from './Resource';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
-export class Resource {
-    public m_path:string;
-    public loader:PIXI.Loader;
-    public m_loadComplete:boolean;
-    public m_isDead:boolean;
+const loadBin = {
+    extension: {
+        type: PIXI.ExtensionType.LoadParser,
+        priority: 0
+    },
+
+    test (url: string):boolean {
+        return (PIXI.utils.path.extname(url).toLowerCase() === '.bin');
+    },
+
+    async load<T> (url: string):Promise<T> {
+        const response = await PIXI.settings.ADAPTER.fetch(url);
+  
+        const data = await response.blob();
+  
+        return data as T;
+    },
+} as LoaderParser;
+
+//------------------------------------------------------------------------------------------
+export class BlobResourceX extends Resource {
+    public m_data:any;
 
     //------------------------------------------------------------------------------------------		
     constructor () {
-        this.m_loadComplete = false;
-        this.m_isDead = false;
-    }
-
-    //------------------------------------------------------------------------------------------
-    public setup (__path:string, __loader:PIXI.Loader):void {
-        this.m_path = __path;
-        this.loader = __loader;
+        super ();
     }
 
     //------------------------------------------------------------------------------------------
     public load ():void {
-    }
+		Assets.load (this.m_path).then ((__data:any) => {
+            // console.log (": BlobResource: loadComplete: ", this);
 
-    //------------------------------------------------------------------------------------------
-    public cleanup ():void {
-        console.log (": resource: cleanup: ", this.m_path);
+            if (this.m_isDead) {
+                console.log (": isDead: ", this.m_path);
 
-        this.m_isDead = true;
-    }
+                if (this.getResource () != null) {
+                    // destroy
+                }
+            } else {
+                __data.arrayBuffer ().then ((__data:any) => {
+                    this.m_data = __data;      
 
-    //------------------------------------------------------------------------------------------
-    public unload ():void {
+                    this.m_loadComplete = true;
+                });
+            }
+        });
     }
 
     //------------------------------------------------------------------------------------------
     public getResource ():any {
-        return null;
+        if (this.getLoadComplete ()) {
+            return this.m_data;
+        } else {
+            return null;
+        }
     }
 
     //------------------------------------------------------------------------------------------
-    public getLoadComplete ():boolean {
-        return this.m_loadComplete;
+    public cleanup ():void {
+        super.cleanup ();
+
+        if (this.getResource () != null) {
+            // destroy
+        } else {
+            console.log (": error: ", this.m_path);
+        }
     }
 
 //------------------------------------------------------------------------------------------

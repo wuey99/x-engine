@@ -123,7 +123,7 @@ export class XTextSpriteButton extends XSpriteButton {
     public getTextSprite ():XTextSprite {
         return this.m_textSprite;
     }
-
+    
 //------------------------------------------------------------------------------------------
 // create sprites
 //------------------------------------------------------------------------------------------

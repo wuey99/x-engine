@@ -28,50 +28,55 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js';
+import { Assets } from '@pixi/assets';
 import { XApp } from "../app/XApp";
+import { Resource } from './Resource';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
-export class Resource {
-    public m_path:string;
-    public loader:PIXI.Loader;
-    public m_loadComplete:boolean;
-    public m_isDead:boolean;
+export class ImageResourceX extends Resource {
+    public m_texture:PIXI.Texture;
 
     //------------------------------------------------------------------------------------------		
     constructor () {
-        this.m_loadComplete = false;
-        this.m_isDead = false;
-    }
-
-    //------------------------------------------------------------------------------------------
-    public setup (__path:string, __loader:PIXI.Loader):void {
-        this.m_path = __path;
-        this.loader = __loader;
+        super ();
     }
 
     //------------------------------------------------------------------------------------------
     public load ():void {
-    }
+		Assets.load (this.m_path).then ((__texture:PIXI.Texture) => {
+            if (this.m_isDead) {
+                console.log (": isDead: ", this.m_path);
 
-    //------------------------------------------------------------------------------------------
-    public cleanup ():void {
-        console.log (": resource: cleanup: ", this.m_path);
-
-        this.m_isDead = true;
-    }
-
-    //------------------------------------------------------------------------------------------
-    public unload ():void {
+                if (this.getResource () != null) {
+                    (this.getResource () as PIXI.Texture).destroy ();
+                }
+            } else {
+                this.m_texture = __texture;
+              
+                this.m_loadComplete = true;
+            }
+        });
     }
 
     //------------------------------------------------------------------------------------------
     public getResource ():any {
-        return null;
+        if (this.getLoadComplete ()) {
+            return this.m_texture;
+        } else {
+            return null;
+        }
     }
 
     //------------------------------------------------------------------------------------------
-    public getLoadComplete ():boolean {
-        return this.m_loadComplete;
+    public cleanup ():void {
+        super.cleanup ();
+
+        if (this.getResource () != null) {
+            (this.getResource () as PIXI.Texture).destroy ();
+        } else {
+            console.log (": error: ", this.m_path);
+        }
     }
 
 //------------------------------------------------------------------------------------------

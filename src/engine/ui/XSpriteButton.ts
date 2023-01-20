@@ -51,6 +51,8 @@ export class XSpriteButton extends XButton {
     public m_selected9:PIXI.NineSlicePlane;
     public m_disabled9:PIXI.NineSlicePlane;
 
+    public m_graphics:PIXI.Graphics;
+
 //------------------------------------------------------------------------------------------
     public cleanup ():void {
         super.cleanup ();
@@ -84,6 +86,11 @@ export class XSpriteButton extends XButton {
         this.m_9width = __params[3];
         this.m_9height = __params[4];
 	}
+
+//------------------------------------------------------------------------------------------
+    public getInteractiveArea(): PIXI.Container {
+        return this.m_graphics;    
+    }
 
 //------------------------------------------------------------------------------------------
 	// @ts-ignore
@@ -150,6 +157,16 @@ export class XSpriteButton extends XButton {
 
             this.m_sprite.alpha = 0.0;
         }
+
+        var __width:number = this.m_sprite.width;
+        var __height:number = this.m_sprite.height;
+
+		var __graphics:PIXI.Graphics = this.m_graphics = new PIXI.Graphics ();
+		__graphics.beginFill (0xff00ff);
+		__graphics.drawRect (0, 0, __width, __height);
+		__graphics.endFill ();
+        __graphics.alpha = 0.01;
+        this.addSortableChild (__graphics, this.getLayer (), this.getDepth () + 2, false);
 
 		this.gotoState (XButton.NORMAL_STATE);
 			

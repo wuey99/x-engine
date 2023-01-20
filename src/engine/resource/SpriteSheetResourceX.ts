@@ -28,50 +28,68 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js';
+import { Assets } from '@pixi/assets';
 import { XApp } from "../app/XApp";
+import { Resource } from './Resource';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
-export class Resource {
-    public m_path:string;
-    public loader:PIXI.Loader;
-    public m_loadComplete:boolean;
-    public m_isDead:boolean;
+export class SpriteSheetResourceX extends Resource {
+    public m_spritesheet:PIXI.Spritesheet;
 
     //------------------------------------------------------------------------------------------		
     constructor () {
-        this.m_loadComplete = false;
-        this.m_isDead = false;
-    }
-
-    //------------------------------------------------------------------------------------------
-    public setup (__path:string, __loader:PIXI.Loader):void {
-        this.m_path = __path;
-        this.loader = __loader;
+        super ();
     }
 
     //------------------------------------------------------------------------------------------
     public load ():void {
-    }
+		Assets.load (this.m_path).then ((__spritesheet:PIXI.Spritesheet) => {
+            console.log (": SpriteSheetResource: loadComplete: ", __spritesheet);
 
-    //------------------------------------------------------------------------------------------
-    public cleanup ():void {
-        console.log (": resource: cleanup: ", this.m_path);
+            if (this.m_isDead) {
+                console.log (": isDead: ", this.m_path);
 
-        this.m_isDead = true;
+                if (this.getResource () != null) {
+                    (this.getResource () as PIXI.Spritesheet).destroy ();
+                }
+            } else {
+                this.m_spritesheet = __spritesheet;
+                
+                this.m_loadComplete = true;
+            }
+        });
     }
 
     //------------------------------------------------------------------------------------------
     public unload ():void {
+        if (!this.m_isDead) {
+            if (this.getResource () != null) {
+                (this.getResource () as PIXI.Spritesheet).destroy ();
+            }
+
+            this.m_loadComplete = false;
+        }
     }
 
     //------------------------------------------------------------------------------------------
     public getResource ():any {
-        return null;
+        if (this.getLoadComplete ()) {
+            return this.m_spritesheet;
+        } else {
+            return null;
+        }
     }
 
     //------------------------------------------------------------------------------------------
-    public getLoadComplete ():boolean {
-        return this.m_loadComplete;
+    public cleanup ():void {
+        super.cleanup ();
+        
+        if (this.getResource () != null) {
+            (this.getResource () as PIXI.Spritesheet).destroy ();
+        } else {
+            console.log (": error: ", this.m_path);
+        }
     }
 
 //------------------------------------------------------------------------------------------

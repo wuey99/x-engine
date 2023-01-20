@@ -27,7 +27,8 @@
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js';
+import { FederatedPointerEvent } from '@pixi/events';
 import { XApp } from '../app/XApp';
 import { XSprite } from '../sprite/XSprite';
 import { XSpriteLayer } from '../sprite/XSpriteLayer';
@@ -565,7 +566,7 @@ export class XGameObject extends PIXI.Sprite {
 
 		this.m_mouseEnabled = true;
 		this.m_mouseDownFlag = false;
-		
+
 		if (__eventFilter.indexOf ("pointerdown") >= 0) {
 			this.addPausableEventListener ("pointerdown", this.getInteractiveArea (), this.onMouseDown.bind (this));
 		}
@@ -611,33 +612,35 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public onMouseDown (e:PIXI.InteractionEvent):void {
+	public onMouseDown (e:FederatedPointerEvent):void {
 		this.m_mouseDownSignal.fireSignal (this, e);
 
 		this.m_mouseDownFlag = true;
 	}			
 
 //------------------------------------------------------------------------------------------
-	public onMouseOver (e:PIXI.InteractionEvent):void {
+	public onMouseOver (e:FederatedPointerEvent):void {
 		this.m_mouseOverSignal.fireSignal (this, e);
 	}	
 
 //------------------------------------------------------------------------------------------
-	public onMouseUp (e:PIXI.InteractionEvent):void {
+	public onMouseUp (e:FederatedPointerEvent):void {
 		this.m_mouseUpSignal.fireSignal (this, e);
 
 		this.m_mouseDownFlag = false;
 	}			
 
 //------------------------------------------------------------------------------------------
-	public onMouseOut (e:PIXI.InteractionEvent):void {
+	public onMouseOut (e:FederatedPointerEvent):void {
 		this.m_mouseOutSignal.fireSignal (this, e);
 		
 		this.m_mouseDownFlag = false;
 	}	
 
 //------------------------------------------------------------------------------------------
-	public onMouseMove (e:PIXI.InteractionEvent):void {
+	public onMouseMove (e:FederatedPointerEvent):void {
+		console.log (": onMouseMove: ", e);
+
 		if (this.m_mouseDownFlag) {
 			this.m_mouseMoveSignal.fireSignal (this, e);
 		}
@@ -2545,7 +2548,7 @@ class __PausableListener {
 	}
 
 	//------------------------------------------------------------------------------------------
-	private __listener (e:PIXI.InteractionEvent):void {
+	private __listener (e:FederatedPointerEvent):void {
 		if (!XGameObject.getXApp ().isPaused () && this.m_gameObject.getMasterMouseEnabled ()) {
 			this.m_listener (e);
 		}

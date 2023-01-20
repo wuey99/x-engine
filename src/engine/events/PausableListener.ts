@@ -27,7 +27,8 @@
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js';
+import { FederatedPointerEvent } from '@pixi/events';
 import { XApp } from '../app/XApp';
 import { XGameObject} from '../gameobject/XGameObject';
 import { G } from '../app/G';
@@ -56,7 +57,7 @@ export class PausableListener {
 	}
 
 	//------------------------------------------------------------------------------------------
-	private __listener (e:PIXI.InteractionEvent):void {
+	private __listener (e:FederatedPointerEvent):void {
 		if (!XGameObject.getXApp ().isPaused () && this.m_gameObject.getMasterMouseEnabled ()) {
 			this.m_listener (e);
 		}

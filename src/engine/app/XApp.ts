@@ -28,6 +28,7 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js'
+import { FederatedPointerEvent } from '@pixi/events';
 import { XType } from '../type/XType';
 import { XTask } from '../task/XTask';
 import { XTaskManager} from '../task/XTaskManager';
@@ -143,7 +144,7 @@ export class XApp {
             width: this.getWindowWidth (), // params.canvasW,
             height: this.getWindowHeight (), // params.canvasH,
             antialias: true
-        });
+        }) as any;
 
         this.m_main = __main;
         this.stage = new PIXI.Container ();
@@ -219,21 +220,23 @@ export class XApp {
 
         this.m_firstClick = false;
 
-        this.getStage ().on ("pointerup", this.m_pointerDownHandle = (e:PIXI.InteractionEvent) => {
+        this.getStage ().on ("pointerup", this.m_pointerDownHandle = (e:FederatedPointerEvent) => {
             this.m_firstClick = true;
         });
 
-        this.getStage ().on ("pointermove", this.m_pointerMoveHandle = (e:PIXI.InteractionEvent) => {
-            var __mousePos:PIXI.Point = e.data.getLocalPosition (this.getStage ());
+        this.getStage ().on ("pointermove", this.m_pointerMoveHandle = (e:FederatedPointerEvent) => {
+            var __mousePos:PIXI.Point = this.getStage ().toLocal (e.global);
 
             this.m_mousePoint.x = __mousePos.x;
             this.m_mousePoint.y = __mousePos.y;
     
+            console.log (": XApp: pointermove: ", this.m_mousePoint);
+            
             // this.m_main.setDebugMessage ("" + __mousePos.x + ", " + __mousePos.y);
         });
 
-        this.getStage ().on ("touchmove", this.m_touchMoveHandle = (e:PIXI.InteractionEvent) => {
-            var __mousePos:PIXI.Point = e.data.getLocalPosition (this.getStage ());
+        this.getStage ().on ("touchmove", this.m_touchMoveHandle = (e:FederatedPointerEvent) => {
+            var __mousePos:PIXI.Point = this.getStage ().toLocal (e.global);
 
             this.m_touchPoint.x = __mousePos.x;
             this.m_touchPoint.y = __mousePos.y;

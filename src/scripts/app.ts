@@ -2,6 +2,7 @@
 // app.ts
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js';
+import { EventSystem } from '@pixi/events';
 import { G } from '../engine/app/G';
 import { XApp } from '../engine/app/XApp';
 import { ImageResource } from '../engine/resource/ImageResource';
@@ -9,6 +10,8 @@ import { StreamingResource } from '../engine/resource/StreamingResource';
 import { MusicResource } from '../engine/resource/MusicResource';
 import { SoundResource } from '../engine/resource/SoundResource';
 import { SpriteSheetResource } from '../engine/resource/SpriteSheetResource';
+import { SpriteSheetResourceX } from '../engine/resource/SpriteSheetResourceX';
+import { XMapResourceX } from '../engine/resource/XMapResourceX';
 import { BlobResource } from '../engine/resource/BlobResource';
 import { XMapResource } from '../engine/resource/XMapResource';
 import { ResourceSpec } from '../engine/resource/XResourceManager';
@@ -60,6 +63,8 @@ export class Main {
 
 //------------------------------------------------------------------------------------------
     public setup (__container:HTMLElement = null):void {
+        PIXI.extensions.remove (PIXI.InteractionManager);
+       
         g_XApp = new XApp (
             this,
             {
@@ -76,7 +81,9 @@ export class Main {
         console.log (": starting: ");
 
         // return;
-        
+         
+        g_XApp.renderer.addSystem (EventSystem, 'events');
+
         world = new XWorld (g_XApp.stage, g_XApp, 8);
         world.setup ();
 
@@ -223,13 +230,13 @@ export class Main {
 
 //------------------------------------------------------------------------------------------
     public configureAndLoadAssets ():void {
-        g_XApp.getXProjectManager ().registerType ("SpriteSheet", SpriteSheetResource);
+        g_XApp.getXProjectManager ().registerType ("SpriteSheet", SpriteSheetResourceX);
         g_XApp.getXProjectManager ().registerType ("ImageResource", ImageResource);
         g_XApp.getXProjectManager ().registerType ("SoundResource", SoundResource);
         g_XApp.getXProjectManager ().registerType ("StreamingResource", StreamingResource);
         g_XApp.getXProjectManager ().registerType ("MusicResource", MusicResource);
         g_XApp.getXProjectManager ().registerType ("BlobResource", BlobResource);
-        g_XApp.getXProjectManager ().registerType ("XMapResource", XMapResource);
+        g_XApp.getXProjectManager ().registerType ("XMapResource", XMapResourceX);
 
         g_XApp.getXProjectManager ().setup (
             "assets/Common.xml",

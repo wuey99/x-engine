@@ -34,6 +34,7 @@ import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 import { XResourceManager } from './XResourceManager';
 import { Resource } from './Resource';
 import { ResourceSpec } from './XResourceManager';
+export * from './XMapResourceX';
 
 //------------------------------------------------------------------------------------------
 export class XProjectManager {

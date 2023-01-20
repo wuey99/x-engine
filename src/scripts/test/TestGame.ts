@@ -1,5 +1,6 @@
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js'
+import { Assets, LoaderParser } from '@pixi/assets';
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';
@@ -28,6 +29,9 @@ import { XTextSprite } from '../../engine/sprite/XTextSprite';
 import { TextInput } from 'pixi-textinput-v5';
 import { XLevel } from '../../engine/level/XLevel';
 import { XProcess } from '../../engine/process/XProcess';
+import { XType } from '../../engine/type/XType';
+
+const pako = require('pako');
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
@@ -88,10 +92,6 @@ export class TestGame extends XState {
 				XTask.RETN,
 			]);
 
-		console.log (": OctopusBug: ", this.m_XApp.getResourceByName ("OctopusBug"));
-
-		console.log (": Test001: ", this.m_XApp.getResourceByName ("Test001"));
-
 		var __level:XLevel = this.addGameObjectAsChild (XLevel, 0, 0.0, false) as XLevel;
 		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test001"));
 		__level.afterSetup ([__levelXML]);
@@ -151,8 +151,8 @@ export class TestGame extends XState {
 			"TestButton",
 			true, 10, 250, 50
 		]);
-		__testButton.x = 256;
-		__testButton.y = 256;
+		__testButton.x = 750;
+		__testButton.y = 500;
 
 		this.createBitmapFont (
             "Aller",
@@ -198,7 +198,7 @@ export class TestGame extends XState {
 			false,
 			"center", "center"
 		]);
-		__testButton3.x = 2732 - 260;
+		__testButton3.x = 2732 - 512;
 		__testButton3.y = 512;
 
 		var __textSprite:XTextSprite = this.createXTextSprite (

@@ -28,6 +28,7 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js';
+import { FederatedPointerEvent } from '@pixi/events';
 import { XSprite } from '../sprite/XSprite';
 import { XWorld } from '../sprite/XWorld';
 import { XGameObject} from '../gameobject/XGameObject';
@@ -72,9 +73,6 @@ export class XButton extends XGameObject {
 		this.getParams (__params);
 
         this.createSprites ();
-        
-        this.m_sprite.interactive = true;
-        this.m_sprite.interactiveChildren = true;
         
         this.m_disabledFlag = false;
         
@@ -197,27 +195,27 @@ export class XButton extends XGameObject {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public onMouseOver (e:PIXI.InteractionEvent):void {
+	public onMouseOver (e:FederatedPointerEvent):void {
 		this.__onMouseOver ();
 	}			
 
 //------------------------------------------------------------------------------------------
-	public onMouseDown (e:PIXI.InteractionEvent):void {
+	public onMouseDown (e:FederatedPointerEvent):void {
 		this.__onMouseDown ();
 	}			
 
 //------------------------------------------------------------------------------------------
-	public onMouseUp (e:PIXI.InteractionEvent):void {
+	public onMouseUp (e:FederatedPointerEvent):void {
 		this.__onMouseUp ();
 	}			
 
 //------------------------------------------------------------------------------------------
-	public onMouseMove (e:PIXI.InteractionEvent):void {	
+	public onMouseMove (e:FederatedPointerEvent):void {	
 		this.__onMouseMove ();
 	}			
 		
 //------------------------------------------------------------------------------------------	
-	public onMouseOut (e:PIXI.InteractionEvent):void {
+	public onMouseOut (e:FederatedPointerEvent):void {
 		this.__onMouseOut ();
 	}			
 
