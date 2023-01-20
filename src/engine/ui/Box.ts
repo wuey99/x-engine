@@ -35,7 +35,6 @@ import { XTask } from "../task/XTask";
 import { XSignal } from '../signals/XSignal';
 import { XApp } from '../app/XApp';
 import { XType } from '../type/XType';
-import { TextInput } from 'pixi-textinput-v5';
 import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 
 //------------------------------------------------------------------------------------------
@@ -50,9 +49,9 @@ export class Box extends XGameObject {
     public m_bottomPadding:number;
     public m_leftPadding:number;
     public m_rightPadding:number;
-    public m_items:Array<PIXI.Sprite | TextInput>;
-    public m_ids:Map<string, PIXI.Sprite | TextInput>;
-    public m_groups:Map<string, Map<PIXI.Sprite | TextInput, number>>;
+    public m_items:Array<PIXI.Sprite>;
+    public m_ids:Map<string, PIXI.Sprite>;
+    public m_groups:Map<string, Map<PIXI.Sprite, number>>;
     public m_fill:PIXI.Graphics;
 
 //------------------------------------------------------------------------------------------
@@ -64,9 +63,9 @@ export class Box extends XGameObject {
     public setup (__world:XWorld, __layer:number, __depth:number):XGameObject {
         super.setup (__world, __layer, __depth);
 
-        this.m_items = new Array<PIXI.Sprite | TextInput> ();
-        this.m_ids = new Map<string, PIXI.Sprite | TextInput> ();
-        this.m_groups = new Map<string, Map<PIXI.Sprite | TextInput, number>> ();
+        this.m_items = new Array<PIXI.Sprite> ();
+        this.m_ids = new Map<string, PIXI.Sprite> ();
+        this.m_groups = new Map<string, Map<PIXI.Sprite, number>> ();
         
         return this;
     }
@@ -143,19 +142,19 @@ export class Box extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
-    public getItems ():Array<PIXI.Sprite | TextInput> {
+    public getItems ():Array<PIXI.Sprite> {
         return this.m_items;
     }
 
 //------------------------------------------------------------------------------------------
-    public addItemToGroup (__item:PIXI.Sprite | TextInput, __groupName:string):void {
+    public addItemToGroup (__item:PIXI.Sprite, __groupName:string):void {
         if (__groupName != "") {
-            var __group:Map<PIXI.Sprite | TextInput, number>;
+            var __group:Map<PIXI.Sprite, number>;
 
             if (this.m_groups.has (__groupName)) {
                 __group = this.m_groups.get (__groupName);
             } else {
-                __group = new Map<PIXI.Sprite | TextInput, number> ();
+                __group = new Map<PIXI.Sprite, number> ();
 
                 this.m_groups.set (__groupName, __group);
             }
@@ -165,7 +164,7 @@ export class Box extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
-    public getItemsFromGroup (__groupName:string):Map<PIXI.Sprite | TextInput, number> {
+    public getItemsFromGroup (__groupName:string):Map<PIXI.Sprite, number> {
         if (__groupName != "") {
             if (this.m_groups.has (__groupName)) {
                 return this.m_groups.get (__groupName);
@@ -176,9 +175,9 @@ export class Box extends XGameObject {
     }
     
 //------------------------------------------------------------------------------------------
-    public removeItemFromGroup (__item:PIXI.Sprite | TextInput, __groupName:string):void {
+    public removeItemFromGroup (__item:PIXI.Sprite, __groupName:string):void {
         if (__groupName != "") {
-            var __group:Map<PIXI.Sprite | TextInput, number>;
+            var __group:Map<PIXI.Sprite, number>;
 
             if (this.m_groups.has (__groupName)) {
                 __group = this.m_groups.get (__groupName);
@@ -189,7 +188,7 @@ export class Box extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
-    public addItem (__item:PIXI.Sprite | TextInput, __id:string = "", __groupName:string = ""):void {
+    public addItem (__item:PIXI.Sprite, __id:string = "", __groupName:string = ""):void {
         this.m_items.push (__item);
 
         this.m_ids.set (__id, __item);
@@ -200,7 +199,7 @@ export class Box extends XGameObject {
     }
 
     //------------------------------------------------------------------------------------------
-    public getIndexByItem (__item:PIXI.Sprite | TextInput):number {
+    public getIndexByItem (__item:PIXI.Sprite):number {
         var i:number;
 
         for (i = 0; i < this.m_items.length; i++) {
@@ -213,12 +212,12 @@ export class Box extends XGameObject {
     }
 
 //------------------------------------------------------------------------------------------
-    public getItemById (__id:string = ""):PIXI.Sprite | TextInput {
+    public getItemById (__id:string = ""):PIXI.Sprite {
         return this.m_ids.get (__id);
     }
 
 //------------------------------------------------------------------------------------------
-    public removeItem (__item:PIXI.Sprite | TextInput):void {
+    public removeItem (__item:PIXI.Sprite):void {
         var __index:number = this.m_items.indexOf (__item);
 
         if (__index >= 0) {
@@ -244,7 +243,7 @@ export class Box extends XGameObject {
 
 //------------------------------------------------------------------------------------------
     public removeAllItems ():void {
-        var __itemsToDelete:Array<PIXI.Sprite | TextInput> = new Array<PIXI.Sprite | TextInput> ();
+        var __itemsToDelete:Array<PIXI.Sprite> = new Array<PIXI.Sprite> ();
 
         var i:number;
 

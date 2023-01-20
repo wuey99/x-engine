@@ -48,7 +48,6 @@ import { G } from '../app/G';
 import { XState } from '../state/XState';
 import { PausableListener} from '../events/PausableListener';
 import { XTextSprite } from '../sprite/XTextSprite';
-import { TextInput } from 'pixi-textinput-v5';
 import { XTextureManager } from '../texture/XTextureManager';
 import { XSubTextureManager } from '../texture/XSubTextureManager';
 import { XGameObject } from './XGameObject';

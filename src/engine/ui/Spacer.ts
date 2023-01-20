@@ -35,7 +35,6 @@ import { XTask } from "../task/XTask";
 import { XSignal } from '../signals/XSignal';
 import { XApp } from '../app/XApp';
 import { XType } from '../type/XType';
-import { TextInput } from 'pixi-textinput-v5';
 
 //------------------------------------------------------------------------------------------
 export class Spacer extends XGameObject {

@@ -7,7 +7,6 @@ import { XTask } from "../task/XTask";
 import { XSignal } from '../signals/XSignal';
 import { XApp } from '../app/XApp';
 import { XType } from '../type/XType';
-import { TextInput } from 'pixi-textinput-v5';
 import { Box } from './Box';
 import { XJustify } from './XJustify';
 
