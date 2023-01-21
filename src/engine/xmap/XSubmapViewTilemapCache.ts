@@ -145,7 +145,7 @@ import { XSubmapViewCache } from "./XSubmapViewCache";
 				}
 			}
 
-			this.m_XApp.getRenderer ().render (__tilemap, this.m_renderTexture);
+			this.m_XApp.getRenderer ().render (__tilemap, {renderTexture: this.m_renderTexture});
 			this.m_sprite = PIXI.Sprite.from (this.m_renderTexture);
 			this.addSortableChild (this.m_sprite, this.getLayer (), this.getDepth (), false);
 

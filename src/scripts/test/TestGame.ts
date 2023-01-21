@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js'
-import { Assets, LoaderParser } from '@pixi/assets';
+import { Assets, LoaderParser } from 'pixi.js';
 import { XApp } from '../../engine/app/XApp';
 import { XSprite } from '../../engine/sprite/XSprite';
 import { XSpriteLayer } from '../../engine/sprite/XSpriteLayer';

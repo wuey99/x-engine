@@ -28,7 +28,7 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js';
-import { Assets, LoaderParser } from '@pixi/assets';
+import { Assets, LoaderParser } from 'pixi.js';
 import { XApp } from "../app/XApp";
 import { XType } from '../type/XType';
 import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';

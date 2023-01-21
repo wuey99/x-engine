@@ -2,7 +2,6 @@
 // app.ts
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js';
-import { EventSystem } from '@pixi/events';
 import { G } from '../engine/app/G';
 import { XApp } from '../engine/app/XApp';
 import { ImageResourceX } from '../engine/resource/ImageResourceX';
@@ -58,8 +57,6 @@ export class Main {
 
 //------------------------------------------------------------------------------------------
     public setup (__container:HTMLElement = null):void {
-        PIXI.extensions.remove (PIXI.InteractionManager);
-       
         g_XApp = new XApp (
             this,
             {
@@ -74,10 +71,6 @@ export class Main {
         );
 
         console.log (": starting: ");
-
-        // return;
-         
-         g_XApp.renderer.addSystem (EventSystem, 'events');
 
         world = new XWorld (g_XApp.stage, g_XApp, 8);
         world.setup ();

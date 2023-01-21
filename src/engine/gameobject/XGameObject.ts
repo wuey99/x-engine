@@ -109,7 +109,7 @@ export class XGameObject extends PIXI.Sprite {
 
 	public static g_XApp:XApp;
 
-	public m_stageEvents:Map<any, string>;
+	public m_stageEvents:Map<any, keyof PIXI.DisplayObjectEvents>;
 	public m_stageEventsX:Map<any, __PausableListener>;
 	public m_pausableEvents:Map<any, PausableListener>;
 
@@ -249,7 +249,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_matterDY = 0;
 		this.m_matterRotate = true;
 
-		this.m_stageEvents = new Map<any, string> ();
+		this.m_stageEvents = new Map<any, keyof PIXI.DisplayObjectEvents> ();
 		this.m_stageEventsX = new Map<any, __PausableListener> ();
 		this.m_pausableEvents = new Map<any, PausableListener> ();
 
@@ -721,7 +721,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public addStageEventListener (__eventName:string, __listener:any):any {
+	public addStageEventListener (__eventName:keyof PIXI.DisplayObjectEvents, __listener:any):any {
 		this.m_XApp.getStage ().on (__eventName, __listener);
 
 		this.m_stageEvents.set (__listener, __eventName);
@@ -731,7 +731,7 @@ export class XGameObject extends PIXI.Sprite {
 
 //------------------------------------------------------------------------------------------
 	public removeStageEventListener (__listener:any):any {
-		var __eventName:string = this.m_stageEvents.get (__listener);
+		var __eventName:keyof PIXI.DisplayObjectEvents = this.m_stageEvents.get (__listener);
 
 		this.m_XApp.getStage ().off (__eventName, __listener);
 
@@ -748,7 +748,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public addStageEventListenerX (__eventName:string, __listener:any):any {
+	public addStageEventListenerX (__eventName:keyof PIXI.DisplayObjectEvents, __listener:any):any {
 		var __pausableListener:__PausableListener = new __PausableListener (this, __eventName, __listener);
 
 		this.m_stageEventsX.set (__listener, __pausableListener);
@@ -774,7 +774,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public addPausableEventListener (__eventName:string, __displayObject:PIXI.DisplayObject, __listener:any):any {
+	public addPausableEventListener (__eventName:keyof PIXI.DisplayObjectEvents, __displayObject:PIXI.DisplayObject, __listener:any):any {
 		var __pausableListener:PausableListener = new PausableListener (this, __eventName, __displayObject, __listener);
 
 		this.m_pausableEvents.set (__listener, __pausableListener);
@@ -2528,12 +2528,12 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 class __PausableListener {
 	public m_gameObject:XGameObject;
-	public m_eventName:string;
+	public m_eventName:keyof PIXI.DisplayObjectEvents;
 	public m_listener:any;
 	public boundListener:any;
 
 	//------------------------------------------------------------------------------------------
-	constructor (__gameObject:XGameObject, __eventName:string, __listener:any) {
+	constructor (__gameObject:XGameObject, __eventName:keyof PIXI.DisplayObjectEvents, __listener:any) {
 		this.m_gameObject = __gameObject;
 		this.m_eventName = __eventName;
 		this.m_listener = __listener;

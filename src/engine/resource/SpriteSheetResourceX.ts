@@ -28,7 +28,7 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js';
-import { Assets } from '@pixi/assets';
+import { Assets } from 'pixi.js';
 import { XApp } from "../app/XApp";
 import { Resource } from './Resource';
 import { G } from '../app/G';
