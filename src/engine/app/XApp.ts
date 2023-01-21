@@ -176,7 +176,7 @@ export class XApp {
         } else {
             this.container = params.containerId ? document.getElementById(params.containerId) || document.body : document.body;
         }
-        this.container.appendChild (this.renderer.view);
+        this.container.appendChild (this.renderer.view as any);
 
 		XGameObject.setXApp (this);
 		XTask.setXApp (this);
@@ -282,7 +282,7 @@ export class XApp {
         this.m_XProjectManager.cleanup ();
         XPauseManager.cleanup ();
 
-        this.container.removeChild (this.renderer.view);
+        this.container.removeChild (this.renderer.view as any);
   
         console.log (": render: destroy: ");
         
