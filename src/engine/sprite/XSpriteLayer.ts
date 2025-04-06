@@ -58,15 +58,15 @@ export class XSpriteLayer extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
-    public addChildToContainer (__sprite:PIXI.DisplayObject):void {
+    public addChildToContainer (__sprite:PIXI.Container):void {
     }
 
     //------------------------------------------------------------------------------------------
-    public removeChildFromContainer (__sprite:PIXI.DisplayObject):void {
+    public removeChildFromContainer (__sprite:PIXI.Container):void {
     }
 
     //------------------------------------------------------------------------------------------
-    public addSprite (__sprite:PIXI.DisplayObject, __depth:number, __visible:boolean = true):XDepthSprite {
+    public addSprite (__sprite:PIXI.Container, __depth:number, __visible:boolean = true):XDepthSprite {
         var __depthSprite:XDepthSprite = this.world.getXDepthSpritePoolManager ().borrowObject () as XDepthSprite;
         __depthSprite.setup ();
         
@@ -88,7 +88,7 @@ export class XSpriteLayer extends XSprite {
     }	
 
     //------------------------------------------------------------------------------------------
-    public addSprite0 (__sprite:PIXI.DisplayObject, __depth:number, __visible:boolean = true):PIXI.DisplayObject {
+    public addSprite0 (__sprite:PIXI.Container, __depth:number, __visible:boolean = true):PIXI.Container {
         __sprite.zIndex = __depth;
 
         __sprite.visible = true;
@@ -121,7 +121,7 @@ export class XSpriteLayer extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
-    public removeSprite0 (__sprite:PIXI.DisplayObject):void {
+    public removeSprite0 (__sprite:PIXI.Container):void {
         this.removeChildFromContainer (__sprite);
     }
 

@@ -61,12 +61,12 @@ export class XSpriteLayer9 extends XSpriteLayer {
     }
 
     //------------------------------------------------------------------------------------------
-    public addChildToContainer (__sprite:PIXI.DisplayObject):void {
+    public addChildToContainer (__sprite:PIXI.Container):void {
         this.m_container.addChild (__sprite);
     }
 
     //------------------------------------------------------------------------------------------
-    public removeChildFromContainer (__sprite:PIXI.DisplayObject):void {
+    public removeChildFromContainer (__sprite:PIXI.Container):void {
         this.m_container.removeChild (__sprite);
     }
 

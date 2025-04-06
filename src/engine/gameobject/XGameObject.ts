@@ -66,10 +66,10 @@ export class XGameObject extends PIXI.Sprite {
 	public m_selfObjects:Map<XGameObject, number>;	
 	public m_worldObjects:Map<XGameObject, number>;
 	public m_childObjects:Map<XGameObject, number>;
-	public m_selfSprites:Map<PIXI.DisplayObject, number>;
-	public m_childSprites:Map<PIXI.DisplayObject, number>;
-	public m_childSprites0:Map<PIXI.DisplayObject, any>;
-	public m_worldSprites:Map<PIXI.DisplayObject, number>;	
+	public m_selfSprites:Map<PIXI.Container, number>;
+	public m_childSprites:Map<PIXI.Container, number>;
+	public m_childSprites0:Map<PIXI.Container, any>;
+	public m_worldSprites:Map<PIXI.Container, number>;	
 	public m_animatedSprites:Map<PIXI.AnimatedSprite, string>;
 	public m_textSprites:Map<string, XTextSprite>;
 	public m_sprites:Map<string, PIXI.Sprite>;
@@ -157,10 +157,10 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_worldObjects = new Map<XGameObject, number> ();
 		this.m_childObjects = new Map<XGameObject, number> ();
 		this.m_selfObjects = new Map<XGameObject, number> ();
-		this.m_selfSprites = new Map<PIXI.DisplayObject, number> ();
-		this.m_childSprites = new Map<PIXI.DisplayObject, number> ();
-		this.m_childSprites0 = new Map<PIXI.DisplayObject, any> ();
-		this.m_worldSprites = new Map<PIXI.DisplayObject, number> ();
+		this.m_selfSprites = new Map<PIXI.Container, number> ();
+		this.m_childSprites = new Map<PIXI.Container, number> ();
+		this.m_childSprites0 = new Map<PIXI.Container, any> ();
+		this.m_worldSprites = new Map<PIXI.Container, number> ();
 		this.m_animatedSprites = new Map<PIXI.AnimatedSprite, string> ();
 		this.m_textSprites  = new Map<string, XTextSprite> ();
 		this.m_sprites = new Map<string, PIXI.Sprite> ();	
@@ -774,7 +774,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public addPausableEventListener (__eventName:keyof PIXI.DisplayObjectEvents, __displayObject:PIXI.DisplayObject, __listener:any):any {
+	public addPausableEventListener (__eventName:keyof PIXI.DisplayObjectEvents, __displayObject:PIXI.Container, __listener:any):any {
 		var __pausableListener:PausableListener = new PausableListener (this, __eventName, __displayObject, __listener);
 
 		this.m_pausableEvents.set (__listener, __pausableListener);
@@ -1577,7 +1577,7 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-	public addSpriteToSelf (__sprite__:PIXI.DisplayObject, __dx:number, __dy:number):PIXI.DisplayObject {
+	public addSpriteToSelf (__sprite__:PIXI.Container, __dx:number, __dy:number):PIXI.Container {
 		this.m_selfSprites.set (__sprite__, 0);	
 
 		__sprite__.pivot.x = -__dx;
@@ -1590,7 +1590,7 @@ export class XGameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public removeAllSelfSprites ():void {
-        var __sprite:PIXI.DisplayObject;
+        var __sprite:PIXI.Container;
 
 		for (__sprite of this.m_selfSprites.keys ()) {
             this.m_selfSprites.delete (__sprite);
@@ -1606,7 +1606,7 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
-	public addSpriteAsChild (__sprite__:PIXI.DisplayObject, __dx:number, __dy:number, __layer:number, __depth:number, __visible:boolean = false):PIXI.DisplayObject {
+	public addSpriteAsChild (__sprite__:PIXI.Container, __dx:number, __dy:number, __layer:number, __depth:number, __visible:boolean = false):PIXI.Container {
 		__sprite__.pivot.x = -__dx;
 		__sprite__.pivot.y = -__dy;
 		
@@ -1616,14 +1616,14 @@ export class XGameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public addSortableChild (__sprite:PIXI.DisplayObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = false):void {
+	public addSortableChild (__sprite:PIXI.Container, __layer:number = 0, __depth:number = 0.0, __visible:boolean = false):void {
 	    this.m_childSprites.set (__sprite, 0);
 		
 		this.world.addSortableChild (__sprite, __layer, __depth, __visible);
 	}
 	
 //------------------------------------------------------------------------------------------
-	public addSortableChild0 (__sprite:PIXI.DisplayObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = false, __metaData:any = null):void {
+	public addSortableChild0 (__sprite:PIXI.Container, __layer:number = 0, __depth:number = 0.0, __visible:boolean = false, __metaData:any = null):void {
 		if (__metaData == null) {
 			__metaData = {
 				x: 0,
@@ -1642,7 +1642,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public removeChildSprite (__sprite:PIXI.DisplayObject):void {
+	public removeChildSprite (__sprite:PIXI.Container):void {
 		if (this.m_childSprites.has (__sprite)) {
 			this.m_childSprites.delete (__sprite);
 			
@@ -1658,7 +1658,7 @@ export class XGameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public removeAllChildSprites ():void {
-        var __sprite:PIXI.DisplayObject;
+        var __sprite:PIXI.Container;
     
 		for (__sprite of this.m_childSprites.keys ()) {
 			this.removeChildSprite (__sprite);
@@ -1676,7 +1676,7 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 	
 //------------------------------------------------------------------------------------------
-	public addSpriteToWorld (__sprite__:PIXI.DisplayObject, __dx:number, __dy:number, __layer:number, __depth:number, __visible:boolean = true):PIXI.DisplayObject {
+	public addSpriteToWorld (__sprite__:PIXI.Container, __dx:number, __dy:number, __layer:number, __depth:number, __visible:boolean = true):PIXI.Container {
 		__sprite__.pivot.x = -__dx;
 		__sprite__.pivot.y = -__dy;
 
@@ -1686,14 +1686,14 @@ export class XGameObject extends PIXI.Sprite {
 	}
 	
 //------------------------------------------------------------------------------------------
-	public addSortableChildToWorld (__sprite:PIXI.DisplayObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):void {
+	public addSortableChildToWorld (__sprite:PIXI.Container, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):void {
 		this.m_worldSprites.set (__sprite, 0);
 		
 		this.world.addSortableChild (__sprite, __layer, __depth, __visible);
 	}
 	
 //------------------------------------------------------------------------------------------
-	public removeWorldSprite (__sprite:PIXI.DisplayObject):void {
+	public removeWorldSprite (__sprite:PIXI.Container):void {
 		if (this.m_worldSprites.has (__sprite)) {
 			this.m_worldSprites.delete (__sprite);
 			
@@ -1703,7 +1703,7 @@ export class XGameObject extends PIXI.Sprite {
 	
 //------------------------------------------------------------------------------------------
 	public removeAllWorldSprites ():void {
-        var __sprite:PIXI.DisplayObject;
+        var __sprite:PIXI.Container;
 
 		for (__sprite of this.m_worldSprites.keys ()) {
 			this.removeWorldSprite (__sprite);
@@ -2117,7 +2117,7 @@ export class XGameObject extends PIXI.Sprite {
 
 			for (__gameObject of this.m_childObjects.keys ()) {	
 				if (__gameObject != null && !__gameObject.isDead) {	
-					var __parent:PIXI.DisplayObject = __gameObject.parent;
+					var __parent:PIXI.Container = __gameObject.parent;
 
 					if (__parent != null) {
 						__parent.x = __x / G.scaleRatio;
@@ -2147,7 +2147,7 @@ export class XGameObject extends PIXI.Sprite {
 			}
 		
 //------------------------------------------------------------------------------------------
-			var __sprite:PIXI.DisplayObject;
+			var __sprite:PIXI.Container;
 			
 //------------------------------------------------------------------------------------------			
 // update self sprites that live in the World
@@ -2169,7 +2169,7 @@ export class XGameObject extends PIXI.Sprite {
 				}
 					
 				if (__sprite != null) {
-					var __parent:PIXI.DisplayObject = __sprite.parent;
+					var __parent:PIXI.Container = __sprite.parent;
 
 					__parent.x = __x / G.scaleRatio;
 					__parent.y = __y / G.scaleRatio;

@@ -37,12 +37,12 @@ import { G } from '../app/G';
 export class PausableListener {
 	public m_gameObject:XGameObject;
     public m_eventName:keyof PIXI.DisplayObjectEvents;
-    public m_displayObject:PIXI.DisplayObject;
+    public m_displayObject:PIXI.Container;
 	public m_listener:any;
 	public boundListener:any;
 
 	//------------------------------------------------------------------------------------------
-	constructor (__gameObject:XGameObject, __eventName:keyof PIXI.DisplayObjectEvents, __displayObject:PIXI.DisplayObject, __listener:any) {
+	constructor (__gameObject:XGameObject, __eventName:keyof PIXI.DisplayObjectEvents, __displayObject:PIXI.Container, __listener:any) {
 		this.m_gameObject = __gameObject;
         this.m_eventName = __eventName;
         this.m_displayObject = __displayObject;

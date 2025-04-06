@@ -64,8 +64,8 @@ export class XWorld extends XSprite {
     private m_killQueue:Map<XGameObject, number>;
     private m_gameObjects:Map<XGameObject, XDepthSprite>;
     private m_childObjects:Map<XGameObject, XDepthSprite>;	
-    private m_children:Map<PIXI.DisplayObject, any>;
-    private m_children0:Map<PIXI.DisplayObject, any>;
+    private m_children:Map<PIXI.Container, any>;
+    private m_children0:Map<PIXI.Container, any>;
 
     private m_streamingSoundManager:XSoundSubManager;
     private m_musicSoundManager:XSoundSubManager;
@@ -129,8 +129,8 @@ export class XWorld extends XSprite {
         
         this.m_gameObjects = new Map<XGameObject, XDepthSprite> ();
         this.m_childObjects = new Map<XGameObject, XDepthSprite> ();
-        this.m_children = new Map<PIXI.DisplayObject, any> ();
-        this.m_children0 = new Map<PIXI.DisplayObject, any> ();
+        this.m_children = new Map<PIXI.Container, any> ();
+        this.m_children0 = new Map<PIXI.Container, any> ();
 
         this.m_XBulletCollisionManager = new XBulletCollisionManager (this);
         this.m_XLogicObjectPoolManager = new XClassPoolManager ();
@@ -404,7 +404,7 @@ export class XWorld extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
-    public addSortableChild (__sprite:PIXI.DisplayObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):void {
+    public addSortableChild (__sprite:PIXI.Container, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):void {
         var __depthSprite:XDepthSprite;
         
         __depthSprite = this.m_layers[__layer].addSprite (__sprite, __depth, __visible);
@@ -413,19 +413,19 @@ export class XWorld extends XSprite {
     }
 
     //------------------------------------------------------------------------------------------
-    public addSortableChild0 (__sprite:PIXI.DisplayObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):void {
+    public addSortableChild0 (__sprite:PIXI.Container, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):void {
         this.m_layers[__layer].addSprite0 (__sprite, __depth, __visible);
 
         this.m_children0.set (__sprite, [__layer, __sprite]);
     }
     
     //------------------------------------------------------------------------------------------
-    public getChildDepthSprite (__sprite:PIXI.DisplayObject):XDepthSprite {
+    public getChildDepthSprite (__sprite:PIXI.Container):XDepthSprite {
         return this.m_children.get (__sprite)[XWorld.SPRITE_XDEPTHSPRITE];
     }
 
     //------------------------------------------------------------------------------------------
-    public removeSortableChild (__sprite:PIXI.DisplayObject):void {
+    public removeSortableChild (__sprite:PIXI.Container):void {
         if (this.m_children.has (__sprite)) {
             var x:any  = this.m_children.get (__sprite);
             

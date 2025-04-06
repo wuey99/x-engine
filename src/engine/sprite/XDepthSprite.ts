@@ -36,7 +36,7 @@ export class XDepthSprite extends XSprite {
     public m_depth:number;
     public m_depth2:number;
     public m_relativeDepthFlag:boolean;
-    public m_sprite:PIXI.DisplayObject;
+    public m_sprite:PIXI.Container;
     public x_layer:XSpriteLayer;
 
     //------------------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ export class XDepthSprite extends XSprite {
         
     //------------------------------------------------------------------------------------------
     public addSprite (
-        __sprite:PIXI.DisplayObject,
+        __sprite:PIXI.Container,
         __depth:number,
         __layer:XSpriteLayer,
         __relative:boolean = false
