@@ -32,17 +32,18 @@ import { FederatedPointerEvent } from '@pixi/events';
 import { XApp } from '../app/XApp';
 import { XGameObject} from '../gameobject/XGameObject';
 import { G } from '../app/G';
+import { InteractiveEvents } from '../../x';
 
 //------------------------------------------------------------------------------------------
 export class PausableListener {
 	public m_gameObject:XGameObject;
-    public m_eventName:keyof PIXI.DisplayObjectEvents;
+    public m_eventName:InteractiveEvents;
     public m_displayObject:PIXI.Container;
 	public m_listener:any;
 	public boundListener:any;
 
 	//------------------------------------------------------------------------------------------
-	constructor (__gameObject:XGameObject, __eventName:keyof PIXI.DisplayObjectEvents, __displayObject:PIXI.Container, __listener:any) {
+	constructor (__gameObject:XGameObject, __eventName:InteractiveEvents, __displayObject:PIXI.Container, __listener:any) {
 		this.m_gameObject = __gameObject;
         this.m_eventName = __eventName;
         this.m_displayObject = __displayObject;

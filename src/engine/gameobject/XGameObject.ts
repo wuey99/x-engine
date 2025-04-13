@@ -60,9 +60,10 @@ import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 import { XModelBase } from '../model/XModelBase';
 import { XLevel } from '../level/XLevel';
 import { XMickey } from '../level/XMickey';
+import { InteractiveEvents } from '../../x';
 
 //------------------------------------------------------------------------------------------
-export class XGameObject extends PIXI.Sprite {
+export class XGameObject extends PIXI.Container {
 	public m_selfObjects:Map<XGameObject, number>;	
 	public m_worldObjects:Map<XGameObject, number>;
 	public m_childObjects:Map<XGameObject, number>;
@@ -109,7 +110,7 @@ export class XGameObject extends PIXI.Sprite {
 
 	public static g_XApp:XApp;
 
-	public m_stageEvents:Map<any, keyof PIXI.DisplayObjectEvents>;
+	public m_stageEvents:Map<any, InteractiveEvents>;
 	public m_stageEventsX:Map<any, __PausableListener>;
 	public m_pausableEvents:Map<any, PausableListener>;
 
@@ -249,7 +250,7 @@ export class XGameObject extends PIXI.Sprite {
 		this.m_matterDY = 0;
 		this.m_matterRotate = true;
 
-		this.m_stageEvents = new Map<any, keyof PIXI.DisplayObjectEvents> ();
+		this.m_stageEvents = new Map<any, InteractiveEvents> ();
 		this.m_stageEventsX = new Map<any, __PausableListener> ();
 		this.m_pausableEvents = new Map<any, PausableListener> ();
 
@@ -721,7 +722,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public addStageEventListener (__eventName:keyof PIXI.DisplayObjectEvents, __listener:any):any {
+	public addStageEventListener (__eventName:InteractiveEvents, __listener:any):any {
 		this.m_XApp.getStage ().on (__eventName, __listener);
 
 		this.m_stageEvents.set (__listener, __eventName);
@@ -731,7 +732,7 @@ export class XGameObject extends PIXI.Sprite {
 
 //------------------------------------------------------------------------------------------
 	public removeStageEventListener (__listener:any):any {
-		var __eventName:keyof PIXI.DisplayObjectEvents = this.m_stageEvents.get (__listener);
+		var __eventName:InteractiveEvents = this.m_stageEvents.get (__listener);
 
 		this.m_XApp.getStage ().off (__eventName, __listener);
 
@@ -748,7 +749,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public addStageEventListenerX (__eventName:keyof PIXI.DisplayObjectEvents, __listener:any):any {
+	public addStageEventListenerX (__eventName:InteractiveEvents, __listener:any):any {
 		var __pausableListener:__PausableListener = new __PausableListener (this, __eventName, __listener);
 
 		this.m_stageEventsX.set (__listener, __pausableListener);
@@ -774,7 +775,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 
 //------------------------------------------------------------------------------------------
-	public addPausableEventListener (__eventName:keyof PIXI.DisplayObjectEvents, __displayObject:PIXI.Container, __listener:any):any {
+	public addPausableEventListener (__eventName:InteractiveEvents, __displayObject:PIXI.Container, __listener:any):any {
 		var __pausableListener:PausableListener = new PausableListener (this, __eventName, __displayObject, __listener);
 
 		this.m_pausableEvents.set (__listener, __pausableListener);
@@ -883,7 +884,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public verticalPercent (__displayObject:PIXI.Sprite, __percent:number, __pivotY:number = 0):XGameObject {
+	public verticalPercent (__displayObject:PIXI.Container, __percent:number, __pivotY:number = 0):XGameObject {
 		var __y:number = (this.getActualHeight () - __displayObject.height) * __percent + __pivotY;
 			
 		__displayObject.y = __y;
@@ -892,7 +893,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public verticalPercentCentered (__displayObject:PIXI.Sprite, __percent:number):XGameObject {
+	public verticalPercentCentered (__displayObject:PIXI.Container, __percent:number):XGameObject {
 		var __y:number = this.getActualHeight () * __percent;
 			
 		__displayObject.y = __y;
@@ -906,7 +907,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public horizontalPercent (__displayObject:PIXI.Sprite, __percent:number, __pivotX:number = 0):XGameObject {
+	public horizontalPercent (__displayObject:PIXI.Container, __percent:number, __pivotX:number = 0):XGameObject {
 		var __x:number = (this.getActualWidth () - __displayObject.width) * __percent + __pivotX;
 			
 		__displayObject.x = __x;
@@ -915,7 +916,7 @@ export class XGameObject extends PIXI.Sprite {
 	}
 		
 //------------------------------------------------------------------------------------------
-	public horizontalPercentCentered (__displayObject:PIXI.Sprite, __percent:number):XGameObject {
+	public horizontalPercentCentered (__displayObject:PIXI.Container, __percent:number):XGameObject {
 		var __x:number = this.getActualWidth () * __percent;
 			
 		__displayObject.x = __x;
@@ -2528,12 +2529,12 @@ export class XGameObject extends PIXI.Sprite {
 //------------------------------------------------------------------------------------------
 class __PausableListener {
 	public m_gameObject:XGameObject;
-	public m_eventName:keyof PIXI.DisplayObjectEvents;
+	public m_eventName:InteractiveEvents;
 	public m_listener:any;
 	public boundListener:any;
 
 	//------------------------------------------------------------------------------------------
-	constructor (__gameObject:XGameObject, __eventName:keyof PIXI.DisplayObjectEvents, __listener:any) {
+	constructor (__gameObject:XGameObject, __eventName:InteractiveEvents, __listener:any) {
 		this.m_gameObject = __gameObject;
 		this.m_eventName = __eventName;
 		this.m_listener = __listener;

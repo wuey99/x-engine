@@ -35,7 +35,7 @@ import { XPoint } from '../geom/XPoint';
 import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
-export class XSprite extends PIXI.Sprite {
+export class XSprite extends PIXI.Container {
 
     public m_world:XWorld;
     
