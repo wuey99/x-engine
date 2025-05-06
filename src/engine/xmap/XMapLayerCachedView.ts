@@ -168,11 +168,11 @@
 			
 		if (true) {
                 __logicObject = this.m_XMapView.addPooledGameObjectAsDetachedChild (
-                    XSubmapViewTilemapCacheX,
+                    XSubmapViewTilemapCache,
                     this.m_currLayer,
                     __depth,
                     true
-                ) as XSubmapViewTilemapCacheX;
+                ) as XSubmapViewTilemapCache;
 
                 __logicObject.afterSetup ([
 					this.m_subManager

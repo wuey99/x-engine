@@ -82,7 +82,7 @@ export class XMapResourceX extends Resource {
                     var __levelZLib:any = __data;
                     var __levelXMLArray:Uint8Array = pako.inflate (__levelZLib);
                     this.m_data = new TextDecoder ().decode (__levelXMLArray);      
-
+  
                     this.m_loadComplete = true;
                 });
             }

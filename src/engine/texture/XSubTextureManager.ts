@@ -649,7 +649,7 @@
 		
 		//------------------------------------------------------------------------------------------
 		public getRealBounds (clip:PIXI.AnimatedSprite):PIXI.Rectangle {
-            return clip.getBounds ();
+            return clip.getBounds ().rectangle;
 		}
 		
 	//------------------------------------------------------------------------------------------
