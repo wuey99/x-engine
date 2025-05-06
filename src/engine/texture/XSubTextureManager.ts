@@ -260,9 +260,10 @@
 								__rect = __movieClipMetadata.getRect (i);
 
 								var __renderTexture:PIXI.RenderTexture = new PIXI.RenderTexture (
-									__tileset.baseTexture as PIXI.TextureSource,
-									// TODO
-									// __rect
+									{
+										source: __tileset.baseTexture as PIXI.TextureSource,
+										frame: __rect
+									}
 								);
 
 								__movieClipMetadata.setFrameTexture (i, __renderTexture);
@@ -354,9 +355,10 @@
 								__rect = __movieClipMetadata.getRect (i);
 
 								var __renderTexture:PIXI.RenderTexture = new PIXI.RenderTexture (
-									__tileset.baseTexture as PIXI.TextureSource,
-									// TODO
-									// __rect
+									{
+										source: __tileset.baseTexture as PIXI.TextureSource,
+										frame: __rect
+									}
 								);
 
 								__movieClipMetadata.setFrameTexture (i, __renderTexture);
