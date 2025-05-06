@@ -52,6 +52,8 @@ export class XSprite extends PIXI.Container {
 
 	//------------------------------------------------------------------------------------------
 	public setup ():void {
+        console.log(": XSprite: ", XSprite, XSprite.g_XApp)
+
         this.m_pos = XSprite.g_XApp.getXPointPoolManager ().borrowObject (); 
         this.m_rect = XSprite.g_XApp.getXRectPoolManager ().borrowObject ();
 

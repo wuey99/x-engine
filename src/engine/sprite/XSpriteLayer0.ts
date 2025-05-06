@@ -43,15 +43,15 @@ export class XSpriteLayer0 extends XSpriteLayer {
     constructor () {
         super ();
 
-        this.m_container = new PIXI.ParticleContainer (2000,
-            {
+        this.m_container = new PIXI.ParticleContainer ({
+            dynamicProperties: {
                 position: true,
                 vertices: true,
                 rotation: true,
                 tint: true,
                 uvs: true
-            }    
-        );
+            }
+        });
 
         this.m_container.sortableChildren = true;
 

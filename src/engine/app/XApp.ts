@@ -28,7 +28,7 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js'
-import { FederatedPointerEvent } from '@pixi/events';
+import { FederatedPointerEvent } from 'pixi.js';
 import { XType } from '../type/XType';
 import { XTask } from '../task/XTask';
 import { XTaskManager} from '../task/XTaskManager';
@@ -136,128 +136,143 @@ export class XApp {
     public static FULL_SCREEN:boolean = false;
 
     //------------------------------------------------------------------------------------------
-    constructor (__main:Main, params: XAppParams, __container:HTMLElement = null) {
-        this.renderer = PIXI.autoDetectRenderer ({
-            backgroundAlpha: 0.0,
-            width: this.getWindowWidth (), // params.canvasW,
-            height: this.getWindowHeight (), // params.canvasH,
-            antialias: true
-        }) as PIXI.Renderer;
+    constructor () {
+    }
 
-        this.m_main = __main;
-        this.stage = new PIXI.Container ();
-        this.fpsMax = params.fpsMax;
+    //------------------------------------------------------------------------------------------
+    async setup (__main:Main, params: XAppParams, __container:HTMLElement = null) {
+        {
+            console.log (": 1: ")
 
-        this.stage.interactive = true;
-        this.stage.interactiveChildren = true;
+            this.renderer = await PIXI.autoDetectRenderer ({
+                backgroundAlpha: 0.0,
+                width: this.getWindowWidth (), // params.canvasW,
+                height: this.getWindowHeight (), // params.canvasH,
+                antialias: true
+            }) as PIXI.Renderer;
 
-        switch (Math.round (params.devicePixelRatio)) {
-            case 1:
-                G.scaleRatio = 1; // 2;
-                break;
-            case 2:
-                G.scaleRatio = 1;
-                break;
-            case 3:
-                G.scaleRatio = 1;
-                break;
-            case 4:
-                G.scaleRatio = 1;
-                break;
-            default:
-                G.scaleRatio = 1;
-                break;
-        }
+            console.log (": renderer: ", this.renderer, this.renderer.view)
 
-        console.log (": -------------------------->: window.devicePixelRatio: ", Math.round (params.devicePixelRatio));
-        
-        if (__container != null) {
-            this.container = __container;
-        } else {
-            this.container = params.containerId ? document.getElementById(params.containerId) || document.body : document.body;
-        }
-        this.container.appendChild (this.renderer.view as any);
+            this.m_main = __main;
+            this.stage = new PIXI.Container ();
+            this.fpsMax = params.fpsMax;
 
-		XGameObject.setXApp (this);
-		XTask.setXApp (this);
-        XProcess.setXApp (this)
-		// TODO XTilemap.setXApp (this);
-		XSprite.setXApp (this);
-        XMapModel.setXApp (this);
-		// TODO XTextureManager.setXApp (this);
-		// TODO XTileSubTextureManager.setXApp (this);
-        // TODO XSubTextureManager.setXApp (this);
-        XGameInstance.setXApp (this);
-        MovieClipMetadata.setXApp (this);
+            this.stage.interactive = true;
+            this.stage.interactiveChildren = true;
 
-        G.XApp = this;
-        
-        this.__initPoolManagers (this.getDefaultPoolSettings ());
+            switch (Math.round (params.devicePixelRatio)) {
+                case 1:
+                    G.scaleRatio = 1; // 2;
+                    break;
+                case 2:
+                    G.scaleRatio = 1;
+                    break;
+                case 3:
+                    G.scaleRatio = 1;
+                    break;
+                case 4:
+                    G.scaleRatio = 1;
+                    break;
+                default:
+                    G.scaleRatio = 1;
+                    break;
+            }
 
-        this.m_XTaskManager0 = new XTaskManager (this);	
-		this.m_XTaskManager = new XTaskManager (this);	
-        this.m_XProcessManager0 = new XProcessManager (this);	
-		this.m_XProcessManager = new XProcessManager (this);	
-        this.m_XSignalManager = new XSignalManager (this);
-        this.m_XProjectManager = new XProjectManager (this);
-        this.m_XSoundManager = new XSoundManager (this);
-        this.m_XTextureManager = new XTextureManager (this);
-        this.m_XClassPoolManager = new XClassPoolManager ();
+            console.log (": -------------------------->: window.devicePixelRatio: ", Math.round (params.devicePixelRatio));
+            
+            console.log (": ", this.m_main, this.stage)
 
-        this.m_frameRateScale = 1.0;
-		this.m_previousTimer = XType.getNowDate ().getTime ();
-        this.m_currentTimer = 0.0;
-        this.m_inuse_TIMER_FRAME = 0;
-        
-        this.m_mousePoint = new XPoint ();
-        this.m_touchPoint = new XPoint ();
-        
-        this.m_paused = false;
+            if (__container != null) {
+                this.container = __container;
+            } else {
+                this.container = params.containerId ? document.getElementById(params.containerId) || document.body : document.body;
+            }
 
-        this.setupResizer ();
+            console.log (": container: ", this.container)
 
-        this.m_firstClick = false;
+            this.container.appendChild (this.renderer.canvas as any);
 
-        this.getStage ().on ("pointerup", this.m_pointerDownHandle = (e:FederatedPointerEvent) => {
-            this.m_firstClick = true;
-        });
+            XGameObject.setXApp (this);
+            XTask.setXApp (this);
+            XProcess.setXApp (this)
+            // TODO XTilemap.setXApp (this);
+            XSprite.setXApp (this);
+            XMapModel.setXApp (this);
+            // TODO XTextureManager.setXApp (this);
+            // TODO XTileSubTextureManager.setXApp (this);
+            // TODO XSubTextureManager.setXApp (this);
+            XGameInstance.setXApp (this);
+            MovieClipMetadata.setXApp (this);
 
-        this.getStage ().on ("pointermove", this.m_pointerMoveHandle = (e:FederatedPointerEvent) => {
-            var __mousePos:PIXI.Point = this.getStage ().toLocal (e.global);
+            G.XApp = this;
+            
+            this.__initPoolManagers (this.getDefaultPoolSettings ());
 
-            this.m_mousePoint.x = __mousePos.x;
-            this.m_mousePoint.y = __mousePos.y;
-    
-            console.log (": XApp: pointermove: ", this.m_mousePoint);
+            this.m_XTaskManager0 = new XTaskManager (this);	
+            this.m_XTaskManager = new XTaskManager (this);	
+            this.m_XProcessManager0 = new XProcessManager (this);	
+            this.m_XProcessManager = new XProcessManager (this);	
+            this.m_XSignalManager = new XSignalManager (this);
+            this.m_XProjectManager = new XProjectManager (this);
+            this.m_XSoundManager = new XSoundManager (this);
+            this.m_XTextureManager = new XTextureManager (this);
+            this.m_XClassPoolManager = new XClassPoolManager ();
 
-            // this.m_main.setDebugMessage ("" + __mousePos.x + ", " + __mousePos.y);
-        });
+            this.m_frameRateScale = 1.0;
+            this.m_previousTimer = XType.getNowDate ().getTime ();
+            this.m_currentTimer = 0.0;
+            this.m_inuse_TIMER_FRAME = 0;
+            
+            this.m_mousePoint = new XPoint ();
+            this.m_touchPoint = new XPoint ();
+            
+            this.m_paused = false;
 
-        this.getStage ().on ("touchmove", this.m_touchMoveHandle = (e:FederatedPointerEvent) => {
-            var __mousePos:PIXI.Point = this.getStage ().toLocal (e.global);
+            this.setupResizer ();
 
-            this.m_touchPoint.x = __mousePos.x;
-            this.m_touchPoint.y = __mousePos.y;
+            this.m_firstClick = false;
 
-            // this.m_main.setDebugMessage ("" + __mousePos.x + ", " + __mousePos.y);
-        });
-
-        this.m_hasFocus = true;
-
-        if (!XApp.DISABLE_PAUSE) {
-            document.addEventListener ("visibilitychange", this.m_visibilityChangedHandle = () => {
-                this.m_hasFocus = document.visibilityState === "visible";
-                
-                if (this.m_hasFocus) {
-                    if (!this.m_paused) {
-                        XPauseManager.fireResumeSignal ();
-                    }
-                } else {
-                    if (!this.m_paused) {
-                        XPauseManager.firePauseSignal ();
-                    }
-                }
+            this.getStage ().on ("pointerup", this.m_pointerDownHandle = (e:FederatedPointerEvent) => {
+                this.m_firstClick = true;
             });
+
+            this.getStage ().on ("pointermove", this.m_pointerMoveHandle = (e:FederatedPointerEvent) => {
+                var __mousePos:PIXI.Point = this.getStage ().toLocal (e.global);
+
+                this.m_mousePoint.x = __mousePos.x;
+                this.m_mousePoint.y = __mousePos.y;
+        
+                console.log (": XApp: pointermove: ", this.m_mousePoint);
+
+                // this.m_main.setDebugMessage ("" + __mousePos.x + ", " + __mousePos.y);
+            });
+
+            this.getStage ().on ("touchmove", this.m_touchMoveHandle = (e:FederatedPointerEvent) => {
+                var __mousePos:PIXI.Point = this.getStage ().toLocal (e.global);
+
+                this.m_touchPoint.x = __mousePos.x;
+                this.m_touchPoint.y = __mousePos.y;
+
+                // this.m_main.setDebugMessage ("" + __mousePos.x + ", " + __mousePos.y);
+            });
+
+            this.m_hasFocus = true;
+
+            if (!XApp.DISABLE_PAUSE) {
+                document.addEventListener ("visibilitychange", this.m_visibilityChangedHandle = () => {
+                    this.m_hasFocus = document.visibilityState === "visible";
+                    
+                    if (this.m_hasFocus) {
+                        if (!this.m_paused) {
+                            XPauseManager.fireResumeSignal ();
+                        }
+                    } else {
+                        if (!this.m_paused) {
+                            XPauseManager.firePauseSignal ();
+                        }
+                    }
+                });
+            }
         }
     }
 

@@ -93,7 +93,8 @@ export class TestGame extends XState {
 		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test001"));
 		__level.afterSetup ([__levelXML]);
 
-		this.world.replaceLayer (1, new XSpriteLayer0 ());
+		// TODO
+		// this.world.replaceLayer (1, new XSpriteLayer0 ());
 
 		__level.x = 0;
 		__level.y = 0;

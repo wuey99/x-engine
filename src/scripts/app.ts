@@ -49,6 +49,7 @@ export class Main {
     public m_intervalTimer:any;
     public fpsMeterItem:any;
     public m_delay:number;
+    public m_XApp:XApp
 
 //------------------------------------------------------------------------------------------
     constructor (__params:any) {
@@ -57,47 +58,52 @@ export class Main {
 
 //------------------------------------------------------------------------------------------
     public setup (__container:HTMLElement = null):void {
-        g_XApp = new XApp (
-            this,
-            {
-                containerId: 'game',
-                canvasW: G.CANVAS_WIDTH,
-                canvasH: G.CANVAS_HEIGHT,
-                fpsMax: 60,
-                devicePixelRatio: window.devicePixelRatio,
-            },
+        console.log (": setup: ", __container)
 
-            __container
-        );
+        g_XApp = this.m_XApp = new XApp ();
 
-        console.log (": starting: ");
+        (async () => {
+            await this.m_XApp.setup (
+                this,
+                {
+                    containerId: 'game',
+                    canvasW: G.CANVAS_WIDTH,
+                    canvasH: G.CANVAS_HEIGHT,
+                    fpsMax: 60,
+                    devicePixelRatio: window.devicePixelRatio,
+                },
+                null // __container
+            )
+    
+            console.log (": starting: ");
 
-        world = new XWorld (g_XApp.stage, g_XApp, 8);
-        world.setup ();
+            world = new XWorld (g_XApp.stage, g_XApp, 8);
+            world.setup ();
 
-        world.setViewRect (G.SCREEN_WIDTH, G.SCREEN_HEIGHT);
+            world.setViewRect (G.SCREEN_WIDTH, G.SCREEN_HEIGHT);
 
-        g_XApp.stage.addChild (world);
+            g_XApp.stage.addChild (world);
 
-        this.m_debugMessage = "";
+            this.m_debugMessage = "";
 
-        /* FPS */
-        this.fpsMeterItem = document.createElement('div');
-        this.fpsMeterItem.classList.add ('fps');
-        g_XApp.container.appendChild (this.fpsMeterItem);
+            /* FPS */
+            this.fpsMeterItem = document.createElement('div');
+            this.fpsMeterItem.classList.add ('fps');
+            g_XApp.container.appendChild (this.fpsMeterItem);
 
-        fpsMeter = new FpsMeter (() => {
-            this.fpsMeterItem.innerHTML = 'FPS: ' + fpsMeter.getFrameRate().toFixed(2).toString() + " : " + this.m_debugMessage;
-        });
+            fpsMeter = new FpsMeter (() => {
+                this.fpsMeterItem.innerHTML = 'FPS: ' + fpsMeter.getFrameRate().toFixed(2).toString() + " : " + this.m_debugMessage;
+            });
 
-        this.m_intervalTimer = setInterval (this.update.bind (this), 1000.0 / g_XApp.fpsMax);
-        this.render ();
+            this.m_intervalTimer = setInterval (this.update.bind (this), 1000.0 / g_XApp.fpsMax);
+            this.render ();
 
-        this.configureAndLoadAssets ();
+            this.configureAndLoadAssets ();
 
-        this.m_delay = 0;
+            this.m_delay = 0;
 
-        this.reset ();
+            this.reset ();
+        }) ()
     }
 
 //------------------------------------------------------------------------------------------

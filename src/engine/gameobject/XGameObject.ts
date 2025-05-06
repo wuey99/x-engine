@@ -28,7 +28,8 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js';
-import { FederatedPointerEvent } from '@pixi/events';
+import { FederatedPointerEvent } from 'pixi.js';
+import { BitmapFont } from 'pixi.js';
 import { XApp } from '../app/XApp';
 import { XSprite } from '../sprite/XSprite';
 import { XSpriteLayer } from '../sprite/XSpriteLayer';
@@ -1243,7 +1244,9 @@ export class XGameObject extends PIXI.Container {
 		var __gameObject:XGameObject = XType.createInstance (__class) as XGameObject;
 		__gameObject.setup (this.world, this.getLayer(), this.getDepth());
 		
-		__gameObject.setParent (this);
+		// TODO
+		// __gameObject.setParent (this);
+		__gameObject.parent = this;
 		
 		this.addChild (__gameObject);
 		
@@ -1718,15 +1721,17 @@ export class XGameObject extends PIXI.Container {
 //------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------
+	// TODO
 	public createBitmapFont (__name:string, __style:any, __options:any):void {
-        PIXI.BitmapFont.from (__name, __style, __options);
+        // PIXI.BitmapFont.from (__name, __style, __options);
 
 		this.m_bitmapFonts.set (__name, 0);
 	}
 
 //------------------------------------------------------------------------------------------
+	// TODO
 	public getBitmapFontChars ():Array<any> {
-		return PIXI.BitmapFont.ASCII.concat (["á", "é", "í", "ó", "ú", "ü", "ñ", "¿", "¡"]);
+		return null; // PIXI.BitmapFont.ASCII.concat (["á", "é", "í", "ó", "ú", "ü", "ñ", "¿", "¡"]);
 	}
 	
 //------------------------------------------------------------------------------------------

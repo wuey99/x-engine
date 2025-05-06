@@ -28,7 +28,7 @@
 
 //------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js';
-import { FederatedPointerEvent } from '@pixi/events';
+import { FederatedPointerEvent } from 'pixi.js';
 import { XApp } from '../app/XApp';
 import { XGameObject} from '../gameobject/XGameObject';
 import { G } from '../app/G';

@@ -42,11 +42,11 @@ const loadZlib = {
     },
 
     test (url: string):boolean {
-        return (PIXI.utils.path.extname(url).toLowerCase() === '.zlib');
+        return (url.toLowerCase().endsWith('.zlib'));
     },
 
     async load<T> (url: string):Promise<T> {
-        const response = await PIXI.settings.ADAPTER.fetch(url);
+        const response = await PIXI.BrowserAdapter.fetch(url);
   
         const data = await response.blob();
   
