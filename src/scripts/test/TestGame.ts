@@ -97,7 +97,7 @@ export class TestGame extends XState {
 		__level.y = 0;
 
 		// TODO
-		// this.world.replaceLayer (1, new XSpriteLayer0 ());
+		this.world.replaceLayer (1, new XSpriteLayer0 ());
 		
 		var __x:number = 0;
 		var __y:number = 0;

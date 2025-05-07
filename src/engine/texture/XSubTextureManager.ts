@@ -453,6 +453,22 @@
 		}
 
 		//------------------------------------------------------------------------------------------
+		public createParticleFromAnimatedSprite (__className:string, __frame: number):PIXI.Particle {
+			if (!this.isQueued (__className)) {
+				return null;
+			}
+			
+			var __movieClipMetadata:MovieClipMetadata = this.m_movieClips.get (__className);
+			var __anchorPoint:PIXI.Point = __movieClipMetadata.getAnchorPoint ();
+
+			var __particle:PIXI.Particle = new PIXI.Particle (__movieClipMetadata.getFrameRenderTextures ()[__frame - 1]);
+            __particle.anchorX = __anchorPoint.x;
+			__particle.anchorY = __anchorPoint.y;
+			
+			return __particle;
+		}
+
+		//------------------------------------------------------------------------------------------
 		public findFreeTexture (__animatedSprite:PIXI.AnimatedSprite):number {
 			var __scaleX:number = 1.0;
 			var __scaleY:number = 1.0;

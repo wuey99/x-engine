@@ -47,14 +47,15 @@ import { XMapLayerView } from './XMapLayerView';
 import { XDepthSprite } from '../sprite/XDepthSprite';
 import { XSubmapViewCache } from "./XSubmapViewCache";	
 import { XSpriteLayer } from '../sprite/XSpriteLayer';
+import { XSpriteLayer0 } from '../sprite/XSpriteLayer0';
 
 //------------------------------------------------------------------------------------------
 	export class XSubmapViewTilemapCacheX2 extends XSubmapViewCache {
 		private m_XRectPoolManager:XObjectPoolManager;
 		private m_tileScaleFactor:number;
-		private animatedSprites:Array<PIXI.AnimatedSprite>;
+		private particles:Array<PIXI.Particle>;
 		private m_subManager:XSubTextureManager;
-		private m_spriteLayer:XSpriteLayer;
+		private m_spriteLayer:XSpriteLayer0;
 
 //------------------------------------------------------------------------------------------	
 		public constructor () {
@@ -78,7 +79,7 @@ import { XSpriteLayer } from '../sprite/XSpriteLayer';
 			
 			this.m_XRectPoolManager = this.world.getXRectPoolManager ();
 
-			this.m_spriteLayer = this.world.getLayer (this.getLayer ());
+			this.m_spriteLayer = this.world.getLayer (this.getLayer ()) as XSpriteLayer0;
 
 			return this;
 		}
@@ -87,12 +88,13 @@ import { XSpriteLayer } from '../sprite/XSpriteLayer';
 		public cleanup ():void {
 			super.cleanup ();
 
-			var __animatedSprite:PIXI.AnimatedSprite;
+			var __particle:PIXI.Particle;
 
-			for (__animatedSprite of this.animatedSprites) {
-				this.m_spriteLayer.removeChildFromContainer (__animatedSprite);
+			for (__particle of this.particles) {
+				this.m_spriteLayer.removeParticleFromContainer (__particle);
 
-				__animatedSprite.destroy ();
+				// TODO
+				// __particle.destroy ();
 			}
 		}
 
@@ -118,7 +120,7 @@ import { XSpriteLayer } from '../sprite/XSpriteLayer';
 			var __row:number;
 			var __col:number;
 
-			var __animatedSprites:Array<PIXI.AnimatedSprite> = this.animatedSprites;
+			var __particles:Array<PIXI.Particle> = this.particles;
 
 			for (__row = 0; __row < __tileRows; __row++) {
 				for (__col = 0; __col < __tileCols; __col++) {
@@ -128,20 +130,16 @@ import { XSpriteLayer } from '../sprite/XSpriteLayer';
 						var __className:string = this.m_submapModel.XMapLayer.getClassNameFromIndex (__tile[0]);
 						__className = __className.split (":")[0];
 
-						var __animatedSprite:PIXI.AnimatedSprite = this.m_subManager.createAnimatedSprite (__className);
+						var __particle:PIXI.Particle = this.m_subManager.createParticleFromAnimatedSprite (__className, __tile[1]);
 
-						if (__tile[1] != 0) {
-							__animatedSprite.gotoAndStop (__tile[1] - 1);
-						}
-
-						__animatedSprite.x = this.x + __col * XSubmapModel.TX_TILE_WIDTH;
-						__animatedSprite.y = this.y + __row * XSubmapModel.TX_TILE_HEIGHT;
-						__animatedSprite.scale.x = this.m_tileScaleFactor;
-						__animatedSprite.scale.y = this.m_tileScaleFactor;
+						__particle.x = this.x + __col * XSubmapModel.TX_TILE_WIDTH;
+						__particle.y = this.y + __row * XSubmapModel.TX_TILE_HEIGHT;
+						__particle.scaleX = this.m_tileScaleFactor;
+						__particle.scaleY = this.m_tileScaleFactor;
 						
-						this.m_spriteLayer.addChildToContainer (__animatedSprite);
+						this.m_spriteLayer.addParticleToContainer (__particle);
 
-						__animatedSprites.push (__animatedSprite);
+						__particles.push (__particle);
 					}
 				}
 			}
@@ -151,7 +149,7 @@ import { XSpriteLayer } from '../sprite/XSpriteLayer';
 // create sprites
 //------------------------------------------------------------------------------------------
 		public createSprites ():void {
-			this.animatedSprites = new Array<PIXI.AnimatedSprite> ();
+			this.particles = new Array<PIXI.Particle> ();
 
 			this.show ();
 		}

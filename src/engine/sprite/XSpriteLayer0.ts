@@ -46,6 +46,7 @@ export class XSpriteLayer0 extends XSpriteLayer {
         this.m_container = new PIXI.ParticleContainer ({
             dynamicProperties: {
                 position: true,
+                scale: true,
                 vertices: true,
                 rotation: true,
                 tint: true,
@@ -81,13 +82,23 @@ export class XSpriteLayer0 extends XSpriteLayer {
     */
 
     //------------------------------------------------------------------------------------------
-    public addChildToContainer (__sprite:PIXI.Sprite):void {
+    public addChildToContainer (__sprite:PIXI.Container):void {
         this.m_container.addChild (__sprite);
     }
 
     //------------------------------------------------------------------------------------------
-    public removeChildFromContainer (__sprite:PIXI.Sprite):void {
+    public removeChildFromContainer (__sprite:PIXI.Container):void {
         this.m_container.removeChild (__sprite);
+    }
+
+    //------------------------------------------------------------------------------------------
+    public addParticleToContainer (__sprite:PIXI.Particle):void {
+        this.m_container.addParticle (__sprite);
+    }
+
+    //------------------------------------------------------------------------------------------
+    public removeParticleFromContainer (__sprite:PIXI.Particle):void {
+        this.m_container.removeParticle (__sprite);
     }
 
     //------------------------------------------------------------------------------------------	
