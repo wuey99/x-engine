@@ -49,7 +49,7 @@ import { XSubmapViewCache } from "./XSubmapViewCache";
 import { XSpriteLayer } from '../sprite/XSpriteLayer';
 
 //------------------------------------------------------------------------------------------
-	export class XSubmapViewTilemapCacheX extends XSubmapViewCache {
+	export class XSubmapViewTilemapCacheX2 extends XSubmapViewCache {
 		private m_XRectPoolManager:XObjectPoolManager;
 		private m_tileScaleFactor:number;
 		private animatedSprites:Array<PIXI.AnimatedSprite>;
