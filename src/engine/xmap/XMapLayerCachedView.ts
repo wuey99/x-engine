@@ -49,6 +49,7 @@
 	import { XSubmapViewTilemapCacheX2 } from './XSubmapViewTilemapCacheX2';
 	import { G } from '../../engine/app/G';
 	import { GUID } from '../../engine/utils/GUID';
+import { XSubmapViewTilemapCacheParticles } from './XSubmapViewTilemapCacheParticles';
 
 //------------------------------------------------------------------------------------------
 	export class XMapLayerCachedView extends XMapLayerView {
@@ -169,7 +170,7 @@
 			
 		if (true) {
                 __logicObject = this.m_XMapView.addPooledGameObjectAsDetachedChild (
-                    XSubmapViewTilemapCacheX2,
+                    XSubmapViewTilemapCacheParticles,
                     this.m_currLayer,
                     __depth,
                     true

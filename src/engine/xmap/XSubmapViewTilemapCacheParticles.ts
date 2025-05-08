@@ -50,7 +50,7 @@ import { XSpriteLayer } from '../sprite/XSpriteLayer';
 import { XSpriteLayer0 } from '../sprite/XSpriteLayer0';
 
 //------------------------------------------------------------------------------------------
-	export class XSubmapViewTilemapCacheX2 extends XSubmapViewCache {
+	export class XSubmapViewTilemapCacheParticles extends XSubmapViewCache {
 		private m_XRectPoolManager:XObjectPoolManager;
 		private m_tileScaleFactor:number;
 		private particles:Array<PIXI.Particle>;
@@ -91,7 +91,7 @@ import { XSpriteLayer0 } from '../sprite/XSpriteLayer0';
 			var __particle:PIXI.Particle;
 
 			for (__particle of this.particles) {
-				this.m_spriteLayer.removeParticleFromContainer (__particle);
+				this.m_spriteLayer.removeChildFromContainer (__particle);
 
 				// TODO
 				// __particle.destroy ();
@@ -137,7 +137,7 @@ import { XSpriteLayer0 } from '../sprite/XSpriteLayer0';
 						__particle.scaleX = this.m_tileScaleFactor;
 						__particle.scaleY = this.m_tileScaleFactor;
 						
-						this.m_spriteLayer.addParticleToContainer (__particle);
+						this.m_spriteLayer.addChildToContainer (__particle);
 
 						__particles.push (__particle);
 					}
