@@ -97,7 +97,7 @@ export class XTextBox extends XTextGameObject {
 		__text:string="",
 		__fontName:string="Nunito",
 		__fontSize:number=12,
-		__color:number=0x000000,
+		__color:string='0x000000',
 		__bold:boolean=false,
 		__horzAlign:string="left",
 		__vertAlign:string="top"

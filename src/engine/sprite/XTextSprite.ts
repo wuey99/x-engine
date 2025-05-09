@@ -43,7 +43,6 @@ import { XType } from '../type/XType';
 		public m_height:number;
 		public m_horizontalAlignment:string;
 		public m_verticalAlignment:string;
-		public m_textStyle:PIXI.TextStyle;
 
 //------------------------------------------------------------------------------------------
 		public constructor (
@@ -52,7 +51,7 @@ import { XType } from '../type/XType';
 			__text:string="",
 			__fontName:string="Aller",
             __fontSize:number=12,
-			__color:number=0x000000,
+			__color:string='0x000000',
             __bold:boolean=false,
 			__horzAlign:string="left",
 			__vertAlign:string="top"
@@ -66,17 +65,14 @@ import { XType } from '../type/XType';
 			this.m_horizontalAlignment = __horzAlign;
 			this.m_verticalAlignment = __vertAlign;
 
-			this.m_textStyle = new PIXI.TextStyle ({
-				fontFamily: __fontName,
-				fontSize: __fontSize,
-			});
-
 			this.m_bitmapText = new PIXI.BitmapText ({
                 text: __text,
-                style: this.m_textStyle
+                style: {
+					fontFamily: __fontName,
+					fontSize: __fontSize,
+					fill: __color
+				}
 			});	
-			
-			this.bitmapText.tint = __color;
 
 			this.addChild (this.m_bitmapText); this.format ();	
 		}
@@ -153,12 +149,12 @@ import { XType } from '../type/XType';
 		}
 
 //------------------------------------------------------------------------------------------
-		public get color ():number {
-			return this.m_bitmapText.tint;
+		public get color ():any {
+			return this.m_bitmapText.style.fill;
 		}
 		
-		public set color (__color:number) {
-			this.m_bitmapText.tint = __color;		
+		public set color (__color:any) {
+			this.m_bitmapText.style.fill = __color;		
 		}
 		
 //------------------------------------------------------------------------------------------
@@ -193,21 +189,18 @@ import { XType } from '../type/XType';
 			return this.m_bitmapText.style.align;
 		}
 		
-		public set align (__val:string) {
-			// this.m_bitmapText.align = __val; this.format ();		
+		public set align (__val:PIXI.TextStyleAlign) {
+			this.m_bitmapText.style.align = __val; this.format ();		
 		}
 		
 //------------------------------------------------------------------------------------------
-		// TODO
-		/*
 		public get textWidth ():number {
-			return this.m_bitmapText.maxWidth;
+			return this.m_bitmapText.style.wordWrapWidth;
 		}
 		
 		public set textWidth (__val:number) {
-            this.m_bitmapText.maxWidth = __val; this.format ();	
+            this.m_bitmapText.style.wordWrapWidth = __val; this.format ();	
 		}
-		*/
 		
 //------------------------------------------------------------------------------------------
         public get textHeight ():number {

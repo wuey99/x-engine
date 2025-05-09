@@ -45,7 +45,7 @@ export class XTextButton extends XButton {
     private m_text:string;
     private m_fontName:string;
     private m_fontSize:number;
-    private m_colorNormal:number;
+    private m_colorNormal:string;
     private m_colorOver:number;
     private m_colorDown:number;
     private m_colorSelected:number;

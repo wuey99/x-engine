@@ -212,7 +212,7 @@ export class TestGame extends XState {
 			"hello world",
 			"Aller",
 			100,
-			0xff0000,
+			'0xff0000',
 			true,
 			"center", "center"
 		);
