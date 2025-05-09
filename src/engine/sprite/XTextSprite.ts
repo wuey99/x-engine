@@ -70,7 +70,8 @@ import { XType } from '../type/XType';
                 style: {
 					fontFamily: __fontName,
 					fontSize: __fontSize,
-					fill: __color
+					fill: __color,
+					wordWrapWidth: __width
 				}
 			});	
 
@@ -185,7 +186,7 @@ import { XType } from '../type/XType';
 		}
 
 //------------------------------------------------------------------------------------------
-		public get align ():string {
+		public get align ():PIXI.TextStyleAlign {
 			return this.m_bitmapText.style.align;
 		}
 		
