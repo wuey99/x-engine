@@ -43,6 +43,7 @@ import { XType } from '../type/XType';
 		public m_height:number;
 		public m_horizontalAlignment:string;
 		public m_verticalAlignment:string;
+		public m_textStyle:PIXI.TextStyle;
 
 //------------------------------------------------------------------------------------------
 		public constructor (
@@ -65,17 +66,18 @@ import { XType } from '../type/XType';
 			this.m_horizontalAlignment = __horzAlign;
 			this.m_verticalAlignment = __vertAlign;
 
-			this.m_bitmapText = new PIXI.BitmapText (
-                __text,
-                {
-                    fontName: __fontName,
-                    fontSize: __fontSize,
-                    tint: __color,
-                    // align: __horzAlign,
-                    maxWidth: __width
-                }
-            );		
-				
+			this.m_textStyle = new PIXI.TextStyle ({
+				fontFamily: __fontName,
+				fontSize: __fontSize,
+			});
+
+			this.m_bitmapText = new PIXI.BitmapText ({
+                text: __text,
+                style: this.m_textStyle
+			});	
+			
+			this.bitmapText.tint = __color;
+
 			this.addChild (this.m_bitmapText); this.format ();	
 		}
 
@@ -108,7 +110,8 @@ import { XType } from '../type/XType';
 
 //------------------------------------------------------------------------------------------
 		public format ():void {
-			this.m_bitmapText.dirty = true;
+			// TODO
+			// this.m_bitmapText.dirty = true;
 			
 			if (this.m_width > 0) switch (this.m_horizontalAlignment) {
 				case "center":
@@ -168,26 +171,26 @@ import { XType } from '../type/XType';
 		}
 			
 //------------------------------------------------------------------------------------------
-		public get font ():string {
-			return this.m_bitmapText.fontName;
+		public get font ():string | string []{
+			return this.m_bitmapText.style.fontFamily;
 		}
 		
-		public set font (__val:string) {
-			this.m_bitmapText.fontName = __val; this.format ();		
+		public set font (__val:string | string []) {
+			this.m_bitmapText.style.fontFamily = __val; this.format ();		
 		}
 		
 //------------------------------------------------------------------------------------------
 		public get size ():number {
-			return this.m_bitmapText.fontSize;
+			return this.m_bitmapText.style.fontSize;
 		}
 		
 		public set size (__val:number) {
-			this.m_bitmapText.fontSize = __val; this.format ();	
+			this.m_bitmapText.style.fontSize = __val; this.format ();	
 		}
 
 //------------------------------------------------------------------------------------------
 		public get align ():string {
-			return this.m_bitmapText.align;
+			return this.m_bitmapText.style.align;
 		}
 		
 		public set align (__val:string) {
@@ -195,6 +198,8 @@ import { XType } from '../type/XType';
 		}
 		
 //------------------------------------------------------------------------------------------
+		// TODO
+		/*
 		public get textWidth ():number {
 			return this.m_bitmapText.maxWidth;
 		}
@@ -202,6 +207,7 @@ import { XType } from '../type/XType';
 		public set textWidth (__val:number) {
             this.m_bitmapText.maxWidth = __val; this.format ();	
 		}
+		*/
 		
 //------------------------------------------------------------------------------------------
         public get textHeight ():number {
@@ -214,11 +220,11 @@ import { XType } from '../type/XType';
 
 //------------------------------------------------------------------------------------------
 		public get letterSpacing ():number {
-			return this.m_bitmapText.letterSpacing;
+			return this.m_bitmapText.style.letterSpacing;
 		}
 		
 		public set letterSpacing (__val:number) {
-			this.m_bitmapText.letterSpacing = __val; this.format ();		
+			this.m_bitmapText.style.letterSpacing = __val; this.format ();		
 		}
 
 //------------------------------------------------------------------------------------------

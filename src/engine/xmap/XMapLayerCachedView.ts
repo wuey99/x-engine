@@ -46,10 +46,9 @@
     import { XSubmapViewCache } from './XSubmapViewCache';
     import { XSubmapViewTilemapCache } from './XSubmapViewTilemapCache';
 	import { XSubmapViewTilemapCacheX } from './XSubmapViewTilemapCacheX';
-	import { XSubmapViewTilemapCacheX2 } from './XSubmapViewTilemapCacheX2';
+	import { XSubmapViewTilemapCacheParticles } from './XSubmapViewTilemapCacheParticles';
 	import { G } from '../../engine/app/G';
 	import { GUID } from '../../engine/utils/GUID';
-import { XSubmapViewTilemapCacheParticles } from './XSubmapViewTilemapCacheParticles';
 
 //------------------------------------------------------------------------------------------
 	export class XMapLayerCachedView extends XMapLayerView {
@@ -174,7 +173,7 @@ import { XSubmapViewTilemapCacheParticles } from './XSubmapViewTilemapCacheParti
                     this.m_currLayer,
                     __depth,
                     true
-                ) as XSubmapViewTilemapCacheX2;
+                ) as XSubmapViewTilemapCacheParticles;
 
                 __logicObject.afterSetup ([
 					this.m_subManager
