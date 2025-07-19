@@ -65,7 +65,8 @@ export class XGameInstance {
 
 	public m_logicClassNameToClass:Map<string, any>;
 
-	public m_mickeyObject:XMickey;
+	// private  m_paused:boolean;
+	// private  m_pausedObject:XGameObject;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -134,16 +135,6 @@ export class XGameInstance {
 	//------------------------------------------------------------------------------------------
 	public logicClassNameToClass (__logicClassName:string):any {
 		return this.m_logicClassNameToClass.get (__logicClassName.replace ("$", "__"));
-	}
-
-	//------------------------------------------------------------------------------------------
-	public setMickeyObject (__mickeyObject:XMickey):void {
-		this.m_mickeyObject = __mickeyObject;
-	}
-
-	//------------------------------------------------------------------------------------------
-	public getMickeyObject ():XMickey {
-		return this.m_mickeyObject;
 	}
 
 	//------------------------------------------------------------------------------------------

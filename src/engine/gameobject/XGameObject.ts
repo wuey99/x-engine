@@ -62,6 +62,8 @@ import { XModelBase } from '../model/XModelBase';
 import { XLevel } from '../level/XLevel';
 import { XMickey } from '../level/XMickey';
 import { InteractiveEvents } from '../../x';
+import { XMickeyGameInstance } from '../level/XMickeyGameInstance';
+import { XLevelGameInstance } from '../level/XLevelGameInstance';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Container {
@@ -96,6 +98,7 @@ export class XGameObject extends PIXI.Container {
 	public m_flipY:number;
 	public m_masterFlipX:number;
 	public m_masterFlipY:number;
+	public m_rotation:number;
 	public m_pos:XPoint;
 	public m_pivot:XPoint;
 	public m_propagateCount:number;
@@ -180,6 +183,20 @@ export class XGameObject extends PIXI.Container {
 		this.m_pivot = new XPoint ();
 		this.m_mousePoint = new XPoint ();
 		this.m_pos = new XPoint ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public $setup (__world:XWorld, __params:Array<any>):void {
+		this.setup (__world, 0, 0)
+	}
+
+//------------------------------------------------------------------------------------------
+	public $setupX ():void {
+	}
+
+//------------------------------------------------------------------------------------------
+    public isXLogicObject ():boolean {
+		return false;
 	}
 	
 //------------------------------------------------------------------------------------------
@@ -550,6 +567,11 @@ export class XGameObject extends PIXI.Container {
 	}
 
 //------------------------------------------------------------------------------------------
+	public getArg (__args:Array<any>, i:number):any {
+		return __args[i];
+	}
+
+//------------------------------------------------------------------------------------------
 	public enableInteractivity (
 		__eventFilter:Array<string> =
 			[
@@ -831,13 +853,18 @@ export class XGameObject extends PIXI.Container {
 	}
 
 //------------------------------------------------------------------------------------------
+	public getLevelGameInstance ():XLevelGameInstance {
+		return this.getGameStateObject ().getGameInstance () as XLevelGameInstance;
+	}
+
+//------------------------------------------------------------------------------------------
 	public getMickeyObject ():XMickey {
-		return this.getGameInstance ().getMickeyObject ();
+		return (this.getGameInstance () as XMickeyGameInstance).getMickeyObject ();
 	}
 
 //------------------------------------------------------------------------------------------
 	public setMickeyObject (__mickeyObject:XMickey):void {
-		return this.getGameInstance ().setMickeyObject (__mickeyObject);
+		return (this.getGameInstance () as XMickeyGameInstance).setMickeyObject (__mickeyObject);
 	}
 
 //------------------------------------------------------------------------------------------
@@ -1015,6 +1042,42 @@ export class XGameObject extends PIXI.Container {
 		var __rect:XRect = this.m_namedCX.get (__name).cloneX ();	
 		__rect.offset (this.x, this.y);
 		return __rect;
+	}
+
+//------------------------------------------------------------------------------------------
+	public get oAlpha ():number {
+		return this.alpha;
+	}
+
+	public set oAlpha (__val:number) {
+		this.alpha = __val;
+	}
+
+//------------------------------------------------------------------------------------------
+	public get oRotation ():number {
+		return this.angle;
+	}
+
+	public set oRotation (__val:number) {
+		this.angle = __val;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getRotation ():number {
+		return this.angle;
+	}
+		
+	public setRotation (__rotation:number):void {
+		this.angle = __rotation % 360;
+	}	
+
+//------------------------------------------------------------------------------------------
+	public get oVisible ():boolean {
+		return this.visible;
+	}
+
+	public set oVisible (__val:boolean) {
+		this.visible = __val;
 	}
 
 //------------------------------------------------------------------------------------------		
@@ -2399,7 +2462,7 @@ export class XGameObject extends PIXI.Container {
 		public setScale (__scale:number):void {
 			this.scale.x = this.scale.y = __scale;
 		}
-		
+
 //------------------------------------------------------------------------------------------		
 		public setMasterX (__value:number):void {
 			this.m_masterX = __value;

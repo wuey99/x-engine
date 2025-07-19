@@ -51,6 +51,7 @@ import { XRect } from '../geom/XRect';
 import { XObjectCollisionList } from '../collision/XObjectCollisionList';
 import { XObjectCollisionManager } from '../collision/XObjectCollisionManager';
 import { XMapModel } from '../xmap/XMapModel';
+import { XLogicManager } from '../gameobject/XLogicManager';
 
 //------------------------------------------------------------------------------------------
 export class XWorld extends XSprite {
@@ -58,6 +59,8 @@ export class XWorld extends XSprite {
     public m_layers:Array<XSpriteLayer>;
     public m_layerContainers:Array<PIXI.Sprite>;
     public m_XApp:XApp;
+
+    public m_XLogicManager:XLogicManager;
 
     public m_hudLayer:XSpriteLayer;
     public m_XSignalManager:XSignalManager;
@@ -120,6 +123,8 @@ export class XWorld extends XSprite {
             this.createLayer (i);
         }
     
+		this.m_XLogicManager = this.createXLogicManager (__XApp, this);
+
         this.m_hudLayer = new XSpriteLayer9 ();
         this.m_hudLayer.setup ();
         this.m_hudLayer.world = this;
@@ -465,6 +470,11 @@ export class XWorld extends XSprite {
         }
     }
 
+//------------------------------------------------------------------------------------------
+	public createXLogicManager (__XApp:XApp, __world:XWorld):XLogicManager {
+		return new XLogicManager (__XApp, __world);	
+	}
+		
     //------------------------------------------------------------------------------------------
     public getStage ():PIXI.Container {
         return this.m_XApp.getStage ();
@@ -589,6 +599,11 @@ export class XWorld extends XSprite {
         return this.m_viewRect;
     }
 
+//------------------------------------------------------------------------------------------
+	public getXLogicManager ():XLogicManager {
+		return this.m_XLogicManager;
+	}
+		
 //------------------------------------------------------------------------------------------
     public getResourceByName (__name:string):any {
         return this.m_XApp.getXProjectManager ().getResourceByName (__name);

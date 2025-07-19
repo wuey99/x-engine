@@ -99,17 +99,17 @@ export class XType {
        
 	//------------------------------------------------------------------------------------------
 	public static array2XDict (__array:Array<any> ):Map<string, any> {
-			var __dict:Map<string, any> = new Map<string, any> ();
+		var __dict:Map<string, any> = new Map<string, any> ();
 			
-			var i:number = 0;
+		var i:number = 0;
 			
-			while (i < __array.length) {
-				__dict.set (__array[i+0], __array[i+1]);
+		while (i < __array.length) {
+			__dict.set (__array[i+0], __array[i+1]);
 				
-				i += 2;
-			}		
+			i += 2;
+		}		
 			
-			return __dict;
+		return __dict;
 	}
 
 	//------------------------------------------------------------------------------------------
@@ -166,5 +166,15 @@ export class XType {
 		}
     }
         
+	//------------------------------------------------------------------------------------------
+	public static hasField (__map:any, __key:string):boolean {
+		return __map.hasProperty (__map, __key);
+	}
+
+	//------------------------------------------------------------------------------------------
+	public static int (__val:number):number {
+		return Math.floor (__val);
+	}
+
 //------------------------------------------------------------------------------------------
 }
