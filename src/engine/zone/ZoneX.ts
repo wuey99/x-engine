@@ -162,9 +162,7 @@ export class ZoneX extends XLogicObjectCX {
 									__task.ifTrue (true);
 								}
 							}
-						}
-						else
-						{
+						} else {
 							__task.ifTrue (false);
 						}
 						

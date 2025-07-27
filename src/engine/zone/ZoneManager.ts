@@ -399,9 +399,7 @@ import { ZoneObjectCX } from './ZoneObjectCX';
 								// scale, rotation
 								1.0, 0
 							) as DoorX;
-						}
-						else
-						{
+						} else {
 							__doorItemObject = this.world.getXLogicManager ().initXLogicObject (
 								// parent
 								this.getGameInstance ().getLevelObject (),
