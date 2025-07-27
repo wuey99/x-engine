@@ -276,7 +276,7 @@ import { ZoneObjectCX } from './ZoneObjectCX';
 						1.0, 0
 					) as ZoneX;
 							
-					this.getGameInstance ().getLevelObject ().addGameObjectAsChild(__zoneItemObject);
+					this.getGameInstance ().getLevelObject ().addXLogicObject(__zoneItemObject);
 							
 					__item.inuse++;
 							
@@ -306,7 +306,7 @@ import { ZoneObjectCX } from './ZoneObjectCX';
 						1.0, 0
 					) as StarterRingControllerX;
 							
-					this.getGameInstance ().getLevelObject ().addGameObjectAsChild (__starterRingItemObject);
+					this.getGameInstance ().getLevelObject ().addXLogicObject (__starterRingItemObject);
 							
 					__item.inuse++;
 							
@@ -362,9 +362,8 @@ import { ZoneObjectCX } from './ZoneObjectCX';
 								]
 							) as GateX;
 						}
-                        
-                        // TODO
-                        this.getGameInstance ().getLevelObject ().addGameObjectAsChild (__gateItemObject);
+                    
+                        this.getGameInstance ().getLevelObject ().addXLogicObject (__gateItemObject);
 								
 						__item.inuse++;
 								
@@ -417,8 +416,7 @@ import { ZoneObjectCX } from './ZoneObjectCX';
 							) as DoorX;
 						}
 								
-                        // TODO
-						this.getGameInstance ().getLevelObject ().addGameObjectAsChild (__doorItemObject);
+						this.getGameInstance ().getLevelObject ().addXLogicObject (__doorItemObject);
 								
 						__item.inuse++;
 								
@@ -455,8 +453,7 @@ import { ZoneObjectCX } from './ZoneObjectCX';
 						]
 					) as CurrentGateX;
 							
-                    // TODO
-					this.getGameInstance ().getLevelObject ().addGameObjectAsChild (__currentGateItemObject);
+					this.getGameInstance ().getLevelObject ().addXLogicObject (__currentGateItemObject);
 							
 					__item.inuse++;
 							

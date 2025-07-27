@@ -18,9 +18,11 @@ import { XSoundSubManager } from '../../engine//sound/XSoundSubManager';
 import { XGameInstance } from '../../engine/state/XGameInstance';
 import { XBulletCollisionList } from '../../engine/bullet/XBulletCollisionList';
 import { OctopusBugX } from './OctopusBugX';
+import { XLevelGameInstance } from '../../engine/level/XLevelGameInstance';
+import { LevelPropsX } from '../../engine/level/LevelPropsX';
 
 //------------------------------------------------------------------------------------------
-export class TestGameInstance extends XGameInstance {
+export class TestGameInstance extends XLevelGameInstance {
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -31,7 +33,8 @@ export class TestGameInstance extends XGameInstance {
 	public setup (__world:XWorld):void {
         super.setup (__world);
 
-        this.__initLogicClassNames ();
+        this.initAllLogicClassNames ();
+        this.initAllLevelProps ();
 	}
 	
 //------------------------------------------------------------------------------------------
@@ -40,10 +43,19 @@ export class TestGameInstance extends XGameInstance {
     }
 
 //------------------------------------------------------------------------------------------
-    public __initLogicClassNames ():void {
+    public initAllLogicClassNames ():void {
         this.initLogicClassNames ([
             "__OctopusBug", OctopusBugX,
         ]);
+    }
+
+//------------------------------------------------------------------------------------------
+    public initAllLevelProps ():void {
+        this.m_levelPropsMap.set ("Test",
+            this.createLevelProps ([
+
+            ])
+        );
     }
 
 //------------------------------------------------------------------------------------------

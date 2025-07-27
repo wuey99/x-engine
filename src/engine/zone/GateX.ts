@@ -209,8 +209,7 @@ import { XLogicObjectCX } from '../gameobject/XLogicObjectCX';
 								]
 							) as XGameObject;
 							
-                            // TODO
-						    this.getLevelGameInstance ().getLevelObject ().addGameObjectAsChild (__logicObject);
+						    this.getLevelGameInstance ().getLevelObject ().addXLogicObject (__logicObject);
 						},
 					
 					XTask.NEXT,

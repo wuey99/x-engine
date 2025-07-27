@@ -27,8 +27,8 @@
 //------------------------------------------------------------------------------------------
 	
 	//------------------------------------------------------------------------------------------
-	class LevelPropsX {
-		public m_props:Map<String, any>;
+	export class LevelPropsX {
+		public m_props:Map<string, any>;
 		
 		//------------------------------------------------------------------------------------------
 		public constructor () {
@@ -37,7 +37,7 @@
 		
 		//------------------------------------------------------------------------------------------
 		public setup (args:Array<any>):LevelPropsX {
-			this.m_props = new Map<string, any> (); // <String, Dynamic>
+			this.m_props = new Map<string, any> ();
 			
 			var i:number = 0;
 
@@ -56,7 +56,7 @@
 		}
 		
 		//------------------------------------------------------------------------------------------
-		public setProperty (__key:String, __val:any):void {
+		public setProperty (__key:string, __val:any):void {
 			this.m_props.set (__key, __val);
 		}
 		

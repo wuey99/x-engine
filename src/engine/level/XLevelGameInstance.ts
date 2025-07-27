@@ -53,6 +53,7 @@ import { XMickeyGameInstance } from './XMickeyGameInstance';
 import { XMapItemModel } from '../xmap/XMapItemModel';
 import { ZoneX } from '../zone/ZoneX';
 import { ZoneManager } from '../zone/ZoneManager';
+import { LevelPropsX } from './LevelPropsX';
 
 //------------------------------------------------------------------------------------------
 export class XLevelGameInstance extends XMickeyGameInstance {
@@ -67,6 +68,7 @@ export class XLevelGameInstance extends XMickeyGameInstance {
 		public m_zoneStartedSignal:XSignal;
 		public m_zoneFinishedSignal:XSignal;
 		private m_zoneManager:ZoneManager;
+		protected m_levelPropsMap:Map<string, LevelPropsX>;
 
     	// public var m_gameHudObject:_HudX;
 		// public var m_hudObject:XLogicObject;
@@ -84,6 +86,8 @@ export class XLevelGameInstance extends XMickeyGameInstance {
 		this.m_setMickeyToStartSignal = new XSignal ();
 		this.m_zoneStartedSignal = new XSignal ();
 		this.m_zoneFinishedSignal = new XSignal ();
+
+		this.m_levelPropsMap = new Map<string, LevelPropsX> ();
     }
     
 //------------------------------------------------------------------------------------------
@@ -94,7 +98,16 @@ export class XLevelGameInstance extends XMickeyGameInstance {
 		this.m_zoneStartedSignal.removeAllListeners ();
 		this.m_zoneFinishedSignal.removeAllListeners ();
     }
-    
+
+	//------------------------------------------------------------------------------------------
+	public getLevelProps (__levelName:string):LevelPropsX {
+		return this.m_levelPropsMap.get (__levelName);
+	}
+
+	//------------------------------------------------------------------------------------------
+	public createLevelProps (__params:Array<any>):LevelPropsX {
+		return (new LevelPropsX ()).setup (__params);
+	}
 	//------------------------------------------------------------------------------------------
 	public createZoneManager ():ZoneManager {
 		return new ZoneManager ();
@@ -128,10 +141,10 @@ export class XLevelGameInstance extends XMickeyGameInstance {
 	//------------------------------------------------------------------------------------------
 	public isZoneObjectItemNoKill (__itemName:string):boolean {
 		return this.getZoneManager ().isZoneObjectItemNoKill (__itemName);
-		}
+	}
 		
 	//------------------------------------------------------------------------------------------
-	public getZoneItems ():Map<number, XMapItemModel> /* <Int, XMapItemModel> */ {
+	public getZoneItems ():Map<number, XMapItemModel> {
 		return this.getZoneManager ().getZoneItems ();
 	}
 		
@@ -141,7 +154,7 @@ export class XLevelGameInstance extends XMickeyGameInstance {
 	}
 		
 	//------------------------------------------------------------------------------------------
-	public getStarterRingItems ():Map<number, XMapItemModel> /* <Int, XMapItemModel> */ {
+	public getStarterRingItems ():Map<number, XMapItemModel> {
 		return this.getZoneManager ().getStarterRingItems ();
 	}
 		

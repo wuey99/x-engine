@@ -1,32 +1,4 @@
 //------------------------------------------------------------------------------------------
-// <$begin$/>
-// The MIT License (MIT)
-//
-// The "GX-Engine"
-//
-// Copyright (c) 2014 Jimmy Huey (wuey99@gmail.com)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-// <$end$/>
-//------------------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------------------
 import * as PIXI from 'pixi.js'
 import { XApp } from '../app/XApp';
 import { XSprite } from '../sprite/XSprite';
@@ -50,37 +22,39 @@ import { XSimpleXMLNode } from '../xml/XSimpleXMLNode';
 import { XMapModel } from '../xmap/XMapModel';
 import { XMapView } from '../xmap/XMapView';
 import { XPoint } from '../geom/XPoint';
+import { XLogicObject } from '../gameobject/XLogicObject';
 import { XLogicObjectCX } from '../gameobject/XLogicObjectCX';
-
+import { WaterCurrentX } from './WaterCurrentX';
+	
 	//------------------------------------------------------------------------------------------
-	export class CurrentGateX extends XLogicObjectCX {
+	export class WaterCurrentGateControllerX extends XLogicObjectCX {
 		public script:XTask;
-		
-		public m_WaterCurrentX:any; // <Dynamic>
 		
 		public m_direction:string;
 		public m_currentX:number;
 		public m_currentY:number;
 		
 		public m_zone:number;
-		public m_message:string;
 		
 		public m_zoneStartedListenerID:number;
 		public m_zoneFinishedListenerID:number;
 		
 		//------------------------------------------------------------------------------------------
+		public constructor () {
+			super ();
+		}
+		
+		//------------------------------------------------------------------------------------------
 		public $setup (__xxx:XWorld, args:Array<any>):void {
 			super.$setup (__xxx, args);
-		
-			this.m_WaterCurrentX = this.getArg (args, 0);
 			
-			this.createSprites ();
+		    this.createSprites ();
 		}
 		
 		//------------------------------------------------------------------------------------------
 		public $setupX ():void {
 			super.$setupX ();
-
+			
 			this.setCX (-64, 64, -64, 64);
 	
 			this.m_zoneStartedListenerID = this.getLevelGameInstance ().addZoneStartedListener (this.onZoneStarted);
@@ -91,7 +65,7 @@ import { XLogicObjectCX } from '../gameobject/XLogicObjectCX';
 			this.__setupDetectionScript ();
 			
 			this.oVisible = true;
-        }
+		}
 
 		//------------------------------------------------------------------------------------------
 		public cleanup ():void {
@@ -156,11 +130,6 @@ import { XLogicObjectCX } from '../gameobject/XLogicObjectCX';
 				this.m_zone = this.itemGetAttributeInt ("zone");
 			}
 			
-			this.m_message = "";
-			if (this.itemHasAttribute ("message")) {
-				this.m_message = this.itemGetAttributeString ("message");	
-			}
-			
 			if (this.itemHasAttribute ("direction")) {
 				this.m_direction = this.itemGetAttributeString ("direction");
 				
@@ -206,18 +175,18 @@ import { XLogicObjectCX } from '../gameobject/XLogicObjectCX';
 		
 		//------------------------------------------------------------------------------------------
 		private __spawnWaterCurrent ():void {	
-			var __logicObject:XGameObjectCX = this.world.getXLogicManager ().initXLogicObject (
+			var __logicObject:WaterCurrentX = this.world.getXLogicManager ().initXLogicObject (
 				// parent
 				this,
 				// logicObject
-				XType.createInstance (this.m_WaterCurrentX) as XGameObject,
+				XType.createInstance (WaterCurrentX) as XLogicObject,
 				// item, layer, depth
 				null, this.getLayer (), this.getDepth (),
 				// x, y, z
 				0, 0, 0,
 				// scale, rotation
 				1.0, 0
-			) as XGameObjectCX;
+			) as WaterCurrentX;
 			
 			switch (this.m_direction) {
 				case "left":
@@ -282,7 +251,7 @@ import { XLogicObjectCX } from '../gameobject/XLogicObjectCX';
 							if (this.m_currentX < 0) {
 								__dx = Math.max (-16, __dx + this.m_currentX);
 							} else {
-								__dx = Math.min ( 16, __dx + this.m_currentX);
+								__dx = Math.min (16, __dx + this.m_currentX);
 							}
 							this.getLevelGameInstance ().getMickeyObject ().extraDX = __dx;
 							
@@ -290,7 +259,7 @@ import { XLogicObjectCX } from '../gameobject/XLogicObjectCX';
 							if (this.m_currentY < 0) {
 								__dy = Math.max (-16, __dy + this.m_currentY);
 							} else {
-								__dy = Math.min ( 16, __dy + this.m_currentY);
+								__dy = Math.min (16, __dy + this.m_currentY);
 							}
 							this.getLevelGameInstance ().getMickeyObject ().extraDY = __dy;
 						},
@@ -327,6 +296,23 @@ import { XLogicObjectCX } from '../gameobject/XLogicObjectCX';
 			this.getItemStorage ().state = 2;
 			
 			this.__setState ();
+			
+            /*
+			var __logicObject:XLogicObject = this.world.getXLogicManager ().initXLogicObject (
+				// parent
+				this.getLevelGameInstance ().getHudObject (),
+				// logicObject
+				new ZoneClearedX () as XLogicObject,
+				// item, layer, depth
+				null, -1, 0,
+				// x, y, z
+				192, 224, 0,
+				// scale, rotation
+				1.0, 0
+			) as ZoneClearedX;
+						
+			this.getLevelGameInstance ().getHudObject ().addXLogicObject (__logicObject);
+            */
 		}
 					
 	//------------------------------------------------------------------------------------------

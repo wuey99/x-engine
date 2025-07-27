@@ -165,8 +165,7 @@ import { XLogicObjectCX } from '../gameobject/XLogicObjectCX';
 				__scale, 0
 			) as StarterRingX;
 			
-            // TODO
-			this.addGameObjectAsChild (__logicObject);
+			this.addXLogicObject (__logicObject);
 		}
 		
 		//------------------------------------------------------------------------------------------

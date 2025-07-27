@@ -1371,6 +1371,11 @@ export class XGameObject extends PIXI.Container {
 	}
 
 //------------------------------------------------------------------------------------------
+	public addXLogicObject (__gameObject:XGameObject, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
+		return this.addGameObjectAsChild0 (__gameObject, __layer, __depth, __visible);
+	}
+
+//------------------------------------------------------------------------------------------
 	public addGameObjectAsChild (__class:any, __layer:number = 0, __depth:number = 0.0, __visible:boolean = true):XGameObject {
 		if (this.world != null) {
 			var __gameObject = this.world.addGameObjectAsChild (__class, __layer, __depth, __visible);
