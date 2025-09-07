@@ -161,6 +161,11 @@
         <classX name="Tileset003" regX="0" regY="0" width="32" height="32"/>
       </resource>
       <resource name="#BigIntroTileset" type=".pmp" embed="false" path="common" src="36ED86D7-A5E7-23A6-FFF6-3CFD91296146-BigIntroTileset.pmp" dst="36ED86D7-A5E7-23A6-FFF6-3CFD91296146-BigIntroTileset.pmp" tileXML="PGZsYT4NCTxtb3ZpZUNsaXAgY2xhc3NOYW1lPSJCaWdJbnRyb1RpbGVzZXQiIHg9IjEwNDAiIHk9IjIwOCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBkeD0iMCIgZHk9IjAiIGNvbHM9IjEyIiByb3dzPSIxNiIgcmVnWD0iMCIgcmVnWT0iMCIvPg08L2ZsYT4="/>
+      <resource name="png_BigIntroTileset" type=".png" embed="false" path="Common" src="36ED86D7-A5E7-23A6-FFF6-3CFD91296146-BigIntroTileset.png" dst="36ED86D7-A5E7-23A6-FFF6-3CFD91296146-BigIntroTileset.png"/>
+      <resource name="$BigIntroTileset" type=".json" embed="false" path="Common" src="36ED86D7-A5E7-23A6-FFF6-3CFD91296146-BigIntroTileset.json" dst="36ED86D7-A5E7-23A6-FFF6-3CFD91296146-BigIntroTileset.json"/>
+      <resource name="BigIntroTileset" type=".fla" embed="false" path="Common" src="16A012D7-57B4-6C3E-0856-DB8D3FED1A2A-BigIntroTileset.fla" dst="16A012D7-57B4-6C3E-0856-DB8D3FED1A2A-BigIntroTileset.swf">
+        <classX name="BigIntroTileset" regX="0" regY="0" width="32" height="32"/>
+      </resource>
     </folder>
     <folder name="Levels">
       <folder name="test">
