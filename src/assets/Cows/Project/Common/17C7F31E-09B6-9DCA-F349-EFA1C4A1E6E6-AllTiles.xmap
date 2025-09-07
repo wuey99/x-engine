@@ -11,11 +11,11 @@
 		</XLayer>
 		<XLayer vy="389.48822087385463" currID="2596" submapWidth="512" vh="1092.0402599441882" submapCols="64" submapRows="64" grid="true" scale="0.5430202729250174" vx="289.123643863807" regX="574.55" layer="1" visible="true" name="layer0" regY="2928.15" submapHeight="512" vw="1390.371663166715">
 			<imageClassNames>
-				<imageClassName name="Tileset001:Tileset001"/>
+				<imageClassName name="Tileset000:Tileset000"/>
 			</imageClassNames>
 			<classNames>
 				<className index="0" name="" count="0"/>
-				<className index="1" name="Tileset001:Tileset001" count="472"/>
+				<className index="1" name="Tileset000:Tileset000" count="472"/>
 			</classNames>
 			<items/>
 			<XSubmaps>

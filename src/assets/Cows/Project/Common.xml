@@ -136,18 +136,18 @@
       <resource name="#Sketch001" type=".pmp" embed="false" path="Common" src="65B9669A-4F2D-D829-78C6-615EF4C5F524-Sketch001.pmp" dst="65B9669A-4F2D-D829-78C6-615EF4C5F524-Sketch001.pmp"/>
     </folder>
     <folder name="tilesets">
-      <resource name="#Tileset001" type=".pmp" embed="false" path="common" src="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.pmp" dst="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.pmp" tileXML="PGZsYT4NCTxtb3ZpZUNsaXAgY2xhc3NOYW1lPSJUaWxlc2V0MDAxIiB4PSI2NCIgeT0iNjQiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZHg9IjAiIGR5PSIwIiBjb2xzPSIxNiIgcm93cz0iMzkiIHJlZ1g9IjAiIHJlZ1k9IjAiLz4NPC9mbGE+"/>
-      <resource name="png_Tileset001" type=".png" embed="false" path="Common" src="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.png" dst="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.png"/>
-      <resource name="$Tileset001" type=".json" embed="false" path="Common" src="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.json" dst="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset001.json"/>
-      <resource name="Tileset001" type=".fla" embed="false" path="Common" src="FF361D80-FD2F-5EAE-820A-9BAE19E94BE3-Tileset001.fla" dst="FF361D80-FD2F-5EAE-820A-9BAE19E94BE3-Tileset001.swf">
-        <classX name="Tileset001" regX="0" regY="0" width="32" height="32"/>
+      <resource name="#Tileset000" type=".pmp" embed="false" path="common" src="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset000.pmp" dst="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset000.pmp" tileXML="PGZsYT4NCTxtb3ZpZUNsaXAgY2xhc3NOYW1lPSJUaWxlc2V0MDAwIiB4PSI2NCIgeT0iNjQiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZHg9IjAiIGR5PSIwIiBjb2xzPSIxNiIgcm93cz0iMzkiIHJlZ1g9IjAiIHJlZ1k9IjAiLz4NPC9mbGE+"/>
+      <resource name="png_Tileset000" type=".png" embed="false" path="Common" src="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset000.png" dst="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset000.png"/>
+      <resource name="$Tileset000" type=".json" embed="false" path="Common" src="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset000.json" dst="8F9C3C92-B878-CE95-EFFA-E310311A875C-Tileset000.json"/>
+      <resource name="Tileset000" type=".fla" embed="false" path="Common" src="FF361D80-FD2F-5EAE-820A-9BAE19E94BE3-Tileset000.fla" dst="FF361D80-FD2F-5EAE-820A-9BAE19E94BE3-Tileset000.swf">
+        <classX name="Tileset000" regX="0" regY="0" width="32" height="32"/>
       </resource>
     </folder>
     <folder name="Levels">
       <folder name="test">
-        <resource name="@Test001" type=".xmap" path="Common" src="2F37B559-F935-9AE0-FAD2-574DD88E84FA-Test001.xmap" dst="2F37B559-F935-9AE0-FAD2-574DD88E84FA-Test001.swf" embed="false"/>
-        <resource name="Test001" type=".as" embed="false" path="Common" src="398A30F2-E1D7-A465-5CAD-BC7DB4E44085-Test001.as" dst="398A30F2-E1D7-A465-5CAD-BC7DB4E44085-Test001.swf">
-          <classX name="Test001" regX="0" regY="0" width="32" height="32"/>
+        <resource name="@Test000" type=".xmap" path="Common" src="2F37B559-F935-9AE0-FAD2-574DD88E84FA-Test000.xmap" dst="2F37B559-F935-9AE0-FAD2-574DD88E84FA-Test000.swf" embed="false"/>
+        <resource name="Test000" type=".as" embed="false" path="Common" src="398A30F2-E1D7-A465-5CAD-BC7DB4E44085-Test000.as" dst="398A30F2-E1D7-A465-5CAD-BC7DB4E44085-Test000.swf">
+          <classX name="Test000" regX="0" regY="0" width="32" height="32"/>
         </resource>
       </folder>
     </folder>

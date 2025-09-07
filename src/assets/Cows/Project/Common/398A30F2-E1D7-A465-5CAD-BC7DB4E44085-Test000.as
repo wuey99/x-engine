@@ -4,10 +4,10 @@ package {
 	import flash.display.*;
 
 //------------------------------------------------------------------------------------------
-	public class Test001 extends Sprite {
+	public class Test000 extends Sprite {
 
 //------------------------------------------------------------------------------------------
-		public function Test001 () {
+		public function Test000 () {
 		}
 
 //------------------------------------------------------------------------------------------
@@ -43,10 +43,10 @@ return <XMap>
 		</XLayer>
 		<XLayer vy="921.2834129032256" vh="1029.822929032258" vw="1311.1573548387094" currID="0" submapCols="64" submapRows="64" grid="true" layer="1" name="layer0" visible="true" scale="0.5758271478352616" vx="700.3837896774193" submapWidth="512" submapHeight="512" regY="1857.35" regX="1782.45">
 			<imageClassNames>
-				<imageClassName name="Tileset001:Tileset001"/>
+				<imageClassName name="Tileset000:Tileset000"/>
 			</imageClassNames>
 			<classNames>
-				<className index="0" name="Tileset001:Tileset001" count="217"/>
+				<className index="0" name="Tileset000:Tileset000" count="217"/>
 			</classNames>
 			<items/>
 			<XSubmaps>

@@ -90,7 +90,7 @@ export class TestGame extends XState {
 			]);
 
 		var __level:XLevel = this.addGameObjectAsChild (XLevel, 0, 0.0, false) as XLevel;
-		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test001"));
+		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test000"));
 		__level.afterSetup ([__levelXML]);
 
 		__level.x = 0;
