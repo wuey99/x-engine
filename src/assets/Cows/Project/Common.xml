@@ -66,7 +66,7 @@
           <resource name="@StandardButton" type=".pmp" embed="false" path="Common" src="F664A9D2-6DC1-02B2-93BC-170C0C94E2B7-StandardButton.pmp" dst="F664A9D2-6DC1-02B2-93BC-170C0C94E2B7-StandardButton.pmp" pmp_width="512" originX="0" originY="0" width="32" totalWidth="32" height="32" regX="0" regY="0"/>
         </folder>
       </folder>
-      <folder name="Test">
+      <folder name="test">
         <resource name="@OctopusBug" type=".pmp" embed="false" path="Common" src="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.pmp" dst="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.pmp" pmp_width="512" originX="192" originY="184" width="144" totalWidth="2304" height="138" regX="-65" regY="-72"/>
         <resource name="png_OctopusBug" type=".png" embed="false" path="Common" src="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.png" dst="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.png"/>
         <resource name="$OctopusBug" type=".json" embed="false" path="Common" src="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.json" dst="8C75E876-FB3A-BF9C-478A-64948BCE7B97-OctopusBug.json"/>
@@ -87,6 +87,50 @@
         </resource>
       </folder>
       <folder name="startup"/>
+      <folder name="zone">
+        <resource name="@Horz_Gate" type=".pmp" embed="false" path="common" src="55234EB1-E4FB-B417-622C-D8E7E2475AD4-Horz_Gate.pmp" dst="55234EB1-E4FB-B417-622C-D8E7E2475AD4-Horz_Gate.pmp" pmp_width="128" originX="0" originY="32" width="128" totalWidth="2048" height="64" regX="0" regY="0"/>
+        <resource name="png_Horz_Gate" type=".png" embed="false" path="Common" src="55234EB1-E4FB-B417-622C-D8E7E2475AD4-Horz_Gate.png" dst="55234EB1-E4FB-B417-622C-D8E7E2475AD4-Horz_Gate.png"/>
+        <resource name="$Horz_Gate" type=".json" embed="false" path="Common" src="55234EB1-E4FB-B417-622C-D8E7E2475AD4-Horz_Gate.json" dst="55234EB1-E4FB-B417-622C-D8E7E2475AD4-Horz_Gate.json"/>
+        <resource name="Horz_Gate" type=".fla" embed="false" path="Common" src="9168E98C-D128-C116-64CE-9EE4EE2B5C42-Horz_Gate.fla" dst="9168E98C-D128-C116-64CE-9EE4EE2B5C42-Horz_Gate.swf">
+          <classX name="Horz_Gate" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+        <resource name="@Vert_Gate" type=".pmp" embed="false" path="common" src="44A289E3-1EC8-5878-8F19-78317193C3CD-Vert_Gate.pmp" dst="44A289E3-1EC8-5878-8F19-78317193C3CD-Vert_Gate.pmp" pmp_width="128" originX="36" originY="0" width="64" totalWidth="1024" height="128" regX="0" regY="0"/>
+        <resource name="png_Vert_Gate" type=".png" embed="false" path="Common" src="44A289E3-1EC8-5878-8F19-78317193C3CD-Vert_Gate.png" dst="44A289E3-1EC8-5878-8F19-78317193C3CD-Vert_Gate.png"/>
+        <resource name="$Vert_Gate" type=".json" embed="false" path="Common" src="44A289E3-1EC8-5878-8F19-78317193C3CD-Vert_Gate.json" dst="44A289E3-1EC8-5878-8F19-78317193C3CD-Vert_Gate.json"/>
+        <resource name="Vert_Gate" type=".fla" embed="false" path="Common" src="0D407DE6-AB72-E7C2-F94A-DAF4D7A5536E-Vert_Gate.fla" dst="0D407DE6-AB72-E7C2-F94A-DAF4D7A5536E-Vert_Gate.swf">
+          <classX name="Vert_Gate" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+        <resource name="@GO" type=".pmp" embed="false" path="common" src="8F79A36D-B290-EB3A-4B22-9DD1768BE55E-GO.pmp" dst="8F79A36D-B290-EB3A-4B22-9DD1768BE55E-GO.pmp" pmp_width="256" originX="102" originY="90" width="89" totalWidth="801" height="61" regX="-24" regY="-31"/>
+        <resource name="png_GO" type=".png" embed="false" path="Common" src="8F79A36D-B290-EB3A-4B22-9DD1768BE55E-GO.png" dst="8F79A36D-B290-EB3A-4B22-9DD1768BE55E-GO.png"/>
+        <resource name="$GO" type=".json" embed="false" path="Common" src="8F79A36D-B290-EB3A-4B22-9DD1768BE55E-GO.json" dst="8F79A36D-B290-EB3A-4B22-9DD1768BE55E-GO.json"/>
+        <resource name="GO" type=".fla" embed="false" path="Common" src="585ACA04-54C7-E053-B232-F10A6C81C135-GO.fla" dst="585ACA04-54C7-E053-B232-F10A6C81C135-GO.swf">
+          <classX name="GO" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+        <resource name="@WaterCurrent" type=".pmp" embed="false" path="common" src="7F202C9A-5419-37F9-12BC-8CAB6732A8D2-WaterCurrent.pmp" dst="7F202C9A-5419-37F9-12BC-8CAB6732A8D2-WaterCurrent.pmp" pmp_width="256" originX="116" originY="91" width="40" totalWidth="240" height="73" regX="-20" regY="-36"/>
+        <resource name="png_WaterCurrent" type=".png" embed="false" path="Common" src="7F202C9A-5419-37F9-12BC-8CAB6732A8D2-WaterCurrent.png" dst="7F202C9A-5419-37F9-12BC-8CAB6732A8D2-WaterCurrent.png"/>
+        <resource name="$WaterCurrent" type=".json" embed="false" path="Common" src="7F202C9A-5419-37F9-12BC-8CAB6732A8D2-WaterCurrent.json" dst="7F202C9A-5419-37F9-12BC-8CAB6732A8D2-WaterCurrent.json"/>
+        <resource name="WaterCurrent" type=".fla" embed="false" path="Common" src="675DFFDC-0110-F094-2207-C97B25A43E81-WaterCurrent.fla" dst="675DFFDC-0110-F094-2207-C97B25A43E81-WaterCurrent.swf">
+          <classX name="WaterCurrent" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+        <resource name="@Zone_Icon" type=".pmp" embed="false" path="common" src="897B865D-8DC0-F006-765C-9DC3488AD487-Zone_Icon.pmp" dst="897B865D-8DC0-F006-765C-9DC3488AD487-Zone_Icon.pmp" pmp_width="128" originX="0" originY="0" width="128" totalWidth="128" height="128" regX="0" regY="0"/>
+        <resource name="png_Zone_Icon" type=".png" embed="false" path="Common" src="897B865D-8DC0-F006-765C-9DC3488AD487-Zone_Icon.png" dst="897B865D-8DC0-F006-765C-9DC3488AD487-Zone_Icon.png"/>
+        <resource name="$Zone_Icon" type=".json" embed="false" path="Common" src="897B865D-8DC0-F006-765C-9DC3488AD487-Zone_Icon.json" dst="897B865D-8DC0-F006-765C-9DC3488AD487-Zone_Icon.json"/>
+        <resource name="Zone_Icon" type=".fla" embed="false" path="Common" src="E3485957-B1A2-9271-5E4E-57E952BAF529-Zone_Icon.fla" dst="E3485957-B1A2-9271-5E4E-57E952BAF529-Zone_Icon.swf">
+          <classX name="Zone_Icon" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+        <resource name="@Current_Icon" type=".pmp" embed="false" path="common" src="06CC831A-D1CB-923B-B9A0-8964C1E180F1-Current_Icon.pmp" dst="06CC831A-D1CB-923B-B9A0-8964C1E180F1-Current_Icon.pmp" pmp_width="128" originX="0" originY="0" width="128" totalWidth="128" height="128" regX="-64" regY="-64"/>
+        <resource name="png_Current_Icon" type=".png" embed="false" path="Common" src="06CC831A-D1CB-923B-B9A0-8964C1E180F1-Current_Icon.png" dst="06CC831A-D1CB-923B-B9A0-8964C1E180F1-Current_Icon.png"/>
+        <resource name="$Current_Icon" type=".json" embed="false" path="Common" src="06CC831A-D1CB-923B-B9A0-8964C1E180F1-Current_Icon.json" dst="06CC831A-D1CB-923B-B9A0-8964C1E180F1-Current_Icon.json"/>
+        <resource name="Current_Icon" type=".fla" embed="false" path="Common" src="8D3BBE80-AF5A-8687-1671-2F0F8C3B81B3-Current_Icon.fla" dst="8D3BBE80-AF5A-8687-1671-2F0F8C3B81B3-Current_Icon.swf">
+          <classX name="Current_Icon" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+        <resource name="@StarterRing" type=".pmp" embed="false" path="common" src="BCAFA479-F0F9-4FB1-84F0-B485A2C00518-StarterRing.pmp" dst="BCAFA479-F0F9-4FB1-84F0-B485A2C00518-StarterRing.pmp" pmp_width="128" originX="34" originY="31" width="63" totalWidth="63" height="63" regX="-32" regY="-32"/>
+        <resource name="png_StarterRing" type=".png" embed="false" path="Common" src="BCAFA479-F0F9-4FB1-84F0-B485A2C00518-StarterRing.png" dst="BCAFA479-F0F9-4FB1-84F0-B485A2C00518-StarterRing.png"/>
+        <resource name="$StarterRing" type=".json" embed="false" path="Common" src="BCAFA479-F0F9-4FB1-84F0-B485A2C00518-StarterRing.json" dst="BCAFA479-F0F9-4FB1-84F0-B485A2C00518-StarterRing.json"/>
+        <resource name="StarterRing" type=".fla" embed="false" path="Common" src="D55C7A21-36E3-33DF-DDED-3117E2EBCE85-StarterRing.fla" dst="D55C7A21-36E3-33DF-DDED-3117E2EBCE85-StarterRing.swf">
+          <classX name="StarterRing" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+      </folder>
     </folder>
     <folder name="Sketches">
       <resource name="#Sketch001" type=".pmp" embed="false" path="Common" src="65B9669A-4F2D-D829-78C6-615EF4C5F524-Sketch001.pmp" dst="65B9669A-4F2D-D829-78C6-615EF4C5F524-Sketch001.pmp"/>
@@ -100,13 +144,18 @@
       </resource>
     </folder>
     <folder name="Levels">
-      <resource name="@Test001" type=".xmap" path="Common" src="2F37B559-F935-9AE0-FAD2-574DD88E84FA-Test001.xmap" dst="2F37B559-F935-9AE0-FAD2-574DD88E84FA-Test001.swf" embed="false"/>
-      <resource name="Test001" type=".as" embed="false" path="Common" src="398A30F2-E1D7-A465-5CAD-BC7DB4E44085-Test001.as" dst="398A30F2-E1D7-A465-5CAD-BC7DB4E44085-Test001.swf">
-        <classX name="Test001" regX="0" regY="0" width="32" height="32"/>
-      </resource>
+      <folder name="test">
+        <resource name="@Test001" type=".xmap" path="Common" src="2F37B559-F935-9AE0-FAD2-574DD88E84FA-Test001.xmap" dst="2F37B559-F935-9AE0-FAD2-574DD88E84FA-Test001.swf" embed="false"/>
+        <resource name="Test001" type=".as" embed="false" path="Common" src="398A30F2-E1D7-A465-5CAD-BC7DB4E44085-Test001.as" dst="398A30F2-E1D7-A465-5CAD-BC7DB4E44085-Test001.swf">
+          <classX name="Test001" regX="0" regY="0" width="32" height="32"/>
+        </resource>
+      </folder>
     </folder>
     <folder name="Tiles">
-      <resource name="@AllTiles" type=".xmap" path="common" src="17C7F31E-09B6-9DCA-F349-EFA1C4A1E6E6-AllTiles.xmap" dst="17C7F31E-09B6-9DCA-F349-EFA1C4A1E6E6-AllTiles.swf" embed="false"/>
+      <folder name="test">
+        <resource name="@AllTiles" type=".xmap" path="common" src="17C7F31E-09B6-9DCA-F349-EFA1C4A1E6E6-AllTiles.xmap" dst="17C7F31E-09B6-9DCA-F349-EFA1C4A1E6E6-AllTiles.swf" embed="false"/>
+        <resource name="@Tile001Palette" type=".xmap" path="common" src="E01B2F1A-EA0D-0574-DA29-C869FAAF1F3D-Tile001Palette.xmap" dst="E01B2F1A-EA0D-0574-DA29-C869FAAF1F3D-Tile001Palette.swf" embed="false"/>
+      </folder>
     </folder>
     <folder name="Items">
       <resource name="OctopusBug_Item" type=".item" embed="false" path="" src="" dst="">
@@ -114,6 +163,44 @@
           <params/>
         </XMapItem>
       </resource>
+      <folder name="test"/>
+      <folder name="zone">
+        <resource name="Horz_Gate_Item" type=".item" embed="false" path="" src="" dst="">
+          <XMapItem logicClassName="$Horz_Gate" hasLogic="true" imageClassName="Horz_Gate:Horz_Gate">
+            <params/>
+          </XMapItem>
+        </resource>
+        <resource name="Vert_Gate_Item" type=".item" embed="false" path="" src="" dst="">
+          <XMapItem logicClassName="$Vert_Gate" hasLogic="true" imageClassName="Vert_Gate:Vert_Gate">
+            <params/>
+          </XMapItem>
+        </resource>
+        <resource name="Zone_Item" type=".item" embed="false" path="" src="" dst="">
+          <XMapItem logicClassName="$Zone" hasLogic="true" imageClassName="Zone_Icon:Zone_Icon">
+            <params/>
+          </XMapItem>
+        </resource>
+        <resource name="Current_Gate_Item" type=".item" embed="false" path="" src="" dst="">
+          <XMapItem logicClassName="$Current_Gate" hasLogic="true" imageClassName="Current_Icon:Current_Icon">
+            <params/>
+          </XMapItem>
+        </resource>
+        <resource name="StarterRing_Item" type=".item" embed="false" path="" src="" dst="">
+          <XMapItem logicClassName="$StarterRing" hasLogic="true" imageClassName="StarterRing:StarterRing">
+            <params/>
+          </XMapItem>
+        </resource>
+        <resource name="Current_Item" type=".item" embed="false" path="" src="" dst="">
+          <XMapItem logicClassName="$Current" hasLogic="true" imageClassName="Current_Icon:Current_Icon">
+            <params/>
+          </XMapItem>
+        </resource>
+        <resource name="Current_Item" type=".item" embed="false" path="" src="" dst="">
+          <XMapItem logicClassName="$Current" hasLogic="true" imageClassName="Current_Icon:Current_Icon">
+            <params/>
+          </XMapItem>
+        </resource>
+      </folder>
     </folder>
   </folder>
 </manifest>
