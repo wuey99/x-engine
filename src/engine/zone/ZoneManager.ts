@@ -149,7 +149,7 @@ import { ZoneObjectCX } from './ZoneObjectCX';
 			var __layerModel:XMapLayerModel = this.world.getXMapModel ().getLayer (this.m_playFieldLayer + 0);
 			var __currentZoneItemObject:ZoneX = this.getZoneItemObject (this.getCurrentZone ());
 			var __itemRect:XRect = new XRect ();
-			var __list:Map<number, XMapItemModel> /* <Int, XMapItemModel> */ = new Map<number, XMapItemModel> (); // <Int, XMapItemModel>
+			var __list:Map<number, XMapItemModel> = new Map<number, XMapItemModel> ();
 			
 			//------------------------------------------------------------------------------------------
 			console.log (": currentItemZoneObject: ", __currentZoneItemObject, __currentZoneItemObject.boundingRect);
@@ -199,9 +199,7 @@ import { ZoneObjectCX } from './ZoneObjectCX';
 					
 					if (__item.inuse == 0) {
 						__logicObject = this.getGameInstance ().getLevelObject ().addXMapItem (__item, 0) as ZoneObjectCX;
-					}
-					else
-					{
+					} else {
 						__logicObject = this.getGameInstance ().getLevelObject ().getXLogicObject (__item) as ZoneObjectCX;
 					}
 					

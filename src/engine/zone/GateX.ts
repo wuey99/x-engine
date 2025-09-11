@@ -259,9 +259,7 @@ import { XLogicObjectCX } from '../gameobject/XLogicObjectCX';
 				this.Lowering_Script (
 					() => {}
 				);
-			}
-			else
-			{
+			} else {
 				this.eraseCXTiles ();
 				
 				this.Opening_Script (this.Unlocked_Entry_Script);
