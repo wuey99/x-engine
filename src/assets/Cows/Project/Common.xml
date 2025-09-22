@@ -85,6 +85,12 @@
         <resource name="TestButtonToo" type=".fla" embed="false" path="Common" src="CE90AE75-8210-3636-9474-F502A0F84935-TestButtonToo.fla" dst="CE90AE75-8210-3636-9474-F502A0F84935-TestButtonToo.swf">
           <classX name="TestButtonToo" regX="0" regY="0" width="32" height="32"/>
         </resource>
+        <resource name="@MickeyFins" type=".pmp" embed="false" path="common" src="E567701A-8D2F-F926-4DD6-751D9099880B-MickeyFins.pmp" dst="E567701A-8D2F-F926-4DD6-751D9099880B-MickeyFins.pmp" pmp_width="128" originX="43" originY="39" width="51" totalWidth="306" height="76" regX="-26" regY="-50"/>
+        <resource name="png_MickeyFins" type=".png" embed="false" path="Common" src="E567701A-8D2F-F926-4DD6-751D9099880B-MickeyFins.png" dst="E567701A-8D2F-F926-4DD6-751D9099880B-MickeyFins.png"/>
+        <resource name="$MickeyFins" type=".json" embed="false" path="Common" src="E567701A-8D2F-F926-4DD6-751D9099880B-MickeyFins.json" dst="E567701A-8D2F-F926-4DD6-751D9099880B-MickeyFins.json"/>
+        <resource name="MickeyFins" type=".fla" embed="false" path="Common" src="C07797E6-1626-2766-523C-83AAAB816866-MickeyFins.fla" dst="C07797E6-1626-2766-523C-83AAAB816866-MickeyFins.swf">
+          <classX name="MickeyFins" regX="0" regY="0" width="32" height="32"/>
+        </resource>
       </folder>
       <folder name="startup"/>
       <folder name="zone">
@@ -173,6 +179,10 @@
         <resource name="Test000" type=".as" embed="false" path="Common" src="398A30F2-E1D7-A465-5CAD-BC7DB4E44085-Test000.as" dst="398A30F2-E1D7-A465-5CAD-BC7DB4E44085-Test000.swf">
           <classX name="Test000" regX="0" regY="0" width="32" height="32"/>
         </resource>
+        <resource name="@Test001" type=".xmap" path="Common" src="C59C2264-1EBA-1031-154B-6A1E88D64A23-Test001.xmap" dst="C59C2264-1EBA-1031-154B-6A1E88D64A23-Test001.swf" embed="false"/>
+        <resource name="Test001" type=".as" embed="false" path="Common" src="7D2D7B05-93C3-4011-6A64-D552E0299778-Test001.as" dst="7D2D7B05-93C3-4011-6A64-D552E0299778-Test001.swf">
+          <classX name="Test001" regX="0" regY="0" width="32" height="32"/>
+        </resource>
       </folder>
     </folder>
     <folder name="Tiles">
@@ -182,12 +192,13 @@
       </folder>
     </folder>
     <folder name="Items">
-      <resource name="OctopusBug_Item" type=".item" embed="false" path="" src="" dst="">
-        <XMapItem logicClassName="$OctopusBug" hasLogic="true" imageClassName="OctopusBug:OctopusBug" boundingRect="">
-          <params/>
-        </XMapItem>
-      </resource>
-      <folder name="test"/>
+      <folder name="test">
+        <resource name="OctopusBug_Item" type=".item" embed="false" path="" src="" dst="">
+          <XMapItem logicClassName="$OctopusBug" hasLogic="true" imageClassName="OctopusBug:OctopusBug" boundingRect="">
+            <params/>
+          </XMapItem>
+        </resource>
+      </folder>
       <folder name="zone">
         <resource name="Horz_Gate_Item" type=".item" embed="false" path="" src="" dst="">
           <XMapItem logicClassName="$Horz_Gate" hasLogic="true" imageClassName="Horz_Gate:Horz_Gate">

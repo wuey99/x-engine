@@ -1,0 +1,134 @@
+//------------------------------------------------------------------------------------------
+package {
+
+	import flash.display.*;
+
+//------------------------------------------------------------------------------------------
+	public class Test001 extends Sprite {
+
+//------------------------------------------------------------------------------------------
+		public function Test001 () {
+		}
+
+//------------------------------------------------------------------------------------------
+		public function getTextureAtlas ():XML {
+return null;
+		}
+
+//------------------------------------------------------------------------------------------
+		public function getXML ():XML {
+return <XMap>
+	<XLayers>
+		<XLayer vw="2689.6875" vh="2112.5625" grid="false" submapRows="64" submapWidth="512" submapHeight="512" layer="0" name="obj0" scale="0.2807017543859649" regX="2679.5" submapCols="64" visible="true" vy="1872.4500000000003" regY="2991.1" vx="1289.8031250000001" currID="0">
+			<imageClassNames/>
+			<classNames>
+				<className index="0" name="" count="0"/>
+			</classNames>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+		<XLayer vw="2689.6875" vh="2112.5625" grid="true" submapRows="64" submapWidth="512" submapHeight="512" layer="1" name="layer0" scale="0.2807017543859649" regX="2679.5" submapCols="64" visible="true" vy="1872.4500000000003" regY="2991.1" vx="1289.8031250000001" currID="0">
+			<imageClassNames>
+				<imageClassName name="Tileset003:Tileset003"/>
+				<imageClassName name="Tileset001:Tileset001"/>
+			</imageClassNames>
+			<classNames>
+				<className index="0" name="Tileset003:Tileset003" count="92"/>
+				<className index="1" name="Tileset001:Tileset001" count="484"/>
+			</classNames>
+			<items/>
+			<XSubmaps>
+				<XSubmap col="4" row="4">
+					<Tiles>
+						a079a079a079a079a079a079a079a079a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="5" row="4">
+					<Tiles>
+						a079a079a079a079a079a079a079a079b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="6" row="4">
+					<Tiles>
+						a079a079a079a079a079a079a079a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="4" row="5">
+					<Tiles>
+						a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="5" row="5">
+					<Tiles>
+						b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="6" row="5">
+					<Tiles>
+						b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="4" row="6">
+					<Tiles>
+						a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079a079a079a079a079a079a079a079
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="5" row="6">
+					<Tiles>
+						b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024b024a079a079a079a079a079a079a079a079
+					</Tiles>
+				</XSubmap>
+				<XSubmap col="6" row="6">
+					<Tiles>
+						b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079b024b024b024b024b024b024b024a079a079a079a079a079a079a079a079a079
+					</Tiles>
+				</XSubmap>
+			</XSubmaps>
+		</XLayer>
+		<XLayer vw="2689.6875" vh="2112.5625" grid="false" submapRows="64" submapWidth="512" submapHeight="512" layer="2" name="obj1" scale="0.2807017543859649" regX="2679.5" submapCols="64" visible="true" vy="1872.4500000000003" regY="2991.1" vx="1289.8031250000001" currID="0">
+			<imageClassNames/>
+			<classNames/>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+		<XLayer vw="2689.6875" vh="2112.5625" grid="true" submapRows="64" submapWidth="512" submapHeight="512" layer="3" name="layer1" scale="0.2807017543859649" regX="2679.5" submapCols="64" visible="true" vy="1872.4500000000003" regY="2991.1" vx="1289.8031250000001" currID="0">
+			<imageClassNames/>
+			<classNames/>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+		<XLayer vw="2689.6875" vh="2112.5625" grid="false" submapRows="64" submapWidth="512" submapHeight="512" layer="4" name="obj2" scale="0.2807017543859649" regX="2679.5" submapCols="64" visible="true" vy="1872.4500000000003" regY="2991.1" vx="1289.8031250000001" currID="0">
+			<imageClassNames/>
+			<classNames/>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+		<XLayer vw="2689.6875" vh="2112.5625" grid="true" submapRows="64" submapWidth="512" submapHeight="512" layer="5" name="layer2" scale="0.2807017543859649" regX="2679.5" submapCols="64" visible="true" vy="1872.4500000000003" regY="2991.1" vx="1289.8031250000001" currID="0">
+			<imageClassNames/>
+			<classNames/>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+		<XLayer vw="2689.6875" vh="2112.5625" grid="false" submapRows="64" submapWidth="512" submapHeight="512" layer="6" name="obj3" scale="0.2807017543859649" regX="2679.5" submapCols="64" visible="true" vy="1872.4500000000003" regY="2991.1" vx="1289.8031250000001" currID="0">
+			<imageClassNames/>
+			<classNames/>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+		<XLayer vw="2689.6875" vh="2112.5625" grid="true" submapRows="64" submapWidth="512" submapHeight="512" layer="7" name="layer3" scale="0.2807017543859649" regX="2679.5" submapCols="64" visible="true" vy="1872.4500000000003" regY="2991.1" vx="1289.8031250000001" currID="0">
+			<imageClassNames/>
+			<classNames/>
+			<items/>
+			<XSubmaps/>
+		</XLayer>
+	</XLayers>
+</XMap>
+;
+		}
+
+//------------------------------------------------------------------------------------------
+	}
+
+//------------------------------------------------------------------------------------------
+}
+

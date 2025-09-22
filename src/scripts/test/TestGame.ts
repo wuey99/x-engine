@@ -90,7 +90,7 @@ export class TestGame extends XState {
 			]);
 
 		var __level:XLevel = this.addGameObjectAsChild (XLevel, 0, 0.0, false) as XLevel;
-		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test000"));
+		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test001"));
 		__level.afterSetup ([__levelXML]);
 
 		__level.x = 0;
@@ -99,8 +99,8 @@ export class TestGame extends XState {
 		// TODO
 		this.world.replaceLayer (1, new XSpriteLayer0 ());
 		
-		var __x:number = 0;
-		var __y:number = 0;
+		var __x:number = 1024;
+		var __y:number = 1024;
 
 		var __process:XProcess = this.addProcess (this.tick.bind (this));
 	
@@ -137,7 +137,7 @@ export class TestGame extends XState {
 					__level.updateFromXMapModel ();
 					__x += 1;
 					__y += 1;
-				} while (__x != 1536);
+				} while (__x != 2048);
 			}.bind (this)
 		);
 
