@@ -57,6 +57,7 @@ import { XMapItemModel } from '../xmap/XMapItemModel';
 import { XSpriteLayer } from '../sprite/XSpriteLayer';
 import { XSpriteLayer9 } from '../sprite/XSpriteLayer9';
 import { XMapModel } from '../xmap/XMapModel';
+import { XGamepadManager } from '../gamepad/XGamepadManager';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -131,6 +132,8 @@ export class XApp {
     private m_resizerHandle:any;
 
     private m_firstClick:boolean;
+
+    private m_XGamepadManager:XGamepadManager;
 
     public static DISABLE_PAUSE:boolean = false;
     public static FULL_SCREEN:boolean = false;
@@ -226,6 +229,9 @@ export class XApp {
             this.m_mousePoint = new XPoint ();
             this.m_touchPoint = new XPoint ();
             
+            this.m_XGamepadManager = new XGamepadManager ();
+            this.m_XGamepadManager.setup (this);
+
             this.m_paused = false;
 
             this.setupResizer ();
@@ -242,7 +248,7 @@ export class XApp {
                 this.m_mousePoint.x = __mousePos.x;
                 this.m_mousePoint.y = __mousePos.y;
         
-                console.log (": XApp: pointermove: ", this.m_mousePoint);
+                // console.log (": XApp: pointermove: ", this.m_mousePoint);
 
                 // this.m_main.setDebugMessage ("" + __mousePos.x + ", " + __mousePos.y);
             });

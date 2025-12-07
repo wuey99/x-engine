@@ -233,7 +233,7 @@ export class TestGame extends XState {
 //------------------------------------------------------------------------------------------
 	public *tick () {
 		while (true) {
-			console.log (": tick: ", this);
+			// console.log (": tick: ", this);
 
 			yield [XProcess.EXEC, this.subTick.bind (this)];
 
@@ -243,7 +243,7 @@ export class TestGame extends XState {
 
 //------------------------------------------------------------------------------------------
 	public *subTick () {
-		console.log (": subTick: ", this);
+		// console.log (": subTick: ", this);
 
 		yield [XProcess.WAIT, 0x0800];
 	}
