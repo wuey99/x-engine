@@ -27,7 +27,7 @@
 //------------------------------------------------------------------------------------------
 import { XSignal } from "../signals/XSignal";
 import { XType } from "../type/XType";
-import { XGamepad } from "./XGamepad";
+import { XGamepad, XGamepadAxisValue, XGamepadChanges } from "./XGamepad";
 import { XGamepadAxis } from "./XGamepad";
 import { XGamepadButton } from "./XGamepad";
 
@@ -43,6 +43,9 @@ export class XGamepadController {
 
 //------------------------------------------------------------------------------------------
 	public setup ():void {
+		this.m_buttonUpSignals = new Map<XGamepadButton, XSignal> ();
+		this.m_buttonDownSignals = new Map<XGamepadButton, XSignal> ();
+		this.m_axisChangedSignals = new Map<XGamepadAxis, XSignal> ();
 	}
 
 //------------------------------------------------------------------------------------------
@@ -72,13 +75,17 @@ export class XGamepadController {
 	}
 
 //------------------------------------------------------------------------------------------
-	public process (__gamepadX:XGamepad):void {
-		if (__gamepadX) {
-			let __changes = __gamepadX.process ();
+	public process (__changes:XGamepadChanges):void {
+		for (let key of __changes.buttonsDown) {
+			this.getButtonDownSignal (key).fireSignal ();
+		}
 
-			if (__changes.buttonsDown.length > 0 || __changes.buttonsUp.length > 0 || __changes.axisValuesChanged.length > 0) {
-				console.log (": changes: ", __changes);
-			}
+		for (let key of __changes.buttonsUp) {
+			this.getButtonUpSignal (key).fireSignal ();
+		}
+
+		for (let key of  __changes.axisValuesChanged) {
+			this.getAxisChangedSignal (key.axis).fireSignal (key.value);
 		}
 	}
 

@@ -56,10 +56,15 @@ export enum XGamepadAxis {
     RIGHT_Y
 }
 
+export interface XGamepadAxisValue {
+    axis:XGamepadAxis
+    value:number
+}
+
 export interface XGamepadChanges {
     buttonsUp: Array<XGamepadButton>
     buttonsDown: Array<XGamepadButton>
-    axisValuesChanged: Array<XGamepadAxis>
+    axisValuesChanged: Array<XGamepadAxisValue>
 };
 
 //------------------------------------------------------------------------------------------
@@ -147,7 +152,7 @@ export class XGamepad {
 
         for (let i = 0; i < this.m_gamepad.axes.length; i++) {
             if (this.m_nativeAxisMap[i] != undefined) {
-                 const key = this.m_nativeAxisMap[i];
+                const key = this.m_nativeAxisMap[i];
                 this.m_axisValues.set (key, this.m_gamepad.axes[i]);
             }
         }
@@ -191,7 +196,12 @@ export class XGamepad {
                  if (prevValue != this.m_gamepad.axes[i]) {
                     this.m_axisValues.set (key, this.m_gamepad.axes[i]);
 
-                    __changes.axisValuesChanged.push (key)
+                    const __value:XGamepadAxisValue = {
+                        axis: key,
+                        value: this.m_gamepad.axes[i]
+                    }
+
+                    __changes.axisValuesChanged.push (__value)
                  }
             }
         }

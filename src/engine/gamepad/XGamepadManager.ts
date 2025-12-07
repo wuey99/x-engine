@@ -82,6 +82,8 @@ export class XGamepadManager {
         let __gamepadX:XGamepad
 
         if (!this.m_connectedGamepads.has (__gamepad.index)) {
+            console.log (": addGamepad: ")
+
              __gamepadX = new XGamepad ();
             __gamepadX.setup (__gamepad);
 
@@ -95,12 +97,22 @@ export class XGamepadManager {
 
 //------------------------------------------------------------------------------------------
     removeGamepad (__gamepad:Gamepad):void {
+        console.log (": removeGamepad: ");
+
         if (this.m_connectedGamepads.has (__gamepad.index)) {
             let __gamepadX:XGamepad = this.m_connectedGamepads.get (__gamepad.index);
             __gamepadX.cleanup ();
 
             this.m_connectedGamepads.delete (__gamepad.index);
             this.m_gamepadToController.delete (__gamepadX);
+
+            XType.forEach (this.m_controllerToGamepad,
+                (__controller:XGamepadController) => {
+                    if (__gamepadX == this.m_controllerToGamepad.get (__controller)) {
+                        this.m_controllerToGamepad.set (__controller, null);
+                    }
+                }
+            );
         }
     }
 
@@ -113,10 +125,26 @@ export class XGamepadManager {
                 let __changes = __gamepadX.process ();
 
                 if (__changes.buttonsDown.length > 0 || __changes.buttonsUp.length > 0 || __changes.axisValuesChanged.length > 0) {
-                    console.log (": changes: ", __changes);
+                    const __controller:XGamepadController = this.m_gamepadToController.get (__gamepadX);
+
+                    if (__controller) {
+                        // console.log (": changes: ", __changes);
+
+                        __controller.process (__changes);
+                    }
                 }
             }
         )
+    }
+
+//------------------------------------------------------------------------------------------
+    createController ():XGamepadController {
+        const __controller:XGamepadController = new XGamepadController ();
+        __controller.setup ();
+
+        this.addController (__controller);
+
+        return __controller;
     }
 
 //------------------------------------------------------------------------------------------

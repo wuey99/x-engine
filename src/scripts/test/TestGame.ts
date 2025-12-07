@@ -29,10 +29,14 @@ import { XTextSprite } from '../../engine/sprite/XTextSprite';
 import { XLevel } from '../../engine/level/XLevel';
 import { XProcess } from '../../engine/process/XProcess';
 import { XType } from '../../engine/type/XType';
+import { XGamepadController } from '../../engine/gamepad/XGamepadController';
+import { XGamepadAxis } from '../../engine/gamepad/XGamepad';
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
 	public static HUD_LAYER:number = 7;
+
+	public m_gamepadController:XGamepadController;
 
 //------------------------------------------------------------------------------------------	
 	constructor () {
@@ -88,6 +92,24 @@ export class TestGame extends XState {
 
 				XTask.RETN,
 			]);
+
+		this.m_gamepadController = this.m_XApp.getXGamepadManager ().createController ();
+
+		this.m_gamepadController.addAxisChangedListener (XGamepadAxis.LEFT_X, (__value:number) => {
+			console.log (": left_x: ", __value);
+		});
+
+		this.m_gamepadController.addAxisChangedListener (XGamepadAxis.LEFT_Y, (__value:number) => {
+			console.log (": left_y: ", __value);
+		});
+		
+		this.m_gamepadController.addAxisChangedListener (XGamepadAxis.RIGHT_X, (__value:number) => {
+			console.log (": right_x: ", __value);
+		});
+
+		this.m_gamepadController.addAxisChangedListener (XGamepadAxis.RIGHT_Y, (__value:number) => {
+			console.log (": right_y: ", __value);
+		});
 
 		var __level:XLevel = this.addGameObjectAsChild (XLevel, 0, 0.0, false) as XLevel;
 		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test001"));

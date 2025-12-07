@@ -747,6 +747,11 @@ export class XApp {
     }
 
     //------------------------------------------------------------------------------------------
+    public getXGamepadManager ():XGamepadManager {
+        return this.m_XGamepadManager;
+    }
+
+    //------------------------------------------------------------------------------------------
     public setFrameRateScale (__scale:number):void {
         this.m_frameRateScale = __scale;
     }
