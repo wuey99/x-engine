@@ -643,7 +643,7 @@ export class XApp {
         var __gameElement:HTMLElement = document.getElementById ("game");
         var __rect:DOMRect = __gameElement.getBoundingClientRect ();
 
-        // console.log (": domRect: ", __rect, window.innerWidth, window.innerHeight);
+        console.log (": domRect: ", __rect, window.innerWidth, window.innerHeight);
 
         return Math.min (__rect.width, window.innerWidth - __rect.x);
     }

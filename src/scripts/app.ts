@@ -17,6 +17,8 @@ import { XGameController } from '../engine/state/XGameController';
 import { FpsMeter } from './fps-meter';
 import { TestGameController } from './test/TestGameController';
 import { XSignal } from '../engine/signals/XSignal';
+import { XMResourceX } from '../engine/resource/XMResourceX';
+import { ModResourceX } from '../engine/resource/ModResourceX';
 
 //------------------------------------------------------------------------------------------
 (window as any).decomp = require('poly-decomp');
@@ -231,7 +233,9 @@ export class Main {
         g_XApp.getXProjectManager ().registerType ("MusicResource", MusicResource);
         g_XApp.getXProjectManager ().registerType ("BlobResource", BlobResourceX);
         g_XApp.getXProjectManager ().registerType ("XMapResource", XMapResourceX);
-
+        g_XApp.getXProjectManager ().registerType ("XMResource", XMResourceX);
+        g_XApp.getXProjectManager ().registerType ("ModResource", ModResourceX);
+        
         g_XApp.getXProjectManager ().setup (
             "assets/Common.xml",
             {

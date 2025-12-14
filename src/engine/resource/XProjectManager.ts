@@ -102,6 +102,8 @@ export class XProjectManager {
             this.parseCowResources (0, this.m_manifest, this.m_cowResourceList);  
 
             __callback ();
+
+            console.log (": cows: ", this.m_cowResourceList);
         });
     }
     
@@ -215,6 +217,22 @@ export class XProjectManager {
                     __resources.push ({
                         name: __xml.attribute ("name").substr (1),
                         type: "SpriteSheet",
+                        path: "assets/" + __xml.attribute ("path") + "/" + __xml.attribute ("dst")
+                    });
+                }
+
+                if (__xml.attribute ("type") == ".xm" && __xml.hasAttribute ("embed")) {   
+                    __resources.push ({
+                        name: __xml.attribute ("name"),
+                        type: "XMResource",
+                        path: "assets/" + __xml.attribute ("path") + "/" + __xml.attribute ("dst")
+                    });
+                }
+
+                if (__xml.attribute ("type") == ".mod" && __xml.hasAttribute ("embed")) {   
+                    __resources.push ({
+                        name: __xml.attribute ("name"),
+                        type: "ModResource",
                         path: "assets/" + __xml.attribute ("path") + "/" + __xml.attribute ("dst")
                     });
                 }

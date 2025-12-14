@@ -34,14 +34,14 @@ import { Resource } from './Resource';
 import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
-const loadBin = {
+const loadXM = {
     extension: {
         type: PIXI.ExtensionType.LoadParser,
         priority: 0
     },
 
     test (url: string):boolean {
-        return (url.toLowerCase().endsWith('.bin'));
+        return (url.toLowerCase().endsWith('.xm'));
     },
 
     async load<T> (url: string):Promise<T> {
@@ -54,10 +54,10 @@ const loadBin = {
 } as LoaderParser;
 
 //------------------------------------------------------------------------------------------
-PIXI.extensions.add (loadBin);
+PIXI.extensions.add (loadXM);
 
 //------------------------------------------------------------------------------------------
-export class BlobResourceX extends Resource {
+export class XMResourceX extends Resource {
     public m_data:any;
 
     //------------------------------------------------------------------------------------------		
@@ -68,7 +68,7 @@ export class BlobResourceX extends Resource {
     //------------------------------------------------------------------------------------------
     public load ():void {
 		Assets.load (this.m_path).then ((__data:any) => {
-            // console.log (": BlobResource: loadComplete: ", this);
+            // console.log (": xm: loadComplete: ", this);
 
             if (this.m_isDead) {
                 console.log (": isDead: ", this.m_path);

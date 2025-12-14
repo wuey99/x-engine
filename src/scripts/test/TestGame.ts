@@ -31,6 +31,7 @@ import { XProcess } from '../../engine/process/XProcess';
 import { XType } from '../../engine/type/XType';
 import { XGamepadController } from '../../engine/gamepad/XGamepadController';
 import { XGamepadAxis } from '../../engine/gamepad/XGamepad';
+import FlodPlayer from "funkymed-flod-module-player/src/FlodPlayer";
 
 //------------------------------------------------------------------------------------------
 export class TestGame extends XState {
@@ -110,6 +111,17 @@ export class TestGame extends XState {
 		this.m_gamepadController.addAxisChangedListener (XGamepadAxis.RIGHT_Y, (__value:number) => {
 			console.log (": right_y: ", __value);
 		});
+
+		const music = this.m_XApp.getResourceByName ("hurricane");
+		console.log (": music: ", music)
+
+		this.addProcess (
+			function * () {
+				const player = FlodPlayer.load (music);
+				yield [XProcess.WAIT, 0x0400];
+				player.play ();
+			}.bind (this)
+		);
 
 		var __level:XLevel = this.addGameObjectAsChild (XLevel, 0, 0.0, false) as XLevel;
 		var __levelXML:XSimpleXMLNode = new XSimpleXMLNode (this.m_XApp.getResourceByName ("Test001"));

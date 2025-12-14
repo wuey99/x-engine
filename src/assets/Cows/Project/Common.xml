@@ -237,5 +237,11 @@
         </resource>
       </folder>
     </folder>
+    <folder name="sounds">
+      <folder name="test">
+        <resource name="hurricane" type=".xm" embed="false" path="Common" src="D5F2FF1D-449D-0775-63C1-CBD2685B3024-hurricane.xm" dst="D5F2FF1D-449D-0775-63C1-CBD2685B3024-hurricane.xm"/>
+        <resource name="are_you_a_believer" type=".mod" embed="false" path="Common" src="7A88EF5E-8B3C-0C36-3499-8DD4B8533ACA-are_you_a_believer.mod" dst="7A88EF5E-8B3C-0C36-3499-8DD4B8533ACA-are_you_a_believer.mod"/>
+      </folder>
+    </folder>
   </folder>
 </manifest>
