@@ -33,6 +33,7 @@ import { XPoint } from '../geom/XPoint';
 import { XSignal } from '../signals/XSignal';
 import { XApp } from '../app/XApp';
 import { XTask } from '../task/XTask';
+import { G } from '../app/G';
 
 //------------------------------------------------------------------------------------------
 export interface XStageParams {
@@ -94,7 +95,7 @@ export class XStage {
     }
 
 //------------------------------------------------------------------------------------------
-    async setup (__XApp:XApp, params: XStageParams, __container:HTMLElement = null) {
+    async setup (__XApp:XApp, params:XStageParams, __container:HTMLElement = null) {
         this.m_XApp = __XApp;
 
         this.renderer = await PIXI.autoDetectRenderer ({
@@ -129,6 +130,8 @@ export class XStage {
                 break;
         }
 
+        G.scaleRatio = this.scaleRatio;
+
         console.log (": -------------------------->: window.devicePixelRatio: ", Math.round (params.devicePixelRatio));
             
         console.log (": ", this.stage)
@@ -144,6 +147,9 @@ export class XStage {
         this.container.appendChild (this.renderer.canvas as any);
 
         this.setupResizer ();
+
+        this.m_mousePoint = new XPoint ();
+        this.m_touchPoint = new XPoint ();
 
         this.m_firstClick = false;
 
@@ -232,7 +238,7 @@ export class XStage {
 
         this.setupSize (
             this.getWindowWidth (), this.getWindowHeight (),
-            this.SCREEN_WIDTH, this.SCREEN_HEIGHT
+            G.SCREEN_WIDTH, G.SCREEN_HEIGHT
         );
 
         this.fitScreenToCanvas ();
@@ -279,7 +285,9 @@ export class XStage {
     //------------------------------------------------------------------------------------------
     public setupSize (__canvasWidth:number, __canvasHeight:number, __screenWidth:number, __screenHeight:number):void {
         this.CANVAS_WIDTH = __canvasWidth;
+        G.CANVAS_WIDTH = __canvasWidth;
         this.CANVAS_HEIGHT = __canvasHeight;
+        G.CANVAS_HEIGHT = __canvasHeight;
 
         this.m_canvasWidth = __canvasWidth;
         this.m_canvasHeight = __canvasHeight;

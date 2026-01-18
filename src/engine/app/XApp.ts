@@ -58,6 +58,7 @@ import { XSpriteLayer } from '../sprite/XSpriteLayer';
 import { XSpriteLayer9 } from '../sprite/XSpriteLayer9';
 import { XMapModel } from '../xmap/XMapModel';
 import { XGamepadManager } from '../gamepad/XGamepadManager';
+import { XStage, XStageParams } from '../sprite/XStage';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -71,10 +72,10 @@ export interface XAppParams {
 //------------------------------------------------------------------------------------------
 export class XApp {
     // TODO XStage
-    public container: HTMLElement; 
-    public renderer: PIXI.Renderer;
-    public stage: PIXI.Container;
-    //
+    // public container: HTMLElement; 
+    // public renderer: PIXI.Renderer;
+    // public stage: PIXI.Container;
+    // TODO XStage
 
     public fpsMax: number;
 
@@ -106,6 +107,7 @@ export class XApp {
     private m_inuse_TIMER_FRAME:number;
 
     // TODO XStage
+    /*
     private m_mousePoint:XPoint;
     private m_touchPoint:XPoint;
 
@@ -119,6 +121,7 @@ export class XApp {
     private m_scaleRatio:number;
     private m_xoffset:number;
     private m_yoffset:number;
+    */
 
     private m_paused:boolean;
 
@@ -126,7 +129,7 @@ export class XApp {
     private m_windowResizeSignal:XSignal;
 
     private m_hasFocus:boolean;
-    // TODO
+    // TODO XStage
 
     private m_main:Main;
 
@@ -145,6 +148,8 @@ export class XApp {
     // TODO XStage
     public static FULL_SCREEN:boolean = false;
 
+    public m_XStage: XStage;
+
     //------------------------------------------------------------------------------------------
     constructor () {
     }
@@ -157,6 +162,47 @@ export class XApp {
             this.m_main = __main;
             this.fpsMax = params.fpsMax;
 
+            XGameObject.setXApp (this);
+            XTask.setXApp (this);
+            XProcess.setXApp (this)
+            // TODO XTilemap.setXApp (this);
+            XSprite.setXApp (this);
+            XMapModel.setXApp (this);
+            // TODO XTextureManager.setXApp (this);
+            // TODO XTileSubTextureManager.setXApp (this);
+            // TODO XSubTextureManager.setXApp (this);
+            XGameInstance.setXApp (this);
+            MovieClipMetadata.setXApp (this);
+
+            G.XApp = this;
+            
+            this.__initPoolManagers (this.getDefaultPoolSettings ());
+
+            this.m_XTaskManager0 = new XTaskManager (this);	
+            this.m_XTaskManager = new XTaskManager (this);	
+            this.m_XProcessManager0 = new XProcessManager (this);	
+            this.m_XProcessManager = new XProcessManager (this);	
+            this.m_XSignalManager = new XSignalManager (this);
+            this.m_XProjectManager = new XProjectManager (this);
+            this.m_XSoundManager = new XSoundManager (this);
+            this.m_XTextureManager = new XTextureManager (this);
+            this.m_XClassPoolManager = new XClassPoolManager ();
+
+            this.m_frameRateScale = 1.0;
+            this.m_previousTimer = XType.getNowDate ().getTime ();
+            this.m_currentTimer = 0.0;
+            this.m_inuse_TIMER_FRAME = 0;
+            
+            this.m_XGamepadManager = new XGamepadManager ();
+            this.m_XGamepadManager.setup (this);
+
+            this.m_paused = false;
+
+            this.m_XStage = await this.createXStage (params) as XStage;
+
+            // await this.createOldXStage (params, __container);
+
+            /*
             // TODO XStage
             this.renderer = await PIXI.autoDetectRenderer ({
                 backgroundAlpha: 0.0,
@@ -205,45 +251,6 @@ export class XApp {
             this.container.appendChild (this.renderer.canvas as any);
             // TODO
 
-            XGameObject.setXApp (this);
-            XTask.setXApp (this);
-            XProcess.setXApp (this)
-            // TODO XTilemap.setXApp (this);
-            XSprite.setXApp (this);
-            XMapModel.setXApp (this);
-            // TODO XTextureManager.setXApp (this);
-            // TODO XTileSubTextureManager.setXApp (this);
-            // TODO XSubTextureManager.setXApp (this);
-            XGameInstance.setXApp (this);
-            MovieClipMetadata.setXApp (this);
-
-            G.XApp = this;
-            
-            this.__initPoolManagers (this.getDefaultPoolSettings ());
-
-            this.m_XTaskManager0 = new XTaskManager (this);	
-            this.m_XTaskManager = new XTaskManager (this);	
-            this.m_XProcessManager0 = new XProcessManager (this);	
-            this.m_XProcessManager = new XProcessManager (this);	
-            this.m_XSignalManager = new XSignalManager (this);
-            this.m_XProjectManager = new XProjectManager (this);
-            this.m_XSoundManager = new XSoundManager (this);
-            this.m_XTextureManager = new XTextureManager (this);
-            this.m_XClassPoolManager = new XClassPoolManager ();
-
-            this.m_frameRateScale = 1.0;
-            this.m_previousTimer = XType.getNowDate ().getTime ();
-            this.m_currentTimer = 0.0;
-            this.m_inuse_TIMER_FRAME = 0;
-            
-            this.m_mousePoint = new XPoint ();
-            this.m_touchPoint = new XPoint ();
-            
-            this.m_XGamepadManager = new XGamepadManager ();
-            this.m_XGamepadManager.setup (this);
-
-            this.m_paused = false;
-
             // TODO XStage
             this.setupResizer ();
 
@@ -273,6 +280,7 @@ export class XApp {
                 // this.m_main.setDebugMessage ("" + __mousePos.x + ", " + __mousePos.y);
             });
             // TODO XStage
+            */
 
             this.m_hasFocus = true;
 
@@ -302,19 +310,20 @@ export class XApp {
         this.m_XProcessManager.removeAllProcesses ();
         this.m_XSignalManager.removeAllXSignals ();
         
-        // TODO XStage
-        this.getStage ().off ("pointerdown", this.m_pointerDownHandle);
-        this.getStage ().off ("pointermove", this.m_pointerMoveHandle);
-        this.getStage ().off ("touchmove", this.m_touchMoveHandle);
-        document.removeEventListener ("visibilitychange", this.m_visibilityChangedHandle);
-        window.removeEventListener ("resize", this.m_resizerHandle);
-
         this.getTextureManager ().cleanup ();
         
         console.log (": XProjectManager.cleanup (): ");
 
         this.m_XProjectManager.cleanup ();
         XPauseManager.cleanup ();
+
+        // TODO XStage
+        /*
+        this.getStage ().off ("pointerdown", this.m_pointerDownHandle);
+        this.getStage ().off ("pointermove", this.m_pointerMoveHandle);
+        this.getStage ().off ("touchmove", this.m_touchMoveHandle);
+        document.removeEventListener ("visibilitychange", this.m_visibilityChangedHandle);
+        window.removeEventListener ("resize", this.m_resizerHandle);
 
         // TODO XStage
         this.container.removeChild (this.renderer.view as any);
@@ -324,6 +333,7 @@ export class XApp {
         // TODO XStage
         this.renderer.destroy ();
         this.renderer = null;
+        */
     }
 
 //------------------------------------------------------------------------------------------
@@ -591,8 +601,102 @@ export class XApp {
     }
 
 //------------------------------------------------------------------------------------------
-// TODO XStage
+    public async createOldXStage (params:any, __container:HTMLElement = null) {
+/*
+            this.m_mousePoint = new XPoint ();
+            this.m_touchPoint = new XPoint ();
+            
+            // TODO XStage
+            this.renderer = await PIXI.autoDetectRenderer ({
+                backgroundAlpha: 0.0,
+                width: this.getWindowWidth (), // params.canvasW,
+                height: this.getWindowHeight (), // params.canvasH,
+                antialias: true
+            }) as PIXI.Renderer;
 
+            console.log (": renderer: ", this.renderer, this.renderer.view)
+
+            // this.stage = new PIXI.Container ();
+
+            this.stage.interactive = true;
+            this.stage.interactiveChildren = true;
+
+            switch (Math.round (params.devicePixelRatio)) {
+                case 1:
+                    G.scaleRatio = 1; // 2;
+                    break;
+                case 2:
+                    G.scaleRatio = 1;
+                    break;
+                case 3:
+                    G.scaleRatio = 1;
+                    break;
+                case 4:
+                    G.scaleRatio = 1;
+                    break;
+                default:
+                    G.scaleRatio = 1;
+                    break;
+            }
+
+            console.log (": -------------------------->: window.devicePixelRatio: ", Math.round (params.devicePixelRatio));
+            
+            console.log (": ", this.m_main, this.stage)
+
+            if (__container != null) {
+                this.container = __container;
+            } else {
+                this.container = params.containerId ? document.getElementById(params.containerId) || document.body : document.body;
+            }
+
+            console.log (": container: ", this.container)
+
+            this.container.appendChild (this.renderer.canvas as any);
+            // TODO
+
+            // TODO XStage
+            // this.setupResizer ();
+
+            this.m_firstClick = false;
+
+            this.getStage ().on ("pointerup", this.m_pointerDownHandle = (e:FederatedPointerEvent) => {
+                this.m_firstClick = true;
+            });
+
+            this.getStage ().on ("pointermove", this.m_pointerMoveHandle = (e:FederatedPointerEvent) => {
+                var __mousePos:PIXI.Point = this.getStage ().toLocal (e.global);
+
+                this.m_mousePoint.x = __mousePos.x;
+                this.m_mousePoint.y = __mousePos.y;
+        
+                // console.log (": XApp: pointermove: ", this.m_mousePoint);
+
+                // this.m_main.setDebugMessage ("" + __mousePos.x + ", " + __mousePos.y);
+            });
+
+            this.getStage ().on ("touchmove", this.m_touchMoveHandle = (e:FederatedPointerEvent) => {
+                var __mousePos:PIXI.Point = this.getStage ().toLocal (e.global);
+
+                this.m_touchPoint.x = __mousePos.x;
+                this.m_touchPoint.y = __mousePos.y;
+
+                // this.m_main.setDebugMessage ("" + __mousePos.x + ", " + __mousePos.y);
+            });
+            // TODO XStage
+*/
+    }
+
+//------------------------------------------------------------------------------------------
+    public async createXStage (__params:XStageParams) {
+        const __XStage: XStage = new XStage ();
+
+        await __XStage.setup (this, __params);
+
+        return __XStage;
+    }
+
+// TODO XStage
+/*
 //------------------------------------------------------------------------------------------
     public setupResizer ():void {
         this.m_resizeTrigger = false;
@@ -744,15 +848,6 @@ export class XApp {
         return this.renderer;
     }
 
-//------------------------------------------------------------------------------------------
-// TODO
-
-    //------------------------------------------------------------------------------------------
-    public getMain ():Main {
-        return this.m_main;
-    }
-
-// TODO XStage
     //------------------------------------------------------------------------------------------
     public getStage ():PIXI.Container {
         return this.stage;
@@ -766,6 +861,85 @@ export class XApp {
     //------------------------------------------------------------------------------------------
     public getTouchPos ():XPoint {
         return this.m_touchPoint;
+    }
+
+//------------------------------------------------------------------------------------------
+// TODO
+    */
+
+    //------------------------------------------------------------------------------------------
+    public getMain ():Main {
+        return this.m_main;
+    }
+
+// TODO XStage
+    //------------------------------------------------------------------------------------------
+    public getWindowWidth ():number {
+        return this.m_XStage.getWindowWidth ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getWindowHeight ():number {
+        return this.m_XStage.getWindowHeight ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public addWindowResizeListener (__listener:any):number {
+        return this.m_XStage.addWindowResizeListener (__listener);
+    }
+
+    //------------------------------------------------------------------------------------------
+    public removeWindowResizeListener (__id:number):void {
+        this.m_XStage.removeWindowResizeListener (__id);
+    }
+    
+    //------------------------------------------------------------------------------------------
+    public getCanvasWidth ():number {
+        return this.m_XStage.getCanvasWidth ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getCanvasHeight ():number {
+        return this.m_XStage.getCanvasHeight ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getScreenWidth ():number {
+        return this.m_XStage.getScreenWidth ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getScreenHeight ():number {
+        return this.m_XStage.getScreenHeight ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getRenderer ():PIXI.Renderer {
+        return this.m_XStage.getRenderer ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public get renderer ():PIXI.Renderer {
+        return this.m_XStage.renderer;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getStage ():PIXI.Container {
+        return this.m_XStage.stage;
+    }
+
+    public get stage ():PIXI.Container {
+        return this.m_XStage.stage;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getMousePos ():XPoint {
+        return this.m_XStage.getMousePos ();
+    }
+
+    //------------------------------------------------------------------------------------------
+    public getTouchPos ():XPoint {
+        return this.m_XStage.getTouchPos ();
     }
 // TODO XStage
 

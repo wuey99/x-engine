@@ -95,7 +95,7 @@ export class Main {
             this.fpsMeterItem = document.createElement('div');
             this.fpsMeterItem.classList.add ('fps');
             // TODO XStage
-            g_XApp.container.appendChild (this.fpsMeterItem);
+            // g_XApp.container.appendChild (this.fpsMeterItem);
 
             fpsMeter = new FpsMeter (() => {
                 this.fpsMeterItem.innerHTML = 'FPS: ' + fpsMeter.getFrameRate().toFixed(2).toString() + " : " + this.m_debugMessage;
@@ -115,7 +115,7 @@ export class Main {
 //------------------------------------------------------------------------------------------
     public cleanup ():void {
         // TODO XStage
-        g_XApp.container.removeChild (this.fpsMeterItem);
+        // g_XApp.container.removeChild (this.fpsMeterItem);
 
         clearInterval (this.m_intervalTimer);
 
@@ -219,6 +219,7 @@ export class Main {
     public render () {
         // console.log (": render: ");
 
+        // TODO XStage
         if (g_XApp.renderer == null) {
             return;
         }
