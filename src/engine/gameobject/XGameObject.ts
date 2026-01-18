@@ -627,6 +627,7 @@ export class XGameObject extends PIXI.Container {
 		__point.x /= __layer.scale.x;
 		__point.y /= __layer.scale.y;
 		
+		// TODO XStage
 		__point.x *= G.scaleRatio;
 		__point.y *= G.scaleRatio;
 
@@ -746,6 +747,7 @@ export class XGameObject extends PIXI.Container {
 
 //------------------------------------------------------------------------------------------
 	public addStageEventListener (__eventName:InteractiveEvents, __listener:any):any {
+		// TODO XStage
 		this.m_XApp.getStage ().on (__eventName, __listener);
 
 		this.m_stageEvents.set (__listener, __eventName);
@@ -757,6 +759,7 @@ export class XGameObject extends PIXI.Container {
 	public removeStageEventListener (__listener:any):any {
 		var __eventName:InteractiveEvents = this.m_stageEvents.get (__listener);
 
+		// TODO XStage
 		this.m_XApp.getStage ().off (__eventName, __listener);
 
 		this.m_stageEvents.delete (__listener);
@@ -869,6 +872,7 @@ export class XGameObject extends PIXI.Container {
 
 //------------------------------------------------------------------------------------------
     public getMousePos ():XPoint {
+		// TODO XStage
 		var __point:XPoint = this.m_XApp.getMousePos ();
 
         this.m_mousePoint.x = __point.x;
@@ -881,6 +885,7 @@ export class XGameObject extends PIXI.Container {
 
     //------------------------------------------------------------------------------------------
     public getTouchPos ():XPoint {
+		// TODO XStage
 		var __point:XPoint = this.m_XApp.getTouchPos ();
 
         this.m_touchPoint.x = __point.x;
@@ -2194,10 +2199,12 @@ export class XGameObject extends PIXI.Container {
 					var __parent:PIXI.Container = __gameObject.parent;
 
 					if (__parent != null) {
+						// TODO XStage
 						__parent.x = __x / G.scaleRatio;
 						__parent.y = __y / G.scaleRatio;
 						__parent.angle = __rotation;
 						__parent.visible = __visible;
+						// TODO XStage
 						__parent.scale.x = __scaleX * __flipX / G.scaleRatio;
 						__parent.scale.y = __scaleY * __flipY / G.scaleRatio;
 						__parent.alpha = __alpha;
@@ -2228,6 +2235,7 @@ export class XGameObject extends PIXI.Container {
 //------------------------------------------------------------------------------------------
 			for (__sprite of this.m_selfSprites.keys ()) {
 				if (__sprite != null) {
+					// TODO XStage
 					__sprite.scale.x = __flipX / G.scaleRatio;
 					__sprite.scale.y = __flipY / G.scaleRatio;
                 }
@@ -2245,10 +2253,12 @@ export class XGameObject extends PIXI.Container {
 				if (__sprite != null) {
 					var __parent:PIXI.Container = __sprite.parent;
 
+					// TODO XStage
 					__parent.x = __x / G.scaleRatio;
 					__parent.y = __y / G.scaleRatio;
 					__parent.angle = __rotation;
 					__parent.visible = __sprite.visible && __visible;
+					// TODO XStage
 					__parent.scale.x = __scaleX * __flipX / G.scaleRatio;
 					__parent.scale.y = __scaleY * __flipY / G.scaleRatio;
 					__parent.alpha = __alpha;
@@ -2259,6 +2269,7 @@ export class XGameObject extends PIXI.Container {
 				if (__sprite != null) {
 					var __metaData:any = this.m_childSprites0.get (__sprite);
 
+					// TODO XStage
 					__sprite.x = (__metaData.x * __scaleX + __x) / G.scaleRatio;
 					__sprite.y = (__metaData.y * __scaleY + __y) / G.scaleRatio;
 					__sprite.angle = (__metaData.rotation * __scaleX + __rotation) % 360;
@@ -2612,11 +2623,13 @@ class __PausableListener {
 		this.m_eventName = __eventName;
 		this.m_listener = __listener;
 
+		// TODO XStage
 		XGameObject.getXApp ().getStage ().on (__eventName, this.boundListener = this.__listener.bind (this));
 	}
 
 	//------------------------------------------------------------------------------------------
 	public cleanup ():void {
+		// TODO XStage
 		XGameObject.getXApp ().getStage ().off (this.m_eventName, this.boundListener);
 	}
 

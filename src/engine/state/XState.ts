@@ -85,11 +85,13 @@ export class XState extends XGameObject {
 
 //------------------------------------------------------------------------------------------
 	public resize ():void {
+		// TODO XStage
 		this.m_XApp.getRenderer ().resize (this.m_XApp.getWindowWidth (), this.m_XApp.getWindowHeight ());
 
 		//------------------------------------------------------------------------------------------
 		// scale the entire stage
-		//------------------------------------------------------------------------------------------		
+		//------------------------------------------------------------------------------------------
+		// TODO XStage
 		this.m_XApp.getStage ().scale.x = 1.0;
 		this.m_XApp.getStage ().scale.y = 1.0;
 
@@ -99,14 +101,17 @@ export class XState extends XGameObject {
 			var __x:number = 0;
 			var __y:number = 0;
 
+			// TODO XStage
 			var __screenWidth:number = this.m_XApp.getScreenWidth ();
 			var __screenHeight:number = this.m_XApp.getScreenHeight ();
 
+			// TODO XStage
 			var __scaleX:number = this.m_XApp.getCanvasWidth () / __screenWidth;
 			var __scaleY:number = this.m_XApp.getCanvasHeight () / __screenHeight;
 
 			var __scaleRatio:number = Math.min (__scaleX, __scaleY);
 				
+			// TODO XStage
 			__x = (this.m_XApp.getCanvasWidth () - __screenWidth * __scaleRatio) / 2;
 			__y = (this.m_XApp.getCanvasHeight () - __screenHeight * __scaleRatio) / 2;
 
@@ -120,6 +125,7 @@ export class XState extends XGameObject {
 
 		__layer.x = __x;
 		__layer.y = __y;
+		// TODO XStage
 		__layer.scale.x = __scaleX * G.scaleRatio;
 		__layer.scale.y = __scaleY * G.scaleRatio;
 	}

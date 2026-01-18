@@ -79,11 +79,14 @@ export class Main {
     
             console.log (": starting: ");
 
+            // TODO XStage
             world = new XWorld (g_XApp.stage, g_XApp, 8);
             world.setup ();
 
+            // TODO XStage
             world.setViewRect (G.SCREEN_WIDTH, G.SCREEN_HEIGHT);
 
+            // TODO XStage
             g_XApp.stage.addChild (world);
 
             this.m_debugMessage = "";
@@ -91,6 +94,7 @@ export class Main {
             /* FPS */
             this.fpsMeterItem = document.createElement('div');
             this.fpsMeterItem.classList.add ('fps');
+            // TODO XStage
             g_XApp.container.appendChild (this.fpsMeterItem);
 
             fpsMeter = new FpsMeter (() => {
@@ -110,6 +114,7 @@ export class Main {
 
 //------------------------------------------------------------------------------------------
     public cleanup ():void {
+        // TODO XStage
         g_XApp.container.removeChild (this.fpsMeterItem);
 
         clearInterval (this.m_intervalTimer);
@@ -122,6 +127,7 @@ export class Main {
 
         world.cleanup ();
         
+        // TODO XStage
         g_XApp.stage.removeChild (world);
 
         g_XApp.cleanup ();
@@ -219,6 +225,7 @@ export class Main {
         
         requestAnimationFrame (this.render.bind (this));
 
+        // TODO XStage
         g_XApp.renderer.render (g_XApp.stage);
 
         fpsMeter.tick ();

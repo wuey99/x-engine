@@ -477,6 +477,7 @@ export class XWorld extends XSprite {
 		
     //------------------------------------------------------------------------------------------
     public getStage ():PIXI.Container {
+        // TODO XStage
         return this.m_XApp.getStage ();
     }
 
@@ -648,7 +649,7 @@ export class XWorld extends XSprite {
 
 //------------------------------------------------------------------------------------------
     public realDistanceToGameObject (__sourceObject:XGameObject, __targetObject:XGameObject):number {
-        return this.realDistance	(__sourceObject.x - __targetObject.x, __sourceObject.y - __targetObject.y)
+        return this.realDistance (__sourceObject.x - __targetObject.x, __sourceObject.y - __targetObject.y)
     }
 
 //------------------------------------------------------------------------------------------
