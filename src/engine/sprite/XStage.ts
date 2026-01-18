@@ -130,8 +130,6 @@ export class XStage {
                 break;
         }
 
-        G.scaleRatio = this.scaleRatio;
-
         console.log (": -------------------------->: window.devicePixelRatio: ", Math.round (params.devicePixelRatio));
             
         console.log (": ", this.stage)
@@ -285,9 +283,7 @@ export class XStage {
     //------------------------------------------------------------------------------------------
     public setupSize (__canvasWidth:number, __canvasHeight:number, __screenWidth:number, __screenHeight:number):void {
         this.CANVAS_WIDTH = __canvasWidth;
-        G.CANVAS_WIDTH = __canvasWidth;
         this.CANVAS_HEIGHT = __canvasHeight;
-        G.CANVAS_HEIGHT = __canvasHeight;
 
         this.m_canvasWidth = __canvasWidth;
         this.m_canvasHeight = __canvasHeight;

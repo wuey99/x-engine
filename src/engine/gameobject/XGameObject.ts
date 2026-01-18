@@ -2287,8 +2287,8 @@ export class XGameObject extends PIXI.Container {
 					__sprite.y = (__metaData.y * __scaleY + __y) / __scaleRatio;
 					__sprite.angle = (__metaData.rotation * __scaleX + __rotation) % 360;
 					__sprite.visible = __metaData.visible && __visible;
-					__sprite.scale.x = __metaData.scaleX * __scaleX * __flipX / G.scaleRatio;
-					__sprite.scale.y = __metaData.scaleY * __scaleY * __flipY / G.scaleRatio;
+					__sprite.scale.x = __metaData.scaleX * __scaleX * __flipX / __scaleRatio;
+					__sprite.scale.y = __metaData.scaleY * __scaleY * __flipY / __scaleRatio;
 					if (__metaData.visible && __visible) {
 						__sprite.alpha = __metaData.alpha * __alpha;
 					} else {
