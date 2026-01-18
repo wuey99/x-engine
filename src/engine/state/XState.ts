@@ -85,8 +85,7 @@ export class XState extends XGameObject {
 
 //------------------------------------------------------------------------------------------
 	public resize ():void {
-		// TODO XStage
-		this.m_XApp.getRenderer ().resize (this.getXStage ().getWindowWidth (), this.getXStage ().getWindowHeight ());
+		this.getXStage ().getRenderer ().resize (this.getXStage ().getWindowWidth (), this.getXStage ().getWindowHeight ());
 
 		//------------------------------------------------------------------------------------------
 		// scale the entire stage

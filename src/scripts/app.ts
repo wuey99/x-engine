@@ -79,6 +79,8 @@ export class Main {
                 containerId: 'game',
                 canvasW: G.CANVAS_WIDTH,
                 canvasH: G.CANVAS_HEIGHT,
+                screenW: G.SCREEN_WIDTH,
+                screenH: G.SCREEN_HEIGHT, 
                 devicePixelRatio: window.devicePixelRatio,    
             });
 
@@ -89,7 +91,7 @@ export class Main {
            __XStage.stage.addChild (world);
 
             // TODO XStage
-            world.setViewRect (G.SCREEN_WIDTH, G.SCREEN_HEIGHT);
+            world.setViewRect (__XStage.SCREEN_WIDTH, __XStage.SCREEN_HEIGHT);
 
             this.m_debugMessage = "";
 

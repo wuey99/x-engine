@@ -40,6 +40,8 @@ export interface XStageParams {
     containerId: string,
     canvasW: number,
     canvasH: number,
+    screenW: number,
+    screenH: number,
     devicePixelRatio:number
 }
 
@@ -71,14 +73,8 @@ export class XStage {
     private m_xoffset:number;
     private m_yoffset:number;
 
-    // TODO XStage
-    private m_paused:boolean;
-
     private m_resizeTrigger:boolean;
     private m_windowResizeSignal:XSignal;
-
-    // TODO XStage
-    private m_hasFocus:boolean;
 
     private m_pointerDownHandle:any;
     private m_pointerMoveHandle:any;
@@ -104,6 +100,9 @@ export class XStage {
             height: this.getWindowHeight (), // params.canvasH,
             antialias: true
         }) as PIXI.Renderer;
+
+        this.SCREEN_WIDTH = params.screenW;
+        this.SCREEN_HEIGHT = params.screenH;
 
         console.log (": renderer: ", this.renderer, this.renderer.view)
 
@@ -236,7 +235,7 @@ export class XStage {
 
         this.setupSize (
             this.getWindowWidth (), this.getWindowHeight (),
-            G.SCREEN_WIDTH, G.SCREEN_HEIGHT
+            this.SCREEN_WIDTH, this.SCREEN_HEIGHT
         );
 
         this.fitScreenToCanvas ();
@@ -349,6 +348,11 @@ export class XStage {
     //------------------------------------------------------------------------------------------
     public getStage ():PIXI.Container {
         return this.stage;
+    }
+
+//------------------------------------------------------------------------------------------l
+    public gotFirstClick ():boolean {
+        return this.m_firstClick;
     }
 
     //------------------------------------------------------------------------------------------

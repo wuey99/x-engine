@@ -2636,14 +2636,12 @@ class __PausableListener {
 		this.m_eventName = __eventName;
 		this.m_listener = __listener;
 
-		// TODO XStage
-		XGameObject.getXApp ().getStage ().on (__eventName, this.boundListener = this.__listener.bind (this));
+		this.m_gameObject.getStage ().on (__eventName, this.boundListener = this.__listener.bind (this));
 	}
 
 	//------------------------------------------------------------------------------------------
 	public cleanup ():void {
-		// TODO XStage
-		XGameObject.getXApp ().getStage ().off (this.m_eventName, this.boundListener);
+		this.m_gameObject.getStage ().off (this.m_eventName, this.boundListener);
 	}
 
 	//------------------------------------------------------------------------------------------

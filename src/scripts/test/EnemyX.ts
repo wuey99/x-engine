@@ -129,14 +129,12 @@ export class EnemyX extends XGameObject {
 
     //------------------------------------------------------------------------------------------
     public getScreenX (__percentage:number):number {
-        // TODO XStage
-        return G.SCREEN_WIDTH * __percentage;
+        return this.getXStage ().SCREEN_WIDTH * __percentage;
     }
 
     //------------------------------------------------------------------------------------------
     public getScreenY (__percentage:number):number {
-        // TODO XStage
-        return G.SCREEN_HEIGHT * __percentage;
+        return this.getXStage ().SCREEN_HEIGHT * __percentage;
     }
 
     //------------------------------------------------------------------------------------------

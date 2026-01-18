@@ -67,7 +67,6 @@ export interface XAppParams {
 
 //------------------------------------------------------------------------------------------
 export class XApp {
-    // TODO XStage
     public fpsMax: number;
 
 	private m_XTaskManager0:XTaskManager;
@@ -97,22 +96,16 @@ export class XApp {
     private m_previousTimer:number;
     private m_inuse_TIMER_FRAME:number;
 
-    // TODO XStage
     private m_paused:boolean;
     private m_hasFocus:boolean;
-    // TODO XStage
 
     private m_main:Main;
 
-    // TODO XStage
     private m_visibilityChangedHandle:any;
-    private m_firstClick:boolean;
-    // TODO
 
     private m_XGamepadManager:XGamepadManager;
 
     public static DISABLE_PAUSE:boolean = false;
-    // TODO XStage
     public static FULL_SCREEN:boolean = false;
 
     public m_XStage: XStage;
@@ -391,11 +384,6 @@ export class XApp {
     }
 
 //------------------------------------------------------------------------------------------
-    public gotFirstClick ():boolean {
-        return this.m_firstClick;
-    }
-
-//------------------------------------------------------------------------------------------
     public hasFocus ():boolean {
         return this.m_hasFocus;
     }
@@ -495,7 +483,6 @@ export class XApp {
         });
     }
 
-    // TODO XStage
     //------------------------------------------------------------------------------------------
     public getRenderer ():PIXI.Renderer {
         return this.m_XStage.getRenderer ();
@@ -525,7 +512,6 @@ export class XApp {
     public get stage ():PIXI.Container {
         return this.m_XStage.stage;
     }
-    // TODO XStage
 
     //------------------------------------------------------------------------------------------
     public getXGamepadManager ():XGamepadManager {
