@@ -62,11 +62,7 @@ import { XStage, XStageParams } from '../sprite/XStage';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
-    containerId: string,
-    canvasW: number,
-    canvasH: number,
-    fpsMax: number,
-    devicePixelRatio:number
+    fpsMax: number
 }
 
 //------------------------------------------------------------------------------------------
@@ -128,11 +124,10 @@ export class XApp {
     }
 
     //------------------------------------------------------------------------------------------
-    async setup (__main:Main, params: XAppParams, __container:HTMLElement = null) {
+    async setup (__main:Main, params: XAppParams) {
         {
-            console.log (": 1: ")
-
             this.m_main = __main;
+    
             this.fpsMax = params.fpsMax;
 
             XGameObject.setXApp (this);
@@ -172,8 +167,6 @@ export class XApp {
             this.m_paused = false;
 
             this.m_XStages = new Map<XStage, number> ();
-
-            this.m_XStage = await this.createXStage (params) as XStage;
 
             this.m_hasFocus = true;
 
@@ -484,7 +477,6 @@ export class XApp {
         return this.m_main;
     }
 
-    // TODO XStage
    //------------------------------------------------------------------------------------------
     public async createXStage (__params:XStageParams) {
         const __XStage: XStage = new XStage ();
@@ -503,7 +495,7 @@ export class XApp {
         });
     }
 
-// TODO XStage
+    // TODO XStage
     //------------------------------------------------------------------------------------------
     public getRenderer ():PIXI.Renderer {
         return this.m_XStage.getRenderer ();
@@ -512,6 +504,11 @@ export class XApp {
     //------------------------------------------------------------------------------------------
     public get renderer ():PIXI.Renderer {
         return this.m_XStage.renderer;
+    }
+
+    //------------------------------------------------------------------------------------------
+    public setXStage (__XStage:XStage):void {
+        this.m_XStage = __XStage;
     }
 
     //------------------------------------------------------------------------------------------
@@ -528,7 +525,7 @@ export class XApp {
     public get stage ():PIXI.Container {
         return this.m_XStage.stage;
     }
-// TODO XStage
+    // TODO XStage
 
     //------------------------------------------------------------------------------------------
     public getXGamepadManager ():XGamepadManager {

@@ -19,6 +19,7 @@ import { TestGameController } from './test/TestGameController';
 import { XSignal } from '../engine/signals/XSignal';
 import { XMResourceX } from '../engine/resource/XMResourceX';
 import { ModResourceX } from '../engine/resource/ModResourceX';
+import { XStage } from '../engine/sprite/XStage';
 
 //------------------------------------------------------------------------------------------
 (window as any).decomp = require('poly-decomp');
@@ -68,26 +69,27 @@ export class Main {
             await this.m_XApp.setup (
                 this,
                 {
-                    containerId: 'game',
-                    canvasW: G.CANVAS_WIDTH,
-                    canvasH: G.CANVAS_HEIGHT,
                     fpsMax: 60,
-                    devicePixelRatio: window.devicePixelRatio,
-                },
-                null // __container
+                }
             )
     
             console.log (": starting: ");
 
-            // TODO XStage
-            world = new XWorld (g_XApp.getXStage (), g_XApp, 8);
+            const __XStage:XStage = await this.m_XApp.createXStage ({
+                containerId: 'game',
+                canvasW: G.CANVAS_WIDTH,
+                canvasH: G.CANVAS_HEIGHT,
+                devicePixelRatio: window.devicePixelRatio,    
+            });
+
+            this.m_XApp.setXStage (__XStage);
+
+            world = new XWorld (__XStage, g_XApp, 8);
             world.setup ();
+           __XStage.stage.addChild (world);
 
             // TODO XStage
             world.setViewRect (G.SCREEN_WIDTH, G.SCREEN_HEIGHT);
-
-            // TODO XStage
-            g_XApp.stage.addChild (world);
 
             this.m_debugMessage = "";
 
@@ -218,16 +220,6 @@ export class Main {
 //------------------------------------------------------------------------------------------
     public render () {
         // console.log (": render: ");
-
-        // TODO XStage
-        /*
-        if (g_XApp.renderer == null) {
-            return;
-        }
-        
-        // TODO XStage
-        g_XApp.renderer.render (g_XApp.stage);
-        */
 
         requestAnimationFrame (this.render.bind (this));
 
