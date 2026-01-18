@@ -171,7 +171,7 @@ export class XApp {
 
             this.m_paused = false;
 
-            this.m_XStages = new Map<XStage, numner> ();
+            this.m_XStages = new Map<XStage, number> ();
 
             this.m_XStage = await this.createXStage (params) as XStage;
 
