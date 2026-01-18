@@ -220,14 +220,18 @@ export class Main {
         // console.log (": render: ");
 
         // TODO XStage
+        /*
         if (g_XApp.renderer == null) {
             return;
         }
         
-        requestAnimationFrame (this.render.bind (this));
-
         // TODO XStage
         g_XApp.renderer.render (g_XApp.stage);
+        */
+
+        requestAnimationFrame (this.render.bind (this));
+
+        g_XApp.renderXStages ();
 
         fpsMeter.tick ();
     }
