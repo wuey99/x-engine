@@ -503,46 +503,7 @@ export class XApp {
         });
     }
 
-    //------------------------------------------------------------------------------------------
-    public getWindowWidth ():number {
-        return this.m_XStage.getWindowWidth ();
-    }
-
-    //------------------------------------------------------------------------------------------
-    public getWindowHeight ():number {
-        return this.m_XStage.getWindowHeight ();
-    }
-
-    //------------------------------------------------------------------------------------------
-    public addWindowResizeListener (__listener:any):number {
-        return this.m_XStage.addWindowResizeListener (__listener);
-    }
-
-    //------------------------------------------------------------------------------------------
-    public removeWindowResizeListener (__id:number):void {
-        this.m_XStage.removeWindowResizeListener (__id);
-    }
-    
-    //------------------------------------------------------------------------------------------
-    public getCanvasWidth ():number {
-        return this.m_XStage.getCanvasWidth ();
-    }
-
-    //------------------------------------------------------------------------------------------
-    public getCanvasHeight ():number {
-        return this.m_XStage.getCanvasHeight ();
-    }
-
-    //------------------------------------------------------------------------------------------
-    public getScreenWidth ():number {
-        return this.m_XStage.getScreenWidth ();
-    }
-
-    //------------------------------------------------------------------------------------------
-    public getScreenHeight ():number {
-        return this.m_XStage.getScreenHeight ();
-    }
-
+// TODO XStage
     //------------------------------------------------------------------------------------------
     public getRenderer ():PIXI.Renderer {
         return this.m_XStage.getRenderer ();
@@ -554,22 +515,18 @@ export class XApp {
     }
 
     //------------------------------------------------------------------------------------------
+    public getXStage ():XStage {
+        return this.m_XStage;
+    }
+
+    //------------------------------------------------------------------------------------------
     public getStage ():PIXI.Container {
         return this.m_XStage.stage;
     }
 
+    //------------------------------------------------------------------------------------------
     public get stage ():PIXI.Container {
         return this.m_XStage.stage;
-    }
-
-    //------------------------------------------------------------------------------------------
-    public getMousePos ():XPoint {
-        return this.m_XStage.getMousePos ();
-    }
-
-    //------------------------------------------------------------------------------------------
-    public getTouchPos ():XPoint {
-        return this.m_XStage.getTouchPos ();
     }
 // TODO XStage
 

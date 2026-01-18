@@ -52,6 +52,7 @@ import { XObjectCollisionList } from '../collision/XObjectCollisionList';
 import { XObjectCollisionManager } from '../collision/XObjectCollisionManager';
 import { XMapModel } from '../xmap/XMapModel';
 import { XLogicManager } from '../gameobject/XLogicManager';
+import { XStage } from './XStage';
 
 //------------------------------------------------------------------------------------------
 export class XWorld extends XSprite {
@@ -59,6 +60,7 @@ export class XWorld extends XSprite {
     public m_layers:Array<XSpriteLayer>;
     public m_layerContainers:Array<PIXI.Sprite>;
     public m_XApp:XApp;
+    public m_XStage:XStage;
 
     public m_XLogicManager:XLogicManager;
 
@@ -91,10 +93,11 @@ export class XWorld extends XSprite {
     public MAX_LAYERS:number;
 
     //------------------------------------------------------------------------------------------
-    constructor (__parent:any, __XApp:XApp, __layers:number = 8, __timerInterval:number = 32) {
+    constructor (__XStage:XStage, __XApp:XApp, __layers:number = 8, __timerInterval:number = 32) {
         super ();
 
         this.m_XApp = __XApp;
+        this.m_XStage = __XStage;
 
         // TODO (i needed a add background to allow events to be captured.  figure out if there's a better solution)
         var graphics = new PIXI.Graphics ();
@@ -474,11 +477,15 @@ export class XWorld extends XSprite {
 	public createXLogicManager (__XApp:XApp, __world:XWorld):XLogicManager {
 		return new XLogicManager (__XApp, __world);	
 	}
-		
+
+    //------------------------------------------------------------------------------------------
+    public getXStage ():XStage {
+        return this.m_XStage;
+    }
+
     //------------------------------------------------------------------------------------------
     public getStage ():PIXI.Container {
-        // TODO XStage
-        return this.m_XApp.getStage ();
+        return this.m_XStage.stage;
     }
 
     //------------------------------------------------------------------------------------------

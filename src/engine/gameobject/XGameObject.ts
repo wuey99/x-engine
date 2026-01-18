@@ -64,6 +64,7 @@ import { XMickey } from '../level/XMickey';
 import { InteractiveEvents } from '../../x';
 import { XMickeyGameInstance } from '../level/XMickeyGameInstance';
 import { XLevelGameInstance } from '../level/XLevelGameInstance';
+import { XStage } from '../sprite/XStage';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Container {
@@ -567,6 +568,26 @@ export class XGameObject extends PIXI.Container {
 	}
 
 //------------------------------------------------------------------------------------------
+	public getWorld ():XWorld {
+		return this.world;
+	}
+
+//------------------------------------------------------------------------------------------
+	public getXStage ():XStage {
+		return this.world.getXStage ();
+	}
+
+//------------------------------------------------------------------------------------------
+	public getStage ():PIXI.Container {
+		return this.world.getXStage ().stage;
+	}
+
+//------------------------------------------------------------------------------------------
+	public get stage ():PIXI.Container {
+		return this.world.getXStage ().stage;
+	}
+
+//------------------------------------------------------------------------------------------
 	public getArg (__args:Array<any>, i:number):any {
 		return __args[i];
 	}
@@ -627,9 +648,8 @@ export class XGameObject extends PIXI.Container {
 		__point.x /= __layer.scale.x;
 		__point.y /= __layer.scale.y;
 		
-		// TODO XStage
-		__point.x *= G.scaleRatio;
-		__point.y *= G.scaleRatio;
+		__point.x *= this.getXStage ().scaleRatio;
+		__point.y *= this.getXStage ().scaleRatio;
 
 		__point.x -= __layer.x;
 		__point.y -= __layer.y;
@@ -747,8 +767,7 @@ export class XGameObject extends PIXI.Container {
 
 //------------------------------------------------------------------------------------------
 	public addStageEventListener (__eventName:InteractiveEvents, __listener:any):any {
-		// TODO XStage
-		this.m_XApp.getStage ().on (__eventName, __listener);
+		this.getStage ().on (__eventName, __listener);
 
 		this.m_stageEvents.set (__listener, __eventName);
 
@@ -759,8 +778,7 @@ export class XGameObject extends PIXI.Container {
 	public removeStageEventListener (__listener:any):any {
 		var __eventName:InteractiveEvents = this.m_stageEvents.get (__listener);
 
-		// TODO XStage
-		this.m_XApp.getStage ().off (__eventName, __listener);
+		this.getStage ().off (__eventName, __listener);
 
 		this.m_stageEvents.delete (__listener);
 	}
@@ -872,8 +890,7 @@ export class XGameObject extends PIXI.Container {
 
 //------------------------------------------------------------------------------------------
     public getMousePos ():XPoint {
-		// TODO XStage
-		var __point:XPoint = this.m_XApp.getMousePos ();
+		var __point:XPoint = this.getXStage ().getMousePos ();
 
         this.m_mousePoint.x = __point.x;
         this.m_mousePoint.y = __point.y;
@@ -885,8 +902,7 @@ export class XGameObject extends PIXI.Container {
 
     //------------------------------------------------------------------------------------------
     public getTouchPos ():XPoint {
-		// TODO XStage
-		var __point:XPoint = this.m_XApp.getTouchPos ();
+		var __point:XPoint = this.getXStage ().getTouchPos ();
 
         this.m_touchPoint.x = __point.x;
         this.m_touchPoint.y = __point.y;
@@ -2194,19 +2210,20 @@ export class XGameObject extends PIXI.Container {
 
 			var __gameObject:XGameObject;
 
+			const __scaleRatio:number = this.getXStage ().scaleRatio;
+
 			for (__gameObject of this.m_childObjects.keys ()) {	
 				if (__gameObject != null && !__gameObject.isDead) {	
 					var __parent:PIXI.Container = __gameObject.parent;
 
 					if (__parent != null) {
-						// TODO XStage
-						__parent.x = __x / G.scaleRatio;
-						__parent.y = __y / G.scaleRatio;
+
+						__parent.x = __x / __scaleRatio;
+						__parent.y = __y / __scaleRatio;
 						__parent.angle = __rotation;
 						__parent.visible = __visible;
-						// TODO XStage
-						__parent.scale.x = __scaleX * __flipX / G.scaleRatio;
-						__parent.scale.y = __scaleY * __flipY / G.scaleRatio;
+						__parent.scale.x = __scaleX * __flipX / __scaleRatio;
+						__parent.scale.y = __scaleY * __flipY / __scaleRatio;
 						__parent.alpha = __alpha;
 					}
 
@@ -2235,9 +2252,8 @@ export class XGameObject extends PIXI.Container {
 //------------------------------------------------------------------------------------------
 			for (__sprite of this.m_selfSprites.keys ()) {
 				if (__sprite != null) {
-					// TODO XStage
-					__sprite.scale.x = __flipX / G.scaleRatio;
-					__sprite.scale.y = __flipY / G.scaleRatio;
+					__sprite.scale.x = __flipX / __scaleRatio;
+					__sprite.scale.y = __flipY / __scaleRatio;
                 }
 			}
 	
@@ -2253,14 +2269,12 @@ export class XGameObject extends PIXI.Container {
 				if (__sprite != null) {
 					var __parent:PIXI.Container = __sprite.parent;
 
-					// TODO XStage
-					__parent.x = __x / G.scaleRatio;
-					__parent.y = __y / G.scaleRatio;
+					__parent.x = __x / __scaleRatio;
+					__parent.y = __y / __scaleRatio;
 					__parent.angle = __rotation;
 					__parent.visible = __sprite.visible && __visible;
-					// TODO XStage
-					__parent.scale.x = __scaleX * __flipX / G.scaleRatio;
-					__parent.scale.y = __scaleY * __flipY / G.scaleRatio;
+					__parent.scale.x = __scaleX * __flipX / __scaleRatio;
+					__parent.scale.y = __scaleY * __flipY / __scaleRatio;
 					__parent.alpha = __alpha;
 				}
 			}
@@ -2269,9 +2283,8 @@ export class XGameObject extends PIXI.Container {
 				if (__sprite != null) {
 					var __metaData:any = this.m_childSprites0.get (__sprite);
 
-					// TODO XStage
-					__sprite.x = (__metaData.x * __scaleX + __x) / G.scaleRatio;
-					__sprite.y = (__metaData.y * __scaleY + __y) / G.scaleRatio;
+					__sprite.x = (__metaData.x * __scaleX + __x) / __scaleRatio;
+					__sprite.y = (__metaData.y * __scaleY + __y) / __scaleRatio;
 					__sprite.angle = (__metaData.rotation * __scaleX + __rotation) % 360;
 					__sprite.visible = __metaData.visible && __visible;
 					__sprite.scale.x = __metaData.scaleX * __scaleX * __flipX / G.scaleRatio;

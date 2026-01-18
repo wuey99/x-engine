@@ -66,8 +66,8 @@ import { FlockFollower } from './FlockFollower';
 				
             this.m_triggerID = G.appX.addTriggerXListener (this.onTriggerSignal);
             
-            this.x = this.getScreenX (0.50);
-            this.y = this.getScreenY (0.50);
+            this.x = this.getScreenX (0.50) + 256;
+            this.y = this.getScreenY (0.50) + 1024;
 
             this.createFollowers ();
 				

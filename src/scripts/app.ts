@@ -80,7 +80,7 @@ export class Main {
             console.log (": starting: ");
 
             // TODO XStage
-            world = new XWorld (g_XApp.stage, g_XApp, 8);
+            world = new XWorld (g_XApp.getXStage (), g_XApp, 8);
             world.setup ();
 
             // TODO XStage

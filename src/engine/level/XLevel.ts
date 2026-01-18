@@ -312,9 +312,8 @@
 
 //------------------------------------------------------------------------------------------
 	public scrollTo (__layer:number, __x:number, __y:number):void {
-		// TODO XStage
-		this.m_layerPos[__layer].x = __x / G.scaleRatio;
-		this.m_layerPos[__layer].y = __y / G.scaleRatio;
+		this.m_layerPos[__layer].x = __x / this.getXStage ().scaleRatio;
+		this.m_layerPos[__layer].y = __y / this.getXStage ().scaleRatio;
 	}
 
 //------------------------------------------------------------------------------------------
