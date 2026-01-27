@@ -58,7 +58,7 @@ import { XSpriteLayer } from '../sprite/XSpriteLayer';
 import { XSpriteLayer9 } from '../sprite/XSpriteLayer9';
 import { XMapModel } from '../xmap/XMapModel';
 import { XGamepadManager } from '../gamepad/XGamepadManager';
-import { XStage, XStageParams } from '../sprite/XStage';
+import { XStage, XStageParams } from '../stage/XStage';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {

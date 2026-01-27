@@ -52,7 +52,7 @@ import { XObjectCollisionList } from '../collision/XObjectCollisionList';
 import { XObjectCollisionManager } from '../collision/XObjectCollisionManager';
 import { XMapModel } from '../xmap/XMapModel';
 import { XLogicManager } from '../gameobject/XLogicManager';
-import { XStage } from './XStage';
+import { XStage } from '../stage/XStage';
 
 //------------------------------------------------------------------------------------------
 export class XWorld extends XSprite {

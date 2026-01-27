@@ -64,7 +64,7 @@ import { XMickey } from '../level/XMickey';
 import { InteractiveEvents } from '../../x';
 import { XMickeyGameInstance } from '../level/XMickeyGameInstance';
 import { XLevelGameInstance } from '../level/XLevelGameInstance';
-import { XStage } from '../sprite/XStage';
+import { XStage } from '../stage/XStage';
 
 //------------------------------------------------------------------------------------------
 export class XGameObject extends PIXI.Container {

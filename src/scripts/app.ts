@@ -19,7 +19,7 @@ import { TestGameController } from './test/TestGameController';
 import { XSignal } from '../engine/signals/XSignal';
 import { XMResourceX } from '../engine/resource/XMResourceX';
 import { ModResourceX } from '../engine/resource/ModResourceX';
-import { XStage } from '../engine/sprite/XStage';
+import { XStage } from '../engine/stage/XStage';
 
 //------------------------------------------------------------------------------------------
 (window as any).decomp = require('poly-decomp');
