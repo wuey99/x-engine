@@ -59,6 +59,7 @@ import { XSpriteLayer9 } from '../sprite/XSpriteLayer9';
 import { XMapModel } from '../xmap/XMapModel';
 import { XGamepadManager } from '../gamepad/XGamepadManager';
 import { XStage, XStageParams } from '../stage/XStage';
+import { XStageBrowserWindow } from '../stage/XStageBrowserWindow';
 
 //------------------------------------------------------------------------------------------
 export interface XAppParams {
@@ -467,7 +468,7 @@ export class XApp {
 
    //------------------------------------------------------------------------------------------
     public async createXStage (__params:XStageParams) {
-        const __XStage: XStage = new XStage ();
+        const __XStage: XStage = new XStageBrowserWindow ();
 
         await __XStage.setup (this, __params);
 

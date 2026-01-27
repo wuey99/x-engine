@@ -59,32 +59,32 @@ export class XStage {
     public SCREEN_HEIGHT:number = 1088;
     public scaleRatio:number = 1;
 
-    private m_mousePoint:XPoint;
-    private m_touchPoint:XPoint;
+    public m_mousePoint:XPoint;
+    public m_touchPoint:XPoint;
 
-    private m_canvasWidth:number;
-    private m_canvasHeight:number;
-    private m_screenWidth:number;
-    private m_screenHeight:number;
-    private m_scaleXRatio:number;
-    private m_scaleYRatio:number;
+    public m_canvasWidth:number;
+    public m_canvasHeight:number;
+    public m_screenWidth:number;
+    public m_screenHeight:number;
+    public m_scaleXRatio:number;
+    public m_scaleYRatio:number;
 
-    private m_scaleRatio:number;
-    private m_xoffset:number;
-    private m_yoffset:number;
+    public m_scaleRatio:number;
+    public m_xoffset:number;
+    public m_yoffset:number;
 
-    private m_resizeTrigger:boolean;
-    private m_windowResizeSignal:XSignal;
+    public m_resizeTrigger:boolean;
+    public m_windowResizeSignal:XSignal;
 
-    private m_pointerDownHandle:any;
-    private m_pointerMoveHandle:any;
-    private m_touchMoveHandle:any;
-    private m_visibilityChangedHandle:any;
-    private m_resizerHandle:any;
+    public m_pointerDownHandle:any;
+    public m_pointerMoveHandle:any;
+    public m_touchMoveHandle:any;
+    public m_visibilityChangedHandle:any;
+    public m_resizerHandle:any;
 
-    private m_firstClick:boolean;
+    public m_firstClick:boolean;
 
-    private m_resizerTask:XTask;
+    public m_resizerTask:XTask;
 
 //------------------------------------------------------------------------------------------
     constructor () {
@@ -226,24 +226,6 @@ export class XStage {
     }
 
 //------------------------------------------------------------------------------------------
-    public resize ():void {
-        // console.log (": XApp: resize: ", this.getWindowWidth (), this.getWindowHeight ());
-
-        this.getRenderer ().resize (window.innerWidth, window.innerHeight);
-
-        // this.getRenderer ().resize (this.getWindowWidth (), this.getWindowHeight ());
-
-        this.setupSize (
-            this.getWindowWidth (), this.getWindowHeight (),
-            this.SCREEN_WIDTH, this.SCREEN_HEIGHT
-        );
-
-        this.fitScreenToCanvas ();
-
-        this.m_windowResizeSignal.fireSignal ();
-    }
-
-//------------------------------------------------------------------------------------------
     public addWindowResizeListener (__listener:any):number {
         return this.m_windowResizeSignal.addListener (__listener);
     }
@@ -251,47 +233,6 @@ export class XStage {
 //------------------------------------------------------------------------------------------
     public removeWindowResizeListener (__id:number):void {
         this.m_windowResizeSignal.removeListener (__id);
-    }
-
-    //------------------------------------------------------------------------------------------
-    public getWindowWidth ():number {
-        if (XApp.FULL_SCREEN) {
-            return window.innerWidth;
-        }
-
-        var __gameElement:HTMLElement = document.getElementById ("game");
-        var __rect:DOMRect = __gameElement.getBoundingClientRect ();
-
-        console.log (": domRect: ", __rect, window.innerWidth, window.innerHeight);
-
-        return Math.min (__rect.width, window.innerWidth - __rect.x);
-    }
-
-    //------------------------------------------------------------------------------------------
-    public getWindowHeight ():number {
-        if (XApp.FULL_SCREEN) {
-            return window.innerHeight;
-        }
-
-        var __gameElement:HTMLElement = document.getElementById ("game");
-        var __rect:DOMRect = __gameElement.getBoundingClientRect ();
-
-        return Math.min (__rect.height, window.innerHeight - __rect.y) - 0;
-    }
-
-    //------------------------------------------------------------------------------------------
-    public setupSize (__canvasWidth:number, __canvasHeight:number, __screenWidth:number, __screenHeight:number):void {
-        this.CANVAS_WIDTH = __canvasWidth;
-        this.CANVAS_HEIGHT = __canvasHeight;
-
-        this.m_canvasWidth = __canvasWidth;
-        this.m_canvasHeight = __canvasHeight;
-
-        this.m_screenWidth = __screenWidth;
-        this.m_screenHeight = __screenHeight;
-
-        this.m_scaleXRatio = this.m_screenWidth / this.m_canvasWidth;
-        this.m_scaleYRatio = this.m_screenHeight / this.m_canvasHeight;
     }
 
     //------------------------------------------------------------------------------------------
@@ -312,17 +253,6 @@ export class XStage {
     //------------------------------------------------------------------------------------------
     public getScreenHeight ():number {
         return this.m_screenHeight;
-    }
-
-    //------------------------------------------------------------------------------------------
-    public fitScreenToCanvas ():void {
-        var __scaleX:number = this.getCanvasWidth () / this.getScreenWidth ();
-        var __scaleY:number = this.getCanvasHeight () / this.getScreenHeight ();
-            
-        this.m_scaleRatio = Math.min (__scaleX, __scaleY);
-            
-        this.m_xoffset = (this.getCanvasWidth () - this.getScreenWidth () * this.m_scaleRatio) / 2;
-        this.m_yoffset = (this.getCanvasHeight () - this.getScreenHeight () * this.m_scaleRatio) / 2;
     }
         
     //------------------------------------------------------------------------------------------
@@ -363,6 +293,32 @@ export class XStage {
     //------------------------------------------------------------------------------------------
     public getTouchPos ():XPoint {
         return this.m_touchPoint;
+    }
+
+    //------------------------------------------------------------------------------------------
+    // overridable methods
+    //------------------------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------------------------
+    protected getWindowWidth ():number {
+        return 0;
+    }
+
+    //------------------------------------------------------------------------------------------
+    protected getWindowHeight ():number {
+        return 0;
+    }
+
+    //------------------------------------------------------------------------------------------
+    protected resize ():void {
+    }
+
+    //------------------------------------------------------------------------------------------
+    protected setupSize (__canvasWidth:number, __canvasHeight:number, __screenWidth:number, __screenHeight:number):void {
+    }
+
+    //------------------------------------------------------------------------------------------
+    protected fitScreenToCanvas ():void {
     }
 
 //------------------------------------------------------------------------------------------
