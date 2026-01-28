@@ -50,7 +50,7 @@ export class XStageBrowserWindow extends XStage {
     }
 
     //------------------------------------------------------------------------------------------
-    protected getWindowWidth ():number {
+    public getWindowWidth ():number {
         if (XApp.FULL_SCREEN) {
             return window.innerWidth;
         }
@@ -64,7 +64,7 @@ export class XStageBrowserWindow extends XStage {
     }
 
     //------------------------------------------------------------------------------------------
-    protected getWindowHeight ():number {
+    public getWindowHeight ():number {
         if (XApp.FULL_SCREEN) {
             return window.innerHeight;
         }
