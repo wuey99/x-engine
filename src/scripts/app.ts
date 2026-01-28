@@ -20,6 +20,7 @@ import { XSignal } from '../engine/signals/XSignal';
 import { XMResourceX } from '../engine/resource/XMResourceX';
 import { ModResourceX } from '../engine/resource/ModResourceX';
 import { XStage } from '../engine/stage/XStage';
+import { XStageBrowserWindow } from '../engine/stage/XStageBrowserWindow';
 
 //------------------------------------------------------------------------------------------
 (window as any).decomp = require('poly-decomp');
@@ -75,7 +76,7 @@ export class Main {
     
             console.log (": starting: ");
 
-            const __XStage:XStage = await this.m_XApp.createXStage ({
+            const __XStage:XStage = await this.m_XApp.createXStage (XStageBrowserWindow, {
                 containerId: 'game',
                 canvasW: G.CANVAS_WIDTH,
                 canvasH: G.CANVAS_HEIGHT,

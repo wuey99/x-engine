@@ -467,8 +467,8 @@ export class XApp {
     }
 
    //------------------------------------------------------------------------------------------
-    public async createXStage (__params:XStageParams) {
-        const __XStage: XStage = new XStageBrowserWindow ();
+    public async createXStage (__class:any, __params:XStageParams) {
+        const __XStage: XStage = new __class ();
 
         await __XStage.setup (this, __params);
 
