@@ -300,12 +300,12 @@ export class XStage {
     //------------------------------------------------------------------------------------------
 
     //------------------------------------------------------------------------------------------
-    protected getWindowWidth ():number {
+    public getWindowWidth ():number {
         return 0;
     }
 
     //------------------------------------------------------------------------------------------
-    protected getWindowHeight ():number {
+    public getWindowHeight ():number {
         return 0;
     }
 
