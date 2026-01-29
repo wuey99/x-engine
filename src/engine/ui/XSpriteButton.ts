@@ -162,9 +162,7 @@ export class XSpriteButton extends XButton {
         var __height:number = this.m_sprite.height;
 
 		var __graphics:PIXI.Graphics = this.m_graphics = new PIXI.Graphics ();
-		__graphics.beginFill (0xff00ff);
-		__graphics.drawRect (0, 0, __width, __height);
-		__graphics.endFill ();
+		__graphics.rect (0, 0, __width, __height).fill (0xff00ff);
         __graphics.alpha = 0.01;
         this.addSortableChild (__graphics, this.getLayer (), this.getDepth () + 2, false);
 

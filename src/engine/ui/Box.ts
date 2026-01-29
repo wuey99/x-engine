@@ -117,11 +117,7 @@ export class Box extends XGameObject {
     public createFill ():void {
         if (this.m_fillColor != -1) {
             this.m_fill = new PIXI.Graphics ();
-
-            this.m_fill.beginFill (this.m_fillColor);
-            this.m_fill.drawRect (0, 0, this.m_width, this.m_height);
-            this.m_fill.endFill ();
-
+            this.m_fill.rect (0, 0, this.m_width, this.m_height).fill (this.m_fillColor);
             this.addSortableChild (this.m_fill, this.getLayer (), this.getDepth () - 1, true);
         }
     }
@@ -136,9 +132,7 @@ export class Box extends XGameObject {
             return;
         }
 
-        this.m_fill.beginFill (this.m_fillColor);
-        this.m_fill.drawRect (0, 0, this.m_width, this.m_height);
-        this.m_fill.endFill ();
+        this.m_fill.rect (0, 0, this.m_width, this.m_height).fill (this.m_fillColor);
     }
 
 //------------------------------------------------------------------------------------------

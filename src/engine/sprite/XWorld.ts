@@ -99,12 +99,9 @@ export class XWorld extends XSprite {
         this.m_XApp = __XApp;
         this.m_XStage = __XStage;
 
-        // TODO (i needed a add background to allow events to be captured.  figure out if there's a better solution)
         var graphics = new PIXI.Graphics ();
-        graphics.beginFill (0x000000, 0.0);
-        graphics.drawRect (0, 0, this.m_XStage.SCREEN_WIDTH/4, this.m_XStage.SCREEN_HEIGHT/4);
-        graphics.endFill ();
-        graphics.alpha = 1.0;
+        graphics.rect (0, 0, this.m_XStage.SCREEN_WIDTH/4, this.m_XStage.SCREEN_HEIGHT/4).fill (0x000000);
+        graphics.alpha = 0.0;
         graphics.scale.x = 4.0;
         graphics.scale.y = 4.0;
         this.addChild (graphics);

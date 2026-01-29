@@ -184,9 +184,7 @@
 			}
 			
 			var __graphics:PIXI.Graphics = new PIXI.Graphics ();
-			__graphics.beginFill (0xffa0a0);
-			__graphics.drawRect (0, 0, this.world.getViewRect ().width, this.world.getViewRect ().height);
-			__graphics.endFill ()
+			__graphics.rect (0, 0, this.world.getViewRect ().width, this.world.getViewRect ().height).fill (0xffa0a0);
 			__graphics.alpha = 0.66;
 
 			this.addSpriteAsChild (__graphics, 0, 0, 7, 0.0, true);

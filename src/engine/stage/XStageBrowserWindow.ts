@@ -38,6 +38,7 @@ import { XStage, XStageParams } from './XStage';
 
 //------------------------------------------------------------------------------------------
 export class XStageBrowserWindow extends XStage {
+    public m_maskLayer: PIXI.Graphics;
 
 //------------------------------------------------------------------------------------------
     constructor () {
@@ -76,7 +77,7 @@ export class XStageBrowserWindow extends XStage {
     }
 
 //------------------------------------------------------------------------------------------
-    protected resize ():void {
+    public resize ():void {
         // console.log (": XApp: resize: ", this.getWindowWidth (), this.getWindowHeight ());
 
         this.getRenderer ().resize (window.innerWidth, window.innerHeight);
@@ -117,5 +118,23 @@ export class XStageBrowserWindow extends XStage {
             
         this.m_xoffset = (this.getCanvasWidth () - this.getScreenWidth () * this.m_scaleRatio) / 2;
         this.m_yoffset = (this.getCanvasHeight () - this.getScreenHeight () * this.m_scaleRatio) / 2;
+
+        if (this.m_maskLayer) {
+            var graphics = this.m_maskLayer; 
+
+            var __color = 0x000000;
+            
+            graphics.clear ();
+            graphics.rect (0, 0, this.getCanvasWidth (), this.m_yoffset).fill (__color);
+            graphics.rect (0, this.getCanvasHeight () - this.m_yoffset, this.getCanvasWidth (), this.m_yoffset).fill (__color);
+            graphics.rect (0, 0, this.m_xoffset, this.getCanvasHeight ()).fill (__color);
+            graphics.rect (this.getCanvasWidth () - this.m_xoffset, 0, this.m_xoffset, this.getCanvasHeight ()).fill (__color);
+        }
+    }
+
+//------------------------------------------------------------------------------------------
+    public createMaskLayer ():void {
+        this.m_maskLayer = new PIXI.Graphics ();
+        this.stage.addChild (this.m_maskLayer);
     }
 }

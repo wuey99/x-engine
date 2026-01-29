@@ -90,6 +90,8 @@ export class Main {
             world = new XWorld (__XStage, g_XApp, 8);
             world.setup ();
            __XStage.stage.addChild (world);
+           __XStage.createMaskLayer ();
+           __XStage.resize ();
 
             // TODO XStage
             world.setViewRect (__XStage.SCREEN_WIDTH, __XStage.SCREEN_HEIGHT);
